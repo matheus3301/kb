@@ -1,7 +1,8 @@
-.PHONY: tools check repo lint test build fuzz security acceptance release
+.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release
 
 export PATH := $(CURDIR)/.tools/bin:$(PATH)
 PYTHON ?= python3
+GORELEASER ?= goreleaser
 
 tools:
 	$(PYTHON) scripts/quality.py install-tools
@@ -31,5 +32,14 @@ acceptance:
 
 check: repo lint test build fuzz security acceptance
 
+release-check:
+	$(GORELEASER) check
+
+release-snapshot: release-check
+	$(GORELEASER) release --snapshot --skip=publish --clean
+	$(PYTHON) scripts/release.py formula
+	$(PYTHON) scripts/check_release.py
+
 release:
-	$(PYTHON) scripts/release.py --version $(VERSION)
+	@echo "Push a new version tag from tested main; see docs/releases.md."
+	@exit 1

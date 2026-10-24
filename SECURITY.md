@@ -40,5 +40,9 @@ limits; it is not an unrestricted recovery tool or legacy migration facility.
 CI has no deployment credentials. Pull-request workflows use a read-only token,
 checkout does not persist credentials, and external actions use commit SHAs.
 There is no `pull_request_target` execution path for untrusted branch content,
-automatic merge, or automatic release. See the [quality policy](docs/quality.md)
-for review settings and their limits.
+or automatic merge. The dedicated tag-only [release workflow](docs/releases.md)
+checks main ancestry and successful exact-commit CI before publication. Only its
+verified publisher job receives contents: write for kb. A separate secret is
+restricted to the Homebrew tap and used only for publishing its source formula.
+PRs and snapshots receive no release credentials. See the
+[quality policy](docs/quality.md) for review settings and their limits.

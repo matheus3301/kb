@@ -129,9 +129,11 @@ not establish semantic truth.
 ## Project status
 
 **Experimental, with a working CLI, MCP server, and skill.** The previous manual
-release was withdrawn while distribution is being prepared with GoReleaser and
-the [Homebrew tap](https://github.com/matheus3301/homebrew-tap). There is currently
-no active tagged release. Install from source using the steps above.
+release was withdrawn. The [GoReleaser workflow](docs/releases.md) prepares
+Linux/macOS binaries and a source formula for the
+[Homebrew tap](https://github.com/matheus3301/homebrew-tap). There is currently
+no active tagged release: install from source above. Homebrew and downloadable
+binaries become available with the next publication; see [installation](docs/installation.md).
 
 [Recorded validation](docs/evidence/validation.json) includes 88.4% statement
 coverage, Linux/macOS tests, seven fuzz targets, CLI/MCP parity, failure/recovery
@@ -149,6 +151,7 @@ retries, and restart a long-lived MCP process after configuration changes.
 
 ## Documentation
 
+- [Installation](docs/installation.md) and [release operations](docs/releases.md).
 - [Full quickstart](docs/quickstart.md) — initialize, query, write, recover, and export.
 - [Product and architecture](docs/project-overview.md) — how the pieces fit together.
 - [Specification](docs/spec.md) and [interface contract](docs/interfaces.md).

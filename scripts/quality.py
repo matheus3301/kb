@@ -26,7 +26,25 @@ def run(*args, env=None):
     subprocess.run(args, cwd=ROOT, env=env, check=True)
 
 
-def workflow_findings(text):
+def release_write_allowed(text, name, position):
+    # Publishing a tag is the sole write-token exception. Keep its event and
+    # verification dependency explicit; PR workflows remain read-only.
+    header = 'name: Release\n\non:\n  push:\n    tags: ["v*"]\n\npermissions:\n  contents: read\n'
+    if name != "release.yml" or not text.startswith(header):
+        return False
+    jobs = list(re.finditer(r"^  ([\w-]+):\s*\n(.*?)(?=^  [\w-]+:|\Z)", text, re.M | re.S))
+    publish = next((job for job in jobs if job[1] == "publish"), None)
+    verify = next((job for job in jobs if job[1] == "verify"), None)
+    if not publish or not verify or not publish.start() <= position < publish.end():
+        return False
+    guard = "    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}\n"
+    return ("    needs: verify\n" in publish[0] and guard in publish[0]
+            and "    permissions:\n      contents: write\n" in publish[0]
+            and "run: python3 scripts/release.py verify-tag\n" in verify[0]
+            and "run: make tools check\n" in verify[0])
+
+
+def workflow_findings(text, name=""):
     findings = []
     for target in re.findall(r"^\s*-?\s*uses:\s*([^\s#]+)", text, re.M):
         if not re.fullmatch(r"[\w.-]+/[\w./-]+@[a-f0-9]{40}", target):
@@ -34,8 +52,11 @@ def workflow_findings(text):
     for forbidden in ("pull_request_target", "continue-on-error:", "write-all"):
         if forbidden in text:
             findings.append(f"forbidden workflow setting: {forbidden}")
-    if re.search(r"^\s+[\w-]+:\s*write\s*$", text, re.M):
-        findings.append("workflow requests a write token")
+    for match in re.finditer(r"^[ \t]+([\w-]+):[ \t]*['\"]?write['\"]?[ \t]*(?:#.*)?$", text, re.M):
+        if not (match[1] == "contents" and release_write_allowed(text, name, match.start())):
+            findings.append("workflow requests a write token")
+    if re.search(r"^\s*permissions:[ \t]*\S", text, re.M):
+        findings.append("permissions must use explicit block mappings")
     if not re.search(r"^permissions:\s*\n\s+contents: read\s*$", text, re.M):
         findings.append("workflow must declare contents: read")
     if "persist-credentials: false" not in text:
@@ -51,6 +72,7 @@ def local_link_findings(root, path):
     targets = re.findall(r"\]\(([^)\s]+)\)", body)
     targets += re.findall(r"^\s*\[[^\]]+\]:\s*<?([^\s>]+)>?", body, re.M)
     targets += re.findall(r"^\s*resource:\s*(\S+)", body, re.M)
+    targets += re.findall(r'<(?:img|a|source)\b[^>]*\b(?:src|href)=["\']([^"\']+)', body)
     for target in targets:
         if re.match(r"[a-zA-Z][a-zA-Z0-9+.-]*:", target) or target.startswith("#"):
             continue
@@ -95,7 +117,7 @@ def acceptance_findings(root, spec, criteria):
 
 def gate_findings(needs, event):
     findings = []
-    for job in ("repository", "static", "tests", "security", "build"):
+    for job in ("repository", "static", "tests", "security", "build", "release-config"):
         if needs.get(job, {}).get("result") != "success":
             findings.append(f"required job did not succeed: {job}")
     expected = "success" if event == "pull_request" else "skipped"
@@ -112,13 +134,13 @@ def require_clean(findings):
 def repository():
     findings = []
     for path in tracked_content(ROOT):
-        if path.suffix in {".md", ".json", ".yaml", ".yml", ".go", ".py", ".toml"}:
+        if path.suffix in {".md", ".json", ".yaml", ".yml", ".go", ".py", ".toml", ".svg"}:
             findings.extend(public_content_findings(path.relative_to(ROOT), path.read_text()))
         if path.suffix == ".md":
             findings.extend(local_link_findings(ROOT, path))
     workflows = ROOT / ".github/workflows"
     for path in sorted(list(workflows.glob("*.yml")) + list(workflows.glob("*.yaml"))):
-        findings.extend(f"{path.name}: {f}" for f in workflow_findings(path.read_text()))
+        findings.extend(f"{path.name}: {f}" for f in workflow_findings(path.read_text(), path.name))
     criteria = json.loads((ROOT / "docs/acceptance.json").read_text())
     findings.extend(acceptance_findings(ROOT, (ROOT / "docs/spec.md").read_text(), criteria))
     require_clean(findings)

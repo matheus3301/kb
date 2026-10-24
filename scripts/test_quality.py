@@ -22,7 +22,7 @@ jobs:
 
     def results(self):
         return {name: {"result": "success"} for name in
-                ("repository", "static", "tests", "security", "build", "dependency-review")}
+                ("repository", "static", "tests", "security", "build", "release-config", "dependency-review")}
 
     def test_unpinned_action_is_rejected(self):
         self.assertTrue(quality.workflow_findings(self.workflow("actions/checkout@v7")))
@@ -33,6 +33,25 @@ jobs:
     def test_write_token_is_rejected(self):
         workflow = self.workflow("actions/checkout@" + "a" * 40) + "  contents: write\n"
         self.assertIn("workflow requests a write token", quality.workflow_findings(workflow))
+
+    def test_only_verified_tag_publisher_can_have_contents_write(self):
+        workflow = (quality.ROOT / ".github/workflows/release.yml").read_text()
+        self.assertEqual([], quality.workflow_findings(workflow, "release.yml"))
+        for altered, name in (
+            (workflow, "ci.yml"),
+            (workflow.replace('tags: ["v*"]', 'branches: ["main"]'), "release.yml"),
+            (workflow.replace("    needs: verify\n", "    needs: []\n"), "release.yml"),
+            (workflow.replace("run: python3 scripts/release.py verify-tag", "run: true"), "release.yml"),
+            (workflow.replace("run: make tools check", "run: true"), "release.yml"),
+            (workflow.replace("contents: write", "packages: write"), "release.yml"),
+            (workflow.replace("      checks: read", "      checks: write"), "release.yml"),
+            (workflow.replace("  contents: read\n", "  contents: write\n", 1), "release.yml"),
+        ):
+            with self.subTest(name=name, altered=altered[:80]):
+                self.assertTrue(quality.workflow_findings(altered, name))
+
+    def test_inline_permission_mapping_is_rejected(self):
+        self.assertTrue(quality.workflow_findings("permissions: {contents: write}"))
 
     def test_failure_bypass_is_rejected(self):
         workflow = self.workflow("actions/checkout@" + "a" * 40) + "continue-on-error: true\n"
@@ -80,6 +99,13 @@ jobs:
             self.assertEqual(1, len(quality.local_link_findings(root, page)))
             (root / "absent.md").write_text("exists\n")
             self.assertEqual([], quality.local_link_findings(root, page))
+
+    def test_readme_html_images_and_links_must_resolve(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            page = root / "README.md"
+            page.write_text('<img src="absent.svg" alt="Logo" /><a href="../outside.md">More</a>')
+            self.assertEqual(2, len(quality.local_link_findings(root, page)))
 
     def test_reference_and_source_links_cannot_escape_checkout(self):
         with tempfile.TemporaryDirectory() as directory:

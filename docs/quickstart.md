@@ -1,7 +1,7 @@
 # Quickstart
 
-`kb` v0.1.0 is an experimental first release with a working CLI and MCP stdio
-server. This guide follows the [v0.1 contract](interfaces.md) and shared DTOs in
+`kb` is experimental software with a working CLI and MCP stdio server.
+The initial manual release was withdrawn; install the current source checkout. This guide follows the [v0.1 contract](interfaces.md) and shared DTOs in
 `internal/api/types.go`. Use a disposable example base while learning its write
 and recovery behavior. [Recorded validation](evidence/validation.json) describes
 observed behavior; it does not prove that all bugs are absent.
@@ -24,15 +24,8 @@ kb version --json
 kb --help
 ```
 
-To install the tagged version without a checkout:
-
-```sh
-go install github.com/matheus3301/kb/cmd/kb@v0.1.0
-```
-
-The [v0.1.0 release](https://github.com/matheus3301/kb/releases/tag/v0.1.0) provides
-Linux/macOS amd64/arm64 archives and checksums. Extract the archive matching your
-platform and place its `kb` executable on your `PATH` to use a prebuilt binary.
+See [installation and distribution status](installation.md) for Homebrew and
+prebuilt binaries from the next automated release.
 
 Make the Go binary installation directory available on your `PATH` if `kb` is
 not found. Installing the binary does not install a skill or register an MCP

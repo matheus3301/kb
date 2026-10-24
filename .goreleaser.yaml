@@ -1,0 +1,132 @@
+version: 2
+project_name: kb
+dist: .build/dist
+
+before:
+  hooks:
+    - python3 scripts/release.py notices
+
+builds:
+  - id: kb
+    main: ./cmd/kb
+    binary: kb
+    env:
+      - CGO_ENABLED=0
+      - GOWORK=off
+      - GOTOOLCHAIN=local
+    goos: [linux, darwin]
+    goarch: [amd64, arm64]
+    flags: [-trimpath]
+    ldflags:
+      - -s -w -X main.version=v{{ .Version }} -X main.commit={{ .FullCommit }}
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+archives:
+  - id: binaries
+    formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds_info:
+      owner: root
+      group: root
+      mode: 0755
+      mtime: "{{ .CommitDate }}"
+    files:
+      - src: LICENSE
+        info: &public_file
+          owner: root
+          group: root
+          mode: 0644
+          mtime: "{{ .CommitDate }}"
+      - src: README.md
+        info: *public_file
+      - src: CONTRIBUTING.md
+        info: *public_file
+      - src: SECURITY.md
+        info: *public_file
+      - src: assets/*.svg
+        info: *public_file
+      - src: docs/*.md
+        info: *public_file
+      - src: docs/*.json
+        info: *public_file
+      - src: docs/**/*.md
+        info: *public_file
+      - src: docs/**/*.json
+        info: *public_file
+      - src: schemas/*.json
+        info: *public_file
+      - src: skills/**/*.md
+        info: *public_file
+      - src: .build/THIRD_PARTY_NOTICES.md
+        strip_parent: true
+        info: *public_file
+
+source:
+  enabled: true
+  name_template: "{{ .ProjectName }}_{{ .Version }}_source"
+  format: tar.gz
+  prefix_template: "{{ .ProjectName }}-{{ .Version }}/"
+  files:
+    - src: .build/THIRD_PARTY_NOTICES.md
+      strip_parent: true
+      info: *public_file
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  groups:
+    - title: Features
+      regexp: '^feat(\([^)]*\))?!?:'
+      order: 0
+    - title: Fixes
+      regexp: '^fix(\([^)]*\))?!?:'
+      order: 1
+    - title: Performance
+      regexp: '^perf(\([^)]*\))?!?:'
+      order: 2
+    - title: Documentation
+      regexp: '^docs(\([^)]*\))?!?:'
+      order: 3
+    - title: Other changes
+      order: 4
+
+release:
+  github:
+    owner: matheus3301
+    name: kb
+  draft: false
+  prerelease: auto
+  mode: keep-existing
+  header: |
+    ## kb {{ .Tag }}
+
+    Local Markdown knowledge memory for humans and agents, with CLI and MCP interfaces.
+
+    Experimental software. See the documentation for operating limits and measured performance.
+  footer: |
+    ## Install
+
+    On macOS or Linux, Homebrew builds from the checksummed source archive:
+
+    ```sh
+    brew install matheus3301/tap/kb
+    ```
+
+    Alternatively, download the binary archive for your platform and verify it
+    against `checksums.txt`, or install with the Go toolchain declared in go.mod:
+
+    ```sh
+    go install github.com/matheus3301/kb/cmd/kb@{{ .Tag }}
+    ```
+
+    [Getting started](https://github.com/matheus3301/kb/blob/{{ .Tag }}/README.md#getting-started)
+    · [Quickstart](https://github.com/matheus3301/kb/blob/{{ .Tag }}/docs/quickstart.md)
+
+    The Homebrew tap is updated after a stable release is published. Prereleases
+    remain available as binary archives and Go module versions.

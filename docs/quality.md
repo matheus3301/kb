@@ -19,11 +19,13 @@ silently bypass this workflow.
 | Portability | Linux amd64/arm64 and macOS amd64/arm64 cross-builds, with CGO disabled. |
 | Fuzz | Every discovered Go fuzz target runs for a bounded smoke period; seed corpus also runs in ordinary tests. |
 | Secrets | Gitleaks scans Git history with redacted findings. |
+| Release snapshot | Pinned GoReleaser config, four binary packages and source archive, checksums, privacy, source formula, and real native/source-build workflows. |
 | Vulnerabilities | govulncheck; dependency review blocks newly introduced high/critical known vulnerabilities. |
 
 Tool versions are pinned. Dependabot proposes Action and Go module updates;
 updates to development tools are separate explicit changes. No automatic merge
-or release is configured.
+is configured. Release publication requires an explicit version tag and follows
+the [tag-only workflow](releases.md).
 
 ## Implemented v0.1 validation and its limits
 
@@ -86,6 +88,10 @@ do not convert the spec's performance targets into reported results.
 
 Branch protection was established during repository bootstrap; its API record,
 workflow URL, and observed limits are recorded in the bootstrap PR. Recheck
-settings when repository policy changes. Release packaging and publication
-remain manual under the current user authorization after CI; no automatic
-merge or release is configured.
+settings when repository policy changes. PR CI remains read-only. The sole
+write-token exception is the tag-only publisher after its verification job: it
+requires protected-main ancestry, exact-commit CI, and another full check.
+Regression tests reject write tokens in other jobs/files or removal of those
+prerequisites. The tap token is separate and scoped to the tap repository.
+[Release operations](releases.md) documents credentials and publication.
+There is no automatic merge and merging code does not create a release.
