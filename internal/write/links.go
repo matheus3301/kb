@@ -18,33 +18,10 @@ type destination struct {
 // markdownDestinations preserves surrounding Markdown and skips fenced/inline code.
 func markdownDestinations(text string) []destination {
 	var spans []destination
-	fence := byte(0)
-	fenceLength := 0
+	var fence codeFence
 	offset := 0
 	for _, line := range strings.SplitAfter(text, "\n") {
-		trimmed := strings.TrimLeft(line, " ")
-		indent := len(line) - len(trimmed)
-		if indent >= 4 {
-			offset += len(line)
-			continue
-		}
-		if len(trimmed) >= 3 && (trimmed[0] == '`' || trimmed[0] == '~') {
-			n := 0
-			for n < len(trimmed) && trimmed[n] == trimmed[0] {
-				n++
-			}
-			if n >= 3 {
-				if fence == 0 {
-					fence = trimmed[0]
-					fenceLength = n
-				} else if fence == trimmed[0] && n >= fenceLength {
-					fence = 0
-				}
-				offset += len(line)
-				continue
-			}
-		}
-		if fence != 0 {
+		if fence.consume(line) {
 			offset += len(line)
 			continue
 		}

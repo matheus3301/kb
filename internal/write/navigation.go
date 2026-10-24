@@ -58,16 +58,21 @@ func (s *Service) indexes(files map[string][]byte) error {
 			raw = []byte("# Index\n\n" + indexStart + "\n" + indexEnd + "\n")
 		}
 		text := string(raw)
-		start, end := strings.Index(text, indexStart), strings.Index(text, indexEnd)
-		if strings.Count(text, indexStart) > 1 || strings.Count(text, indexEnd) > 1 || (start < 0) != (end < 0) || (start >= 0 && end < start) {
-			return problem("INVALID_INDEX", "index marker region is malformed")
+		start, end, appendSafe, err := indexRegion(text)
+		if err != nil {
+			return err
 		}
 		if start < 0 {
+			if !appendSafe {
+				return problem("INVALID_INDEX", "an unclosed code fence prevents safely appending an index region")
+			}
 			if len(s.provider.Engine().ValidateReserved(index, raw)) > 0 {
 				return problem("INVALID_INDEX", "unmanaged index requires explicit repair")
 			}
-			text = strings.TrimRight(text, "\r\n") + "\n\n" + indexStart + "\n" + indexEnd + "\n"
-			start, end = strings.Index(text, indexStart), strings.Index(text, indexEnd)
+			prefix := strings.TrimRight(text, "\r\n") + "\n\n"
+			start = len(prefix)
+			end = start + len(indexStart) + 1
+			text = prefix + indexStart + "\n" + indexEnd + "\n"
 		}
 		manual := text[:start] + text[end+len(indexEnd):]
 		targets := map[string]string{}
