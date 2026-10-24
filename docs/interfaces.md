@@ -5,6 +5,12 @@ is `kb.v1`; the first release is `v0.1.0`. `internal/api/types.go` is the shared
 contract. Coordinate changes through the integration owner rather than changing
 shared types independently in feature branches.
 
+`api.Revision` is SHA-256 of complete file bytes, prefixed `sha256:`. Shared
+`api.Generation` hashes sorted scoped Markdown paths joined as path, NUL,
+revision, newline. Config and operational files are excluded. Pagination also
+binds the effective query/config so a filter change cannot reuse an old cursor.
+Use the shared limits in api rather than duplicating transport limits.
+
 ## Package ownership
 
 - `internal/api`: shared types, owned by integration.
