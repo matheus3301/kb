@@ -1,4 +1,4 @@
-.PHONY: tools check repo lint test build fuzz security
+.PHONY: tools check repo lint test build fuzz security release
 
 export PATH := $(CURDIR)/.tools/bin:$(PATH)
 PYTHON ?= python3
@@ -26,3 +26,6 @@ security:
 	$(PYTHON) scripts/quality.py security
 
 check: repo lint test build fuzz security
+
+release:
+	$(PYTHON) scripts/release.py --version $(VERSION)
