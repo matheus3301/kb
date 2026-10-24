@@ -1,0 +1,184 @@
+[
+  {
+    "id": "A01",
+    "requirement": "Busca/read funcionam sem UI, Git, modelo, credencial ou rede.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A02",
+    "requirement": "CLI e MCP retornam os mesmos IDs, revisões, filtros e erros em fixtures equivalentes.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A03",
+    "requirement": "Concept mínimo com só `type` é conformante; tipos e campos desconhecidos sobrevivem.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A04",
+    "requirement": "Notas sem YAML ou type são reportadas como inválidas; escrita normal não aceita uma base não conformante. Não há requisito de busca ou migração de legado.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A05",
+    "requirement": "YAML inválido não oculta silenciosamente notas; status informa quantos arquivos não foram parseados.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A06",
+    "requirement": "Mapping único em `verified` é aceito; mudança de conteúdo invalida a revisão ativa.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A07",
+    "requirement": "Instante `stale_after` com fuso é interpretado corretamente; formato incompatível é diagnosticado.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A08",
+    "requirement": "Busca com e sem acentos recupera o mesmo conjunto esperado em português.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A09",
+    "requirement": "Editar corpo preserva comentário YAML e campos não tocados; no-op preserva bytes e não gera log.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A10",
+    "requirement": "Duas escritas com a mesma revisão: apenas a primeira aplica; conflito não muda nota, índice ou log.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A11",
+    "requirement": "Retry com mesma chave não duplica efeitos, inclusive após falha entre publicação e resposta.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A12",
+    "requirement": "Create/edit atualizam nota, índice e log; falhas injetadas em cada etapa permitem recuperação.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A13",
+    "requirement": "Move atualiza links Markdown resolvidos e âncoras, sem alterar referências ambíguas ou externas indevidamente.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A14",
+    "requirement": "Traversal, symlinks, colisões e arquivo fora da raiz não permitem leitura nem escrita.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A15",
+    "requirement": "`--read-only` oculta e recusa mutações; stdout MCP não contém logs.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A16",
+    "requirement": "Contexto respeita teto global, informa truncamentos e fornece linhas/revisões das fontes.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A17",
+    "requirement": "Editar via editor externo invalida cache e revisão na próxima operação relevante.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A18",
+    "requirement": "Exportar inclui relatório e lista de exclusões; não anuncia conformidade de arquivos não examinados.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A19",
+    "requirement": "Instalação/init não alteram configs globais ou registram agentes automaticamente.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A20",
+    "requirement": "Trocar o perfil de navegação PARA por outra hierarquia não altera parsing, identidade e validade OKF dos mesmos arquivos.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A21",
+    "requirement": "Uma ingestão sintética cria uma nota de fonte e atualiza duas notas existentes em apply; conflito em uma delas não publica nenhuma mudança.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A22",
+    "requirement": "Os hashes de snapshots originais permanecem iguais após criar, editar, mover e aplicar planos na wiki.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A23",
+    "requirement": "Uma síntese com basis_revisions de dois conceitos é marcada para revisão quando um deles muda; não é reescrita nem declarada falsa automaticamente.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A24",
+    "requirement": "Health identifica órfão, link ausente, conceito fora do índice e dependência alterada, sem alegar detecção determinística de contradições.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A25",
+    "requirement": "Comparação persistida pelo agente mantém proveniência; repetir uma consulta sem aprendizado não cria nota ou evento.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  },
+  {
+    "id": "A26",
+    "requirement": "Sem AGENTS.md dentro da base, CLI/MCP operam normalmente. No agente alvo, instrução do workdir e skill instalada conduzem consulta à base externa antes de responder; aprendizado reutilizável é atualizado e consulta sem novidade não escreve. Registrar evidência observada, sem prometer adesão universal dos modelos.",
+    "status": "planned",
+    "tests": [],
+    "evidence": []
+  }
+]
