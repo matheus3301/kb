@@ -4,32 +4,46 @@
 
 Local-first knowledge memory for humans and agents. Markdown is the source of
 truth, [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format) is the
-knowledge format, and PARA is an optional human navigation profile. CLI and MCP
-will share one core.
+knowledge format, and PARA is an optional human navigation profile. A Go binary
+will provide CLI commands and an MCP stdio server backed by the same core.
 
-**Status: repository and quality foundation. There is no application yet.**
-Go is the implementation baseline. An installed skill will teach memory
-workflows; the workdir's instructions will activate them. An `AGENTS.md` inside
-the knowledge base is optional.
+**Pre-release: repository and quality foundation only. There is no application,
+working `kb` executable, or release yet.** The documentation describes the
+proposed interface. Acceptance criteria remain planned until implementation
+and evidence exist; green repository checks do not establish product readiness.
+
+Start with the [public quickstart](docs/quickstart.md) for source installation
+prerequisites and the proposed create, search, read, context, revision-checked
+patch, dry-run, validation, and MCP workflow. Its product commands are explicitly
+marked pre-release until implemented.
+
+The planned tool keeps knowledge in editable OKF Markdown files, preserves YAML
+comments and unknown metadata, and uses expected revisions to reject conflicting
+writes. Coordinated changes require a durable journal and recovery. The external
+agent handles synthesis and semantic review; the core handles deterministic
+operations. These are requirements, not claims about existing behavior.
+
+Binary installation, optional agent skill installation, and MCP registration
+are separate steps. Workdir instructions activate the memory workflow and
+identify its root. An `AGENTS.md` inside the knowledge base is optional.
 
 - [Specification](docs/spec.md)
 - [Product and architecture](docs/project-overview.md)
-- [Research](docs/research.md)
+- [Research and public sources](docs/research.md)
 - [Quality gates and their limits](docs/quality.md)
 - [Acceptance evidence](docs/acceptance.json)
 - [Development](CONTRIBUTING.md)
 - [Implementation decisions](docs/decisions/0001-foundation.md)
 
+For contributors, use the Go version in `go.mod` and Python 3.12 or newer:
+
 ```sh
 make tools   # install pinned development tools into .tools/bin
-make check   # same checks used by CI; requires Go and Python 3.12+
+make check   # run the checks used by CI
 ```
 
 CI validates the repository now. Application tests, coverage, fuzzing, and builds
-activate when Go source is introduced. A green bootstrap build does not mean the
-product or the acceptance criteria have been implemented.
+activate when Go source is introduced. The final distribution and public API
+must be settled before a release.
 
-No release or working `kb` executable is available. The final distribution and
-public API will be settled before a release.
-
-This is an open-source project licensed under the [MIT License](LICENSE).
+This project is open source under the [MIT License](LICENSE).
