@@ -11,7 +11,6 @@ import (
 	"github.com/matheus3301/kb/internal/api"
 )
 
-var markdownLink = regexp.MustCompile(`!?\[([^\]\n]*)\]\(\s*(<[^>\n]+>|[^\s)]+)(?:\s+"[^"\n]*")?\s*\)`)
 var referenceDef = regexp.MustCompile(`^ {0,3}\[([^\]]+)\]:\s*(<[^>]+>|\S+)`)
 var referenceUse = regexp.MustCompile(`\[([^\]\n]+)\]\[([^\]\n]*)\]`)
 
@@ -27,20 +26,10 @@ func headings(raw string) []heading {
 	}
 	var out []heading
 	counts := map[string]int{}
-	fence := ""
+	var fence fenceState
 	for i, line := range lines {
 		trim := strings.TrimSpace(line)
-		if strings.HasPrefix(trim, "```") || strings.HasPrefix(trim, "~~~") {
-			mark := trim[:3]
-			switch fence {
-			case "":
-				fence = mark
-			case mark:
-				fence = ""
-			}
-			continue
-		}
-		if fence != "" {
+		if fence.skip(line) {
 			continue
 		}
 		level := 0
@@ -141,39 +130,20 @@ func buildLinks(files map[string][]byte, notes []api.Note) []api.Link {
 	}
 	sort.Strings(paths)
 	for _, p := range paths {
-		raw := string(files[p])
-		body := raw
-		start := 0
-		if f, err := splitFront(files[p]); err == nil {
-			body = string(f.body)
-			start = strings.Count(raw[:len(raw)-len(body)], "\n")
-		}
+		bodyBytes, start := rawBody(files[p])
+		body := string(bodyBytes)
 		defs := map[string]string{}
-		lines := strings.Split(body, "\n")
-		fence := ""
+		lines := visibleLines(body)
 		for _, line := range lines {
 			if match := referenceDef.FindStringSubmatch(line); match != nil {
 				defs[strings.ToLower(match[1])] = match[2]
 			}
 		}
 		for i, line := range lines {
-			trim := strings.TrimSpace(line)
-			if strings.HasPrefix(trim, "```") || strings.HasPrefix(trim, "~~~") {
-				mark := trim[:3]
-				switch fence {
-				case "":
-					fence = mark
-				case mark:
-					fence = ""
-				}
-				continue
-			}
-			if fence != "" {
-				continue
-			}
-			for _, match := range markdownLink.FindAllStringSubmatch(line, -1) {
-				link := resolveLink(p, match[2], files)
-				link.Text = match[1]
+
+			for _, match := range inlineTargets(line) {
+				link := resolveLink(p, match.target, files)
+				link.Text = match.text
 				link.Kind = "markdown"
 				link.Line = start + i + 1
 				links = append(links, link)
@@ -270,7 +240,7 @@ func (s *Store) Links(ctx context.Context, p, direction string) ([]api.Link, err
 	if direction != "both" && direction != "in" && direction != "out" && direction != "incoming" && direction != "outgoing" {
 		return nil, fault("INVALID_INPUT", "direction must be in, out, or both")
 	}
-	snap, err := s.Snapshot(ctx)
+	snap, err := s.readSnapshot(ctx)
 	if err != nil {
 		return nil, err
 	}

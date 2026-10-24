@@ -106,7 +106,7 @@ func (s *Store) Search(ctx context.Context, request api.SearchRequest) (api.Sear
 			return api.SearchResult{}, err
 		}
 	}
-	snap, err := s.Snapshot(ctx)
+	snap, err := s.readSnapshot(ctx)
 	if err != nil {
 		return api.SearchResult{}, err
 	}
@@ -150,88 +150,69 @@ func (s *Store) searchSnapshot(ctx context.Context, snap api.Snapshot, request a
 	for _, q := range query {
 		querySet[q] = true
 	}
-	type scored struct {
-		note   api.Note
-		tf     map[string]float64
-		length float64
-		score  float64
+
+	scores := make([]float64, len(snap.Notes))
+	counts := make([]int, len(snap.Notes))
+	nonempty := strings.TrimSpace(request.Query) != ""
+	if nonempty && len(query) > 0 {
+		index, err := s.lexical(ctx, snap)
+		if err != nil {
+			return result, err
+		}
+		for term := range querySet {
+			postings := index.terms[term]
+			idf := math.Log(1 + (float64(len(snap.Notes)-len(postings))+0.5)/(float64(len(postings))+0.5))
+			for _, p := range postings {
+				counts[p.doc]++
+				scores[p.doc] += idf * (p.tf * 2.2) / (p.tf + 1.2*(0.25+0.75*index.lengths[p.doc]/index.average))
+			}
+		}
 	}
-	docs := make([]scored, 0, len(snap.Notes))
-	df := map[string]int{}
-	average := 0.0
-	for _, note := range snap.Notes {
+	type candidate struct {
+		doc   int
+		score float64
+	}
+	candidates := []candidate{}
+	for i, note := range snap.Notes {
 		if err := ctx.Err(); err != nil {
 			return result, err
 		}
 		if !matches(note, request.Filters, s.config) {
 			continue
 		}
-		doc := scored{note: note, tf: map[string]float64{}}
-		for _, field := range []struct {
-			text   string
-			weight float64
-		}{{note.Title, 6}, {note.Path, 4}, {strings.Join(note.Tags, " "), 5}, {note.Description, 3}, {note.Body, 1}} {
-			ts := tokens(field.text, s.config.Search.AccentFolding)
-			doc.length += float64(len(ts))
-			for _, token := range ts {
-				if querySet[token] {
-					doc.tf[token] += field.weight
-				}
-			}
-		}
-		for term := range doc.tf {
-			df[term]++
-		}
-		average += doc.length
-		docs = append(docs, doc)
-	}
-	if len(docs) > 0 {
-		average /= float64(len(docs))
-	}
-	if average == 0 {
-		average = 1
-	}
-	hits := []api.Hit{}
-	for _, doc := range docs {
-		if strings.TrimSpace(request.Query) != "" {
-			if len(query) == 0 {
+		if nonempty {
+			if len(query) == 0 || counts[i] != len(querySet) {
 				continue
 			}
-			if request.Literal && !strings.Contains(fold(doc.note.Title+"\n"+doc.note.Path+"\n"+strings.Join(doc.note.Tags, " ")+"\n"+doc.note.Description+"\n"+doc.note.Body, s.config.Search.AccentFolding), fold(request.Query, s.config.Search.AccentFolding)) {
-				continue
-			}
-			all := true
-			for term := range querySet {
-				tf := doc.tf[term]
-				if tf == 0 {
-					all = false
-					break
-				}
-				idf := math.Log(1 + (float64(len(docs)-df[term])+0.5)/(float64(df[term])+0.5))
-				doc.score += idf * (tf * 2.2) / (tf + 1.2*(0.25+0.75*doc.length/average))
-			}
-			if !all {
+			if request.Literal && !strings.Contains(fold(note.Title+"\n"+note.Path+"\n"+strings.Join(note.Tags, " ")+"\n"+note.Description+"\n"+note.Body, s.config.Search.AccentFolding), fold(request.Query, s.config.Search.AccentFolding)) {
 				continue
 			}
 		}
-		note := doc.note
-		note.Body = ""
-		note.Raw = nil
-		hits = append(hits, api.Hit{Note: note, Score: doc.score, ParseStatus: "valid", OKF: true, Snippets: snippets(doc.note, query, s.config.Search.AccentFolding)})
+		candidates = append(candidates, candidate{doc: i, score: scores[i]})
 	}
-	sort.Slice(hits, func(i, j int) bool {
-		if hits[i].Score != hits[j].Score {
-			return hits[i].Score > hits[j].Score
+	sort.Slice(candidates, func(i, j int) bool {
+		if candidates[i].score != candidates[j].score {
+			return candidates[i].score > candidates[j].score
 		}
-		return hits[i].Path < hits[j].Path
+		return snap.Notes[candidates[i].doc].Path < snap.Notes[candidates[j].doc].Path
 	})
-	result.Total = len(hits)
-	if offset > len(hits) {
+	hits := make([]api.Hit, 0, min(request.Limit, len(candidates)))
+	result.Total = len(candidates)
+	if offset > len(candidates) {
 		return result, fault("INVALID_CURSOR", "cursor offset exceeds results")
 	}
-	end := min(len(hits), offset+request.Limit)
-	result.Hits = hits[offset:end]
-	if end < len(hits) {
+	end := min(len(candidates), offset+request.Limit)
+	for _, candidate := range candidates[offset:end] {
+		original := snap.Notes[candidate.doc]
+		note := original
+		note.Body = ""
+		note.Raw = nil
+		note.Metadata = cloneMap(note.Metadata)
+		note.Tags = append([]string(nil), note.Tags...)
+		hits = append(hits, api.Hit{Note: note, Score: candidate.score, ParseStatus: "valid", OKF: true, Snippets: snippets(original, query, s.config.Search.AccentFolding)})
+	}
+	result.Hits = hits
+	if end < len(candidates) {
 		raw, err := json.Marshal(pageCursor{Generation: snap.Generation, Query: queryHash, Offset: end})
 		if err != nil {
 			return result, err
@@ -240,6 +221,55 @@ func (s *Store) searchSnapshot(ctx context.Context, snap api.Snapshot, request a
 	}
 	return result, nil
 }
+
+type posting struct {
+	doc int
+	tf  float64
+}
+type lexicalIndex struct {
+	generation string
+	terms      map[string][]posting
+	lengths    []float64
+	average    float64
+}
+
+func (s *Store) lexical(ctx context.Context, snap api.Snapshot) (*lexicalIndex, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.searchIndex != nil && s.searchIndex.generation == snap.Generation {
+		return s.searchIndex, nil
+	}
+	index := &lexicalIndex{generation: snap.Generation, terms: map[string][]posting{}, lengths: make([]float64, len(snap.Notes))}
+	for i, note := range snap.Notes {
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
+		tf := map[string]float64{}
+		for _, field := range []struct {
+			text   string
+			weight float64
+		}{{note.Title, 6}, {note.Path, 4}, {strings.Join(note.Tags, " "), 5}, {note.Description, 3}, {note.Body, 1}} {
+			ts := tokens(field.text, s.config.Search.AccentFolding)
+			index.lengths[i] += float64(len(ts))
+			for _, token := range ts {
+				tf[token] += field.weight
+			}
+		}
+		index.average += index.lengths[i]
+		for term, freq := range tf {
+			index.terms[term] = append(index.terms[term], posting{doc: i, tf: freq})
+		}
+	}
+	if len(snap.Notes) > 0 {
+		index.average /= float64(len(snap.Notes))
+	}
+	if index.average == 0 {
+		index.average = 1
+	}
+	s.searchIndex = index
+	return index, nil
+}
+
 func snippets(n api.Note, query []string, accents bool) []api.Snippet {
 	raw := string(n.Raw)
 	bodyStart := strings.Count(raw[:len(raw)-len(n.Body)], "\n")

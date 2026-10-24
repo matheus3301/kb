@@ -56,7 +56,7 @@ func (s *Store) Validate(ctx context.Context, profile string) (api.ValidationRep
 	if profile != "okf" && profile != "health" {
 		return api.ValidationReport{}, fault("INVALID_INPUT", "validation profile must be okf or health")
 	}
-	snap, err := s.Snapshot(ctx)
+	snap, err := s.readSnapshot(ctx)
 	if err != nil {
 		return api.ValidationReport{}, err
 	}

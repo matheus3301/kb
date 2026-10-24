@@ -1,6 +1,7 @@
 package core
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"io"
@@ -29,11 +30,12 @@ var alwaysExcluded = map[string]bool{".kb": true, ".git": true, "node_modules": 
 // Store binds all operations to one initialized local base.
 // Configure SetAsOf before sharing the store with read workers.
 type Store struct {
-	root   string
-	config api.Config
-	mu     sync.Mutex
-	asOf   time.Time
-	cached *api.Snapshot
+	root        string
+	config      api.Config
+	mu          sync.Mutex
+	asOf        time.Time
+	cached      *api.Snapshot
+	searchIndex *lexicalIndex
 }
 
 func (s *Store) Root() string { return s.root }
@@ -339,6 +341,44 @@ func readLimited(r *os.Root, p string, limit int) ([]byte, error) {
 	}
 	return raw, nil
 }
+
+// readInventory reuses a bounded scan buffer so freshness checks do not retain
+// another complete corpus. Complete bytes are kept even for invalid notes.
+func readInventory(r *os.Root, p string, scratch []byte) ([]byte, error) {
+	f, err := r.OpenFile(p, os.O_RDONLY|syscall.O_NOFOLLOW|syscall.O_NONBLOCK, 0)
+	if err != nil {
+		return nil, err
+	}
+	info, statErr := f.Stat()
+	if statErr != nil {
+		_ = f.Close()
+		return nil, statErr
+	}
+	if !info.Mode().IsRegular() {
+		_ = f.Close()
+		return nil, fault("INVALID_PATH", "inventory file must be regular")
+	}
+	if info.Size() > api.MaxPlanBytes {
+		_ = f.Close()
+		return nil, &api.DomainError{Code: "LIMIT_EXCEEDED", Message: "scoped file exceeds safe inventory ceiling", Details: map[string]any{"path": p}}
+	}
+	if info.Size() > int64(len(scratch)-1) {
+		scratch = make([]byte, int(info.Size())+1)
+	}
+	n, readErr := io.ReadFull(f, scratch[:int(info.Size())+1])
+	closeErr := f.Close()
+	if readErr != nil && !errors.Is(readErr, io.EOF) && !errors.Is(readErr, io.ErrUnexpectedEOF) {
+		return nil, readErr
+	}
+	if closeErr != nil {
+		return nil, closeErr
+	}
+	if n > int(info.Size()) {
+		return nil, fault("CONFLICT", "file grew during inventory; retry the read")
+	}
+	return scratch[:n], nil
+}
+
 func globMatch(pattern, p string) bool {
 	if pattern == "**" {
 		return true
@@ -406,6 +446,13 @@ func (s *Store) locked(ctx context.Context, fn func(*os.Root) error) error {
 	return fn(r)
 }
 func (s *Store) Snapshot(ctx context.Context) (api.Snapshot, error) {
+	snap, err := s.readSnapshot(ctx)
+	if err != nil {
+		return api.Snapshot{}, err
+	}
+	return cloneSnapshot(snap), nil
+}
+func (s *Store) readSnapshot(ctx context.Context) (api.Snapshot, error) {
 	var out api.Snapshot
 	err := s.locked(ctx, func(r *os.Root) error { var err error; out, err = s.snapshot(ctx, r); return err })
 	return out, err
@@ -418,12 +465,17 @@ func (s *Store) SnapshotUnlocked(ctx context.Context) (api.Snapshot, error) {
 		return api.Snapshot{}, err
 	}
 	defer func() { _ = r.Close() }()
-	return s.snapshot(ctx, r)
+	snap, err := s.snapshot(ctx, r)
+	if err != nil {
+		return api.Snapshot{}, err
+	}
+	return cloneSnapshot(snap), nil
 }
 func (s *Store) snapshot(ctx context.Context, r *os.Root) (api.Snapshot, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	files := map[string][]byte{}
+	scratch := make([]byte, api.MaxNoteBytes+1)
 	var ds []api.Diagnostic
 	seen := map[string]string{}
 	err := fs.WalkDir(r.FS(), ".", func(p string, entry fs.DirEntry, walkErr error) error {
@@ -466,15 +518,16 @@ func (s *Store) snapshot(ctx context.Context, r *os.Root) (api.Snapshot, error) 
 			ds = append(ds, diagnostic(p, "INVALID_PATH", "special file excluded", "conformance_errors"))
 			return nil
 		}
-		raw, err := readLimited(r, p, api.MaxNoteBytes)
+		raw, err := readInventory(r, p, scratch)
 		if err != nil {
-			var domain *api.DomainError
-			if errors.As(err, &domain) && domain.Code == "LIMIT_EXCEEDED" {
-				ds = append(ds, diagnostic(p, domain.Code, domain.Message, "conformance_errors"))
-				return nil
-			}
 			return err
 		}
+		if s.cached != nil && bytes.Equal(raw, s.cached.Files[p]) {
+			raw = s.cached.Files[p]
+		} else {
+			raw = bytesClone(raw)
+		}
+
 		files[p] = raw
 		return nil
 	})
@@ -483,7 +536,7 @@ func (s *Store) snapshot(ctx context.Context, r *os.Root) (api.Snapshot, error) 
 	}
 	generation := api.Generation(files)
 	if s.cached != nil && s.cached.Generation == generation && reflectDiagnostics(ds, s.cached.Diagnostics) {
-		return cloneSnapshot(*s.cached), nil
+		return s.refreshStale(*s.cached), nil
 	}
 	out := api.Snapshot{Generation: generation, Files: files, Diagnostics: ds, Notes: []api.Note{}, Links: []api.Link{}}
 	paths := make([]string, 0, len(files))
@@ -509,7 +562,7 @@ func (s *Store) snapshot(ctx context.Context, r *os.Root) (api.Snapshot, error) 
 	}
 	out.Degraded = hasErrors(out.Diagnostics)
 	s.cached = &out
-	return cloneSnapshot(out), nil
+	return out, nil
 }
 func reflectDiagnostics(scan, all []api.Diagnostic) bool {
 	var only []api.Diagnostic
@@ -574,7 +627,7 @@ func statusOf(root string, snap api.Snapshot) api.Status {
 		}
 	}
 	excluded := []string{"operational directories", "dependency directories", "agent directories", "out-of-scope files", "non-Markdown source artifacts"}
-	return api.Status{Root: root, Generation: snap.Generation, Notes: len(snap.Notes), Invalid: len(invalid), Degraded: snap.Degraded, IndexStale: true, Diagnostics: snap.Diagnostics, Excluded: excluded}
+	return api.Status{Root: root, Generation: snap.Generation, Notes: len(snap.Notes), Invalid: len(invalid), Degraded: snap.Degraded, IndexStale: true, Diagnostics: append([]api.Diagnostic(nil), snap.Diagnostics...), Excluded: excluded}
 }
 func (s *Store) Status(ctx context.Context) (api.Status, error) {
 	var out api.Status
@@ -598,3 +651,26 @@ func (s *Store) Status(ctx context.Context) (api.Status, error) {
 }
 
 var _ api.Provider = (*Store)(nil)
+
+func (s *Store) refreshStale(snap api.Snapshot) api.Snapshot {
+	var notes []api.Note
+	for i, note := range snap.Notes {
+		stamp, ok := note.Metadata["stale_after"].(string)
+		if !ok {
+			continue
+		}
+		at, err := time.Parse(time.RFC3339Nano, stamp)
+		stale := err == nil && !s.now().Before(at)
+		if stale != note.Stale {
+			if notes == nil {
+				notes = append([]api.Note(nil), snap.Notes...)
+			}
+			notes[i].Stale = stale
+		}
+	}
+	if notes != nil {
+		snap.Notes = notes
+		s.cached = &snap
+	}
+	return snap
+}

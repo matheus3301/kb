@@ -500,3 +500,59 @@ func TestSearchMultilingualTokensRankingFiltersAndCursors(t *testing.T) {
 		t.Fatal("unstable inventory order")
 	}
 }
+
+func TestMarkdownCodeAndBalancedDestinationGraph(t *testing.T) {
+	s := newStore(t, false)
+	put(t, s, "draft(v1).md", noteText("Draft", "# Valid\nEvidence.\n"))
+	put(t, s, "note.md", noteText("Markdown", "`[inline](not-a-link.md)`\n[real](draft(v1).md#valid)\n````markdown\n[hidden](hidden.md)\n```\n# False heading\n[still hidden](still-hidden.md)\n````\n<!-- [comment](comment.md) -->\n# Actual heading\n[angle](<draft(v1).md>)\n[escaped](draft\\(v1\\).md)\n"))
+	links, err := s.Links(context.Background(), "note.md", "out")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(links) != 3 {
+		t.Fatal(links)
+	}
+	for _, link := range links {
+		if !link.Resolved || link.To != "draft(v1).md" {
+			t.Fatal(link)
+		}
+	}
+	if _, err := s.Read(context.Background(), api.ReadRequest{Path: "note.md", Section: "False heading"}); err == nil {
+		t.Fatal("heading inside fence exposed")
+	}
+	if _, err := s.Read(context.Background(), api.ReadRequest{Path: "note.md", Section: "Actual heading"}); err != nil {
+		t.Fatal(err)
+	}
+}
+func TestOversizedNotesAreReportedAndAffectGeneration(t *testing.T) {
+	s := newStore(t, false)
+	put(t, s, "large.md", strings.Repeat("x", api.MaxNoteBytes+1))
+	snap, err := s.Snapshot(context.Background())
+	if err != nil || !snap.Degraded || len(snap.Files["large.md"]) != api.MaxNoteBytes+1 || snap.Generation != api.Generation(snap.Files) {
+		t.Fatal(err, snap.Degraded)
+	}
+	before := snap.Generation
+	put(t, s, "large.md", strings.Repeat("y", api.MaxNoteBytes+1))
+	snap, err = s.Snapshot(context.Background())
+	if err != nil || snap.Generation == before {
+		t.Fatal(err, "oversized revision unchanged")
+	}
+}
+func TestPublicReadAndSearchMetadataRemainIsolated(t *testing.T) {
+	s := newStore(t, false)
+	put(t, s, "note.md", noteText("Original", "body"))
+	read, err := s.Read(context.Background(), api.ReadRequest{Path: "note.md"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	read.Note.Metadata["type"] = "Mutated"
+	hits, err := s.Search(context.Background(), api.SearchRequest{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	hits.Hits[0].Metadata["type"] = "Mutated again"
+	snap, err := s.Snapshot(context.Background())
+	if err != nil || snap.Notes[0].Metadata["type"] != "Reference" {
+		t.Fatal(err, snap.Notes[0])
+	}
+}

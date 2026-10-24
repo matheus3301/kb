@@ -17,7 +17,7 @@ func (s *Store) Read(ctx context.Context, request api.ReadRequest) (api.ReadResu
 	if request.Section != "" && (request.LineStart != 0 || request.LineEnd != 0) {
 		return api.ReadResult{}, fault("INVALID_INPUT", "section and line range are mutually exclusive")
 	}
-	snap, err := s.Snapshot(ctx)
+	snap, err := s.readSnapshot(ctx)
 	if err != nil {
 		return api.ReadResult{}, err
 	}
@@ -88,6 +88,8 @@ func (s *Store) Read(ctx context.Context, request api.ReadRequest) (api.ReadResu
 	}
 	n.Body = ""
 	n.Raw = nil
+	n.Metadata = cloneMap(n.Metadata)
+	n.Tags = append([]string(nil), n.Tags...)
 	out := api.ReadResult{Note: n, Markdown: selected, LineStart: start, LineEnd: end, Diagnostics: ds}
 	if request.IncludeLinks {
 		out.Links = neighborhood(snap.Links, request.Path, "both")
@@ -151,7 +153,7 @@ func (s *Store) Context(ctx context.Context, request api.ContextRequest) (api.Co
 			return api.ContextResult{}, err
 		}
 	}
-	snap, err := s.Snapshot(ctx)
+	snap, err := s.readSnapshot(ctx)
 	if err != nil {
 		return api.ContextResult{}, err
 	}
