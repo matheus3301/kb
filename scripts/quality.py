@@ -48,12 +48,30 @@ def local_link_findings(root, path):
     # fetched: repository validation must not depend on third-party availability.
     body = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
     findings = []
-    for target in re.findall(r"\]\(([^)\s]+)\)", body):
+    targets = re.findall(r"\]\(([^)\s]+)\)", body)
+    targets += re.findall(r"^\s*\[[^\]]+\]:\s*<?([^\s>]+)>?", body, re.M)
+    targets += re.findall(r"^\s*resource:\s*(\S+)", body, re.M)
+    for target in targets:
         if re.match(r"[a-zA-Z][a-zA-Z0-9+.-]*:", target) or target.startswith("#"):
             continue
         resolved = (path.parent / unquote(target.split("#")[0])).resolve()
         if not resolved.is_relative_to(root.resolve()) or not resolved.exists():
             findings.append(f"{path.relative_to(root)}: missing/outside link {target}")
+    return findings
+
+
+def public_content_findings(path, content):
+    findings = []
+    workstation = r"/(?:Users|home)/[\w.-]+|[A-Za-z]:\\+Users\\+[\w.-]+"
+    if re.search(workstation, content):
+        findings.append(f"{path}: personal workstation path in public content")
+    if re.search(r"(?:file|vscode|codex)://", content):
+        findings.append(f"{path}: local-only URI in public content")
+    if path.suffix == ".md":
+        prose = re.sub(r"```.*?```", "", content, flags=re.S)
+        portuguese = r"\b(?:n[aã]o|especifica[çc][aã]o|reposit[oó]rio|aprendizado|pr[oó]ximos|vis[aã]o|proposta|conhecimento)\b"
+        if re.search(portuguese, prose, re.I):
+            findings.append(f"{path}: repository Markdown must be English")
     return findings
 
 
@@ -94,6 +112,8 @@ def require_clean(findings):
 def repository():
     findings = []
     for path in tracked_content(ROOT):
+        if path.suffix in {".md", ".json", ".yaml", ".yml", ".go", ".py", ".toml"}:
+            findings.extend(public_content_findings(path.relative_to(ROOT), path.read_text()))
         if path.suffix == ".md":
             findings.extend(local_link_findings(ROOT, path))
     workflows = ROOT / ".github/workflows"
