@@ -1,0 +1,182 @@
+{
+  "kind": "controlled_real_agent_consumer_observation",
+  "date": "2026-10-24",
+  "synthetic_only": true,
+  "criterion_scope": [
+    "A21 coordinated ingestion and conflict behavior",
+    "A25 provenance and repeated-query purity",
+    "A26 explicitly activated external-base consumer workflow"
+  ],
+  "layout": {
+    "workdir": "<workdir>",
+    "knowledge_root": "<external-knowledge>",
+    "root_external_to_workdir": true,
+    "source_snapshot": "new-source.md (outside knowledge root)",
+    "knowledge_root_has_agents_md": false
+  },
+  "skill_install": {
+    "command": "DISABLE_TELEMETRY=1 npx skills add <product-checkout> --skill knowledge-memory --agent codex -y",
+    "skills_cli_version": "1.7.4",
+    "exit_code": 0,
+    "skills_found": 1,
+    "skills_installed": 1,
+    "scope": "local project",
+    "installed_path": ".agents/skills/knowledge-memory/SKILL.md",
+    "installed_skill_sha256": "6606ae4734fd2b6582a16637b88905df4057a17c413440b64a8ebe1f0ce23634",
+    "loading": "Explicitly read installed SKILL.md and fixture AGENTS.md in this already-running consumer session.",
+    "global_agent_settings_changed": false
+  },
+  "commands": [
+    "kb --root <external-knowledge> status --json",
+    "kb --root <external-knowledge> context \"example service retention\" --max-tokens 2000 --json",
+    "kb --root <external-knowledge> search retention --json",
+    "kb --root <external-knowledge> context retention --max-tokens 2000 --json",
+    "kb --root <external-knowledge> read 03_Resources/retention.md --json",
+    "kb --root <external-knowledge> read 03_Resources/service-decision.md --json",
+    "Read explicitly supplied new-source.md through ordinary file tools.",
+    "kb --root <external-knowledge> apply --input ingestion-plan.json --dry-run --json",
+    "kb --root <external-knowledge> apply --input conflict-plan.json --json",
+    "kb --root <external-knowledge> apply --input ingestion-plan.json --json",
+    "Repeat identical apply with the same idempotency key.",
+    "Repeat status/search/context/direct reads, including 03_Resources/retention-source.md, without writing.",
+    "kb --root <external-knowledge> validate --profile okf --json",
+    "kb --root <external-knowledge> validate --profile health --json"
+  ],
+  "question": "What retention interval is recorded for the example service?",
+  "initial_answer": {
+    "seconds": 300,
+    "answered_before_reading_new_source": true,
+    "source_paths": [
+      "03_Resources/retention.md",
+      "03_Resources/service-decision.md"
+    ],
+    "line": 10,
+    "revisions": {
+      "03_Resources/retention.md": "sha256:375cdf2fd964de21b65d93bd99cdf7b55e82e55a60fb6a34f91b3b0086caf714",
+      "03_Resources/service-decision.md": "sha256:49cf41a5501045742a5477488e194eb6c2154a0d2b9af8efbf0b37c81a93ba74"
+    },
+    "consultation_modified_markdown": false
+  },
+  "ingestion": {
+    "plan": "ingestion-plan.json",
+    "actor": "codex/gpt-6",
+    "idempotency_key": "consumer-retention-revision-2",
+    "operation_count": 3,
+    "dry_run_exit": 0,
+    "dry_run_modified_markdown": false,
+    "conflict_exit": 4,
+    "conflict_code": "REVISION_CONFLICT",
+    "conflict_modified_markdown": false,
+    "apply_exit": 0,
+    "before_concept_count": 2,
+    "after_concept_count": 3,
+    "created_source": "03_Resources/retention-source.md",
+    "updated_concepts": [
+      "03_Resources/retention.md",
+      "03_Resources/service-decision.md"
+    ],
+    "revision_changes": {
+      "03_Resources/index.md": {
+        "kind": "patch",
+        "before_revision": "sha256:751fded913acb1520321a80321c5216b9705e3a22fc146738f1cc58fc72c42d1",
+        "after_revision": "sha256:5b3e7698c2c0980b7bf0c5665b20766f95df33b2300aa94e3dfe81fe38e6acdd"
+      },
+      "03_Resources/retention-source.md": {
+        "kind": "create",
+        "after_revision": "sha256:69ce500902ba1f6be1545deea6b71582d2263be256248cec80e3a3bc3c563727"
+      },
+      "03_Resources/retention.md": {
+        "kind": "patch",
+        "before_revision": "sha256:375cdf2fd964de21b65d93bd99cdf7b55e82e55a60fb6a34f91b3b0086caf714",
+        "after_revision": "sha256:885a82712759b2f400a42c013d4e225eb35af990e39558f8edc07af0e8e126dc"
+      },
+      "03_Resources/service-decision.md": {
+        "kind": "patch",
+        "before_revision": "sha256:49cf41a5501045742a5477488e194eb6c2154a0d2b9af8efbf0b37c81a93ba74",
+        "after_revision": "sha256:c183c68e7b39c37ba05315e7a7234cfb20d3f5e9ce3073876c3d5238bca4a1b6"
+      },
+      "log.md": {
+        "kind": "patch",
+        "before_revision": "sha256:0f6b58d1e3a6e1a275436664e9ae621b6ec9828b9d2652b5696749451937781a",
+        "after_revision": "sha256:4838aef61d9b20007b448a6cb4daee7fd5e75f19cdf598b219107b447d733395"
+      }
+    },
+    "provenance": "Both updated concepts have sources pointing to retention-source.md; that Source records the snapshot name, SHA-256, and synthetic revision URN.",
+    "human_verification_fabricated": false,
+    "all_three_notes_trust": "unverified",
+    "new_log_events": 1
+  },
+  "idempotency": {
+    "repeat_exit": 0,
+    "replayed": true,
+    "markdown_hashes_unchanged": true,
+    "duplicate_note_or_log_event": false
+  },
+  "repeated_question": {
+    "answer_seconds": 600,
+    "source_paths": [
+      "03_Resources/retention.md",
+      "03_Resources/service-decision.md",
+      "03_Resources/retention-source.md"
+    ],
+    "concept_claim_line": 13,
+    "all_markdown_hashes_unchanged": true,
+    "new_note_count": 0,
+    "new_log_events": 0,
+    "total_log_events_after": 3
+  },
+  "original_source": {
+    "name": "new-source.md",
+    "before_sha256": "681e66fa478c73bf5d73ebfd5a2acd71b3738c19d2af2a9fa4ff23427ccda08e",
+    "after_sha256": "681e66fa478c73bf5d73ebfd5a2acd71b3738c19d2af2a9fa4ff23427ccda08e",
+    "unchanged": true
+  },
+  "validation": {
+    "okf": {
+      "profile": "okf",
+      "conformant": true,
+      "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+      "diagnostics": null
+    },
+    "health": {
+      "profile": "health",
+      "conformant": true,
+      "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+      "diagnostics": null
+    }
+  },
+  "artifacts": [
+    "initial-status.json",
+    "initial-search.json",
+    "initial-context-retention.json",
+    "initial-read-retention.json",
+    "initial-read-service-decision.json",
+    "ingestion-plan.json",
+    "ingestion-dry-run.json",
+    "conflict-plan.json",
+    "ingestion-conflict.json",
+    "ingestion-apply.json",
+    "ingestion-replay.json",
+    "repeat-context.json",
+    "repeat-read-retention.json",
+    "repeat-read-decision.json",
+    "repeat-read-source.json",
+    "before-query.json",
+    "before-ingestion.json",
+    "after-consumer.json",
+    "source-before.json",
+    "final-okf-validation.json",
+    "final-health-validation.json"
+  ],
+  "limitations": [
+    "One controlled CLI consumer session with explicit skill loading and a supplied binary; this does not establish universal automatic activation by agents or models.",
+    "MCP was not exercised in this consumer run.",
+    "The broader lexical query \"example service retention\" returned no hits; the focused query \"retention\" found the recorded evidence.",
+    "Observed final validation reports are structurally conformant; they do not independently establish semantic truth or performance.",
+    "No product acceptance status was changed by this consumer test.",
+    "The installer-generated skills-lock.json retains local installation-source information and is excluded from the sanitized public evidence artifact list."
+  ],
+  "redactions": [
+    "Absolute temporary locations replaced with descriptive placeholders."
+  ]
+}

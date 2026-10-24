@@ -1,0 +1,89 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "hits": [
+      {
+        "id": "03_Resources/retention",
+        "path": "03_Resources/retention.md",
+        "title": "Synthetic retention policy",
+        "type": "Reference",
+        "para": "resources",
+        "revision": "sha256:375cdf2fd964de21b65d93bd99cdf7b55e82e55a60fb6a34f91b3b0086caf714",
+        "metadata": {
+          "generated": {
+            "at": "2026-10-24T22:19:45.00073Z",
+            "by": "process:consumer-fixture"
+          },
+          "title": "Synthetic retention policy",
+          "type": "Reference"
+        },
+        "trust": "unverified",
+        "stale": false,
+        "basis_outdated": false,
+        "score": 0.36539806827442667,
+        "snippets": [
+          {
+            "heading": "Synthetic retention",
+            "line_start": 8,
+            "line_end": 8,
+            "text": "# Synthetic retention"
+          },
+          {
+            "heading": "Synthetic retention",
+            "line_start": 10,
+            "line_end": 10,
+            "text": "The recorded retention interval is 300 seconds."
+          }
+        ],
+        "parse_status": "valid",
+        "okf": true
+      },
+      {
+        "id": "03_Resources/service-decision",
+        "path": "03_Resources/service-decision.md",
+        "title": "Synthetic service decision",
+        "type": "Decision",
+        "para": "resources",
+        "revision": "sha256:49cf41a5501045742a5477488e194eb6c2154a0d2b9af8efbf0b37c81a93ba74",
+        "metadata": {
+          "generated": {
+            "at": "2026-10-24T22:19:45.078391Z",
+            "by": "process:consumer-fixture"
+          },
+          "title": "Synthetic service decision",
+          "type": "Decision"
+        },
+        "trust": "unverified",
+        "stale": false,
+        "basis_outdated": false,
+        "score": 0.24857361545992687,
+        "snippets": [
+          {
+            "heading": "Synthetic retention",
+            "line_start": 8,
+            "line_end": 8,
+            "text": "# Synthetic retention"
+          },
+          {
+            "heading": "Synthetic retention",
+            "line_start": 10,
+            "line_end": 10,
+            "text": "The recorded retention interval is 300 seconds."
+          }
+        ],
+        "parse_status": "valid",
+        "okf": true
+      }
+    ],
+    "generation": "sha256:73d3135d725e253d83fa81cc8a86a1e42e084ed43b31d2c77804458898b476a8",
+    "warnings": null,
+    "total": 2
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:73d3135d725e253d83fa81cc8a86a1e42e084ed43b31d2c77804458898b476a8",
+    "index_stale": true
+  }
+}

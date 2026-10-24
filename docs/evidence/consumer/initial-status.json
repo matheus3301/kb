@@ -1,0 +1,26 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:73d3135d725e253d83fa81cc8a86a1e42e084ed43b31d2c77804458898b476a8",
+    "notes": 2,
+    "invalid": 0,
+    "degraded": false,
+    "index_stale": true,
+    "diagnostics": null,
+    "excluded": [
+      "operational directories",
+      "dependency directories",
+      "agent directories",
+      "out-of-scope files",
+      "non-Markdown source artifacts"
+    ]
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:73d3135d725e253d83fa81cc8a86a1e42e084ed43b31d2c77804458898b476a8",
+    "index_stale": true
+  }
+}

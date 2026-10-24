@@ -1,0 +1,34 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "note": {
+      "id": "03_Resources/service-decision",
+      "path": "03_Resources/service-decision.md",
+      "title": "Synthetic service decision",
+      "type": "Decision",
+      "para": "resources",
+      "revision": "sha256:49cf41a5501045742a5477488e194eb6c2154a0d2b9af8efbf0b37c81a93ba74",
+      "metadata": {
+        "generated": {
+          "at": "2026-10-24T22:19:45.078391Z",
+          "by": "process:consumer-fixture"
+        },
+        "title": "Synthetic service decision",
+        "type": "Decision"
+      },
+      "trust": "unverified",
+      "stale": false,
+      "basis_outdated": false
+    },
+    "markdown": "---\ngenerated:\n  at: \"2026-10-24T22:19:45.078391Z\"\n  by: process:consumer-fixture\ntitle: Synthetic service decision\ntype: Decision\n---\n# Synthetic retention\n\nThe recorded retention interval is 300 seconds.\n",
+    "line_start": 1,
+    "line_end": 10
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:73d3135d725e253d83fa81cc8a86a1e42e084ed43b31d2c77804458898b476a8",
+    "index_stale": true
+  }
+}
