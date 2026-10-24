@@ -34,6 +34,13 @@ coverage. The first Go file activates the Go checks automatically and requires
 actual tests. Fuzz targets are required when parser/path handling lands, rather
 than inventing one for an empty program.
 
+The infrastructure itself is tested with temporary synthetic Go packages:
+reject missing named tests and low coverage, and execute a passing race/coverage
+suite, cross-builds and a fuzz target. These packages are not application code
+and do not satisfy any product acceptance criterion. Running the repository
+tests without a Go toolchain skips these integration cases; CI installs Go and
+executes them.
+
 The acceptance inventory starts with every criterion `planned`. A criterion can
 be marked `verified` only with existing test paths and evidence paths. This is a
 traceability check: CI cannot determine whether the evidence proves the claim.

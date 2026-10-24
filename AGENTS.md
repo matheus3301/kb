@@ -19,6 +19,10 @@ the product source; it is not the user's knowledge base.
 ## Correctness and evidence
 
 - Confirm current dependency documentation with Context7 before using APIs.
+  Resolve with `npx ctx7@latest library <name> "<specific question>"`, then
+  `npx ctx7@latest docs <library-id> "<specific question>"`. Resolve first unless
+  an exact ID was provided; use at most three commands per question. Report a
+  quota/authentication failure rather than silently treating memory as current docs.
 - Test observable behavior and failures, not a duplicate of the implementation.
 - Every bug fix needs a regression test when the failure can be reproduced.
 - Update acceptance evidence only after the referenced test actually passes.
