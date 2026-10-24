@@ -1,0 +1,40 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "note": {
+      "id": "03_Resources/service-decision",
+      "path": "03_Resources/service-decision.md",
+      "title": "Synthetic service decision",
+      "type": "Decision",
+      "para": "resources",
+      "revision": "sha256:c183c68e7b39c37ba05315e7a7234cfb20d3f5e9ce3073876c3d5238bca4a1b6",
+      "metadata": {
+        "generated": {
+          "at": "2026-10-24T22:21:37.41751Z",
+          "by": "codex/gpt-6"
+        },
+        "sources": [
+          {
+            "resource": "retention-source.md",
+            "title": "Synthetic retention policy revision"
+          }
+        ],
+        "title": "Synthetic service decision",
+        "type": "Decision"
+      },
+      "trust": "unverified",
+      "stale": false,
+      "basis_outdated": false
+    },
+    "markdown": "---\ngenerated:\n  at: \"2026-10-24T22:21:37.41751Z\"\n  by: codex/gpt-6\ntitle: Synthetic service decision\ntype: Decision\nsources:\n  - resource: retention-source.md\n    title: Synthetic retention policy revision\n---\n# Synthetic retention\n\nThe recorded retention interval is 600 seconds, according to the [synthetic policy revision](retention-source.md).\n",
+    "line_start": 1,
+    "line_end": 13
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+    "index_stale": true
+  }
+}

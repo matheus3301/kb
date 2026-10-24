@@ -1,9 +1,11 @@
 ---
 type: Specification
 title: Local CLI and MCP for OKF knowledge bases and PARA memory
-description: Version 0.3 contract for OKF memory with persistent syntheses, maintenance, and CLI/MCP interfaces.
+description: Normative specification v0.3 with implemented experimental v0.1.0 clarifications for OKF memory, maintenance, and CLI/MCP interfaces.
 tags: [okf, para, cli, mcp, memory, specification]
-status: draft
+status: stable
+implementation_version: "0.1.0"
+implementation_status: experimental
 spec_version: "0.3"
 sources:
   - id: evaluation
@@ -25,12 +27,17 @@ generated:
 
 # Local CLI and MCP for OKF knowledge bases and PARA memory
 
-Version 0.3 proposal, informed by tests of five tools and analysis of the LLM
-Wiki pattern on 2026-10-24. `kb` is the chosen project name; the repository is
-https://github.com/matheus3301/kb. The commands below describe pre-release contracts, not implemented commands.
-The authoritative v0.1 clarification is `docs/interfaces.md` in this repository,
-with shared DTOs in `internal/api/types.go`; it settles ambiguities in v0.3.
-Those contract files are maintained by the implementation integration owner.
+Specification v0.3, with implemented v0.1.0 clarifications. The initial design
+was informed by five tool evaluations and the LLM Wiki pattern on 2026-10-24.
+The project repository is https://github.com/matheus3301/kb.
+
+**v0.1.0 is an experimental first release.** The commands in this document are
+implemented. The [v0.1 interface contract](interfaces.md), shared DTOs in
+`internal/api/types.go`, and [implementation decision](decisions/0002-v0.1.md)
+clarify the wire format and current choices. Normative requirements and all 26
+acceptance criteria below remain the product contract; they are not universal
+safety guarantees. [Validation evidence](evidence/validation.json) records tested
+behavior, and [performance measurements](performance.md) disclose unmet targets.
 
 ## 1. Problem and expected outcome
 
@@ -134,7 +141,7 @@ what it examined and excluded.
 ### Agent integration and skill distribution
 
 The product distributes its skill at `skills/knowledge-memory/SKILL.md` in the
-code repository. `knowledge-memory` is a provisional name. It teaches consulting
+code repository as `knowledge-memory`. It teaches consulting
 before answering, searching before creating, preserving provenance, reviewing
 affected concepts, and applying changes with expected revisions. It contains no
 fixed personal paths; its root comes from explicit integration configuration.
@@ -154,8 +161,8 @@ search results do not gain authority over session instructions.
 The current [Skills CLI documentation](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)
 uses `npx skills add matheus3301/kb --skill knowledge-memory`; installation is
 scoped to the project by default. Its [documented layout](https://github.com/vercel-labs/skills/blob/main/docs/creating-skills.md)
-recognizes `skills/<name>/SKILL.md`. This is the planned distribution command;
-it becomes usable only when that skill is published in the repository.
+recognizes `skills/<name>/SKILL.md`. The skill is included in this repository;
+installation still does not activate it automatically for every agent.
 
 Documented setup separates installing the binary, installing the skill,
 configuring the root, registering MCP if desired, and adding instructions to
@@ -164,7 +171,9 @@ not to run the CLI/MCP. The CLI can also be used without MCP. `kb init` remains
 limited to the base. Integration setup is a separate, explicit action: preserve
 existing instructions, show changes, and never implicitly register agents or
 edit global configuration. Do not implement a custom skill installer in the
-core. The exact integration setup command remains to be defined.
+core. In v0.1, the [quickstart](quickstart.md) documents explicit binary and
+skill installation, root selection, MCP configuration, and workdir instructions;
+there is no combined automatic integration installer.
 
 ### Human organization and concept hierarchy
 
@@ -235,8 +244,9 @@ only the root index may declare `okf_version`. Validate the specific index and
 log structures without requiring `type`. Log dates use `YYYY-MM-DD`.
 
 Preserve the bytes of unchanged notes. Targeted body edits must leave
-frontmatter, comments, field ordering, and line-ending style intact, except
-when substantive changes require removing active `verified`. Metadata
+untouched frontmatter spans, comments, field ordering, and line-ending style
+intact. Meaningful edits refresh `generated` metadata and substantive changes
+remove active `verified`. Metadata
 changes require a parser retaining presentation information or a patch
 implementation preserving untouched fields. Whole-document serialization that
 loses comments must not be the default. Duplicate YAML keys, excessive aliases,
@@ -366,7 +376,7 @@ Read commands offer `--json`. In JSON mode stdout contains exactly one JSON
 document without progress messages, ANSI, or logs; stderr is for operational
 diagnostics. MCP stdio stdout contains only protocol messages.
 
-| Proposed command | Purpose |
+| Command | Purpose |
 | --- | --- |
 | `kb status` | Scope, integrity, counts, ignored files, and index freshness. |
 | `kb list --para resources --limit 20` | Paginated navigation without dumping bodies. |
@@ -388,8 +398,8 @@ diagnostics. MCP stdio stdout contains only protocol messages.
 
 `create`, `patch`, `move`, `archive`, `apply`, and `maintain` accept `--dry-run`.
 The input file may be `-` for stdin. Do not interpolate Markdown content into
-shell commands. Export may be delivered in the last MVP increment, after basic
-operation integrity.
+shell commands. Export is implemented in v0.1 with a validated snapshot and
+inclusion/exclusion manifest.
 
 CLI envelope, shared by the core:
 
@@ -412,7 +422,8 @@ validation, `2` usage/configuration, `3` not found, `4` revision conflict,
 
 ## 7. Search and reading
 
-MVP: lexical index by note and section with BM25 or a documented equivalent.
+v0.1 uses a local weighted lexical index with BM25 scoring by note and
+section-aware excerpts, cached in-process with on-disk freshness checks.
 Title, path, description, and tags have greater weight than body text.
 Portuguese search must accept both `memoria` and `memória`, preserving original
 text in results. Do not call embeddings or an LLM. Test tokenization of
@@ -630,6 +641,15 @@ Initial values: notes up to 1 MiB; reads up to 256 KiB per response; queries up
 to 4,096 characters; 10 hits by default, maximum 100; context of 2,000 estimated
 tokens by default, maximum 16,000 and a 256 KiB ceiling; limits also apply to
 YAML depth and patch operation count. Configurable limits have documented ceilings.
+These are application policies, not additional OKF format requirements. Scoped
+source files over 4 MiB abort inventory explicitly; notes over 1 MiB are invalid.
+Non-string YAML mapping keys produce policy findings for the JSON interface.
+Explicit repair remains subject to operational size limits, including limits
+on the existing file; it is not an unrestricted large-file repair facility.
+
+Configuration is loaded when a process opens the base. CLI invocations reopen
+it; restart a long-lived MCP process after editing `.kb/config.toml` to apply
+changes to scope, search, and write permissions.
 
 No telemetry or network access by default. Errors do not include the entire
 environment, credentials, or out-of-scope files. Cache is local, written with
@@ -646,20 +666,18 @@ references, as recorded in the foundation decision. Rust was a suitable design
 alternative, but v0.1 uses Go. The experiments did not compare custom Rust and
 Go implementations and do not prove either superior.
 
-Choose libraries and versions in the prototype against current documentation.
-Use the official MCP SDK. The lexical index may use SQLite FTS5 or a local BM25
-library; it is cache and must pass the same query suite. If SQLite requires
-CGO or platform dependencies, evaluate the actual cost before committing to it.
-Do not embed models weighing tens of megabytes in the base binary.
+The runtime uses Cobra 1.10.2, the official MCP Go SDK 1.8.0,
+BurntSushi/toml 1.6.0, go.yaml.in/yaml/v3 3.0.5, and x/text 0.43.0. Versions
+are pinned in [go.mod](https://github.com/matheus3301/kb/blob/main/go.mod).
+Composition uses explicit constructors and standard library diagnostics; Fx is not a dependency. Search is implemented in
+the core without SQLite, CGO, embeddings, or a model runtime. The
+[implementation decision](decisions/0002-v0.1.md) records tradeoffs and consequences.
 
-For Go implementation, the [spf13 research summary](research.md) records Cobra
-as the preferred CLI adapter candidate, with pflag through its ecosystem.
-Viper, Afero, Fileflow, and Pathologize have conditional uses and limits against
-this contract. Recommendations inform the prototype; they do not fix dependencies
-or replace revision, durability, confinement, and content-preservation requirements.
-The go-skills and cli-style guides mentioned in the evaluation are development
-and review references, subject to explicit project choices rather than normative
-or required dependencies.
+Future dependency changes must be evaluated against current documentation and
+the same revision, durability, confinement, and content-preservation contract.
+The [research summary](research.md) records earlier candidates, not additional
+runtime dependencies. Do not embed models weighing tens of megabytes in the
+base binary.
 
 ## 14. Acceptance criteria and delivery plan
 
@@ -692,43 +710,46 @@ or required dependencies.
 | A25 | An agent-persisted comparison retains provenance; repeating a query without learning creates no note or event. |
 | A26 | CLI/MCP operate normally without AGENTS.md inside the base. In the target agent, workdir instructions and the installed skill lead to external-base consultation before answering; reusable learning is updated and a query without new information does not write. Record observed evidence without promising universal model adherence. |
 
-Increments: (1) parser/scope/validate/read; (2) index/search/context and reference
-queries; (3) create/patch/apply/transactions/log/index; (4) move/archive, links,
+The original delivery increments were: (1) parser/scope/validate/read;
+(2) index/search/context and reference queries; (3) create/patch/apply/transactions/log/index; (4) move/archive, links,
 and health; (5) MCP, ingestion/synthesis/review workflows, export, and
-distribution. Validate each increment before starting the next. Workflows are
+distribution. These capabilities are implemented in experimental v0.1;
+subsequent changes still require behavior evidence. Workflows are
 instructions for an external agent, with no LLM calls added to the core.
 
 Measure on macOS arm64 and Linux amd64/arm64: binary size, RSS, cold start,
 reindexing, and search p50/p95, declaring hardware and corpus. Initial targets
 for 10,000 synthetic notes of 2 KiB each: warm search p95 ≤ 150 ms and RSS ≤
-150 MiB; full reindex ≤ 10 s. These are targets to validate, not measured results.
+150 MiB; full reindex ≤ 10 s. These remain targets, not requirements implied by
+OKF. The [recorded local benchmark](performance.md) on Apple M4/macOS arm64,
+Go 1.27.3, 10,000 synthetic 2 KiB notes, and 20 warm samples measured 594.4 ms
+cold core search, 162.9 ms warm search p95, and 180.3 MiB peak process RSS.
+The warm-search and RSS targets were not met. This is not fresh CLI startup or
+MCP transport latency; reindexing has not been independently benchmarked here.
 
-Pending implementation decision: search library. The v0.1 contract retains
-idempotency receipts without expiry. The interface and tests above allow evaluating these choices
-without rewriting the agent contract.
+### Implementation review — 2026-10-24
 
-### Readiness review — 2026-10-24
+The v0.1 implementation includes the CLI, official SDK MCP stdio adapter, native
+OKF parser and validation, local lexical search, context, revision-checked
+writes, journal/recovery, maintenance, export, and installable skill. Versioned
+`kb.v1` DTOs and the [interface contract](interfaces.md) settle operation shapes.
+Explicit-path writes and unique IDs for multi-operation plans remain required.
 
-Version 0.3 supplies product direction and the technical prototype requirements.
-The v0.1 implementation clarification in `docs/interfaces.md` closes the earlier
-contract gaps; shared DTOs live in `internal/api/types.go`. These files are
-integrated separately from this documentation preparation. In particular:
+The journal uses prepared/committed states and a durable commit marker. Recovery
+rolls back before commit and rolls forward afterward; receipts do not expire.
+Reads return `RECOVERY_REQUIRED` without changing notes; recovery is explicit
+or precedes a new mutation. `apply --repair` permits an invalid pre-state but
+requires a conformant final state within operational limits. First init selects
+an explicit root, `KB_ROOT`, or the current directory. Workdir integration
+remains explicit, with no required AGENTS.md inside the knowledge bundle.
 
-1. Versioned `kb.v1` DTOs define input/output operations and errors. Writes use
-   explicit paths, create/patch/move kinds, and unique multi-operation IDs.
-2. The journal has prepared/committed states, a durable commit marker, rollback
-   before commit and roll-forward afterward, and receipts retained without
-   expiry. Reads encountering pending recovery return `RECOVERY_REQUIRED`
-   without note mutation; recovery is explicit or precedes a new mutation.
-3. `apply --repair` allows an invalid pre-state with explicit document replacement
-   and requires a conformant final state. First init uses an explicit root,
-   `KB_ROOT`, or the current directory. Workdir integration remains an explicit
-   setup action; AGENTS.md inside the bundle remains optional.
-4. Go is the adopted implementation language. Parser preservation, lexical search,
-   and official MCP SDK behavior still require prototype tests and recorded
-   versions/limitations. A contract decision does not establish implementation.
-
-The final name does not block the prototype. Performance targets remain
-unmeasured. See the [project overview](project-overview.md) for product,
-architecture, and delivery sequence. This review does not claim application
-implementation, passing acceptance evidence, or measured performance.
+[Recorded full validation](evidence/validation.json),
+[CLI workflow evidence](evidence/cli-workflow.json), and the
+[controlled consumer observation](evidence/consumer/consumer-evidence.json)
+provide observed results. The consumer explicitly loaded the installed skill;
+automatic activation across agents is not established. The
+[acceptance inventory](acceptance.json) retains the authoritative criterion
+labels and evidence references. Coverage and successful tests do not establish
+absence of bugs, absolute isolation from external editors, or semantic truth.
+Performance limitations above remain open. See the [project overview](project-overview.md)
+for the product and architecture.

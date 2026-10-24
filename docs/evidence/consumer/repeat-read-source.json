@@ -1,0 +1,37 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "note": {
+      "id": "03_Resources/retention-source",
+      "path": "03_Resources/retention-source.md",
+      "title": "Synthetic retention policy revision",
+      "type": "Source",
+      "para": "resources",
+      "revision": "sha256:69ce500902ba1f6be1545deea6b71582d2263be256248cec80e3a3bc3c563727",
+      "metadata": {
+        "generated": {
+          "at": "2026-10-24T22:21:37.417377Z",
+          "by": "codex/gpt-6"
+        },
+        "resource": "urn:kb:synthetic:retention-policy:revision-2",
+        "snapshot_digest": "sha256:681e66fa478c73bf5d73ebfd5a2acd71b3738c19d2af2a9fa4ff23427ccda08e",
+        "snapshot_name": "new-source.md",
+        "title": "Synthetic retention policy revision",
+        "type": "Source"
+      },
+      "trust": "unverified",
+      "stale": false,
+      "basis_outdated": false
+    },
+    "markdown": "---\ngenerated:\n  at: \"2026-10-24T22:21:37.417377Z\"\n  by: codex/gpt-6\nresource: urn:kb:synthetic:retention-policy:revision-2\nsnapshot_digest: sha256:681e66fa478c73bf5d73ebfd5a2acd71b3738c19d2af2a9fa4ff23427ccda08e\nsnapshot_name: new-source.md\ntitle: Synthetic retention policy revision\ntype: Source\n---\n# Synthetic retention policy revision\n\nThe supplied immutable snapshot `new-source.md` states that the retention interval for the example service is 600 seconds. This is controlled test evidence.\n\nSnapshot SHA-256: `681e66fa478c73bf5d73ebfd5a2acd71b3738c19d2af2a9fa4ff23427ccda08e`.\n",
+    "line_start": 1,
+    "line_end": 15
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+    "index_stale": true
+  }
+}

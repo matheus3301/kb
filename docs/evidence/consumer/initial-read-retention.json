@@ -1,0 +1,34 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "note": {
+      "id": "03_Resources/retention",
+      "path": "03_Resources/retention.md",
+      "title": "Synthetic retention policy",
+      "type": "Reference",
+      "para": "resources",
+      "revision": "sha256:375cdf2fd964de21b65d93bd99cdf7b55e82e55a60fb6a34f91b3b0086caf714",
+      "metadata": {
+        "generated": {
+          "at": "2026-10-24T22:19:45.00073Z",
+          "by": "process:consumer-fixture"
+        },
+        "title": "Synthetic retention policy",
+        "type": "Reference"
+      },
+      "trust": "unverified",
+      "stale": false,
+      "basis_outdated": false
+    },
+    "markdown": "---\ngenerated:\n  at: \"2026-10-24T22:19:45.00073Z\"\n  by: process:consumer-fixture\ntitle: Synthetic retention policy\ntype: Reference\n---\n# Synthetic retention\n\nThe recorded retention interval is 300 seconds.\n",
+    "line_start": 1,
+    "line_end": 10
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:73d3135d725e253d83fa81cc8a86a1e42e084ed43b31d2c77804458898b476a8",
+    "index_stale": true
+  }
+}

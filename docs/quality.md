@@ -15,35 +15,50 @@ silently bypass this workflow.
 | Go hygiene | gofmt, go vet, go mod tidy -diff, go mod verify, golangci-lint. |
 | Analysis | staticcheck, gosec, errcheck, resource and error checks; specific explained lint suppressions. |
 | Tests | Real named tests; race detector; shuffled order; fresh execution; five-minute timeout. |
-| Coverage | At least 80% of statements over all application packages once Go source exists. No exclusions. |
+| Coverage | At least 80% of statements over all application packages. No exclusions. |
 | Portability | Linux amd64/arm64 and macOS amd64/arm64 cross-builds, with CGO disabled. |
 | Fuzz | Every discovered Go fuzz target runs for a bounded smoke period; seed corpus also runs in ordinary tests. |
 | Secrets | Gitleaks scans Git history with redacted findings. |
-| Vulnerabilities | govulncheck once Go source exists; dependency review blocks newly introduced high/critical known vulnerabilities. |
+| Vulnerabilities | govulncheck; dependency review blocks newly introduced high/critical known vulnerabilities. |
 
 Tool versions are pinned. Dependabot proposes Action and Go module updates;
 updates to development tools are separate explicit changes. No automatic merge
 or release is configured.
 
-## Bootstrap honesty
+## Implemented v0.1 validation and its limits
 
-There is no Go application yet. Go-specific scripts report **NOT IMPLEMENTED**
-when there is no source. Configuration, workflow lint, secret scan and repository
-tests still execute. This is not an application test pass and does not establish
-coverage. The first Go file activates the Go checks automatically and requires
-actual tests. Fuzz targets are required when parser/path handling lands, rather
-than inventing one for an empty program.
+The application is implemented. `make check` runs the required application
+checks plus the real CLI acceptance workflow (`make acceptance`). The latter
+builds `cmd/kb`, operates on disposable synthetic files, and checks revisions,
+coordinated ingestion, query purity, repair, references, export, and source
+immutability. [Recorded validation](evidence/validation.json) reports a successful
+full run with 88.4% statement coverage, 102 top-level test functions, 314 named
+pass events including subtests and fuzz seeds, seven fuzz smoke targets, and
+Linux/macOS amd64/arm64 cross-builds. These counts describe that recorded run.
 
-The infrastructure itself is tested with temporary synthetic Go packages:
-reject missing named tests and low coverage, and execute a passing race/coverage
-suite, cross-builds and a fuzz target. These packages are not application code
-and do not satisfy any product acceptance criterion. Running the repository
-tests without a Go toolchain skips these integration cases; CI installs Go and
-executes them.
+The [CLI workflow evidence](evidence/cli-workflow.json) and
+[controlled agent-consumer observation](evidence/consumer/consumer-evidence.json)
+provide additional behavior evidence. The consumer explicitly loaded the locally
+installed skill in one session; automatic activation across models is not proven.
+Evidence supports tested behavior, not the absence of bugs, universal crash
+safety, or semantic correctness.
 
-The acceptance inventory starts with every criterion `planned`. A criterion can
-be marked `verified` only with existing test paths and evidence paths. This is a
-traceability check: CI cannot determine whether the evidence proves the claim.
+The quality tooling also tests itself with temporary synthetic Go packages,
+including rejection of missing tests and low coverage. These tooling fixtures
+are separate from application validation. Without Go, `make repo` skips its
+Go-dependent regression cases; that partial run is not a full `make check`.
+
+The [acceptance inventory](acceptance.json) is the source for criterion labels.
+A criterion may be marked `verified` only with existing test and evidence paths.
+The repository check verifies traceability, not whether the evidence proves the
+claim. Do not equate aggregate coverage or one green workflow with all criteria
+being satisfied.
+
+[Performance evidence](performance.md) records unmet initial targets: warm core
+search p95 162.9 ms versus 150 ms, and peak process RSS 180.3 MiB versus 150 MiB.
+Cold core search was 594.4 ms. These measurements used 10,000 synthetic 2 KiB
+notes on Apple M4/macOS arm64 with Go 1.27.3 and 20 warm samples. Reindexing was
+not independently benchmarked. No quality threshold is reduced by these results.
 
 ## GitHub settings
 
@@ -60,7 +75,7 @@ separate bot identity is needed to enforce independent approval without locking
 every PR. Changing a quality gate is itself possible through a PR and remains
 a review concern; these checks are not a proof against a malicious maintainer.
 
-## Evidence required as implementation progresses
+## Evidence required for changes
 
 Use synthetic fixtures for CLI/MCP parity, malformed YAML, unknown metadata,
 comment preservation, path traversal, symlinks, CAS conflicts, idempotent retries,
@@ -69,5 +84,8 @@ Add fuzz targets for parsing and path resolution and concurrency tests for the
 transaction layer. Measure performance against the declared corpus and hardware;
 do not convert the spec's performance targets into reported results.
 
-Branch protection must be verified after repository creation. The API record,
-successful workflow URL, and observed limits are recorded in the bootstrap PR.
+Branch protection was established during repository bootstrap; its API record,
+workflow URL, and observed limits are recorded in the bootstrap PR. Recheck
+settings when repository policy changes. Release packaging and publication
+remain manual under the current user authorization after CI; no automatic
+merge or release is configured.
