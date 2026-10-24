@@ -61,6 +61,13 @@ def exercise(binary):
         assert not (home / ".agents").exists()
         checks.append({"name": "isolated-idempotent-init", "criteria": ["A01", "A19", "A26"]})
 
+        index_example = ("## Literal marker example\n\n```markdown\n<!-- kb:index:start -->\n"
+                         "This synthetic example must remain literal.\n<!-- kb:index:end -->\n```\n\n")
+        index = root / "index.md"
+        content = index.read_text()
+        position = content.index("<!-- kb:index:start -->")
+        index.write_text(content[:position] + index_example + content[position:])
+
         path = "03_Resources/retention.md"
         created_request = {"path": path, "type": "Reference", "title": "Retention decision",
                            "body": "# Retention\n\nThe synthetic retention period is 300 seconds.\n",
@@ -147,7 +154,7 @@ def exercise(binary):
                            "metadata_patch": {"sources": [{"resource": "source.md"}]}},
                           {"operation_id": "reference", "kind": "patch", "path": reference,
                            "expected_revision": read(reference)["note"]["revision"],
-                           "body": "# Related evidence\n\nSee [retention](retention.md#retention) and [source](source.md).\n",
+                           "body": "# Related evidence\n\n- Parent\n    - [retention](retention.md#retention)\n    - [source](source.md)\n",
                            "metadata_patch": {"sources": [{"resource": "source.md"}]}}]}
         event_count = sum(line.startswith("- ") for line in (root / "log.md").read_text().splitlines())
         invoke("apply", "--input", "-", payload=valid_plan)
@@ -211,6 +218,7 @@ def exercise(binary):
         assert result["conformant"] is True
         assert (export / destination).is_file()
         assert not (export / ".kb").exists()
+        assert index_example in index.read_text()
         assert revision(original.read_bytes()) == original_hash
         checks.append({"name": "validated-export-and-original-source-immutability", "criteria": ["A18", "A22"]})
         return {"schema_version": "kb.acceptance.v1", "passed": True, "synthetic_only": True,
