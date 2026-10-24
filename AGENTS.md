@@ -47,8 +47,10 @@ the product source; it is not the user's knowledge base.
   publication authorization of the current user request.
 - Report what changed, how it was tested, and remaining risks honestly.
 
-## Memory during this development environment
+## Public content
 
-When Matheus's knowledge base is available, consult its project notes before
-answering and persist reusable decisions there. Its location is installation
-specific; do not hardcode it into the product or install global instructions.
+Keep repository Markdown, descriptions, code comments, command examples, and
+other public content in English and self-contained. Use generic example paths
+and public sources. Preserve the copyright attribution in LICENSE and the
+public repository URLs. Never require access to a private knowledge base or
+local workstation configuration to understand or contribute to this project.

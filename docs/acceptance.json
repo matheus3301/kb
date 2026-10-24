@@ -1,182 +1,182 @@
 [
   {
     "id": "A01",
-    "requirement": "Busca/read funcionam sem UI, Git, modelo, credencial ou rede.",
+    "requirement": "Search/read work without a UI, Git, model, credentials, or network.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A02",
-    "requirement": "CLI e MCP retornam os mesmos IDs, revisões, filtros e erros em fixtures equivalentes.",
+    "requirement": "CLI and MCP return the same IDs, revisions, filters, and errors on equivalent fixtures.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A03",
-    "requirement": "Concept mínimo com só `type` é conformante; tipos e campos desconhecidos sobrevivem.",
+    "requirement": "A minimal concept with only `type` conforms; unknown types and fields survive.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A04",
-    "requirement": "Notas sem YAML ou type são reportadas como inválidas; escrita normal não aceita uma base não conformante. Não há requisito de busca ou migração de legado.",
+    "requirement": "Notes without YAML or type are reported as invalid; normal writes reject a nonconformant base. Legacy search or migration is not required.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A05",
-    "requirement": "YAML inválido não oculta silenciosamente notas; status informa quantos arquivos não foram parseados.",
+    "requirement": "Invalid YAML never silently hides notes; status reports how many files could not be parsed.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A06",
-    "requirement": "Mapping único em `verified` é aceito; mudança de conteúdo invalida a revisão ativa.",
+    "requirement": "A single mapping in `verified` is accepted; a content change invalidates active verification.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A07",
-    "requirement": "Instante `stale_after` com fuso é interpretado corretamente; formato incompatível é diagnosticado.",
+    "requirement": "A timezone-bearing `stale_after` instant is interpreted correctly; incompatible formats are diagnosed.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A08",
-    "requirement": "Busca com e sem acentos recupera o mesmo conjunto esperado em português.",
+    "requirement": "Search with and without accents retrieves the same expected Portuguese result set.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A09",
-    "requirement": "Editar corpo preserva comentário YAML e campos não tocados; no-op preserva bytes e não gera log.",
+    "requirement": "Body edits preserve YAML comments and untouched fields; a no-op preserves bytes and produces no log entry.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A10",
-    "requirement": "Duas escritas com a mesma revisão: apenas a primeira aplica; conflito não muda nota, índice ou log.",
+    "requirement": "Of two writes with the same revision, only the first applies; a conflict changes no note, index, or log.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A11",
-    "requirement": "Retry com mesma chave não duplica efeitos, inclusive após falha entre publicação e resposta.",
+    "requirement": "A retry with the same key never duplicates effects, including after failure between publication and response.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A12",
-    "requirement": "Create/edit atualizam nota, índice e log; falhas injetadas em cada etapa permitem recuperação.",
+    "requirement": "Create/edit update the note, index, and log; failures injected at every stage permit recovery.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A13",
-    "requirement": "Move atualiza links Markdown resolvidos e âncoras, sem alterar referências ambíguas ou externas indevidamente.",
+    "requirement": "Move updates resolved Markdown links and anchors without improperly changing ambiguous or external references.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A14",
-    "requirement": "Traversal, symlinks, colisões e arquivo fora da raiz não permitem leitura nem escrita.",
+    "requirement": "Traversal, symlinks, collisions, and out-of-root files permit neither reading nor writing.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A15",
-    "requirement": "`--read-only` oculta e recusa mutações; stdout MCP não contém logs.",
+    "requirement": "`--read-only` hides and rejects mutations; MCP stdout contains no logs.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A16",
-    "requirement": "Contexto respeita teto global, informa truncamentos e fornece linhas/revisões das fontes.",
+    "requirement": "Context respects the global ceiling, reports truncation, and provides source lines/revisions.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A17",
-    "requirement": "Editar via editor externo invalida cache e revisão na próxima operação relevante.",
+    "requirement": "External-editor changes invalidate cache and revision at the next relevant operation.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A18",
-    "requirement": "Exportar inclui relatório e lista de exclusões; não anuncia conformidade de arquivos não examinados.",
+    "requirement": "Export includes a report and exclusion list; it never claims conformance for unexamined files.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A19",
-    "requirement": "Instalação/init não alteram configs globais ou registram agentes automaticamente.",
+    "requirement": "Installation/init never change global configuration or register agents automatically.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A20",
-    "requirement": "Trocar o perfil de navegação PARA por outra hierarquia não altera parsing, identidade e validade OKF dos mesmos arquivos.",
+    "requirement": "Replacing PARA navigation with another hierarchy does not change parsing, identity, or OKF validity of the same files.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A21",
-    "requirement": "Uma ingestão sintética cria uma nota de fonte e atualiza duas notas existentes em apply; conflito em uma delas não publica nenhuma mudança.",
+    "requirement": "A synthetic ingestion creates a source note and updates two existing notes through apply; a conflict in either publishes no changes.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A22",
-    "requirement": "Os hashes de snapshots originais permanecem iguais após criar, editar, mover e aplicar planos na wiki.",
+    "requirement": "Original snapshot hashes remain unchanged after wiki creation, editing, moving, and plan application.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A23",
-    "requirement": "Uma síntese com basis_revisions de dois conceitos é marcada para revisão quando um deles muda; não é reescrita nem declarada falsa automaticamente.",
+    "requirement": "A synthesis with basis_revisions for two concepts is flagged for review when either changes; it is never automatically rewritten or declared false.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A24",
-    "requirement": "Health identifica órfão, link ausente, conceito fora do índice e dependência alterada, sem alegar detecção determinística de contradições.",
+    "requirement": "Health identifies an orphan, missing link, concept absent from an index, and changed dependency without claiming deterministic contradiction detection.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A25",
-    "requirement": "Comparação persistida pelo agente mantém proveniência; repetir uma consulta sem aprendizado não cria nota ou evento.",
+    "requirement": "An agent-persisted comparison retains provenance; repeating a query without learning creates no note or event.",
     "status": "planned",
     "tests": [],
     "evidence": []
   },
   {
     "id": "A26",
-    "requirement": "Sem AGENTS.md dentro da base, CLI/MCP operam normalmente. No agente alvo, instrução do workdir e skill instalada conduzem consulta à base externa antes de responder; aprendizado reutilizável é atualizado e consulta sem novidade não escreve. Registrar evidência observada, sem prometer adesão universal dos modelos.",
+    "requirement": "CLI/MCP operate normally without AGENTS.md inside the base. In the target agent, workdir instructions and the installed skill lead to external-base consultation before answering; reusable learning is updated and a query without new information does not write. Record observed evidence without promising universal model adherence.",
     "status": "planned",
     "tests": [],
     "evidence": []

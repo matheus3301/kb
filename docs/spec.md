@@ -1,89 +1,98 @@
 ---
 type: Specification
-title: CLI e MCP local para bases OKF e memória PARA
-description: Contrato v0.3 para uma memória OKF com sínteses persistentes, manutenção e interface CLI/MCP.
+title: Local CLI and MCP for OKF knowledge bases and PARA memory
+description: Version 0.3 contract for OKF memory with persistent syntheses, maintenance, and CLI/MCP interfaces.
 tags: [okf, para, cli, mcp, memory, specification]
 status: draft
 spec_version: "0.3"
 sources:
   - id: evaluation
     resource: research.md
-    title: Avaliação prática dos candidatos
+    title: Practical evaluation of candidate tools
   - id: okf
     resource: https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md
-    title: Especificação OKF v0.2 consultada
+    title: Referenced OKF v0.2 specification
   - id: mcp
     resource: https://modelcontextprotocol.io/specification/2025-11-25/server/tools
-    title: MCP — contrato de ferramentas
+    title: MCP tools contract
   - id: llm-wiki
-    resource: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f/ac46de1ad27f92b28ac95459c782c07f6b8c964a
-    title: LLM Wiki — Andrej Karpathy
+    resource: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+    title: LLM Wiki by Andrej Karpathy
 generated:
   by: codex/gpt-6
   at: 2026-10-24T20:58:27Z
 ---
 
-# CLI e MCP local para bases OKF e memória PARA
+# Local CLI and MCP for OKF knowledge bases and PARA memory
 
-Proposta v0.3, baseada em testes de cinco ferramentas e na análise do padrão LLM
-Wiki em 2026-10-24. `kb` é um
-nome escolhido para o projeto; repositório: https://github.com/matheus3301/kb.
-Os comandos abaixo são contratos propostos, não comandos já implementados.
+Version 0.3 proposal, informed by tests of five tools and analysis of the LLM
+Wiki pattern on 2026-10-24. `kb` is the chosen project name; the repository is
+https://github.com/matheus3301/kb. The commands below describe pre-release contracts, not implemented commands.
+The authoritative v0.1 clarification is `docs/interfaces.md` in this repository,
+with shared DTOs in `internal/api/types.go`; it settles ambiguities in v0.3.
+Those contract files are maintained by the implementation integration owner.
 
-## 1. Problema e resultado esperado
+## 1. Problem and expected outcome
 
-Um agente deve conseguir procurar contexto, ler a fonte, registrar aprendizado
-e continuar em outra sessão usando conceitos em Markdown conformes ao OKF. O usuário
-deve conseguir abrir e editar os mesmos arquivos em qualquer editor.
+An agent must be able to find context, read its source, record learning, and
+continue in another session using OKF-conforming Markdown concepts. A user
+must be able to open and edit the same files in any editor.
 
-A memória também acumula sínteses: incorporar uma fonte ou responder uma pergunta
-pode melhorar conceitos existentes. O produto oferece as operações que permitem
-ao agente manter essa wiki; não se limita a armazenar notas independentes.
+Memory also accumulates syntheses: incorporating a source or answering a
+question can improve existing concepts. The product provides operations that
+let an agent maintain this wiki; it is not limited to storing independent notes.
 
-A ferramenta deve funcionar sem UI, navegador, serviço em nuvem, conta, modelo
-de linguagem ou servidor persistente. O mesmo núcleo serve uma CLI de execução
-única e um processo MCP stdio. Um cache local é permitido, sempre reconstruível.
+The tool must work without a UI, browser, cloud service, account, language model,
+or persistent server. The same core serves a single-invocation CLI and an MCP
+stdio process. A local cache is allowed and must always be rebuildable.
 
-OKF define o formato de conhecimento; PARA é o perfil de organização humana desta
-base, configurável e separado do núcleo de representação. Busca,
-transações, concorrência e protocolos são escolhas desta aplicação. Não devem
-ser apresentados como exigências do padrão OKF.
+OKF defines the knowledge format; PARA is a configurable human organization
+profile, separate from the representation core. Search, transactions,
+concurrency, and protocols are application choices. They must not be presented
+as requirements of the OKF standard.
 
-### Escopo do MVP
+### MVP scope
 
-Busca lexical, navegação, leitura parcial, criação, edição, movimentação,
-validação, índices, histórico e composição de contexto, sobre uma base OKF nativa,
-com integração por MCP. Compatibilidade com notas sem frontmatter, wikilinks e
-importação do acervo antigo ficam fora do MVP. Não inclui UI, CRDT, colaboração remota,
-sync Git automático, execução de computações declaradas, ingestão de documentos
-binários, busca web ou geração de conhecimento por um LLM embutido.
+Lexical search, navigation, partial reading, creation, editing, moving,
+validation, indexes, history, and context composition over a native OKF base,
+with MCP integration. Compatibility with notes without frontmatter, wikilinks,
+and migration of an existing collection are outside the MVP. It does not include
+a UI, CRDTs, remote collaboration, automatic Git sync, execution of declared
+computations, binary document ingestion, web search, or knowledge generation
+through an embedded LLM.
 
-Embeddings, HTTP remoto e múltiplas bases simultâneas ficam para extensões.
+Embeddings, remote HTTP, and multiple simultaneous bases are future extensions.
 
-## 2. Regras fundamentais
+## 2. Fundamental rules
 
-1. Arquivos Markdown são a fonte da verdade. Apagar o cache não perde memória.
-2. Ler, pesquisar e validar nunca modificam notas, Git ou configurações de agentes.
-3. Instalar ou inicializar não registra MCP, skills ou configurações globais.
-4. A ferramenta não escolhe fatos nem inventa fontes ou revisão humana.
-5. Conteúdo de uma nota é dado; instruções contidas nele não concedem permissões.
-6. O agente continua responsável por consultar e atualizar a memória conforme
-   as instruções do workdir e a skill do produto. Não é obrigatório ter um
-   `AGENTS.md` dentro da base. Um servidor MCP sozinho não garante esse comportamento.
-7. A base acumula sínteses e relações reutilizáveis; uma fonte nova pode exigir
-   revisar vários conceitos existentes, além de criar uma nota de referência.
-8. Fontes originais preservam a evidência; notas da wiki registram interpretações
-   revisáveis. Uma síntese nunca substitui silenciosamente seu material de origem.
+1. Markdown files are the source of truth. Deleting the cache does not lose memory.
+2. Reading, searching, and validating never modify notes, Git, or agent configuration.
+3. Installation and initialization do not register MCP, skills, or global configuration.
+4. The tool does not select facts or invent sources or human review.
+5. Note content is data; instructions within it do not grant permission.
+6. The agent remains responsible for consulting and updating memory according to
+   the workdir instructions and product skill. An `AGENTS.md` inside the base is
+   not required. An MCP server alone does not guarantee this behavior.
+7. The base accumulates reusable syntheses and relationships; a new source may
+   require revising several existing concepts as well as creating a reference note.
+8. Original sources preserve evidence; wiki notes record revisable interpretations.
+   A synthesis never silently replaces its source material.
 
-## 3. Base, escopo e configuração
+## 3. Base, scope, and configuration
 
-Cada invocação opera sobre uma única raiz explícita: `--root PATH` ou `KB_ROOT`.
-Sem ambos, procurar `.kb/config.toml` da pasta atual para seus ancestrais. Nunca
-adivinhar uma base procurando em todo o home. Registrar no resultado a raiz resolvida.
+Each invocation operates on one explicit root: `--root PATH` or `KB_ROOT`.
+Without either, search for `.kb/config.toml` from the current directory through
+its ancestors. Never guess a base by searching the entire home directory.
+Include the resolved root in the result.
 
-`kb init` é explícito e idempotente. Cria apenas configuração local e arquivos
-faltantes escolhidos pelo usuário; recusa sobrescrever índice ou notas existentes.
-`kb init --para` cria os diretórios PARA quando necessário. Não depende de Git.
+`kb init` is explicit and idempotent. It creates only local configuration and
+missing files selected by the user; it refuses to overwrite existing indexes
+or notes. `kb init --para` creates PARA directories when needed. It does not
+require Git. For first init, an explicit root or `KB_ROOT` may name a directory
+that does not yet exist. With neither, init uses the current directory rather
+than ancestor discovery. The default content include is all Markdown (`**`),
+with operational, dependency, and agent directories excluded; the scoped
+include list below is an optional customization.
 
 ```toml
 version = 1
@@ -110,174 +119,177 @@ include_archives = false
 include_deprecated = false
 ```
 
-O exemplo é o perfil desta knowledge base, não uma taxonomia imposta pelo OKF.
-`index.md` e `log.md` na raiz também entram na navegação, por regra reservada.
-`.kb/config.toml` guarda configuração local; `.kb/cache/` contém apenas dados
-derivados e reconstruíveis. `.kb/state/` guarda journal e recibos duráveis de
-operações: não é cache e não deve ser removido durante limpeza ou recuperação.
-Apagar somente o cache não perde notas nem recibos. Apagar o estado durável pode
-perder a deduplicação de pedidos e comprometer uma recuperação pendente. Esses
-diretórios operacionais não entram no bundle de conhecimento exportado; exportar
-conhecimento não equivale a fazer backup do estado operacional da instalação.
-Uma configuração de escopo não torna o repositório inteiro conformante: o relatório
-identifica exatamente o que examinou e o que excluiu.
+This example is an optional base profile, not an OKF-imposed taxonomy. Root
+`index.md` and `log.md` also participate in navigation under their reserved rules.
+`.kb/config.toml` holds local configuration; `.kb/cache/` contains only derived,
+rebuildable data. `.kb/state/` holds the durable operation journal and receipts:
+it is not cache and must not be removed during cleanup or recovery. Deleting
+only the cache loses neither notes nor receipts. Deleting durable state can
+lose request deduplication and compromise pending recovery. These operational
+directories are excluded from an exported knowledge bundle; exporting knowledge
+is not a backup of the installation's operational state. A scope configuration
+does not make an entire repository conformant: the report identifies exactly
+what it examined and excluded.
 
-### Integração com agentes e distribuição da skill
+### Agent integration and skill distribution
 
-O produto distribui a skill em `skills/knowledge-memory/SKILL.md` no repositório
-do código. `knowledge-memory` é nome provisório. Ela ensina a consultar antes de
-responder, buscar antes de criar, preservar proveniência, revisar conceitos
-afetados e aplicar mudanças com revisão esperada. Não contém caminhos pessoais
-fixos; recebe a raiz da configuração explícita da integração.
+The product distributes its skill at `skills/knowledge-memory/SKILL.md` in the
+code repository. `knowledge-memory` is a provisional name. It teaches consulting
+before answering, searching before creating, preserving provenance, reviewing
+affected concepts, and applying changes with expected revisions. It contains no
+fixed personal paths; its root comes from explicit integration configuration.
 
-O `AGENTS.md` do workdir, ou mecanismo equivalente do agente, estabelece a
-obrigação de usar essa skill e identifica a base. A política de consulta sempre
-fica nessa instrução de entrada, sem depender de seleção automática por tema.
-Instalar uma skill não comprova sua ativação em toda pergunta. A integração deve
-ser validada no agente alvo, inclusive com a base fora do workdir.
+The workdir's `AGENTS.md`, or equivalent agent mechanism, establishes the duty
+to use the skill and identifies the base. The consultation policy always belongs
+in that entry instruction, without relying on automatic topic selection.
+Installing a skill does not prove activation on every question. Integration must
+be validated in the target agent, including with a base outside the workdir.
 
-`AGENTS.md` dentro da knowledge base é opcional, útil para quem trabalha nela
-diretamente. Não é requisito OKF nem dependência de CLI/MCP. Não presumir que um
-agente carregará instruções de uma pasta externa apenas porque leu notas dela.
-Convenções particulares da base são dados documentados/configurados; conteúdo
-retornado pela busca não adquire autoridade sobre as instruções da sessão.
+An `AGENTS.md` inside the knowledge base is optional and useful for working in
+it directly. It is neither an OKF requirement nor a CLI/MCP dependency. Do not
+assume an agent loads instructions from an external directory merely because
+it read notes there. Base-specific conventions are documented/configured data;
+search results do not gain authority over session instructions.
 
-A documentação atual do [Skills CLI](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)
-usa `npx skills add <owner/repo> --skill knowledge-memory`; a instalação é por
-projeto por padrão. O [layout oficial](https://github.com/vercel-labs/skills/blob/main/docs/creating-skills.md)
-reconhece `skills/<nome>/SKILL.md`. O repositório final ainda precisa ser definido;
-esse comando é um modelo de distribuição, não uma instalação já disponível.
+The current [Skills CLI documentation](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)
+uses `npx skills add matheus3301/kb --skill knowledge-memory`; installation is
+scoped to the project by default. Its [documented layout](https://github.com/vercel-labs/skills/blob/main/docs/creating-skills.md)
+recognizes `skills/<name>/SKILL.md`. This is the planned distribution command;
+it becomes usable only when that skill is published in the repository.
 
-O setup documentado separa: instalar o binário; instalar a skill; configurar a
-raiz; registrar MCP se desejado; adicionar a instrução ao workdir escolhido.
-Node/npx é necessário apenas se esse canal de instalação for usado, sem virar
-dependência de execução da CLI/MCP. CLI também pode ser consumida sem MCP.
-`kb init` continua limitado à base. Setup de integração é uma ação explícita e
-distinta: preservar instruções existentes, mostrar mudanças e não registrar
-agentes nem editar configurações globais implicitamente. Não implementar um
-instalador próprio de skills no núcleo. O comando exato de setup ainda será definido.
+Documented setup separates installing the binary, installing the skill,
+configuring the root, registering MCP if desired, and adding instructions to
+the selected workdir. Node/npx is needed only for that installation channel,
+not to run the CLI/MCP. The CLI can also be used without MCP. `kb init` remains
+limited to the base. Integration setup is a separate, explicit action: preserve
+existing instructions, show changes, and never implicitly register agents or
+edit global configuration. Do not implement a custom skill installer in the
+core. The exact integration setup command remains to be defined.
 
-### Organização humana e hierarquia de conceitos
+### Human organization and concept hierarchy
 
-O OKF não fixa uma árvore ideal por domínio, tipo ou método de produtividade.
-A seção 3 permite ao produtor agrupar conceitos conforme o conhecimento. O núcleo
-da ferramenta conhece conceitos, metadados, links e índices; não exige PARA para
-funcionar. O perfil `para` adiciona navegação e classificação compreensíveis ao humano.
+OKF does not prescribe an ideal tree by domain, type, or productivity method.
+Section 3 of OKF permits producers to group concepts according to their
+knowledge. The tool's core understands concepts, metadata, links, and indexes;
+it does not require PARA. The `para` profile adds human-readable navigation
+and classification.
 
-Para esta base, conservar PARA como estrutura de navegação e agrupar cada projeto,
-área ou assunto de forma coesa, com conceitos focados e índices por pasta. Exemplo
-de destino possível, sem representar uma reorganização já executada:
+A base using PARA should group each project, area, or topic cohesively, with
+focused concepts and per-directory indexes. A possible layout, not an
+already-performed reorganization:
 
 ```text
-knowledge-base/
+example-knowledge/
   index.md
   log.md
   01_Projects/
     index.md
-    homelab/
+    example-project/
       index.md
-      contexto.md
-      decisoes/
+      context.md
+      decisions/
         index.md
-        estrategia-de-backup.md
+        backup-strategy.md
   02_Areas/
     index.md
-    carreira/
+    operations/
       index.md
-      preferencias-de-trabalho.md
+      service-objectives.md
   03_Resources/
     index.md
     kubernetes/
       index.md
-      restauracao-de-backup.md
+      backup-restoration.md
   04_Archive/
     index.md
 ```
 
-`contexto.md`, a preferência e a decisão são conceitos com `type` apropriado; os
-índices são arquivos reservados. Links relacionam a decisão do projeto ao recurso
-reutilizável, sem duplicar conteúdo para atender duas categorias. A ferramenta
-também funciona com outro perfil de pastas, sem modificar o modelo OKF.
+The context, objectives, and decision files are concepts with appropriate
+`type` values; indexes are reserved files. Links connect a project decision to
+a reusable resource without duplicating content to fit two categories. The
+tool also works with another folder profile without changing the OKF model.
 
-## 4. Modelo OKF
+## 4. OKF model
 
-### Identidade e caminhos
+### Identity and paths
 
-- Concept ID canônico: caminho relativo à raiz, com `/`, sem sufixo `.md`.
-- Nenhum UUID, banco ou campo `id` é obrigatório. Campos adicionais existentes
-  são preservados. Mover um arquivo muda seu Concept ID.
-- `path` identifica o arquivo com extensão; `revision` é SHA-256 dos bytes
-  completos lidos. Hash de índice é outro campo, `generation`.
-- Aceitar nomes existentes com espaços, Unicode e maiúsculas. Não renomear
-  automaticamente para `kebab-case`; recomendar esse formato para arquivos novos.
-- Links entre conceitos usam Markdown padrão, relativos ao documento ou absolutos
-  à raiz do bundle. Âncoras devem ser preservadas. Resolução de wikilinks não é
-  requisito. Encontrá-los pode gerar aviso de portabilidade, sem conversão implícita.
+- Canonical Concept ID: root-relative path using `/`, without the `.md` suffix.
+- No UUID, database, or `id` field is required. Existing additional fields are
+  preserved. Moving a file changes its Concept ID.
+- `path` identifies the file including its extension; `revision` is SHA-256 of
+  all bytes read. The index hash is a separate field, `generation`.
+- Accept existing names with spaces, Unicode, and uppercase letters. Do not
+  automatically rename them to `kebab-case`; recommend that style for new files.
+- Concept links use standard Markdown, relative to the document or absolute to
+  the bundle root. Preserve anchors. Wikilink resolution is not required.
+  Finding wikilinks may produce a portability advisory without implicit conversion.
 
 ### Parsing
 
-Toda nota nova ou revisada exige YAML parseável e `type` textual não vazio.
-Tipos e chaves desconhecidos são válidos. `title`, `description`, `sources`,
-`generated`, `verified`, `status` e `tags` são opcionais para conformidade OKF.
+Every new or revised note requires parseable YAML and a nonempty string `type`.
+Unknown types and keys are valid. `title`, `description`, `sources`, `generated`,
+`verified`, `status`, and `tags` are optional for OKF conformance.
 
-`index.md` e `log.md` são reservados. Índices não recebem frontmatter de conceito;
-somente o índice raiz pode declarar `okf_version`. Validar a estrutura específica
-de índice e log, sem exigir `type` deles. Datas do log usam `YYYY-MM-DD`.
+`index.md` and `log.md` are reserved. Indexes do not receive concept frontmatter;
+only the root index may declare `okf_version`. Validate the specific index and
+log structures without requiring `type`. Log dates use `YYYY-MM-DD`.
 
-Preservar bytes de notas não alteradas. Edições pontuais do corpo devem manter
-frontmatter, comentários, ordem de campos e estilo de linhas intactos. Alterações
-de metadados exigem parser com informações de apresentação, ou uma implementação
-de patches que preserve os campos não modificados. Não usar serialização total
-com perda de comentários como caminho padrão. YAML duplicado, aliases excessivos,
-documentos gigantes e UTF-8 inválido devem gerar diagnósticos limitados.
+Preserve the bytes of unchanged notes. Targeted body edits must leave
+frontmatter, comments, field ordering, and line-ending style intact, except
+when substantive changes require removing active `verified`. Metadata
+changes require a parser retaining presentation information or a patch
+implementation preserving untouched fields. Whole-document serialization that
+loses comments must not be the default. Duplicate YAML keys, excessive aliases,
+oversized documents, and invalid UTF-8 must produce bounded diagnostics.
 
-### Base OKF nativa
+### Native OKF base
 
-Não há modos `mixed` ou adaptador de notas legadas. Arquivos inválidos são
-problemas de integridade a diagnosticar, não um segundo formato suportado. A
-busca indexa conceitos válidos; status e validate enumeram todos os inválidos e
-marcam a base como degradada, sem anunciar cobertura completa silenciosamente.
-Leitura de diagnóstico por caminho, inclusive `read --raw`, permite inspecionar
-e corrigir um arquivo inválido, sem fazê-lo passar por um conceito válido.
+There is no `mixed` mode or legacy-note adapter. Invalid files are integrity
+problems to diagnose, not a second supported format. Search indexes valid
+concepts; status and validate enumerate all invalid files and mark the base as
+degraded, never silently claiming full coverage. Diagnostic reading by path,
+including `read --raw`, allows inspecting and repairing an invalid file without
+presenting it as a valid concept.
 
-Escritas normais exigem uma base conformante antes e depois da operação. O
-comando de reparo permite corrigir uma base degradada com preview e revalidação;
-não inventa metadados nem converte notas automaticamente. A migração do acervo
-atual pode ser uma tarefa separada, mas não condiciona o desenho do núcleo.
+Normal writes require a conformant base before and after the operation. An explicit
+`apply --repair` plan permits fixing a degraded base with preview and revalidation;
+it does not invent metadata or automatically convert notes. Migrating an
+existing collection may be a separate task but does not constrain the core design.
 
-Separar `conformance_errors`, `policy_findings` e `advisories`. Por exemplo,
-link quebrado e ausência de descrição não são erros normativos do OKF. O perfil
-local pode elevá-los, deixando explícita a origem da regra.
+Separate `conformance_errors`, `policy_findings`, and `advisories`. A broken
+link or missing description, for example, is not a normative OKF error. A local
+profile may elevate these findings while making the rule's origin explicit.
 
-## 5. PARA e ciclo de memória
+## 5. PARA and the memory lifecycle
 
-PARA facilita a leitura e manutenção humana; sua categoria deriva do caminho e
-do mapeamento configurado, sem impor pastas ou tipos ao núcleo OKF. `status` continua sendo
-o ciclo OKF (`draft`, `stable`, `deprecated`); progresso de projetos usa uma chave
-distinta, como `workflow_status`. Arquivar muda a pasta, sem implicar que o
-conhecimento tenha se tornado falso ou `deprecated`.
+PARA supports human reading and maintenance; a category derives from the path
+and configured mapping without imposing folders or types on the OKF core.
+`status` remains the OKF lifecycle (`draft`, `stable`, `deprecated`); project
+progress uses a different key such as `workflow_status`. Archiving changes the
+folder without implying that knowledge is false or `deprecated`.
 
-Fluxo esperado do agente:
+Expected agent workflow:
 
-1. `context` ou `search` antes de responder; `read` para confirmar a fonte.
-2. Buscar antes de criar para evitar duplicações; resultados semelhantes são
-   sugestões, nunca fusões automáticas.
-3. Classificar em projeto, área, recurso ou arquivo. Quando incerto, usar Inbox
-   com `type: Capture`, sem inventar classificação definitiva.
-4. Criar ou editar com resumo e origem real; atualizar índice e log na mesma operação.
-5. Registrar decisões, razões, correções e pendências. Não arquivar conversas
-   completas por padrão. Não exigir uma nota por pergunta se nada foi aprendido.
+1. Use `context` or `search` before answering; use `read` to confirm the source.
+2. Search before creating to avoid duplicates; similar results are suggestions,
+   never automatic merges.
+3. Classify as project, area, resource, or archive. If uncertain, use Inbox with
+   `type: Capture` rather than inventing a definitive classification.
+4. Create or edit with a summary and real provenance; update indexes and log
+   in the same operation.
+5. Record decisions, reasons, corrections, and open questions. Do not archive
+   full conversations by default or require a note per question when nothing was learned.
 
-### Três responsabilidades: fontes, wiki e instruções
+### Three responsibilities: sources, wiki, and instructions
 
-Adotar do padrão LLM Wiki a distinção entre evidência original, conhecimento
-curado e regras de manutenção. Uma disposição possível para uma instalação nova:
+Adopt the LLM Wiki pattern's distinction between original evidence, curated
+knowledge, and maintenance rules. One possible layout for a new installation:
 
 ```text
-repositorio/
-  AGENTS.md          # somente se este repositório também for um workdir
-  sources/           # snapshots originais, fora da raiz de conceitos OKF
-  knowledge/         # --root: bundle OKF; PARA organiza a navegação humana
+workspace/
+  AGENTS.md           # only if this directory is also an agent workdir
+  sources/            # original snapshots, outside the OKF concept root
+  example-knowledge/  # --root: OKF bundle; PARA organizes human navigation
     index.md
     log.md
     01_Projects/
@@ -286,97 +298,100 @@ repositorio/
     04_Archive/
 ```
 
-A CLI escreve apenas no bundle configurado. Não move nem transforma o acervo
-atual para essa árvore automaticamente. Markdown bruto em `sources/` não é um
-conceito OKF sem frontmatter: está fora da árvore validada. Fontes originais são
-snapshots imutáveis; uma edição da origem gera outra versão, preservando a anterior.
-Não guardar originais no cache descartável `.kb/cache/`.
+The CLI writes only inside the configured bundle. It does not automatically
+move or transform an existing collection into this tree. Raw Markdown in
+`sources/` is not a concept missing OKF frontmatter: it is outside the validated
+tree. Original sources are immutable snapshots; a source edit creates another
+version while retaining the previous one. Do not store originals in disposable
+`.kb/cache/`.
 
-O agente usa suas ferramentas de leitura para consultar uma fonte original
-explicitamente fornecida. Aquisição web, download, OCR e extração de PDFs ficam
-fora do núcleo. Não aumentar a permissão de `kb_read` para atravessar a raiz.
-No bundle, uma nota de fonte pode usar `type: Source`, apontar a URL original em
-`resource` e registrar digest do snapshot em um campo de extensão. Outros conceitos
-referenciam essa nota em `sources[].resource`. `Source`, `Synthesis` e `Question`
-são tipos sugeridos pelo perfil, não tipos obrigatórios do OKF.
+The agent uses its own reading tools to consult an explicitly supplied original
+source. Web acquisition, downloads, OCR, and PDF extraction are outside the
+core. Do not expand `kb_read` permissions to cross the root. Inside the bundle,
+a source note may use `type: Source`, identify the original URL in `resource`,
+and record a snapshot digest in an extension field. Other concepts refer to
+that note through `sources[].resource`. `Source`, `Synthesis`, and `Question`
+are suggested profile types, not mandatory OKF types.
 
-### Incorporar conhecimento
+### Incorporating knowledge
 
-O workflow de ingestão é executado pelo agente, apoiado pela ferramenta:
+The agent executes the ingestion workflow with support from the tool:
 
-1. Ler a fonte fornecida e identificar sua versão/digest quando houver snapshot.
-2. Consultar índices, buscar conceitos existentes e levantar relações de entrada
-   e saída antes de decidir quais notas criar ou atualizar.
-3. Produzir um plano: notas de fonte, conceitos afetados, sínteses, links,
-   divergências e perguntas ainda sem evidência. Cada nota a editar tem revisão esperada.
-4. Aplicar o conjunto validado em uma única operação `apply`, incluindo a manutenção
-   dos índices e do log. Fontes originais não participam da lista de arquivos graváveis.
-5. Retornar um recibo dos conceitos criados/alterados e das pendências preservadas.
+1. Read the supplied source and identify its version/digest when a snapshot exists.
+2. Consult indexes, search existing concepts, and inspect incoming and outgoing
+   relationships before deciding which notes to create or update.
+3. Produce a plan: source notes, affected concepts, syntheses, links,
+   disagreements, and questions still lacking evidence. Each note to edit has
+   an expected revision.
+4. Apply the validated set in one `apply` operation, including index and log
+   maintenance. Original sources are never in the writable file list.
+5. Return a receipt listing created/changed concepts and preserved open questions.
 
-Não presumir que cada fonte corresponda a uma única página ou que um resumo
-substitua a integração com conceitos existentes. Em fontes conflitantes, manter
-ambas as proveniências e a divergência explícita; o agente não fabrica consenso.
+Do not assume one source equals one page or that a summary replaces integration
+with existing concepts. For conflicting sources, retain both provenances and
+make the disagreement explicit; the agent does not fabricate consensus.
 
-### Respostas que se tornam memória
+### Answers that become memory
 
-`context` continua retornando trechos originais. O agente produz a resposta e
-pode persistir comparações, decisões e conexões reutilizáveis como conceitos,
-ligados às fontes efetivamente usadas. Isso é um passo de escrita explícito do
-workflow, sem guardar automaticamente cada pergunta e resposta no log.
+`context` continues to return original excerpts. The agent produces the answer
+and may persist reusable comparisons, decisions, and connections as concepts
+linked to sources actually used. This is an explicit workflow write, without
+automatically storing every question and answer in the log.
 
-Uma síntese pode declarar a extensão `basis_revisions`, uma lista de objetos
-`{path, revision}` para os conceitos locais dos quais depende. Mudança em uma
-revisão torna a síntese candidata a revisão. O núcleo informa
-`basis_outdated: true`, sem concluir que o texto é falso e sem reescrevê-lo.
-Esse sinal é distinto de `stale_after` e não é um campo padronizado pelo OKF.
-Mover um conceito atualiza referências conhecidas e esses caminhos no mesmo plano.
+A synthesis may declare the extension `basis_revisions`, a list of
+`{path, revision}` objects for local concepts on which it depends. A changed
+revision makes the synthesis a review candidate. The core reports
+`basis_outdated: true` without declaring its text false or rewriting it. This
+signal is distinct from `stale_after` and is not an OKF-standard field. Moving
+a concept updates known references and these paths in the same plan.
 
-### Manutenção estrutural e revisão semântica
+### Structural maintenance and semantic review
 
-`validate --profile okf` verifica formato. `validate --profile health` acrescenta
-checagens determinísticas: links quebrados, órfãos, páginas ausentes dos índices,
-cobertura de fontes, sínteses com bases alteradas e validade temporal. Tipos que
-dispensam fonte externa podem ser configurados; falta de fonte não prova falsidade.
-Avisos de saúde não bloqueiam escrita apenas por existirem.
+`validate --profile okf` checks format. `validate --profile health` adds
+deterministic checks: broken links, orphans, pages missing from indexes, source
+coverage, syntheses with changed bases, and temporal validity. Types that need
+no external source can be configured; missing provenance does not prove falsity.
+Health warnings do not block writes solely because they exist.
 
-Contradições, lacunas conceituais e perguntas de pesquisa são analisadas pelo
-agente com o contexto e as relações expostos. O núcleo não declara que BM25,
-contagem de links ou um LLM infalível comprovam consistência semântica. Uma revisão
-gera um relatório com evidências e sugestões; aplicar correções é outra operação.
-Não iniciar busca web, agenda de revisão ou edição apenas porque um diagnóstico
-apareceu. As instruções do workdir e a skill documentam os gatilhos de manutenção autorizados.
+The agent analyzes contradictions, conceptual gaps, and research questions using
+exposed context and relationships. The core does not claim BM25, link counts,
+or an infallible LLM prove semantic consistency. A review produces a report with
+evidence and suggestions; applying fixes is a separate operation. Do not start
+web searches, review schedules, or edits merely because a diagnostic appeared.
+Workdir instructions and the skill document authorized maintenance triggers.
 
-## 6. Interface CLI
+## 6. CLI interface
 
-Comandos de leitura oferecem `--json`. Em JSON, stdout contém exatamente um
-documento JSON e nenhuma mensagem de progresso, ANSI ou log; stderr fica para
-diagnóstico operacional. Em MCP stdio, stdout contém apenas mensagens do protocolo.
+Read commands offer `--json`. In JSON mode stdout contains exactly one JSON
+document without progress messages, ANSI, or logs; stderr is for operational
+diagnostics. MCP stdio stdout contains only protocol messages.
 
-| Comando proposto | Finalidade |
+| Proposed command | Purpose |
 | --- | --- |
-| `kb status` | Escopo, integridade, contagens, arquivos ignorados e frescor do índice. |
-| `kb list --para resources --limit 20` | Navegação paginada sem despejar corpos. |
-| `kb search QUERY --limit 10` | Busca com snippets, linhas e metadados. |
-| `kb read PATH --section HEADING` | Nota inteira ou seção com `revision`. |
-| `kb context QUERY --max-tokens 2000` | Contexto limitado, com fontes e relações. |
-| `kb links PATH --direction both` | Relações resolvidas de entrada e saída, para identificar notas afetadas. |
-| `kb create --input request.json` | Criar nota com caminho ou categoria e título. |
-| `kb patch PATH --input request.json` | Editar corpo e/ou metadados com versão esperada. |
-| `kb move PATH NEW_PATH --input request.json` | Mover, verificar conflitos e atualizar links conhecidos. |
-| `kb archive PATH --input request.json` | Atalho de move para a categoria Archive. |
-| `kb apply --input plan.json --dry-run` | Validar e planejar um conjunto de criações, patches e movimentos; sem dry-run, aplicar uma transação. |
-| `kb validate --profile okf` | Diagnósticos normativos e políticas separadas. |
-| `kb index rebuild` | Reconstruir cache de pesquisa sem alterar notas. |
-| `kb maintain --dry-run` | Mostrar reparos de índices, links e log; aplicar somente com `--apply`. |
-| `kb export DIR` | Exportar snapshot validado do escopo, com manifesto de inclusões/exclusões. |
-| `kb mcp` | Servidor stdio; `--read-only` remove e rejeita ferramentas de escrita. |
+| `kb status` | Scope, integrity, counts, ignored files, and index freshness. |
+| `kb list --para resources --limit 20` | Paginated navigation without dumping bodies. |
+| `kb search QUERY --limit 10` | Search with snippets, lines, and metadata. |
+| `kb read PATH --section HEADING` | Whole note or section with `revision`. |
+| `kb context QUERY --max-tokens 2000` | Bounded context with sources and relationships. |
+| `kb links PATH --direction both` | Resolved incoming/outgoing relationships to identify affected notes. |
+| `kb create --input request.json` | Create a note at an explicit path; a front end may suggest a path first. |
+| `kb patch PATH --input request.json` | Edit body and/or metadata with an expected revision. |
+| `kb move PATH NEW_PATH --input request.json` | Move, check conflicts, and update known links. |
+| `kb archive PATH --input request.json` | Shortcut for moving to the Archive category. |
+| `kb apply --input plan.json --dry-run` | Validate and plan creations, patches, and moves; without dry-run, apply a transaction. |
+| `kb validate --profile okf` | Normative diagnostics with separate policies. |
+| `kb index rebuild` | Rebuild the search cache without changing notes. |
+| `kb maintain --dry-run` | Show index, link, and log repairs; apply only with `--apply`. |
+| `kb recover --dry-run` | Preview pending recovery; `kb recover` performs it explicitly. |
+| `kb export DIR` | Export a validated scope snapshot with an inclusion/exclusion manifest. |
+| `kb mcp` | Stdio server; `--read-only` removes and rejects write tools. |
 
-`create`, `patch`, `move`, `archive`, `apply` e `maintain` aceitam `--dry-run`. O arquivo
-de entrada pode ser `-` para stdin. Não interpolar conteúdo Markdown em comandos
-de shell. Exportação pode ficar no último incremento do MVP, após a integridade
-das operações básicas.
+`create`, `patch`, `move`, `archive`, `apply`, and `maintain` accept `--dry-run`.
+The input file may be `-` for stdin. Do not interpolate Markdown content into
+shell commands. Export may be delivered in the last MVP increment, after basic
+operation integrity.
 
-Envelope de CLI, compartilhado pelo núcleo:
+CLI envelope, shared by the core:
 
 ```json
 {
@@ -384,311 +399,336 @@ Envelope de CLI, compartilhado pelo núcleo:
   "ok": true,
   "data": {},
   "warnings": [],
-  "meta": {"root": "/base", "generation": "sha256:...", "index_stale": false}
+  "meta": {"root": "./example-knowledge", "generation": "sha256:...", "index_stale": false}
 }
 ```
 
-Falha usa `ok: false`, `error: {code, message, details, retryable}` e não devolve
-conteúdo de segredos ou arquivos externos. Códigos de saída: `0` sucesso, `1`
-validação reprovada, `2` uso/configuração, `3` não encontrado, `4` conflito de versão,
-`5` acesso negado, `6` I/O/recuperação. Códigos de erro do domínio são estáveis
+The example root is illustrative; real results contain the resolved root.
+Failure uses `ok: false` and `error: {code, message, details, retryable}` without
+returning secrets or external file content. Exit codes: `0` success, `1` failed
+validation, `2` usage/configuration, `3` not found, `4` revision conflict,
+`5` access denied, `6` I/O/recovery. Domain error codes are stable
 (`REVISION_CONFLICT`, `INVALID_FRONTMATTER`, `PATH_OUTSIDE_ROOT`, etc.).
 
-## 7. Busca e leitura
+## 7. Search and reading
 
-MVP: índice lexical por nota e seção com BM25 ou equivalente documentado. Título,
-caminho, descrição e tags recebem peso maior que o corpo. Busca em português deve
-aceitar `memoria` e `memória`, preservando o texto original nos resultados.
-Não fazer chamadas a embedding ou LLM. Tokenização de identificadores e termos
-como `s3`, `k8s` e `crossplane` deve ser coberta por casos de teste.
+MVP: lexical index by note and section with BM25 or a documented equivalent.
+Title, path, description, and tags have greater weight than body text.
+Portuguese search must accept both `memoria` and `memória`, preserving original
+text in results. Do not call embeddings or an LLM. Test tokenization of
+identifiers and terms such as `s3`, `k8s`, and `crossplane`.
 
-Filtros: `para`, prefixo de caminho, `type`, tags, `status`, confiança derivada,
-`stale` e presença de fontes. Valores na mesma lista são OR; campos distintos
-são AND. Incluir arquivo e deprecated é opt-in, com indicadores de que foram
-excluídos. Notas expiradas continuam disponíveis e vêm marcadas, sem se tornarem
-automaticamente deprecated. Busca literal e consulta vazia para inventário têm
-semânticas distintas e documentadas; operadores de regex não são implícitos.
+Filters: `para`, path prefix, `type`, tags, `status`, derived trust, `stale`, and
+presence of sources. Values in one list are OR; different fields are AND.
+Including archives and deprecated notes is opt-in, with exclusion indicators.
+Expired notes remain available and marked; they do not automatically become
+deprecated. Literal search and empty-query inventory have distinct documented
+semantics; regex operators are not implicit.
 
-Cada hit contém `id`, `path`, `title`, `type`, `para`, `revision`, `score`,
-`parse_status`, `okf`, e snippets `{heading, line_start, line_end, text}`.
-Ordem determinística para empates por caminho. Paginação por cursor vinculado à
-consulta e geração: índice alterado produz aviso/reinício explícito.
+Each hit contains `id`, `path`, `title`, `type`, `para`, `revision`, `score`,
+`parse_status`, `okf`, and snippets `{heading, line_start, line_end, text}`.
+Ties are ordered deterministically by path. Pagination uses a cursor bound to
+the query and generation: an index change produces an explicit warning/restart.
 
-`read` retorna Markdown, frontmatter, revisão, faixas de linhas e indicadores
-OKF. Leitura por seção deve tratar headings repetidos sem escolher um deles
-silenciosamente: devolver identificadores de seção ou erro de ambiguidade.
+`read` returns Markdown, frontmatter, revision, line ranges, and OKF indicators.
+Section reading must handle repeated headings without silently picking one:
+return section identifiers or an ambiguity error.
 
-`context` empacota trechos originais com fonte e linhas, não respostas geradas.
-Respeita limite global de bytes e orçamento de tokens estimados; identifica o
-estimador, truncamentos e itens omitidos. Relações opcionais são limitadas a um
-salto. Não encher contexto com índices e logs só porque contêm muitas palavras-chave.
+`context` packages original excerpts with sources and lines, not generated
+answers. It respects a global byte limit and estimated token budget; identifies
+the estimator, truncation, and omitted items. Optional relationships are limited
+to one hop. Do not fill context with indexes and logs merely because they
+contain many keywords.
 
-Atualizações feitas fora da ferramenta precisam aparecer após uma verificação
-de frescor. Sem daemon obrigatório: cache incremental usa inventário de arquivos,
-mtime/tamanho e hashes. A leitura de uma nota e toda escrita conferem seu hash
-atual; um cache atrasado nunca autoriza sobrescrever uma revisão diferente.
+External updates must become visible after a freshness check. No daemon is
+required: an incremental cache uses a file inventory, mtime/size, and hashes.
+Reading a note and every write check its current hash; a stale cache never
+authorizes overwriting a different revision.
 
-`links` retorna arestas de entrada/saída com origem (Markdown ou proveniência),
-destino, localização e estado de resolução. Não infere relações semânticas pelo
-nome dos arquivos. `read` pode incluir essa vizinhança limitada, permitindo ao
-MCP atender a mesma operação sem um tool separado.
+`links` returns incoming/outgoing edges with origin (Markdown or provenance),
+target, location, and resolution state. It does not infer semantic relationships
+from filenames. `read` may include this bounded neighborhood so MCP can support
+the same operation without a separate tool.
 
-## 8. Escrita, concorrência e recuperação
+## 8. Writing, concurrency, and recovery
 
-Criação exige destino inexistente. `patch` e `move` exigem `expected_revision`.
-Ausência ou divergência não altera arquivos. O agente deve reler e reaplicar;
-nenhum retry cego de uma substituição total.
+Every write operation requires an explicit path. Creation requires a
+nonexistent destination. `patch` and `move` require
+`expected_revision`. Missing or mismatching revisions change no files. The
+agent must reread and reapply; never blindly retry a whole-document replacement.
 
-Exemplo de patch, também aceito pelo MCP:
+Example patch, also accepted through MCP:
 
 ```json
 {
   "expected_revision": "sha256:...",
-  "idempotency_key": "session-123/decision-redis-ttl",
-  "summary": "Corrigir TTL após teste de expiração",
+  "idempotency_key": "session-123/decision-cache-ttl",
+  "summary": "Correct TTL after the expiration test",
   "actor": "process:agent-session",
-  "body_edits": [{"old_text": "TTL de 300 segundos", "new_text": "TTL de 600 segundos"}],
+  "body_edits": [{"old_text": "TTL of 300 seconds", "new_text": "TTL of 600 seconds"}],
   "metadata_patch": {"status": "draft"}
 }
 ```
 
-Cada `old_text` deve ocorrer exatamente uma vez; zero ou múltiplas ocorrências
-falham. Para substituição de seção ou corpo completo, revisão esperada continua
-obrigatória. Remoção de metadados usa operação explícita `remove_metadata_keys`;
-não atribuir significado destrutivo implícito a `null`.
+Each `old_text` must occur exactly once; zero or multiple matches fail. Section
+or whole-body replacement still requires an expected revision. Metadata removal
+uses the explicit `remove_metadata_keys` operation; do not give `null` an
+implicit destructive meaning.
 
-### Operações coordenadas em várias notas
+### Coordinated operations across notes
 
-`apply` recebe `operations`, `idempotency_key`, `summary` e `actor`. Cada item
-usa a mesma gramática e as precondições de `create`, `patch` ou `move`, com um
-`operation_id` único. Limite inicial: 50 operações e 4 MiB por plano. `--dry-run`
-retorna arquivos afetados, diffs limitados, diagnósticos e revisões, sem gravar.
+`apply` takes `operations`, `idempotency_key`, `summary`, and `actor`. Each item
+uses the same grammar and preconditions as `create`, `patch`, or `move`: `kind`
+is `create`, `patch`, or `move`; `path` is explicit, and moves use `to`. A
+single-operation CLI input supplies operation fields alongside nonempty
+`summary`, `actor`, and `idempotency_key`; the CLI wraps it into an apply plan.
+Multi-operation plans require unique `operation_id` values; a single operation
+may have its ID generated. `body` and `body_edits` are mutually exclusive.
+Creation uses `metadata`; patches use `metadata_patch` and explicit
+`remove_metadata_keys`. A complete-file `document` replacement is accepted only
+by an explicit `repair: true` plan (`apply --repair`); repair permits an invalid
+pre-state but requires a conformant final state. Initial limit: 50 operations and 4 MiB per plan.
+`--dry-run` returns affected files, bounded diffs, diagnostics, and revisions
+without writing.
 
-Aplicar usa todo o plano em uma transação lógica: uma revisão em conflito, um
-destino ocupado ou uma nota inválida cancela o conjunto antes da publicação.
-Revalidar também as dependências de sínteses informadas no plano. Índices e log
-são derivados da transação, não operações que o agente precisa enumerar. Recibos
-distinguem criações, alterações, movimentos e arquivos mantidos sem mudanças.
+Apply uses the entire plan as one logical transaction: a conflicting revision,
+occupied destination, or invalid note cancels the set before publication.
+Revalidate synthesis dependencies declared in the plan as well. Indexes and log
+are derived from the transaction, not operations the agent must enumerate.
+Receipts distinguish creations, changes, moves, and files kept unchanged.
 
-Referências entre notas criadas no mesmo plano devem ser resolvidas no estado
-final proposto. Múltiplas operações sobre o mesmo arquivo ou destinos sobrepostos
-são recusados no MVP; o agente deve consolidar os patches. Mover e editar o
-mesmo conceito exige chamadas separadas no MVP, com revisão atualizada entre elas.
-Os mesmos limites de isolamento e recuperação
-abaixo valem para apply; não prometer transação atômica a leitores externos.
+References between notes created in one plan must resolve against the proposed
+final state. Multiple operations on one file or overlapping destinations are
+rejected in the MVP; the agent must consolidate patches. Moving and editing
+one concept requires separate calls in the MVP, with an updated revision
+between them. The isolation and recovery limits below also apply to `apply`;
+do not promise an atomic transaction to external readers.
 
-Uma operação lógica inclui nota, mudanças de links, regiões de índice e entrada
-de log. O núcleo adquire lock por base, revalida revisões, planeja o diff e valida
-os arquivos afetados antes de gravar. Registra journal durável em `.kb/state/`, grava
-temporários no mesmo filesystem, sincroniza e substitui por rename. Após crash,
-a próxima invocação recupera ou reverte antes de atender operações. Cache só
-publica a geração nova após sucesso. Falha deve informar se algum estado precisa
-de recuperação; nunca responder sucesso a uma aplicação parcial.
+A logical operation includes the note, link changes, index regions, and log
+entry. The core acquires a per-base lock, revalidates revisions, plans the diff,
+and validates affected files before writing. It records a durable journal in
+`.kb/state/`, writes temporary files on the same filesystem, synchronizes, and
+replaces files by rename. After a crash, reads return `RECOVERY_REQUIRED` without changing notes.
+`kb recover` explicitly recovers or rolls back; a new mutation recovers pending
+state before accepting its request. Creating operational lock/cache files during
+reads is permitted; notes, configuration, and Git remain unchanged. The cache publishes a new generation only
+after success. Failures must state whether recovery is needed; never report
+success for a partial application.
 
-Não há rename atômico de vários arquivos: leitores externos podem observar um
-estado transitório. Clientes da ferramenta usam o lock/geração. Editores externos
-que não respeitam o lock continuam sujeitos a corridas; detectar mudanças até o
-último ponto possível e documentar esse limite, sem prometer isolamento absoluto.
+There is no atomic multi-file rename: external readers can observe a transient
+state. Tool clients use the lock/generation. External editors that ignore the
+lock remain subject to races; detect changes until the latest possible point
+and document this limit without promising absolute isolation.
 
-`idempotency_key` mais hash do pedido identifica um efeito. Repetição do mesmo
-pedido retorna o resultado anterior sem duplicar nota ou log; reutilizar a chave
-com outro pedido falha. Guardar recibos no journal e reconstruí-los na recuperação,
-para que um crash entre publicação e resposta não duplique efeitos.
+`idempotency_key` plus request hash identifies an effect. Repeating the same
+request returns the previous result without duplicating notes or log entries;
+reusing the key with another request fails. Store receipts in the journal and
+reconstruct them during recovery so a crash between publication and response
+does not duplicate effects. In v0.1 receipts do not expire. Request hashing
+excludes `dry_run`; dry-run persists no receipt. Check an existing receipt
+before retry preconditions so a successful retry can replay after revisions change.
 
-Sem commit, pull, push, hook Git ou mudança de branch implícitos. Git é uma camada
-opcional operada separadamente. MVP não expõe exclusão permanente: arquivamento
-e movimentação atendem o ciclo de memória.
+The v0.1 journal is `.kb/state/pending.json`, with version, request digest/key,
+prepared/committed state, before/after bytes, and receipt. It is atomically
+written and fsynced before publication. Synchronize files and directory metadata,
+then persist the durable commit marker. Recovery rolls back before that marker
+and rolls forward after it, reconstructing receipts under
+`.kb/state/receipts/` before durably removing the pending journal. Interrupted
+recovery is itself idempotent; failures at every boundary require tests.
 
-## 9. Proveniência, confiança e validade
+No implicit Git commit, pull, push, hook, or branch changes. Git is an optional,
+separately operated layer. The MVP exposes no permanent deletion: archiving and
+moving support the memory lifecycle.
 
-- `sources` é lista de objetos com `resource`; preservar campos desconhecidos.
-  Referências externas são inertes e não são baixadas automaticamente.
-- `generated.by` identifica o ator real; `generated.at` recebe instante com fuso
-  em uma alteração significativa. Não reescrever a data em um no-op.
-- `verified` aceita lista ou mapping único. Sem ele: unverified; apenas atores
-  não humanos: machine-confirmed; presença de `human:`: human-reviewed.
-- Escrita por agente não pode criar uma alegação de revisão humana. Não deduzir
-  identidade humana de um token ou parâmetro de ator fornecido pelo modelo.
-- Mudança substantiva no corpo ou nas afirmações remove `verified` ativo e deixa
-  o motivo no log. Uma ferramenta de revisão humana poderá ser adicionada depois,
-  com confirmação fora do controle do modelo. Esses controles são política do
-  produto, além dos requisitos mínimos do OKF.
-- `stale_after` segue o instante ISO 8601 com fuso da revisão oficial fixada nesta
-  spec. Datas sem hora recebem diagnóstico e não devem ser
-  silenciosamente tratadas como meia-noite em um fuso adivinhado. `--as-of` permite
-  testes determinísticos. Ausência significa validade não especificada.
-- Attested Computation é lido e validado estaticamente; não executar código,
-  acessar executores ou declarar que um recibo foi atestado.
+## 9. Provenance, trust, and validity
 
-## 10. Índices e log
+- `sources` is a list of objects with `resource`; preserve unknown fields.
+  External references are inert and never downloaded automatically.
+- `generated.by` identifies the real actor; `generated.at` receives a timestamp
+  with timezone on a meaningful change. Do not rewrite the timestamp on a no-op.
+- `verified` accepts a list or a single mapping. Absent: unverified; only
+  nonhuman actors: machine-confirmed; a `human:` actor present: human-reviewed.
+- An agent write cannot create a claim of human review. Do not infer human
+  identity from a token or actor parameter supplied by the model.
+- A substantive change to the body or claims removes active `verified` and
+  records the reason in the log. A human-review tool may be added later with
+  confirmation outside the model's control. These controls are product policy
+  beyond OKF's minimum requirements.
+- `stale_after` follows the timezone-bearing ISO 8601 instant in the official
+  revision pinned by this spec. Date-only values receive a diagnostic and must
+  not silently become midnight in a guessed timezone. `--as-of` enables
+  deterministic tests. Absence means unspecified validity.
+- Attested Computation is read and statically validated; do not execute code,
+  contact executors, or claim a receipt has been attested.
 
-Pesquisa usa o inventário em disco, não depende de `index.md` estar completo.
-Índices atendem a navegação progressiva: arquivos diretos e links para índices
-das subpastas, com descrição quando disponível.
+## 10. Indexes and log
 
-Para não destruir os índices manuais atuais, a manutenção usa regiões geradas
-delimitadas por comentários HTML. Preserva frontmatter permitido, introdução e
-links manuais. Adotar um índice inteiro como gerado exige `maintain --dry-run`
-e ação explícita de takeover. Detectar duplicatas entre conteúdo manual e região
-gerada. Manter uma ordem determinística e escapar Markdown vindo de títulos.
+Search uses the on-disk inventory and does not depend on a complete `index.md`.
+Indexes support progressive navigation: direct files and links to subdirectory
+indexes, with descriptions when available.
 
-O log global registra uma linha concisa por operação lógica sob a data do fuso
-configurado, mais recente primeiro, com links e resumo. Instantes de metadados
-continuam com fuso explícito. Se um arquivo reservado existente for inválido ou
-um reparo exigir apagar texto manual, a escrita falha antes de modificar notas,
-com proposta de reparo. Nunca substituir todo o log existente.
+To preserve existing manual indexes, maintenance uses generated regions bounded
+by HTML comments. Preserve allowed frontmatter, introductions, and manual links.
+Taking over an entire index as generated requires `maintain --dry-run` and an
+explicit takeover action. Detect duplicates between manual and generated
+content. Use deterministic ordering and escape Markdown from titles.
 
-O tipo de evento (`ingest`, `synthesis`, `maintenance` ou `edit`) pode ser gravado
-na linha para facilitar a leitura. Preservar eventos anteriores; uma correção é
-um novo evento. Continuar usando seções de data `YYYY-MM-DD` do OKF, mesmo que o
-exemplo do gist use outro formato. Não gerar evento para toda consulta sem efeito.
+The global log records a concise line per logical operation under the date in
+UTC in v0.1, newest first, with links and summary. Metadata instants
+still use explicit timezones. If an existing reserved file is invalid or repair
+requires deleting manual text, the write fails before changing notes and offers
+a repair proposal. Never replace the entire existing log.
 
-## 11. Interface MCP
+An event type (`ingest`, `synthesis`, `maintenance`, or `edit`) may appear in
+the line to aid reading. Preserve previous events; a correction is a new event.
+Keep OKF's `YYYY-MM-DD` date sections even if the gist uses another format.
+Do not create an event for every query without an effect.
 
-Mesmo núcleo e DTOs da CLI. Negociar a versão suportada pelo SDK oficial; usar
-MCP `2025-11-25` como baseline de interoperabilidade comprovada nos experimentos.
-Não implementar uma variante ad hoc de JSON-RPC. Transportes futuros devem
-reutilizar o núcleo e declarar seus requisitos de autenticação separadamente.
+## 11. MCP interface
 
-| Tool | Entrada principal | Resultado |
+Use the same core and DTOs as the CLI. Negotiate the version supported by the
+official SDK; use MCP `2025-11-25` as the interoperability baseline demonstrated
+in the experiments. Do not implement an ad hoc JSON-RPC variant. Future
+transports must reuse the core and declare authentication requirements separately.
+
+| Tool | Main input | Result |
 | --- | --- | --- |
-| `kb_status` | sem argumentos | Escopo, índice e capacidades. |
-| `kb_list` | pasta/categoria, cursor, limite | Inventário paginado. |
-| `kb_search` | query, filtros, cursor, limite | Hits estruturados. |
-| `kb_read` | path, seção/faixa e relações opcionais | Fonte, revisão e vizinhança limitada. |
-| `kb_context` | query, filtros, orçamento | Trechos citáveis limitados. |
-| `kb_create` | path ou categoria+título, type, body, metadata, resumo, chave | Recibo e revisão. |
-| `kb_patch` | path, expected_revision, edições, resumo, chave | Diff resumido e revisão nova. |
-| `kb_move` | path, destino, expected_revision, resumo, chave | Mapeamento e links alterados. |
-| `kb_apply` | operations, resumo, chave, ator, dry_run | Plano ou recibo de aplicação coordenada. |
-| `kb_validate` | escopo e perfil okf/health | Relatório com camadas distintas. |
+| `kb_status` | no arguments | Scope, index, and capabilities. |
+| `kb_list` | folder/category, cursor, limit | Paginated inventory. |
+| `kb_search` | query, filters, cursor, limit | Structured hits. |
+| `kb_read` | path, section/range, optional relationships | Source, revision, and bounded neighborhood. |
+| `kb_context` | query, filters, budget | Bounded citable excerpts. |
+| `kb_create` | explicit path, type, body, metadata, summary, key | Receipt and revision. |
+| `kb_patch` | path, expected_revision, edits, summary, key | Summarized diff and new revision. |
+| `kb_move` | path, destination, expected_revision, summary, key | Mapping and changed links. |
+| `kb_apply` | operations, summary, key, actor, dry_run | Plan or coordinated-application receipt. |
+| `kb_validate` | scope and okf/health profile | Report with distinct layers. |
 
-Schemas de entrada fechados, descrições pequenas, limites explícitos. Não
-oferecer shell genérico ou dezenas de tools de UI. Em modo read-only, ferramentas
-de escrita somem de `tools/list` e continuam bloqueadas em chamadas diretas.
+Closed input schemas, short descriptions, explicit limits. Do not expose a
+generic shell or dozens of UI tools. In read-only mode, write tools disappear
+from `tools/list` and remain blocked on direct calls.
 
-Retornar `structuredContent` com envelope de domínio e conteúdo textual compacto
-para clientes compatíveis. Falha de ferramenta usa `isError: true` mais código
-de domínio, em vez de esconder `ok: false` dentro de um sucesso de protocolo.
-Erros de validação da base são dados do relatório, não necessariamente falha de
-execução do tool. Marcar `readOnlyHint` e demais annotations corretamente, sem
-tratá-las como controle de acesso.
+Return `structuredContent` with the domain envelope and compact textual content
+for compatible clients. Tool failure uses `isError: true` plus a domain code
+rather than hiding `ok: false` within a protocol success. Base-validation errors
+are report data, not necessarily tool-execution failures. Set `readOnlyHint`
+and other annotations correctly without treating them as access control.
 
-Expor recursos paginados em URIs `kb://local/...` com caminhos percent-encoded e
-revisão no resultado. Essa URI é extensão de transporte, não o Concept ID OKF.
-O servidor fica preso à raiz de inicialização: um argumento do modelo não troca
-a base para outro diretório. Prompts e subscriptions não são requisitos do MVP.
+Expose paginated resources at `kb://local/...` URIs with percent-encoded paths
+and revision in the result. This URI is a transport extension, not the OKF
+Concept ID. The server is confined to its startup root: a model argument cannot
+switch it to another directory. Prompts and subscriptions are not MVP requirements.
 
-## 12. Limites operacionais
+## 12. Operational limits
 
-Recusar caminhos fora da raiz, `..`, caminhos absolutos em operações de arquivos,
-symlinks e escapes por normalização. Links de conhecimento fora do bundle podem
-ser exibidos como referências, mas não abertos pela camada de arquivos. Tratar
-colisões de caixa em filesystems e destinos já existentes antes de mover.
+Reject out-of-root paths, `..`, absolute file-operation paths, symlinks, and
+normalization escapes. Knowledge links outside the bundle may be shown as
+references but never opened by the file layer. Handle filesystem case collisions
+and existing destinations before moving.
 
-Valores iniciais: nota de até 1 MiB; leitura de até 256 KiB por resposta; consulta
-de até 4.096 caracteres; 10 hits padrão, máximo 100; contexto de 2.000 tokens
-estimados padrão, máximo 16.000 e teto de 256 KiB; limites também para profundidade
-YAML e número de operações de patch. Limites configuráveis têm teto documentado.
+Initial values: notes up to 1 MiB; reads up to 256 KiB per response; queries up
+to 4,096 characters; 10 hits by default, maximum 100; context of 2,000 estimated
+tokens by default, maximum 16,000 and a 256 KiB ceiling; limits also apply to
+YAML depth and patch operation count. Configurable limits have documented ceilings.
 
-Sem telemetria nem acesso à rede por padrão. Erros não incluem ambiente inteiro,
-credenciais ou arquivos fora do escopo. Cache é local, gravado com permissões
-adequadas ao usuário, e não altera a política de acesso dos arquivos originais.
+No telemetry or network access by default. Errors do not include the entire
+environment, credentials, or out-of-scope files. Cache is local, written with
+user-appropriate permissions, and does not change original file access policy.
 
-## 13. Arquitetura e linguagem
+## 13. Architecture and language
 
-Camadas: filesystem/escopo → parser e modelo → inventário/busca/relações → serviço
-de leitura e transações → adaptadores CLI e MCP. Nenhuma regra de negócio mora
-apenas em um adaptador. Modelo e parser não dependem de um servidor MCP em execução.
+Layers: filesystem/scope → parser and model → inventory/search/relationships →
+read and transaction services → CLI and MCP adapters. No business rule lives
+only in an adapter. Model and parser do not depend on a running MCP server.
 
-Baseline adotada para a implementação: **Go**, pela distribuição em binário e pela existência de
-referências próximas em Go. Rust também atende, especialmente se o protótipo
-encontrar vantagens práticas de parsing e indexação. Os testes realizados não
-comparam implementações próprias em Rust e Go e não provam superioridade de uma.
+Adopted implementation language: **Go**, for binary distribution and nearby Go
+references, as recorded in the foundation decision. Rust was a suitable design
+alternative, but v0.1 uses Go. The experiments did not compare custom Rust and
+Go implementations and do not prove either superior.
 
-Escolher bibliotecas e versões no protótipo, contra documentação atual. Usar SDK
-MCP oficial. Índice lexical pode usar SQLite FTS5 ou uma biblioteca local de BM25;
-é cache e precisa passar o mesmo conjunto de consultas. Se SQLite exigir CGO ou
-dependências de plataforma, avaliar o custo real antes de fixar a escolha.
-Não embutir modelos de dezenas de megabytes no binário básico.
+Choose libraries and versions in the prototype against current documentation.
+Use the official MCP SDK. The lexical index may use SQLite FTS5 or a local BM25
+library; it is cache and must pass the same query suite. If SQLite requires
+CGO or platform dependencies, evaluate the actual cost before committing to it.
+Do not embed models weighing tens of megabytes in the base binary.
 
-Para a implementação em Go, o [levantamento spf13](research.md)
-registra Cobra como candidato preferencial para o adaptador CLI, com pflag pelo
-ecossistema dele. Viper, Afero, Fileflow e Pathologize têm aplicações condicionais
-e limites frente ao contrato desta spec. As recomendações são insumos para o
-protótipo; não fixam dependências nem substituem os requisitos de revisão,
-durabilidade, confinamento e preservação de conteúdo. Os guias go-skills e
-cli-style servem como referências de desenvolvimento e revisão, sujeitos às
-escolhas explícitas do projeto.
+For Go implementation, the [spf13 research summary](research.md) records Cobra
+as the preferred CLI adapter candidate, with pflag through its ecosystem.
+Viper, Afero, Fileflow, and Pathologize have conditional uses and limits against
+this contract. Recommendations inform the prototype; they do not fix dependencies
+or replace revision, durability, confinement, and content-preservation requirements.
+The go-skills and cli-style guides mentioned in the evaluation are development
+and review references, subject to explicit project choices rather than normative
+or required dependencies.
 
-## 14. Critérios de aceite e plano de entrega
+## 14. Acceptance criteria and delivery plan
 
-| ID | Evidência exigida |
+| ID | Required evidence |
 | --- | --- |
-| A01 | Busca/read funcionam sem UI, Git, modelo, credencial ou rede. |
-| A02 | CLI e MCP retornam os mesmos IDs, revisões, filtros e erros em fixtures equivalentes. |
-| A03 | Concept mínimo com só `type` é conformante; tipos e campos desconhecidos sobrevivem. |
-| A04 | Notas sem YAML ou type são reportadas como inválidas; escrita normal não aceita uma base não conformante. Não há requisito de busca ou migração de legado. |
-| A05 | YAML inválido não oculta silenciosamente notas; status informa quantos arquivos não foram parseados. |
-| A06 | Mapping único em `verified` é aceito; mudança de conteúdo invalida a revisão ativa. |
-| A07 | Instante `stale_after` com fuso é interpretado corretamente; formato incompatível é diagnosticado. |
-| A08 | Busca com e sem acentos recupera o mesmo conjunto esperado em português. |
-| A09 | Editar corpo preserva comentário YAML e campos não tocados; no-op preserva bytes e não gera log. |
-| A10 | Duas escritas com a mesma revisão: apenas a primeira aplica; conflito não muda nota, índice ou log. |
-| A11 | Retry com mesma chave não duplica efeitos, inclusive após falha entre publicação e resposta. |
-| A12 | Create/edit atualizam nota, índice e log; falhas injetadas em cada etapa permitem recuperação. |
-| A13 | Move atualiza links Markdown resolvidos e âncoras, sem alterar referências ambíguas ou externas indevidamente. |
-| A14 | Traversal, symlinks, colisões e arquivo fora da raiz não permitem leitura nem escrita. |
-| A15 | `--read-only` oculta e recusa mutações; stdout MCP não contém logs. |
-| A16 | Contexto respeita teto global, informa truncamentos e fornece linhas/revisões das fontes. |
-| A17 | Editar via editor externo invalida cache e revisão na próxima operação relevante. |
-| A18 | Exportar inclui relatório e lista de exclusões; não anuncia conformidade de arquivos não examinados. |
-| A19 | Instalação/init não alteram configs globais ou registram agentes automaticamente. |
-| A20 | Trocar o perfil de navegação PARA por outra hierarquia não altera parsing, identidade e validade OKF dos mesmos arquivos. |
-| A21 | Uma ingestão sintética cria uma nota de fonte e atualiza duas notas existentes em apply; conflito em uma delas não publica nenhuma mudança. |
-| A22 | Os hashes de snapshots originais permanecem iguais após criar, editar, mover e aplicar planos na wiki. |
-| A23 | Uma síntese com basis_revisions de dois conceitos é marcada para revisão quando um deles muda; não é reescrita nem declarada falsa automaticamente. |
-| A24 | Health identifica órfão, link ausente, conceito fora do índice e dependência alterada, sem alegar detecção determinística de contradições. |
-| A25 | Comparação persistida pelo agente mantém proveniência; repetir uma consulta sem aprendizado não cria nota ou evento. |
-| A26 | Sem AGENTS.md dentro da base, CLI/MCP operam normalmente. No agente alvo, instrução do workdir e skill instalada conduzem consulta à base externa antes de responder; aprendizado reutilizável é atualizado e consulta sem novidade não escreve. Registrar evidência observada, sem prometer adesão universal dos modelos. |
+| A01 | Search/read work without a UI, Git, model, credentials, or network. |
+| A02 | CLI and MCP return the same IDs, revisions, filters, and errors on equivalent fixtures. |
+| A03 | A minimal concept with only `type` conforms; unknown types and fields survive. |
+| A04 | Notes without YAML or type are reported as invalid; normal writes reject a nonconformant base. Legacy search or migration is not required. |
+| A05 | Invalid YAML never silently hides notes; status reports how many files could not be parsed. |
+| A06 | A single mapping in `verified` is accepted; a content change invalidates active verification. |
+| A07 | A timezone-bearing `stale_after` instant is interpreted correctly; incompatible formats are diagnosed. |
+| A08 | Search with and without accents retrieves the same expected Portuguese result set. |
+| A09 | Body edits preserve YAML comments and untouched fields; a no-op preserves bytes and produces no log entry. |
+| A10 | Of two writes with the same revision, only the first applies; a conflict changes no note, index, or log. |
+| A11 | A retry with the same key never duplicates effects, including after failure between publication and response. |
+| A12 | Create/edit update the note, index, and log; failures injected at every stage permit recovery. |
+| A13 | Move updates resolved Markdown links and anchors without improperly changing ambiguous or external references. |
+| A14 | Traversal, symlinks, collisions, and out-of-root files permit neither reading nor writing. |
+| A15 | `--read-only` hides and rejects mutations; MCP stdout contains no logs. |
+| A16 | Context respects the global ceiling, reports truncation, and provides source lines/revisions. |
+| A17 | External-editor changes invalidate cache and revision at the next relevant operation. |
+| A18 | Export includes a report and exclusion list; it never claims conformance for unexamined files. |
+| A19 | Installation/init never change global configuration or register agents automatically. |
+| A20 | Replacing PARA navigation with another hierarchy does not change parsing, identity, or OKF validity of the same files. |
+| A21 | A synthetic ingestion creates a source note and updates two existing notes through apply; a conflict in either publishes no changes. |
+| A22 | Original snapshot hashes remain unchanged after wiki creation, editing, moving, and plan application. |
+| A23 | A synthesis with basis_revisions for two concepts is flagged for review when either changes; it is never automatically rewritten or declared false. |
+| A24 | Health identifies an orphan, missing link, concept absent from an index, and changed dependency without claiming deterministic contradiction detection. |
+| A25 | An agent-persisted comparison retains provenance; repeating a query without learning creates no note or event. |
+| A26 | CLI/MCP operate normally without AGENTS.md inside the base. In the target agent, workdir instructions and the installed skill lead to external-base consultation before answering; reusable learning is updated and a query without new information does not write. Record observed evidence without promising universal model adherence. |
 
-Incrementos: (1) parser/escopo/validate/read; (2) índice/search/context e consultas
-de referência; (3) criação/patch/apply/transações/log/índice; (4) move/archive,
-links e health; (5) MCP, workflows de ingestão/síntese/revisão, exportação e
-distribuição. Validar cada incremento antes do próximo. Workflows são instruções
-para o agente externo, sem chamadas a LLM adicionadas ao núcleo.
+Increments: (1) parser/scope/validate/read; (2) index/search/context and reference
+queries; (3) create/patch/apply/transactions/log/index; (4) move/archive, links,
+and health; (5) MCP, ingestion/synthesis/review workflows, export, and
+distribution. Validate each increment before starting the next. Workflows are
+instructions for an external agent, with no LLM calls added to the core.
 
-Medir em macOS arm64 e Linux amd64/arm64: tamanho de binário, RSS, início frio,
-reindexação e p50/p95 de busca, declarando hardware e corpus. Metas iniciais para
-10 mil notas sintéticas de 2 KiB: busca aquecida p95 ≤ 150 ms e RSS ≤ 150 MiB;
-reindexação completa ≤ 10 s. São metas a validar, não resultados já obtidos.
+Measure on macOS arm64 and Linux amd64/arm64: binary size, RSS, cold start,
+reindexing, and search p50/p95, declaring hardware and corpus. Initial targets
+for 10,000 synthetic notes of 2 KiB each: warm search p95 ≤ 150 ms and RSS ≤
+150 MiB; full reindex ≤ 10 s. These are targets to validate, not measured results.
 
-Decisões pendentes para a implementação: biblioteca de
-busca e política de retenção dos recibos de idempotência. A interface e os testes
-acima permitem avaliar essas escolhas sem reescrever o contrato dos agentes.
+Pending implementation decision: search library. The v0.1 contract retains
+idempotency receipts without expiry. The interface and tests above allow evaluating these choices
+without rewriting the agent contract.
 
-### Revisão de prontidão — 2026-10-24
+### Readiness review — 2026-10-24
 
-A v0.3 está pronta como direção de produto e base de um protótipo técnico. Não
-é ainda um contrato integralmente executável. Antes de implementar as operações
-duráveis e publicar uma interface estável, fechar:
+Version 0.3 supplies product direction and the technical prototype requirements.
+The v0.1 implementation clarification in `docs/interfaces.md` closes the earlier
+contract gaps; shared DTOs live in `internal/api/types.go`. These files are
+integrated separately from this documentation preparation. In particular:
 
-1. Schemas versionados de entrada e saída de cada operação, erros e exemplos
-   completos de planos. As tabelas e o envelope desta versão não substituem esses
-   arquivos; a gramática de create/patch/move precisa ser inequívoca.
-2. Máquina de estados do journal, ponto de commit, estratégia de recuperação,
-   retenção de recibos e falhas injetadas. Resolver explicitamente o caso de uma
-   leitura encontrar recuperação pendente: a regra de não modificar notas em
-   consultas deve ser conciliada com a recuperação descrita na seção 8.
-3. Contrato de reparo de base inválida: comando/entrada, mudanças permitidas e
-   validação final. Também fechar a descoberta de raiz no primeiro init e o
-   contrato do setup explícito no workdir. A instrução de entrada fica no workdir;
-   AGENTS.md dentro do bundle é opcional, conforme a seção 3.
-4. Validar no protótipo parser com preservação de YAML, índice lexical e SDK MCP;
-   registrar versões e limitações em decisões de arquitetura. Go é a baseline
-   adotada no bootstrap do repositório; parser e busca ainda serão prototipados.
+1. Versioned `kb.v1` DTOs define input/output operations and errors. Writes use
+   explicit paths, create/patch/move kinds, and unique multi-operation IDs.
+2. The journal has prepared/committed states, a durable commit marker, rollback
+   before commit and roll-forward afterward, and receipts retained without
+   expiry. Reads encountering pending recovery return `RECOVERY_REQUIRED`
+   without note mutation; recovery is explicit or precedes a new mutation.
+3. `apply --repair` allows an invalid pre-state with explicit document replacement
+   and requires a conformant final state. First init uses an explicit root,
+   `KB_ROOT`, or the current directory. Workdir integration remains an explicit
+   setup action; AGENTS.md inside the bundle remains optional.
+4. Go is the adopted implementation language. Parser preservation, lexical search,
+   and official MCP SDK behavior still require prototype tests and recorded
+   versions/limitations. A contract decision does not establish implementation.
 
-O nome final não bloqueia o protótipo. As metas de desempenho continuam sem
-medição. Ver [desenho do projeto](project-overview.md) para a explicação do produto,
-arquitetura e sequência de entrega. Esta revisão esclarece a v0.3, sem declarar
-implementação, validação de desempenho ou aprovação das escolhas pendentes.
+The final name does not block the prototype. Performance targets remain
+unmeasured. See the [project overview](project-overview.md) for product,
+architecture, and delivery sequence. This review does not claim application
+implementation, passing acceptance evidence, or measured performance.

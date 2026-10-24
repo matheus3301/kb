@@ -81,6 +81,27 @@ jobs:
             (root / "absent.md").write_text("exists\n")
             self.assertEqual([], quality.local_link_findings(root, page))
 
+    def test_reference_and_source_links_cannot_escape_checkout(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            page = root / "README.md"
+            page.write_text("[private]: ../private.md\nresource: ../private.md\n")
+            self.assertEqual(2, len(quality.local_link_findings(root, page)))
+
+    def test_public_docs_reject_workstation_paths_and_local_uris(self):
+        page = Path("README.md")
+        personal_path = "/" + "Users/" + "synthetic-person" + "/private/note.md"
+        local_uri = "file" + "://private/note.md"
+        self.assertTrue(quality.public_content_findings(page, personal_path))
+        self.assertTrue(quality.public_content_findings(page, local_uri))
+        self.assertEqual([], quality.public_content_findings(page, "./example-knowledge"))
+
+    def test_markdown_language_guard_allows_labeled_synthetic_code_examples(self):
+        page = Path("README.md")
+        word = "conhe" + "cimento"
+        self.assertTrue(quality.public_content_findings(page, word))
+        self.assertEqual([], quality.public_content_findings(page, "Synthetic search text:\n```text\n" + word + "\n```"))
+
     def test_verified_claim_with_existing_evidence_is_accepted(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
