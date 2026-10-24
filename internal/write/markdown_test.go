@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/matheus3301/kb/internal/api"
 )
 
 func TestIndexMarkersInCodeExamplesPreserveManualText(t *testing.T) {
@@ -103,4 +105,38 @@ func FuzzIndexRegion(f *testing.F) {
 			t.Fatalf("invalid managed region offsets: %d %d", start, end)
 		}
 	})
+}
+
+func TestNestedListLinksRelocateWhileIndentedCodeRemainsUnchanged(t *testing.T) {
+	for _, container := range []string{"- Parent\n    - ", "1. Parent\n    - ", "-\tParent\n\t- ", "> - Parent\n>     - "} {
+		t.Run(container, func(t *testing.T) {
+			s, p := setup(t)
+			put(t, p, "a.md", document("Concept", "# Anchor\nEvidence"))
+			content := container + "[Evidence](a.md#anchor)\n\nOutside paragraph.\n\n    [Code example](a.md#anchor)\n\n- Parent\n\n      [Nested code](a.md#anchor)\n"
+			put(t, p, "ref.md", document("Concept", content))
+			// The Provider's parser has already confirmed the nested list reference.
+			p.extraLinks = []api.Link{{From: "ref.md", To: "a.md", Kind: "markdown", Resolved: true, Line: 6}}
+			request := plan(api.Operation{Kind: "move", Path: "a.md", To: "nested/a.md", ExpectedRevision: api.Revision(get(t, p, "a.md"))})
+			if _, err := s.Apply(context.Background(), request); err != nil {
+				t.Fatal(err)
+			}
+			actual := string(get(t, p, "ref.md"))
+			if !strings.Contains(actual, container+"[Evidence](nested/a.md#anchor)") {
+				t.Fatalf("nested reference not relocated: %s", actual)
+			}
+			for _, code := range []string{"    [Code example](a.md#anchor)", "      [Nested code](a.md#anchor)"} {
+				if !strings.Contains(actual, code) {
+					t.Fatalf("indented code was rewritten: %s", actual)
+				}
+			}
+		})
+	}
+}
+
+func TestListContainerFencesRemainCode(t *testing.T) {
+	text := "- Parent\n\n  ```html\n  - [Example](a.md)\n  ```go\n  - [Still code](a.md)\n  ```\n\n  - [Actual](a.md)\n"
+	spans := markdownDestinations(text)
+	if len(spans) != 1 || text[spans[0].start:spans[0].end] != "a.md" || spans[0].start < strings.Index(text, "[Actual]") {
+		t.Fatalf("list fences exposed examples: %+v", spans)
+	}
 }

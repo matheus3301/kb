@@ -215,12 +215,9 @@ func (s *Service) prepare(root *os.Root, snapshot api.Snapshot, plan api.Plan) (
 			target = op.To
 		}
 		after[target] = fresh
-		if op.Kind != "move" || op.Document != nil || op.Body != nil || len(op.BodyEdits) > 0 || len(op.MetadataPatch) > 0 || len(op.RemoveMetadataKeys) > 0 {
+		if !bytes.Equal(old, fresh) && (op.Kind != "move" || op.Document != nil || op.Body != nil || len(op.BodyEdits) > 0 || len(op.MetadataPatch) > 0 || len(op.RemoveMetadataKeys) > 0) {
 			authored[target] = op.Path
 		}
-	}
-	if err := s.dependencies(before, after, moves, authored); err != nil {
-		return nil, nil, nil, err
 	}
 	if len(moves) > 0 {
 		var err error
@@ -246,6 +243,9 @@ func (s *Service) prepare(root *os.Root, snapshot api.Snapshot, plan api.Plan) (
 		}
 	}
 	if err := s.conform(after); err != nil {
+		return nil, nil, nil, err
+	}
+	if err := s.dependencies(before, after, moves, authored); err != nil {
 		return nil, nil, nil, err
 	}
 	return before, after, warnings, nil

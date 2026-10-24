@@ -19,13 +19,15 @@ type destination struct {
 func markdownDestinations(text string) []destination {
 	var spans []destination
 	var fence codeFence
+	var containers listContext
 	offset := 0
 	for _, line := range strings.SplitAfter(text, "\n") {
-		if fence.consume(line) {
+		content, contentStart := containers.content(line, fence.marker != 0)
+		if fence.consume(content) {
 			offset += len(line)
 			continue
 		}
-		for i := 0; i < len(line); i++ {
+		for i := contentStart; i < len(line); i++ {
 			if line[i] == '\\' {
 				i++
 				continue
@@ -49,7 +51,7 @@ func markdownDestinations(text string) []destination {
 			switch line[i+1] {
 			case '(':
 			case ':':
-				if strings.TrimSpace(line[:i]) == "" || !strings.HasPrefix(strings.TrimSpace(line[:i]), "[") {
+				if strings.TrimSpace(line[contentStart:i]) == "" || !strings.HasPrefix(strings.TrimSpace(line[contentStart:i]), "[") {
 					continue
 				}
 			default:

@@ -3,6 +3,9 @@ package write
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -122,4 +125,30 @@ func assertReviewWarning(t *testing.T, receipt api.Receipt, name string) {
 		}
 	}
 	t.Fatalf("missing review warning for %s: %+v", name, receipt.Warnings)
+}
+
+func TestAuthoredSynthesisRequiresFinalDependencyBytesAfterMove(t *testing.T) {
+	s, p := setup(t)
+	put(t, p, "other.md", document("Concept", "Other"))
+	put(t, p, "basis.md", document("Concept", "[Other](other.md#anchor)"))
+	prior := api.Revision(get(t, p, "basis.md"))
+	request := api.Plan{Actor: "synthetic-agent", Summary: "Move evidence and author synthesis", IdempotencyKey: "final-dependency", Operations: []api.Operation{
+		{OperationID: "move", Kind: "move", Path: "basis.md", To: "nested/basis.md", ExpectedRevision: prior},
+		{OperationID: "synthesis", Kind: "create", Path: "new.md", Type: "Synthesis", Body: body("New authored synthesis"), Metadata: map[string]any{"basis_revisions": []any{map[string]any{"path": "basis.md", "revision": prior}}}},
+	}}
+	before := inventory(t, p)
+	_, err := s.Apply(context.Background(), request)
+	errorCode(t, err, "REVISION_CONFLICT")
+	equalInventory(t, before, inventory(t, p))
+	if _, err := os.Stat(filepath.Join(p.root, pendingPath)); !errors.Is(err, os.ErrNotExist) {
+		t.Fatal("stale authored evidence created a journal")
+	}
+	final := api.Revision(document("Concept", "[Other](../other.md#anchor)"))
+	request.Operations[1].Metadata["basis_revisions"] = []any{map[string]any{"path": "nested/basis.md", "revision": final}}
+	if _, err := s.Apply(context.Background(), request); err != nil {
+		t.Fatal(err)
+	}
+	if api.Revision(get(t, p, "nested/basis.md")) != final {
+		t.Fatal("dependency final bytes differed from its checked revision")
+	}
 }

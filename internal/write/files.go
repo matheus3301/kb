@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"syscall"
 	"unicode"
 	"unicode/utf8"
 
@@ -39,7 +40,7 @@ func inspect(root *os.Root, name string) error {
 	}
 	dir := "."
 	for _, part := range strings.Split(name, "/") {
-		f, err := root.Open(dir)
+		f, err := openRead(root, dir)
 		if errors.Is(err, os.ErrNotExist) {
 			return nil
 		}
@@ -148,7 +149,17 @@ func readImage(root *os.Root, name string, limit int64) (image, error) {
 	if err := inspect(root, name); err != nil {
 		return image{}, err
 	}
-	f, err := root.Open(name)
+	info, err := root.Lstat(name)
+	if errors.Is(err, os.ErrNotExist) {
+		return image{}, nil
+	}
+	if err != nil {
+		return image{}, err
+	}
+	if !info.Mode().IsRegular() {
+		return image{}, problem("INVALID_PATH", "a regular file is required")
+	}
+	f, err := openRead(root, name)
 	if errors.Is(err, os.ErrNotExist) {
 		return image{}, nil
 	}
@@ -170,6 +181,11 @@ func readImage(root *os.Root, name string, limit int64) (image, error) {
 		return image{}, problem("INPUT_TOO_LARGE", "file exceeds the byte limit")
 	}
 	return image{Exists: true, Data: data, Mode: uint32(info.Mode().Perm())}, nil
+}
+
+// Nonblocking, no-follow opens keep special-file swaps from trapping a lock owner.
+func openRead(root *os.Root, name string) (*os.File, error) {
+	return root.OpenFile(name, os.O_RDONLY|syscall.O_NONBLOCK|syscall.O_NOFOLLOW, 0)
 }
 
 func sameImage(a, b image) bool { return a.Exists == b.Exists && bytes.Equal(a.Data, b.Data) }
@@ -194,7 +210,7 @@ func validatePathSet(files map[string][]byte) error {
 }
 
 func syncDirectory(root *os.Root, name string) error {
-	f, err := root.Open(name)
+	f, err := openRead(root, name)
 	if err != nil {
 		return err
 	}

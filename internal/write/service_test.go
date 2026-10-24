@@ -88,6 +88,7 @@ type fakeProvider struct {
 	root        string
 	config      api.Config
 	snapshotErr error
+	extraLinks  []api.Link
 }
 
 func (p *fakeProvider) Root() string       { return p.root }
@@ -147,6 +148,7 @@ func (p *fakeProvider) SnapshotUnlocked(ctx context.Context) (api.Snapshot, erro
 		}
 	}
 	snapshot.Generation = api.Generation(snapshot.Files)
+	snapshot.Links = append(snapshot.Links, p.extraLinks...)
 	return snapshot, nil
 }
 
