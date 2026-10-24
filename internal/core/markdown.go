@@ -5,44 +5,6 @@ import (
 	"strings"
 )
 
-// fenceState tracks the delimiter and minimum closing width of a code fence.
-type fenceState struct {
-	mark  byte
-	width int
-}
-
-func (f *fenceState) skip(line string) bool {
-	trim := strings.TrimLeft(line, " ")
-	indent := len(line) - len(trim)
-	if indent >= 4 && f.width == 0 {
-		return true
-	}
-	if len(trim) == 0 {
-		return f.width > 0
-	}
-	mark := trim[0]
-	width := 0
-	if mark == '`' || mark == '~' {
-		for width < len(trim) && trim[width] == mark {
-			width++
-		}
-	}
-	if f.width > 0 {
-		if mark == f.mark && width >= f.width && strings.TrimSpace(trim[width:]) == "" {
-			f.width = 0
-		}
-		return true
-	}
-	if indent <= 3 && width >= 3 {
-		if mark == '`' && strings.ContainsRune(trim[width:], '`') {
-			return false
-		}
-		f.mark = mark
-		f.width = width
-		return true
-	}
-	return false
-}
 func escaped(line string, offset int) bool {
 	slashes := 0
 	for i := offset - 1; i >= 0 && line[i] == '\\'; i-- {
@@ -50,81 +12,47 @@ func escaped(line string, offset int) bool {
 	}
 	return slashes%2 == 1
 }
-func maskInlineCode(line string) string {
-	out := []byte(line)
-	for i := 0; i < len(line); {
-		if line[i] != '`' || escaped(line, i) {
-			i++
+func visibleLines(body string) []string {
+	lines := strings.SplitAfter(body, "\n")
+	var fence codeFence
+	var containers listContext
+	closingTicks := nextBackticks(body)
+	inlineUntil, commentUntil, offset := 0, 0, 0
+	for i, line := range lines {
+		content, _ := containers.content(line, fence.marker != 0)
+		if fence.consume(content) {
+			lines[i] = ""
+			offset += len(line)
 			continue
 		}
-		width := 1
-		for i+width < len(line) && line[i+width] == '`' {
-			width++
-		}
-		end := -1
-		for j := i + width; j < len(line); {
-			if line[j] != '`' {
+		out := []byte(line)
+		for j := 0; j < len(line); j++ {
+			at := offset + j
+			if at < inlineUntil || at < commentUntil {
+				out[j] = ' '
+				continue
+			}
+			if line[j] == '\\' {
 				j++
 				continue
 			}
-			run := 1
-			for j+run < len(line) && line[j+run] == '`' {
-				run++
-			}
-			if run == width {
-				end = j + run
-				break
-			}
-			j += run
-		}
-		if end < 0 {
-			i += width
-			continue
-		}
-		for j := i; j < end; j++ {
-			out[j] = ' '
-		}
-		i = end
-	}
-	return string(out)
-}
-func visibleLines(body string) []string {
-	lines := strings.Split(body, "\n")
-	var fence fenceState
-	comment := false
-	for i, line := range lines {
-		if fence.skip(line) {
-			lines[i] = ""
-			continue
-		}
-		line = maskInlineCode(line)
-		out := []byte(line)
-		for j := 0; j < len(line); {
-			if comment {
-				end := strings.Index(line[j:], "-->")
+			if strings.HasPrefix(line[j:], "<!--") {
+				end := strings.Index(body[at+4:], "-->")
 				if end < 0 {
-					for k := j; k < len(out); k++ {
-						out[k] = ' '
-					}
-					break
+					commentUntil = len(body)
+				} else {
+					commentUntil = at + 4 + end + 3
 				}
-				end += j + 3
-				for k := j; k < end; k++ {
-					out[k] = ' '
-				}
-				j = end
-				comment = false
+				out[j] = ' '
 				continue
 			}
-			start := strings.Index(line[j:], "<!--")
-			if start < 0 {
-				break
+			if end, ok := closingTicks[at]; ok {
+				inlineUntil = end
+				out[j] = ' '
 			}
-			start += j
-			comment = true
-			j = start
 		}
 		lines[i] = string(out)
+		offset += len(line)
 	}
 	return lines
 }

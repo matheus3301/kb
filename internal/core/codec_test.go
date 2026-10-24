@@ -107,7 +107,7 @@ func TestReservedValidation(t *testing.T) {
 	for _, test := range []struct {
 		p, raw string
 		bad    bool
-	}{{"index.md", "---\nokf_version: \"0.2\"\n---\n# Index\n", false}, {"topic/index.md", "---\nokf_version: \"0.2\"\n---\n", true}, {"index.md", "---\ntype: Wrong\n---\n", true}, {"index.md", indexEnd + indexStart, true}, {"index.md", indexStart, true}, {"log.md", "# Log\n## 2026-10-24\n- Entry\n## 2026-10-23\n", false}, {"log.md", "## October 24\n", true}, {"log.md", "## 2026-10-23\n## 2026-10-24\n", true}, {"log.md", "---\ntype: Wrong\n---\n", true}} {
+	}{{"index.md", "---\nokf_version: \"0.2\"\n---\n# Index\n", false}, {"topic/index.md", "---\nokf_version: \"0.2\"\n---\n", true}, {"index.md", "---\ntype: Wrong\n---\n", true}, {"index.md", indexEnd + "\n" + indexStart, true}, {"index.md", indexStart, true}, {"log.md", "# Log\n## 2026-10-24\n- Entry\n## 2026-10-23\n", false}, {"log.md", "## October 24\n", true}, {"log.md", "## 2026-10-23\n## 2026-10-24\n", true}, {"log.md", "---\ntype: Wrong\n---\n", true}} {
 		if ds := c.ValidateReserved(test.p, []byte(test.raw)); (len(ds) > 0) != test.bad {
 			t.Errorf("%s %q: %+v", test.p, test.raw, ds)
 		}
@@ -156,4 +156,26 @@ func FuzzPath(f *testing.F) {
 			}
 		}
 	})
+}
+
+func TestIndexMarkersIgnoreCodeExamplesAndNestedContainers(t *testing.T) {
+	cases := []struct {
+		body string
+		bad  bool
+	}{
+		{"# Index\n```html\n" + indexStart + "\n" + indexEnd + "\n```\n" + indexStart + "\n" + indexEnd + "\n", false},
+		{"# Index\n`" + indexStart + "`\n`" + indexEnd + "`\n" + indexStart + "\n" + indexEnd + "\n", false},
+		{"# Index\n``\n" + indexStart + "\n" + indexEnd + "\n``\n" + indexStart + "\n" + indexEnd + "\n", false},
+		{"# Index\n- Example\n  ````html\n  " + indexStart + "\n  ```\n  " + indexEnd + "\n  ````\n" + indexStart + "\n" + indexEnd + "\n", false},
+		{"# Index\n> ```html\n> " + indexStart + "\n> " + indexEnd + "\n> ```\n" + indexStart + "\n" + indexEnd + "\n", false},
+		{"# Index\n<!--\n" + indexStart + "\n" + indexEnd + "\n-->\n" + indexStart + "\n" + indexEnd + "\n", true},
+		{"# Index\n" + indexStart + "\n" + indexEnd + "\n" + indexStart + "\n" + indexEnd + "\n", true},
+		{"# Index\n" + indexEnd + "\n" + indexStart + "\n", true},
+		{"# Index\n" + indexStart + "\n", true},
+	}
+	for i, test := range cases {
+		if ds := (codec{}).ValidateReserved("index.md", []byte(test.body)); (len(ds) > 0) != test.bad {
+			t.Errorf("case %d: %+v", i, ds)
+		}
+	}
 }

@@ -10,9 +10,11 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"syscall"
 	"testing"
 	"time"
 
+	"github.com/BurntSushi/toml"
 	"github.com/matheus3301/kb/internal/api"
 )
 
@@ -302,7 +304,7 @@ func TestHealthGraphTemporalBasisAndExternalInert(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	put(t, s, "synthesis.md", "---\ntype: Synthesis\nstale_after: 2026-10-24T11:00:00+02:00\nbasis_revisions:\n  basis.md: "+api.Revision(basis)+"\nsources:\n  - resource: basis.md\n  - resource: https://example.invalid/source\n---\n[Target](/basis.md#target)\n[Missing](missing.md)\n[External](https://example.invalid/never-fetch)\n[Ref][basis]\n[basis]: basis.md\n````\n[Code](ignored.md)\n````\n")
+	put(t, s, "synthesis.md", "---\ntype: Synthesis\nstale_after: 2026-10-24T11:00:00+02:00\nbasis_revisions:\n  - path: basis.md\n    revision: "+api.Revision(basis)+"\nsources:\n  - resource: basis.md\n  - resource: https://example.invalid/source\n---\n[Target](/basis.md#target)\n[Missing](missing.md)\n[External](https://example.invalid/never-fetch)\n[Ref][basis]\n[basis]: basis.md\n````\n[Code](ignored.md)\n````\n")
 	put(t, s, "orphan.md", noteText("Orphan", "Unlinked synthetic note.\n"))
 	s.SetAsOf(time.Date(2026, 10, 24, 9, 0, 0, 0, time.UTC))
 	links, err := s.Links(context.Background(), "synthesis.md", "out")
@@ -554,5 +556,119 @@ func TestPublicReadAndSearchMetadataRemainIsolated(t *testing.T) {
 	snap, err := s.Snapshot(context.Background())
 	if err != nil || snap.Notes[0].Metadata["type"] != "Reference" {
 		t.Fatal(err, snap.Notes[0])
+	}
+}
+
+func TestInitCanonicalizesAncestorAliasesButRejectsRootSymlink(t *testing.T) {
+	parent := testRoot(t)
+	alias := filepath.Join(testRoot(t), "alias")
+	if err := os.Symlink(parent, alias); err != nil {
+		t.Fatal(err)
+	}
+	s, err := Init(context.Background(), filepath.Join(alias, "new", "base"), false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if s.Root() != filepath.Join(parent, "new", "base") {
+		t.Fatal(s.Root())
+	}
+	rootAlias := filepath.Join(testRoot(t), "root-alias")
+	if err := os.Symlink(s.Root(), rootAlias); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Open(rootAlias); err == nil {
+		t.Fatal("root symlink accepted")
+	}
+}
+
+func TestReadReportsCurrentBasisAndTemporalFlags(t *testing.T) {
+	s := newStore(t, false)
+	put(t, s, "basis.md", noteText("Basis", "Original evidence.\n"))
+	original, err := s.Read(context.Background(), api.ReadRequest{Path: "basis.md"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	put(t, s, "synthesis.md", "---\ntype: Synthesis\nbasis_revisions:\n  - path: basis.md\n    revision: "+original.Note.Revision+"\nstale_after: 2026-10-24T12:00:00Z\n---\nSynthetic synthesis.\n")
+	s.SetAsOf(time.Date(2026, 10, 24, 12, 0, 0, 0, time.UTC))
+	before, err := s.Read(context.Background(), api.ReadRequest{Path: "synthesis.md"})
+	if err != nil || before.Note.BasisOutdated || !before.Note.Stale {
+		t.Fatal(err, before.Note)
+	}
+	raw, err := os.ReadFile(filepath.Join(s.Root(), "basis.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	patched, err := s.Engine().Patch("basis.md", raw, api.Operation{MetadataPatch: map[string]any{"status": "draft"}}, "process:test", time.Now())
+	if err != nil {
+		t.Fatal(err)
+	}
+	put(t, s, "basis.md", string(patched))
+	after, err := s.Read(context.Background(), api.ReadRequest{Path: "synthesis.md"})
+	if err != nil || !after.Note.BasisOutdated || !after.Note.Stale {
+		t.Fatal(err, after.Note)
+	}
+	hits, err := s.Search(context.Background(), api.SearchRequest{Query: "synthesis"})
+	if err != nil || !hits.Hits[0].BasisOutdated {
+		t.Fatal(err, hits)
+	}
+}
+func TestFIFOConfigAndCacheCannotBlock(t *testing.T) {
+	s := newStore(t, false)
+	config := filepath.Join(s.Root(), ".kb/config.toml")
+	if err := os.Remove(config); err != nil {
+		t.Fatal(err)
+	}
+	if err := syscall.Mkfifo(config, 0600); err != nil {
+		t.Fatal(err)
+	}
+	start := time.Now()
+	if _, err := Open(s.Root()); err == nil {
+		t.Fatal("FIFO config accepted")
+	}
+	if time.Since(start) > time.Second {
+		t.Fatal("FIFO open blocked")
+	}
+	r, err := os.OpenRoot(s.Root())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = r.Close() }()
+	if _, err := readLimited(r, ".kb/config.toml", 1024); err == nil {
+		t.Fatal("FIFO descriptor accepted")
+	}
+	if err := os.Remove(config); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := toml.Marshal(defaults())
+	if err != nil {
+		t.Fatal(err)
+	}
+	put(t, s, ".kb/config.toml", string(raw))
+	if err := os.MkdirAll(filepath.Join(s.Root(), ".kb/cache"), 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := syscall.Mkfifo(filepath.Join(s.Root(), ".kb/cache/generation"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := s.Status(context.Background()); err == nil {
+		t.Fatal("FIFO cache accepted")
+	}
+}
+
+func TestGraphNestedListsKeepLinksButExcludeIndentedCode(t *testing.T) {
+	s := newStore(t, false)
+	put(t, s, "target.md", noteText("Target", "Evidence.\n"))
+	put(t, s, "nested.md", noteText("Nested", "- Outer list\n  - Nested list\n    [only reference](target.md)\n\n    - Deeper list\n      [also reference](target.md)\n\nOutside the list.\n\n    [indented code](not-a-link.md)\n\n- Code example\n  ```markdown\n  [fenced](also-not-a-link.md)\n  ```\n\n`Inline code may span\n[hidden](hidden.md)\nmultiple lines`\n"))
+	links, err := s.Links(context.Background(), "nested.md", "out")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(links) != 2 {
+		t.Fatal(links)
+	}
+	for _, link := range links {
+		if !link.Resolved || link.To != "target.md" {
+			t.Fatal(link)
+		}
 	}
 }

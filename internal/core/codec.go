@@ -346,10 +346,12 @@ func (codec) ValidateReserved(p string, raw []byte) []api.Diagnostic {
 			}
 		}
 	}
-	starts, ends := strings.Count(body, "<!-- kb:index:start -->"), strings.Count(body, "<!-- kb:index:end -->")
-	if path.Base(p) == "index.md" && (starts != ends || starts > 1 || (starts == 1 && strings.Index(body, "<!-- kb:index:start -->") > strings.Index(body, "<!-- kb:index:end -->"))) {
-		add("index managed markers must form one ordered pair")
+	if path.Base(p) == "index.md" {
+		if _, _, _, err := indexRegion(body); err != nil {
+			add("index managed markers must form one standalone ordered pair outside code")
+		}
 	}
+
 	return ds
 }
 
@@ -401,7 +403,11 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 			content = append(content, &yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: k}, &v)
 		}
 		f.node.Content = content
-		return encodeNode(f.node)
+		encoded, err := encodeNode(f.node)
+		if err != nil {
+			return nil, err
+		}
+		return []byte(strings.ReplaceAll(string(encoded), "\n", f.newline)), nil
 	}
 	lines := strings.SplitAfter(string(f.header), "\n")
 	var out strings.Builder
@@ -583,6 +589,7 @@ func (c codec) Patch(p string, raw []byte, op api.Operation, actor string, at ti
 			generated[k] = v
 		}
 	}
+	delete(removes, "generated")
 	generated["by"] = actor
 	generated["at"] = at.UTC().Format(time.RFC3339Nano)
 	changes["generated"] = generated

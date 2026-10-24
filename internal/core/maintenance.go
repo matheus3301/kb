@@ -126,7 +126,7 @@ func (s *Store) Export(ctx context.Context, destination string) (api.ExportResul
 		} else if !errors.Is(err, os.ErrNotExist) {
 			return err
 		}
-		parent, err := canonicalRoot(filepath.Dir(abs), false)
+		parent, err := filepath.EvalSymlinks(filepath.Dir(abs))
 		if err != nil {
 			return err
 		}

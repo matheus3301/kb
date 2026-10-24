@@ -20,16 +20,19 @@ type heading struct {
 }
 
 func headings(raw string) []heading {
-	lines := strings.Split(raw, "\n")
+	body, offset := rawBody([]byte(raw))
+	lines := strings.Split(string(body), "\n")
 	if len(lines) > 1 && lines[len(lines)-1] == "" {
 		lines = lines[:len(lines)-1]
 	}
 	var out []heading
 	counts := map[string]int{}
-	var fence fenceState
+	var fence codeFence
+	var containers listContext
 	for i, line := range lines {
-		trim := strings.TrimSpace(line)
-		if fence.skip(line) {
+		content, _ := containers.content(line, fence.marker != 0)
+		trim := strings.TrimSpace(content)
+		if fence.consume(content) {
 			continue
 		}
 		level := 0
@@ -46,7 +49,7 @@ func headings(raw string) []heading {
 			id = slug + "-" + itoa(counts[slug])
 		}
 		counts[slug]++
-		out = append(out, heading{text: text, id: id, start: i + 1, end: len(lines), level: level})
+		out = append(out, heading{text: text, id: id, start: offset + i + 1, end: offset + len(lines), level: level})
 	}
 	for i := range out {
 		for j := i + 1; j < len(out); j++ {
@@ -165,6 +168,15 @@ func buildLinks(files map[string][]byte, notes []api.Note) []api.Link {
 	}
 	for _, note := range notes {
 		resources := []string{}
+		if basis, ok := note.Metadata["basis_revisions"].([]any); ok {
+			for _, value := range basis {
+				if entry, ok := value.(map[string]any); ok {
+					if p, ok := entry["path"].(string); ok {
+						resources = append(resources, "/"+strings.TrimPrefix(p, "/"))
+					}
+				}
+			}
+		}
 		if v, ok := note.Metadata["resource"].(string); ok {
 			resources = append(resources, v)
 		}
@@ -212,17 +224,25 @@ func buildLinks(files map[string][]byte, notes []api.Note) []api.Link {
 	return links
 }
 func basisChanged(n api.Note, files map[string][]byte) bool {
-	basis, ok := n.Metadata["basis_revisions"].(map[string]any)
+	basis, ok := n.Metadata["basis_revisions"].([]any)
 	if !ok {
 		return false
 	}
-	for p, v := range basis {
-		if !strings.HasSuffix(p, ".md") {
-			p += ".md"
+	for _, value := range basis {
+		entry, ok := value.(map[string]any)
+		if !ok {
+			return true
 		}
-		target := strings.TrimPrefix(p, "/")
-		raw, ok := files[target]
-		if !ok || v != api.Revision(raw) {
+		p, ok := entry["path"].(string)
+		if !ok {
+			return true
+		}
+		revision, ok := entry["revision"].(string)
+		if !ok {
+			return true
+		}
+		raw, exists := files[strings.TrimPrefix(p, "/")]
+		if !exists || revision != api.Revision(raw) {
 			return true
 		}
 	}

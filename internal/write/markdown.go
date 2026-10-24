@@ -170,6 +170,7 @@ func nextBackticks(text string) map[int]int {
 func indexRegion(text string) (start, end int, appendSafe bool, err error) {
 	start, end = -1, -1
 	var fence codeFence
+	var containers listContext
 	closingTicks := nextBackticks(text)
 	inlineUntil := 0
 	commentUntil := 0
@@ -183,7 +184,8 @@ func indexRegion(text string) (start, end int, appendSafe bool, err error) {
 			offset += len(line)
 			continue
 		}
-		if fence.consume(line) {
+		content, _ := containers.content(line, fence.marker != 0)
+		if fence.consume(content) {
 			offset += len(line)
 			continue
 		}

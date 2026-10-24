@@ -88,16 +88,39 @@ func canonicalRoot(root string, create bool) (string, error) {
 	} else if !errors.Is(err, os.ErrNotExist) || !create {
 		return "", err
 	}
-	parent, err := canonicalRoot(filepath.Dir(abs), true)
+	// Resolve the closest existing ancestor, allowing platform temp-directory
+	// aliases while retaining the requested new root as a real directory.
+	ancestor := filepath.Dir(abs)
+	suffix := filepath.Base(abs)
+	for {
+		//nolint:gosec // Finds the explicit root boundary before opening confined descendants.
+		_, err := os.Lstat(ancestor)
+		if err == nil {
+			break
+		}
+		if !errors.Is(err, os.ErrNotExist) {
+			return "", err
+		}
+		suffix = filepath.Join(filepath.Base(ancestor), suffix)
+		ancestor = filepath.Dir(ancestor)
+	}
+	canonical, err := filepath.EvalSymlinks(ancestor)
 	if err != nil {
 		return "", err
 	}
-	name := filepath.Join(parent, filepath.Base(abs))
-	//nolint:gosec // Only creates the requested base beneath its canonicalized parent.
-	if err := os.Mkdir(name, 0700); err != nil && !errors.Is(err, os.ErrExist) {
+	r, err := os.OpenRoot(canonical)
+	if err != nil {
 		return "", err
 	}
-	return name, nil
+	defer func() { _ = r.Close() }()
+	relative := filepath.ToSlash(suffix)
+	if err := safePath(r, relative, true); err != nil {
+		return "", err
+	}
+	if err := r.MkdirAll(relative, 0700); err != nil {
+		return "", err
+	}
+	return filepath.Join(canonical, suffix), nil
 }
 
 // ResolveRoot selects an explicit root, KB_ROOT, then an ancestor config.
@@ -237,6 +260,11 @@ func Init(ctx context.Context, root string, para bool) (*Store, error) {
 	if err := createMissing(r, ".kb/config.toml", raw); err != nil {
 		return nil, err
 	}
+	initialized, err := Open(abs)
+	if err != nil {
+		return nil, err
+	}
+	c = initialized.Config()
 	folders := []string{""}
 	if para {
 		folders = append(folders, c.PARA.Inbox, c.PARA.Projects, c.PARA.Areas, c.PARA.Resources, c.PARA.Archive)
@@ -327,9 +355,18 @@ func safePath(r *os.Root, p string, missing bool) error {
 	return nil
 }
 func readLimited(r *os.Root, p string, limit int) ([]byte, error) {
-	f, err := r.OpenFile(p, os.O_RDONLY|syscall.O_NOFOLLOW, 0)
+	f, err := r.OpenFile(p, os.O_RDONLY|syscall.O_NOFOLLOW|syscall.O_NONBLOCK, 0)
 	if err != nil {
 		return nil, err
+	}
+	info, statErr := f.Stat()
+	if statErr != nil {
+		_ = f.Close()
+		return nil, statErr
+	}
+	if !info.Mode().IsRegular() {
+		_ = f.Close()
+		return nil, fault("INVALID_PATH", "file must be regular")
 	}
 	raw, readErr := io.ReadAll(io.LimitReader(f, int64(limit)+1))
 	err = errorsJoin(readErr, f.Close())
@@ -640,7 +677,7 @@ func (s *Store) Status(ctx context.Context) (api.Status, error) {
 		if err := safePath(r, ".kb/cache/generation", true); err != nil {
 			return err
 		}
-		raw, err := r.ReadFile(".kb/cache/generation")
+		raw, err := readLimited(r, ".kb/cache/generation", 1024)
 		if err != nil && !errors.Is(err, os.ErrNotExist) {
 			return err
 		}

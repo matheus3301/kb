@@ -15,6 +15,7 @@ func TestIndexMarkersInCodeExamplesPreserveManualText(t *testing.T) {
 		"~~~html\n" + indexStart + "\nExample content\n" + indexEnd + "\n~~~\n",
 		"````html\n```\n" + indexStart + "\nExample content\n" + indexEnd + "\n````\n",
 		"```html\n```go\n" + indexStart + "\nExample content\n" + indexEnd + "\n``` \t\n",
+		"- ```html\n  ```go\n  " + indexStart + "\n  Example content\n  " + indexEnd + "\n  ```\n",
 		"`" + indexStart + "` and `" + indexEnd + "` are examples.\n",
 		"Example `multiline\n" + indexStart + "\nExample content\n" + indexEnd + "\ncode` text.\n",
 		"    " + indexStart + "\n    Example content\n    " + indexEnd + "\n",

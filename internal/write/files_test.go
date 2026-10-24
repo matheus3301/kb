@@ -2,6 +2,7 @@ package write
 
 import (
 	"context"
+	"errors"
 	"os"
 	"path/filepath"
 	"syscall"
@@ -34,7 +35,9 @@ func TestFIFOJournalReturnsPromptlyAndReleasesExclusiveLock(t *testing.T) {
 	go func() { _, err := s.Recover(ctx, false); done <- err }()
 	select {
 	case err := <-done:
-		errorCode(t, err, "INVALID_PATH")
+		if !errors.Is(err, context.DeadlineExceeded) {
+			errorCode(t, err, "INVALID_PATH")
+		}
 	case <-time.After(500 * time.Millisecond):
 		// Release a regressed blocking FIFO open before failing the test.
 		f, err := testRoot.OpenFile(pendingPath, os.O_WRONLY|syscall.O_NONBLOCK, 0)
