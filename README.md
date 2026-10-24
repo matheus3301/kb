@@ -1,5 +1,7 @@
 # kb
 
+[![CI](https://github.com/matheus3301/kb/actions/workflows/ci.yml/badge.svg)](https://github.com/matheus3301/kb/actions/workflows/ci.yml)
+
 Local-first knowledge memory for humans and agents. Markdown is the source of
 truth, [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format) is the
 knowledge format, and PARA is an optional human navigation profile. CLI and MCP

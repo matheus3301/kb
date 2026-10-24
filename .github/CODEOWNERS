@@ -1,0 +1,9 @@
+# Ownership signals review responsibility; approval is not required while
+# commits and PRs use the sole maintainer's GitHub identity.
+* @matheus3301
+
+/.github/ @matheus3301
+/AGENTS.md @matheus3301
+/scripts/ @matheus3301
+/.golangci.yml @matheus3301
+/docs/quality.md @matheus3301

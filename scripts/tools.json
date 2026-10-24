@@ -1,0 +1,14 @@
+{
+  "actionlint": {
+    "module": "github.com/rhysd/actionlint/cmd/actionlint",
+    "version": "v1.7.12"
+  },
+  "gitleaks": {
+    "module": "github.com/zricethezav/gitleaks/v8",
+    "version": "v8.30.1"
+  },
+  "govulncheck": {
+    "module": "golang.org/x/vuln/cmd/govulncheck",
+    "version": "v1.1.4"
+  }
+}
