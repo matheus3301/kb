@@ -1,0 +1,841 @@
+{
+  "protocol_baseline": "2025-11-25",
+  "schema_version": "kb.v1",
+  "tools": [
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "description": "Preview or apply up to 50 coordinated operations, maximum 4 MiB, with CAS and idempotency.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "actor": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "idempotency_key": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "operations": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "body_edits": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "new_text": {
+                        "maxLength": 1048576,
+                        "type": "string"
+                      },
+                      "old_text": {
+                        "maxLength": 1048576,
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "old_text",
+                      "new_text"
+                    ],
+                    "type": "object"
+                  },
+                  "maxItems": 50,
+                  "type": "array"
+                },
+                "document": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "expected_revision": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "kind": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "metadata": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "metadata_patch": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "operation_id": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "path": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "remove_metadata_keys": {
+                  "items": {
+                    "maxLength": 1048576,
+                    "type": "string"
+                  },
+                  "maxItems": 50,
+                  "type": "array"
+                },
+                "title": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "to": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "type": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "path"
+              ],
+              "type": "object"
+            },
+            "maxItems": 50,
+            "type": "array"
+          },
+          "repair": {
+            "type": "boolean"
+          },
+          "summary": {
+            "maxLength": 1048576,
+            "type": "string"
+          }
+        },
+        "required": [
+          "operations",
+          "idempotency_key",
+          "summary",
+          "actor"
+        ],
+        "type": "object"
+      },
+      "name": "kb_apply"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Build citable excerpts within 16000 estimated tokens and 256 KiB.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "filters": {
+            "additionalProperties": false,
+            "properties": {
+              "has_sources": {
+                "type": "boolean"
+              },
+              "include_archives": {
+                "type": "boolean"
+              },
+              "include_deprecated": {
+                "type": "boolean"
+              },
+              "para": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "prefix": {
+                "maxLength": 1048576,
+                "type": "string"
+              },
+              "stale": {
+                "type": "boolean"
+              },
+              "status": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "tags": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "trust": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "type": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              }
+            },
+            "required": [],
+            "type": "object"
+          },
+          "include_links": {
+            "type": "boolean"
+          },
+          "max_bytes": {
+            "maximum": 262144,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "max_tokens": {
+            "maximum": 16000,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "query": {
+            "maxLength": 4096,
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "name": "kb_context"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "description": "Preview or apply one explicit-path create with actor, summary, idempotency and revision preconditions.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "actor": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "body": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "body_edits": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "new_text": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "old_text": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "old_text",
+                "new_text"
+              ],
+              "type": "object"
+            },
+            "maxItems": 50,
+            "type": "array"
+          },
+          "document": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "idempotency_key": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "create"
+            ],
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "metadata_patch": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "operation_id": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "path": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "remove_metadata_keys": {
+            "items": {
+              "maxLength": 1048576,
+              "type": "string"
+            },
+            "maxItems": 50,
+            "type": "array"
+          },
+          "summary": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "to": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "type": {
+            "maxLength": 1048576,
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "summary",
+          "actor",
+          "idempotency_key",
+          "type"
+        ],
+        "type": "object"
+      },
+      "name": "kb_create"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "List up to 100 scoped notes; continue with the returned cursor.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "cursor": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "filters": {
+            "additionalProperties": false,
+            "properties": {
+              "has_sources": {
+                "type": "boolean"
+              },
+              "include_archives": {
+                "type": "boolean"
+              },
+              "include_deprecated": {
+                "type": "boolean"
+              },
+              "para": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "prefix": {
+                "maxLength": 1048576,
+                "type": "string"
+              },
+              "stale": {
+                "type": "boolean"
+              },
+              "status": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "tags": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "trust": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "type": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              }
+            },
+            "required": [],
+            "type": "object"
+          },
+          "limit": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "literal": {
+            "type": "boolean"
+          },
+          "query": {
+            "maxLength": 4096,
+            "type": "string"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "name": "kb_list"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "description": "Preview or apply one explicit-path move with actor, summary, idempotency and revision preconditions.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "actor": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "body": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "body_edits": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "new_text": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "old_text": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "old_text",
+                "new_text"
+              ],
+              "type": "object"
+            },
+            "maxItems": 50,
+            "type": "array"
+          },
+          "document": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "idempotency_key": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "move"
+            ],
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "metadata_patch": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "operation_id": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "path": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "remove_metadata_keys": {
+            "items": {
+              "maxLength": 1048576,
+              "type": "string"
+            },
+            "maxItems": 50,
+            "type": "array"
+          },
+          "summary": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "to": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "type": {
+            "maxLength": 1048576,
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "summary",
+          "actor",
+          "idempotency_key",
+          "expected_revision",
+          "to"
+        ],
+        "type": "object"
+      },
+      "name": "kb_move"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "description": "Preview or apply one explicit-path patch with actor, summary, idempotency and revision preconditions.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "actor": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "body": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "body_edits": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "new_text": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "old_text": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "old_text",
+                "new_text"
+              ],
+              "type": "object"
+            },
+            "maxItems": 50,
+            "type": "array"
+          },
+          "document": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "idempotency_key": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "patch"
+            ],
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "metadata_patch": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "operation_id": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "path": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "remove_metadata_keys": {
+            "items": {
+              "maxLength": 1048576,
+              "type": "string"
+            },
+            "maxItems": 50,
+            "type": "array"
+          },
+          "summary": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "to": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "type": {
+            "maxLength": 1048576,
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "summary",
+          "actor",
+          "idempotency_key",
+          "expected_revision"
+        ],
+        "type": "object"
+      },
+      "name": "kb_patch"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Read one scoped note or unambiguous section, up to 256 KiB.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "include_links": {
+            "type": "boolean"
+          },
+          "line_end": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "line_start": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "path": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "raw": {
+            "type": "boolean"
+          },
+          "section": {
+            "maxLength": 1048576,
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      },
+      "name": "kb_read"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Search up to 4096 query characters with filters and bounded snippets.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "cursor": {
+            "maxLength": 1048576,
+            "type": "string"
+          },
+          "filters": {
+            "additionalProperties": false,
+            "properties": {
+              "has_sources": {
+                "type": "boolean"
+              },
+              "include_archives": {
+                "type": "boolean"
+              },
+              "include_deprecated": {
+                "type": "boolean"
+              },
+              "para": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "prefix": {
+                "maxLength": 1048576,
+                "type": "string"
+              },
+              "stale": {
+                "type": "boolean"
+              },
+              "status": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "tags": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "trust": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              "type": {
+                "items": {
+                  "maxLength": 1048576,
+                  "type": "string"
+                },
+                "maxItems": 50,
+                "type": "array"
+              }
+            },
+            "required": [],
+            "type": "object"
+          },
+          "limit": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "literal": {
+            "type": "boolean"
+          },
+          "query": {
+            "maxLength": 4096,
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "name": "kb_search"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Inspect the fixed knowledge root, generation and diagnostics.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "name": "kb_status"
+    },
+    {
+      "annotations": {
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Report OKF conformance or health findings without changing notes.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "profile": {
+            "maxLength": 1048576,
+            "type": "string"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "name": "kb_validate"
+    }
+  ]
+}
