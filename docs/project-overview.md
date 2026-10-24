@@ -1,205 +1,217 @@
 ---
 type: Project Overview
-title: Desenho do projeto — memória OKF para humanos e agentes
-description: Produto, arquitetura, ciclo de aprendizado e revisão de prontidão da spec v0.3.
+title: Project design — OKF memory for humans and agents
+description: Product, architecture, learning lifecycle, and readiness review for specification v0.3.
 tags: [okf, para, cli, mcp, architecture, memory]
 status: draft
 sources:
   - resource: spec.md
-    title: Spec v0.3
+    title: Specification v0.3
   - resource: research.md
-    title: Pesquisa spf13
+    title: spf13 research
   - resource: research.md
-    title: Avaliação Uber Go
+    title: Uber Go evaluation
 generated:
   by: codex/gpt-6
   at: 2026-10-24T21:05:14Z
 ---
 
-# Desenho do projeto
+# Project design
 
-Será uma ferramenta local para transformar uma pasta de conhecimento em memória
-consultável e editável por humanos e agentes. Um único binário terá dois modos:
-comandos CLI para terminal e scripts, e servidor MCP stdio para ferramentas de
-agentes. Ambos usam as mesmas regras, revisões e operações.
+The authoritative v0.1 clarification is `docs/interfaces.md` in this repository;
+shared DTOs are in `internal/api/types.go`. They settle implementation details
+of the [specification](spec.md). These contracts are integrated separately from
+this documentation preparation.
 
-O conhecimento permanece em arquivos Markdown OKF. PARA organiza a navegação
-humana. O agente consulta a base, raciocina sobre as evidências e propõe mudanças;
-a ferramenta localiza, valida e aplica essas mudanças de forma controlada. O
-AGENTS.md do workdir declara quando consultar e registrar aprendizado, apontando
-para a skill distribuída com o produto e para a base configurada. AGENTS.md dentro
-da base é opcional. A ferramenta expõe essa capacidade; a adoção das instruções
-depende do agente e de sua configuração.
+This will be a local tool that turns a knowledge folder into memory that humans
+and agents can query and edit. One binary will provide two modes: CLI commands
+for terminals and scripts, and an MCP stdio server for agent tools. Both use
+the same rules, revisions, and operations.
 
-## Arquitetura
+Knowledge remains in OKF Markdown files. PARA organizes human navigation. The
+agent consults the base, reasons about evidence, and proposes changes; the tool
+locates, validates, and applies those changes in a controlled way. Workdir
+AGENTS.md instructions declare when to consult and record learning, pointing to
+the product skill and configured base. AGENTS.md inside the base is optional.
+The tool exposes this capability; adoption of instructions depends on the agent
+and its configuration.
+
+## Architecture
 
 ```mermaid
 flowchart TD
-    H[Humano: terminal e scripts] --> CLI[CLI]
-    A[Agente: consulta e raciocínio] --> MCP[MCP stdio]
-    I[AGENTS.md do workdir] -. ativa .-> SKILL[Skill do produto: fluxos de memória]
-    SKILL -. orienta .-> A
-    CLI --> CORE[Núcleo compartilhado]
+    H[Human: terminal and scripts] --> CLI[CLI]
+    A[Agent: consultation and reasoning] --> MCP[MCP stdio]
+    I[Workdir AGENTS.md] -. activates .-> SKILL[Product skill: memory workflows]
+    SKILL -. guides .-> A
+    CLI --> CORE[Shared core]
     MCP --> CORE
-    CORE --> READ[Busca, leitura, contexto e relações]
-    CORE --> WRITE[Planos, revisões e escrita]
-    CORE --> CHECK[Validação OKF e saúde estrutural]
-    READ --> KB[Markdown OKF: conhecimento organizado em PARA]
+    CORE --> READ[Search, reading, context, and relationships]
+    CORE --> WRITE[Plans, revisions, and writing]
+    CORE --> CHECK[OKF validation and structural health]
+    READ --> KB[OKF Markdown: knowledge organized with PARA]
     WRITE --> KB
     CHECK --> KB
-    READ --> CACHE[Cache reconstruível]
-    WRITE --> STATE[Journal e recibos duráveis]
-    RAW[Fontes originais preservadas] -. consulta por ferramentas externas .-> A
-    H -. edição em qualquer editor .-> KB
+    READ --> CACHE[Rebuildable cache]
+    WRITE --> STATE[Durable journal and receipts]
+    RAW[Preserved original sources] -. read through external tools .-> A
+    H -. edit in any editor .-> KB
 ```
 
-As três responsabilidades do produto são:
+The product has three responsibilities:
 
-| Responsabilidade | Resultado para quem usa |
+| Responsibility | User outcome |
 | --- | --- |
-| Encontrar contexto | Busca lexical, filtros, trechos com linhas e revisão, leitura por seção e relações entre notas. |
-| Manter conhecimento | Criar, corrigir, mover e arquivar notas; aplicar um plano sobre várias notas com controle de revisão, índices e log. |
-| Inspecionar a memória | Diagnosticar formato inválido, links quebrados, notas fora do índice e sínteses cujas fontes mudaram. |
+| Find context | Lexical search, filters, excerpts with lines and revisions, section reading, and relationships between notes. |
+| Maintain knowledge | Create, correct, move, and archive notes; apply a plan across multiple notes with revision checks, indexes, and log maintenance. |
+| Inspect memory | Diagnose invalid format, broken links, unindexed notes, and syntheses whose sources changed. |
 
-O núcleo não executa um LLM nem pesquisa a web. As consultas locais funcionam
-sem modelo, conta, rede, Git ou UI. O agente consumidor pode usar um modelo e
-ferramentas externas. Embeddings, sincronização e transportes remotos são futuras
-extensões, sem requisito no MVP.
+The core neither runs an LLM nor searches the web. Local queries work without
+a model, account, network, Git, or UI. The consuming agent may use a model and
+external tools. Embeddings, synchronization, and remote transports are future
+extensions, not MVP requirements.
 
-## Onde ficam as coisas
+## Where things live
 
-Exemplo de instalação nova, ainda sem migração do acervo atual:
+Example new installation, without migration of an existing collection:
 
 ```text
-repositorio/
-  AGENTS.md                 opcional: se esta pasta for um workdir
-  sources/                  versões preservadas das fontes originais
-  knowledge/                raiz OKF configurada
-    index.md                mapa de entrada
-    log.md                  mudanças úteis da memória
-    00_Inbox/               capturas a classificar
-    01_Projects/            trabalhos ativos com resultado e término
-    02_Areas/               responsabilidades contínuas
-    03_Resources/           conhecimento reutilizável
-    04_Archive/             conteúdo inativo
-    .kb/config.toml         configuração local
-    .kb/cache/              índice de busca reconstruível
-    .kb/state/              recuperação e recibos de operações
+workspace/
+  AGENTS.md                 # optional: if this folder is an agent workdir
+  sources/                  # preserved versions of original sources
+  example-knowledge/        # configured OKF root
+    index.md                # entry map
+    log.md                  # useful memory changes
+    00_Inbox/               # captures awaiting classification
+    01_Projects/            # active work with an outcome and end
+    02_Areas/               # ongoing responsibilities
+    03_Resources/           # reusable knowledge
+    04_Archive/             # inactive content
+    .kb/config.toml         # local configuration
+    .kb/cache/              # rebuildable search index
+    .kb/state/              # recovery and operation receipts
 ```
 
-OKF define notas, metadados e relações; PARA é o perfil de pastas escolhido
-para leitura humana. `type` é obrigatório nas notas de conceito. Fontes, datas,
-estado e outros metadados ajudam a avaliar o conhecimento. O ID é derivado do
-caminho. Índices e logs são arquivos reservados com regras próprias.
+OKF defines notes, metadata, and relationships; PARA is the folder profile
+chosen for human reading. `type` is required in concept notes. Sources, dates,
+status, and other metadata help assess knowledge. The ID derives from the
+path. Indexes and logs are reserved files with their own rules.
 
-Fontes originais ficam fora da raiz validada e não são editadas pela CLI. Sua
-aquisição e preservação pertencem ao workflow externo. Uma nota OKF registra a
-origem e permite ligar conceitos e sínteses à evidência usada.
+Original sources stay outside the validated root and are not edited by the
+CLI. Acquisition and preservation belong to the external workflow. An OKF
+note records provenance and connects concepts and syntheses to their evidence.
+Deleting `.kb/cache/` loses no knowledge; `.kb/state/` is durable operational
+state and must be preserved for pending recovery and idempotent retries.
 
-## Uma sessão de aprendizado
+## A learning session
 
 ```mermaid
 flowchart LR
-    Q[Pergunta ou nova fonte] --> S[Buscar e ler memória]
-    S --> R[Agente compara evidências]
-    R --> ANSWER[Responder com fontes]
-    R --> NEW{Aprendizado útil?}
-    NEW -->|não| END[Encerrar sem escrita]
-    NEW -->|sim| PLAN[Plano com notas, links e revisões]
-    PLAN --> PREVIEW[Validar e mostrar diff]
-    PREVIEW --> APPLY[Aplicar com controle de conflito]
-    APPLY --> NEXT[Notas, índices, log e recibo]
-    NEXT --> FUTURE[Próxima sessão encontra o aprendizado]
+    Q[Question or new source] --> S[Search and read memory]
+    S --> R[Agent compares evidence]
+    R --> ANSWER[Answer with sources]
+    R --> NEW{Useful learning?}
+    NEW -->|no| END[Finish without writing]
+    NEW -->|yes| PLAN[Plan with notes, links, and revisions]
+    PLAN --> PREVIEW[Validate and show diff]
+    PREVIEW --> APPLY[Apply with conflict checks]
+    APPLY --> NEXT[Notes, indexes, log, and receipt]
+    NEXT --> FUTURE[Next session finds the learning]
 ```
 
-Exemplo: a pergunta “Zap ou slog para este projeto?” recupera decisões existentes
-e suas fontes. O agente compara o que encontrou com a nova pesquisa e responde.
-Se houver uma conclusão reutilizável, propõe atualizar a decisão do projeto e
-a nota de referência sobre logging, com links à evidência. O plano valida as
-revisões e publica as alterações, mantendo índice e histórico.
+For example, “Zap or slog for this project?” retrieves existing decisions and
+their sources. The agent compares them with new research and answers. If a
+reusable conclusion emerges, it proposes updating the project decision and
+logging reference note with evidence links. The plan validates revisions and
+publishes changes while maintaining the index and history.
 
-Se outra sessão editou uma nota após a leitura, a operação retorna conflito e
-exige releitura. Um retry identificado pela mesma chave não deve duplicar seus
-efeitos. Esses mecanismos são requisitos da spec, ainda não implementados.
+If another session edited a note after it was read, the operation returns a
+conflict and requires rereading. A retry identified by the same key must not
+duplicate effects. These are specification requirements, not implemented
+mechanisms yet. Multi-file publication requires a durable journal and recovery;
+external editors and readers cannot be promised atomic multi-file visibility.
 
-Uma síntese pode registrar as revisões das notas que a sustentam. Quando alguma
-delas muda, a ferramenta sinaliza necessidade de revisão. O agente analisa se a
-conclusão continua válida. Nada declara automaticamente que ela se tornou falsa.
-Uma consulta sem aprendizado não gera uma nota ou evento apenas para registrá-la.
+A synthesis can record revisions of supporting notes. When one changes, the
+tool signals a need for review. The agent assesses whether the conclusion
+remains valid. Nothing automatically declares it false. A query without
+learning creates no note or event merely to record the query.
 
-## Skill e vínculo com o workdir
+## Skill and workdir integration
 
-O repositório do produto terá `skills/knowledge-memory/SKILL.md`, separado do
-conteúdo da base. A skill carrega o procedimento reutilizável; o workdir informa
-a raiz e exige sua consulta em toda pergunta. Uma mesma base pode atender vários
-workdirs, cada um configurado explicitamente.
+The product repository will contain `skills/knowledge-memory/SKILL.md`, separate
+from base content. The skill carries the reusable procedure; workdir instructions
+identify the root and require consultation on every question. One base can serve
+several workdirs, each configured explicitly.
 
-Modelo de instrução a adaptar ao agente e à instalação:
+Example instruction to adapt to the agent and installation:
 
 ```text
-Antes de responder a qualquer pergunta, use a skill knowledge-memory para
-consultar a base configurada em KB_ROOT (ou no servidor MCP associado).
-Registre aprendizados reutilizáveis conforme a skill; não grave consultas
-sem novidade. Se a base estiver indisponível, informe isso e prossiga.
+Before answering any question, use the knowledge-memory skill to consult the
+base configured through KB_ROOT (or the associated MCP server). Record reusable
+learning according to the skill; do not record queries without new information.
+If the base is unavailable, report that and continue.
 ```
 
-A instalação documentada pelo Skills CLI usa `npx skills add`, com seleção por
-`--skill`. Isso distribui instruções. Instalação do executável e registro MCP
-continuam etapas próprias. O setup do produto deverá integrar essas etapas de
-forma explícita no workdir escolhido. Nenhuma skill foi criada ou instalada
-nesta revisão; o AGENTS.md atual da knowledge base foi preservado.
+The Skills CLI's documented installation uses `npx skills add` with `--skill`
+selection. This distributes instructions. Executable installation and MCP
+registration remain separate steps. Product setup should integrate them
+explicitly in the selected workdir. This documentation revision creates or
+installs no skill and modifies no knowledge-base instructions. See the
+[quickstart](quickstart.md) for the planned installation steps.
 
-## Forma de uso proposta
+## Proposed usage
 
-`kb` é o nome escolhido. Os comandos ainda não existem:
+`kb` is the chosen name. These commands do not exist yet:
 
 ```sh
-kb --root ./knowledge search "decisão sobre logging" --json
-kb --root ./knowledge read 01_Projects/exemplo/logging.md --json
-kb --root ./knowledge context "logging do projeto" --max-tokens 2000 --json
-kb --root ./knowledge apply --input plano.json --dry-run
-kb --root ./knowledge apply --input plano.json
-kb --root ./knowledge validate --profile health --json
-kb --root ./knowledge mcp
+kb --root ./example-knowledge search "logging decision" --json
+kb --root ./example-knowledge read 01_Projects/example/logging.md --json
+kb --root ./example-knowledge context "project logging" --max-tokens 2000 --json
+kb --root ./example-knowledge apply --input plan.json --dry-run
+kb --root ./example-knowledge apply --input plan.json
+kb --root ./example-knowledge validate --profile health --json
+kb --root ./example-knowledge mcp
 ```
 
-No MCP, o agente acessará ferramentas como `kb_search`, `kb_read`, `kb_context`
-e `kb_apply`. Não precisará montar comandos de shell com conteúdo de notas.
-CLI e MCP devem produzir os mesmos resultados de domínio. O modo read-only
-permite consultas e bloqueia mutações.
+Through MCP, the agent will access tools such as `kb_search`, `kb_read`,
+`kb_context`, and `kb_apply` without constructing shell commands from note
+content. CLI and MCP must produce the same domain results. Read-only mode
+permits queries and blocks mutations, including direct calls to hidden write tools.
 
-## Prontidão e limites
+## Readiness and limits
 
-**Pronta para o protótipo; ainda não fechada para implementação integral.** A
-spec define o produto, o modelo de conhecimento, as interfaces e 26 critérios
-de aceite. Os testes de ferramentas existentes sustentam decisões de desenho;
-não validam a nossa implementação, que ainda não começou.
+**Ready for implementation against the v0.1 contract; still pre-release.** The spec
+defines the product, knowledge model, interfaces, and 26 acceptance criteria.
+Tests of existing tools inform design decisions; they do not validate this
+application, whose implementation has not started.
 
-Faltam quatro fechamentos, registrados também na spec:
+The v0.1 clarification settles the earlier contract gaps:
 
-1. Schemas completos e versionados das operações, seus resultados e erros.
-2. Máquina de estados de commit/recuperação e retenção de recibos. Resolver o
-   comportamento de leituras quando houver recuperação pendente.
-3. Contrato explícito de reparo de base inválida, inicialização e setup da
-   integração no workdir. O posicionamento das instruções foi definido acima.
-4. Escolha de parser, busca e SDK, com versões e evidência obtida no protótipo.
+1. Versioned `kb.v1` DTOs define operation, result, and error shapes. Writes
+   require explicit paths and revision preconditions.
+2. A prepared/committed journal controls rollback or roll-forward; receipts do
+   not expire in v0.1. Reads return `RECOVERY_REQUIRED` without changing notes;
+   recovery is explicit or precedes a new mutation.
+3. `apply --repair` permits invalid input state and requires a conformant final
+   state. First init uses an explicit root, `KB_ROOT`, or the current directory.
+   Workdir instructions and integration setup remain explicit and separate.
+4. Go is the adopted implementation language. Parser, search, and official MCP
+   SDK versions and behavior still need prototype evidence. Cobra is the CLI
+   adapter candidate; explicit constructors and slog are the starting point.
+   Zap remains a valid alternative; Fx has no demonstrated need. Recommendations
+   alone are not installed or pinned dependencies.
 
-Go é a baseline adotada no bootstrap. A proposta é Cobra na CLI, SDK oficial
-no MCP, composição por construtores explícitos e slog para diagnóstico; Zap
-é alternativa válida. Fx não tem necessidade demonstrada nesta etapa. Essas
-recomendações ainda não representam dependências fixadas ou instaladas.
+## Delivery
 
-## Entrega
+The first prototype should traverse a complete path: read an OKF note, preserve
+YAML comments during editing, reject a conflicting revision, and expose one
+operation through MCP. It also permits evaluating the parser and distribution.
 
-O primeiro protótipo deve atravessar um caminho completo: ler uma nota OKF,
-preservar comentários YAML ao editar, rejeitar uma revisão em conflito e expor
-uma operação pelo MCP. Em paralelo, ele permite avaliar parser e distribuição.
+Implementation follows the spec's increments: reading and validation; search
+and context; coordinated writing and recovery; moving and health; complete MCP
+integration, export, and distribution. Recovery and idempotence must be
+demonstrated with injected failures before stable agent writing is offered.
 
-A implementação avança pelos incrementos da spec: leitura e validação; busca e
-contexto; escrita coordenada e recuperação; movimentação e saúde; integração MCP
-completa, exportação e distribuição. Recuperação e idempotência precisam ser
-demonstradas com falhas injetadas antes de oferecer escrita estável aos agentes.
-
-O resultado esperado é que uma sessão futura consiga encontrar a decisão,
-entender sua razão e suas fontes, e revisá-la sem perder o trabalho de outra
-sessão. Desempenho e tamanho do binário ainda precisam ser medidos.
+The expected outcome is that a future session can find a decision, understand
+its reasons and sources, and revise it without losing another session's work.
+Performance and binary size still need measurement.
