@@ -29,5 +29,7 @@ CI validates the repository now. Application tests, coverage, fuzzing, and build
 activate when Go source is introduced. A green bootstrap build does not mean the
 product or the acceptance criteria have been implemented.
 
-No release or working `kb` executable is available. The final distribution,
-public API, and project license will be settled before a release.
+No release or working `kb` executable is available. The final distribution and
+public API will be settled before a release.
+
+This is an open-source project licensed under the [MIT License](LICENSE).
