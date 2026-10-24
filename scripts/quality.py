@@ -96,7 +96,8 @@ def repository():
     for path in tracked_content(ROOT):
         if path.suffix == ".md":
             findings.extend(local_link_findings(ROOT, path))
-    for path in (ROOT / ".github/workflows").glob("*.yml"):
+    workflows = ROOT / ".github/workflows"
+    for path in sorted(list(workflows.glob("*.yml")) + list(workflows.glob("*.yaml"))):
         findings.extend(f"{path.name}: {f}" for f in workflow_findings(path.read_text()))
     criteria = json.loads((ROOT / "docs/acceptance.json").read_text())
     findings.extend(acceptance_findings(ROOT, (ROOT / "docs/spec.md").read_text(), criteria))
