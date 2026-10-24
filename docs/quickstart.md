@@ -24,16 +24,15 @@ kb version --json
 kb --help
 ```
 
-After the maintainer publishes the v0.1.0 tag, installation without a checkout
-is also available:
+To install the tagged version without a checkout:
 
 ```sh
 go install github.com/matheus3301/kb/cmd/kb@v0.1.0
 ```
 
-The [v0.1.0 release](https://github.com/matheus3301/kb/releases/tag/v0.1.0) is
-published manually after final CI, with Linux/macOS amd64/arm64 archives and
-checksums. Until publication, use the source checkout above.
+The [v0.1.0 release](https://github.com/matheus3301/kb/releases/tag/v0.1.0) provides
+Linux/macOS amd64/arm64 archives and checksums. Extract the archive matching your
+platform and place its `kb` executable on your `PATH` to use a prebuilt binary.
 
 Make the Go binary installation directory available on your `PATH` if `kb` is
 not found. Installing the binary does not install a skill or register an MCP

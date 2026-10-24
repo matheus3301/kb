@@ -11,9 +11,9 @@ provides CLI commands and an MCP stdio server backed by the same core.
 reading, bounded context, revision-checked writing, coordinated plans, recovery,
 validation, navigation maintenance, and export. Use the
 [quickstart](docs/quickstart.md) to install from source and try an example base.
-Tag and [release asset publication](https://github.com/matheus3301/kb/releases/tag/v0.1.0)
-are manual steps after final CI; that release link and version-pinned installation
-become available when the maintainer publishes v0.1.0.
+Download platform archives and checksums from the
+[v0.1.0 release](https://github.com/matheus3301/kb/releases/tag/v0.1.0), or build
+from the public source checkout below.
 
 ```sh
 git clone https://github.com/matheus3301/kb.git
