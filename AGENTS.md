@@ -37,6 +37,15 @@ the product source; it is not the user's knowledge base.
 
 ## Delivery and guardrails
 
+- Use Conventional Commits for every commit subject and pull request title:
+  `<type>[optional scope][!]: <description>`. Use `feat`, `fix`, `docs`, `style`,
+  `refactor`, `perf`, `test`, `build`, `ci`, `chore`, or `revert` as the type.
+  Keep the description concise, in English, and in the imperative mood. Mark
+  breaking changes with `!` or a `BREAKING CHANGE:` footer.
+- Before committing or opening a PR, check the subject against that format.
+  Before squash-merging, explicitly set or verify the resulting commit subject;
+  GitHub's generated merge title must also follow Conventional Commits. Do not
+  assume that conventional branch commits make a nonconventional PR title valid.
 - Work on a branch and open a pull request; do not push implementation to main.
 - Run `make check`. Fix failures; do not disable jobs, reduce thresholds, add
   blanket exclusions, or use `continue-on-error` to make CI pass.
