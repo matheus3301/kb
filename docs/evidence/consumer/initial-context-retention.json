@@ -1,0 +1,34 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "text": "[03_Resources/retention.md:8-11 sha256:375cdf2fd964de21b65d93bd99cdf7b55e82e55a60fb6a34f91b3b0086caf714]\n# Synthetic retention\n\nThe recorded retention interval is 300 seconds.\n[03_Resources/service-decision.md:8-11 sha256:49cf41a5501045742a5477488e194eb6c2154a0d2b9af8efbf0b37c81a93ba74]\n# Synthetic retention\n\nThe recorded retention interval is 300 seconds.\n",
+    "sources": [
+      {
+        "path": "03_Resources/retention.md",
+        "revision": "sha256:375cdf2fd964de21b65d93bd99cdf7b55e82e55a60fb6a34f91b3b0086caf714",
+        "heading": "Synthetic retention",
+        "line_start": 8,
+        "line_end": 11
+      },
+      {
+        "path": "03_Resources/service-decision.md",
+        "revision": "sha256:49cf41a5501045742a5477488e194eb6c2154a0d2b9af8efbf0b37c81a93ba74",
+        "heading": "Synthetic retention",
+        "line_start": 8,
+        "line_end": 11
+      }
+    ],
+    "estimated_tokens": 90,
+    "estimator": "utf8-bytes/4-ceiling",
+    "truncated": false,
+    "omitted": 0,
+    "generation": "sha256:73d3135d725e253d83fa81cc8a86a1e42e084ed43b31d2c77804458898b476a8"
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:73d3135d725e253d83fa81cc8a86a1e42e084ed43b31d2c77804458898b476a8",
+    "index_stale": true
+  }
+}

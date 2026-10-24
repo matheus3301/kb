@@ -1,0 +1,15 @@
+{
+  "schema_version": "kb.v1",
+  "ok": false,
+  "error": {
+    "code": "REVISION_CONFLICT",
+    "message": "expected_revision does not match current bytes",
+    "retryable": false
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "",
+    "index_stale": false
+  }
+}

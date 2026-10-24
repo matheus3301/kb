@@ -1,0 +1,23 @@
+{
+  "kind": "measured_core_search",
+  "synthetic_only": true,
+  "platform": "darwin/arm64",
+  "cpu": "Apple M4",
+  "logical_cpus": 10,
+  "go": "go1.27.3",
+  "notes": 10000,
+  "bytes_per_note": 2048,
+  "samples": 20,
+  "cold_ms": 594.4,
+  "warm_p95_ms": 162.9,
+  "peak_rss_mib": 180.3,
+  "target_warm_p95_ms": 150,
+  "target_peak_rss_mib": 150,
+  "targets_met": false,
+  "command": "go test ./internal/core -run '^$' -bench BenchmarkReadCore10K -benchtime=20x -count=1",
+  "limitations": [
+    "Core-level warmed search, not per-process CLI startup or transport latency.",
+    "Peak process RSS includes fixture setup and benchmark calibration.",
+    "Twenty samples are a small local measurement, not a universal performance guarantee."
+  ]
+}

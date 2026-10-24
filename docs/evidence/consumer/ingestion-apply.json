@@ -1,0 +1,53 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "idempotency_key": "consumer-retention-revision-2",
+    "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+    "dry_run": false,
+    "replayed": false,
+    "changes": [
+      {
+        "path": "03_Resources/index.md",
+        "kind": "patch",
+        "before_revision": "sha256:751fded913acb1520321a80321c5216b9705e3a22fc146738f1cc58fc72c42d1",
+        "after_revision": "sha256:5b3e7698c2c0980b7bf0c5665b20766f95df33b2300aa94e3dfe81fe38e6acdd",
+        "diff": "--- 03_Resources/index.md\n+++ 03_Resources/index.md\n-# 03_Resources\n\n<!-- kb:index:start -->\n- [Synthetic retention policy](retention.md)\n- [Synthetic service decision](service-decision.md)\n<!-- kb:index:end -->\n\n+# 03_Resources\n\n<!-- kb:index:start -->\n- [Synthetic retention policy revision](retention-source.md)\n- [Synthetic retention policy](retention.md)\n- [Synthetic service decision](service-decision.md)\n<!-- kb:index:end -->\n\n"
+      },
+      {
+        "path": "03_Resources/retention-source.md",
+        "kind": "create",
+        "after_revision": "sha256:69ce500902ba1f6be1545deea6b71582d2263be256248cec80e3a3bc3c563727",
+        "diff": "--- 03_Resources/retention-source.md\n+++ 03_Resources/retention-source.md\n-\n+---\ngenerated:\n  at: \"2026-10-24T22:21:37.417377Z\"\n  by: codex/gpt-6\nresource: urn:kb:synthetic:retention-policy:revision-2\nsnapshot_digest: sha256:681e66fa478c73bf5d73ebfd5a2acd71b3738c19d2af2a9fa4ff23427ccda08e\nsnapshot_name: new-source.md\ntitle: Synthetic retention policy revision\ntype: Source\n---\n# Synthetic retention policy revision\n\nThe supplied immutable snapshot `new-source.md` states that the retention interval for the example service is 600 seconds. This is controlled test evidence.\n\nSnapshot SHA-256: `681e66fa478c73bf5d73ebfd5a2acd71b3738c19d2af2a9fa4ff23427ccda08e`.\n\n"
+      },
+      {
+        "path": "03_Resources/retention.md",
+        "kind": "patch",
+        "before_revision": "sha256:375cdf2fd964de21b65d93bd99cdf7b55e82e55a60fb6a34f91b3b0086caf714",
+        "after_revision": "sha256:885a82712759b2f400a42c013d4e225eb35af990e39558f8edc07af0e8e126dc",
+        "diff": "--- 03_Resources/retention.md\n+++ 03_Resources/retention.md\n----\ngenerated:\n  at: \"2026-10-24T22:19:45.00073Z\"\n  by: process:consumer-fixture\ntitle: Synthetic retention policy\ntype: Reference\n---\n# Synthetic retention\n\nThe recorded retention interval is 300 seconds.\n\n+---\ngenerated:\n  at: \"2026-10-24T22:21:37.417464Z\"\n  by: codex/gpt-6\ntitle: Synthetic retention policy\ntype: Reference\nsources:\n  - resource: retention-source.md\n    title: Synthetic retention policy revision\n---\n# Synthetic retention\n\nThe recorded retention interval is 600 seconds, according to the [synthetic policy revision](retention-source.md).\n\n"
+      },
+      {
+        "path": "03_Resources/service-decision.md",
+        "kind": "patch",
+        "before_revision": "sha256:49cf41a5501045742a5477488e194eb6c2154a0d2b9af8efbf0b37c81a93ba74",
+        "after_revision": "sha256:c183c68e7b39c37ba05315e7a7234cfb20d3f5e9ce3073876c3d5238bca4a1b6",
+        "diff": "--- 03_Resources/service-decision.md\n+++ 03_Resources/service-decision.md\n----\ngenerated:\n  at: \"2026-10-24T22:19:45.078391Z\"\n  by: process:consumer-fixture\ntitle: Synthetic service decision\ntype: Decision\n---\n# Synthetic retention\n\nThe recorded retention interval is 300 seconds.\n\n+---\ngenerated:\n  at: \"2026-10-24T22:21:37.41751Z\"\n  by: codex/gpt-6\ntitle: Synthetic service decision\ntype: Decision\nsources:\n  - resource: retention-source.md\n    title: Synthetic retention policy revision\n---\n# Synthetic retention\n\nThe recorded retention interval is 600 seconds, according to the [synthetic policy revision](retention-source.md).\n\n"
+      },
+      {
+        "path": "log.md",
+        "kind": "patch",
+        "before_revision": "sha256:0f6b58d1e3a6e1a275436664e9ae621b6ec9828b9d2652b5696749451937781a",
+        "after_revision": "sha256:4838aef61d9b20007b448a6cb4daee7fd5e75f19cdf598b219107b447d733395",
+        "diff": "--- log.md\n+++ log.md\n-# Knowledge update log\n\n## 2026-10-24\n\n- Seed controlled consumer fixture (process:consumer-fixture): [03\\_Resources/service-decision](03_Resources/service-decision.md)\n\n- Seed controlled consumer fixture (process:consumer-fixture): [03\\_Resources/retention](03_Resources/retention.md)\n\n+# Knowledge update log\n\n## 2026-10-24\n\n- Update both synthetic retention concepts from the supplied policy revision (codex/gpt-6): [03\\_Resources/retention-source](03_Resources/retention-source.md), [03\\_Resources/retention](03_Resources/retention.md), [03\\_Resources/service-decision](03_Resources/service-decision.md)\n\n- Seed controlled consumer fixture (process:consumer-fixture): [03\\_Resources/service-decision](03_Resources/service-decision.md)\n\n- Seed controlled consumer fixture (process:consumer-fixture): [03\\_Resources/retention](03_Resources/retention.md)\n\n"
+      }
+    ],
+    "warnings": null
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+    "index_stale": true
+  }
+}

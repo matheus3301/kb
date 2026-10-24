@@ -1,0 +1,90 @@
+{
+  "schema_version": "kb.acceptance.v1",
+  "passed": true,
+  "synthetic_only": true,
+  "runtime_path_empty": true,
+  "checks": [
+    {
+      "name": "isolated-idempotent-init",
+      "criteria": [
+        "A01",
+        "A19",
+        "A26"
+      ]
+    },
+    {
+      "name": "create-read-and-durable-retry",
+      "criteria": [
+        "A03",
+        "A11",
+        "A12"
+      ]
+    },
+    {
+      "name": "preview-cas-and-body-edit",
+      "criteria": [
+        "A09",
+        "A10"
+      ]
+    },
+    {
+      "name": "noop-preserves-file-bytes-and-history",
+      "criteria": [
+        "A09"
+      ]
+    },
+    {
+      "name": "bounded-citable-context-and-pure-queries",
+      "criteria": [
+        "A16",
+        "A25"
+      ]
+    },
+    {
+      "name": "batch-conflict-publishes-nothing",
+      "criteria": [
+        "A21"
+      ]
+    },
+    {
+      "name": "one-source-integrates-two-existing-concepts",
+      "criteria": [
+        "A21",
+        "A25"
+      ]
+    },
+    {
+      "name": "changed-basis-signals-review-without-rewriting-synthesis",
+      "criteria": [
+        "A23",
+        "A24"
+      ]
+    },
+    {
+      "name": "move-maintains-incoming-link-and-anchor",
+      "criteria": [
+        "A13"
+      ]
+    },
+    {
+      "name": "traversal-absolute-and-symlink-denied",
+      "criteria": [
+        "A14"
+      ]
+    },
+    {
+      "name": "degraded-base-raw-diagnostics-and-explicit-repair",
+      "criteria": [
+        "A04",
+        "A05"
+      ]
+    },
+    {
+      "name": "validated-export-and-original-source-immutability",
+      "criteria": [
+        "A18",
+        "A22"
+      ]
+    }
+  ]
+}

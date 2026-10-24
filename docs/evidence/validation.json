@@ -1,0 +1,29 @@
+{
+  "kind": "first_release_validation",
+  "date": "2026-10-24",
+  "synthetic_only": true,
+  "application_implemented": true,
+  "make_check_passed": true,
+  "go_coverage_percent": 88.4,
+  "passed_named_events_including_subtests_and_fuzz_seeds": 314,
+  "top_level_test_functions": 102,
+  "failed_go_events": 0,
+  "fuzz_smoke_targets": 7,
+  "cross_build_targets": [
+    "linux/amd64",
+    "linux/arm64",
+    "darwin/amd64",
+    "darwin/arm64"
+  ],
+  "static_analysis": "passed",
+  "secret_scan": "passed",
+  "govulncheck": "passed; v1.9.0",
+  "cli_workflow": "cli-workflow.json",
+  "agent_consumer": "consumer/consumer-evidence.json",
+  "performance": "performance.json",
+  "notes": [
+    "Application acceptance is backed by the referenced tests and actual synthetic observations, not by code coverage alone.",
+    "Performance goals remain unmet and are published as measured limitations.",
+    "The consumer explicitly loaded the installed skill; automatic activation across agents is not proven."
+  ]
+}

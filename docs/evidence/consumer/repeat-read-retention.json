@@ -1,0 +1,40 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "note": {
+      "id": "03_Resources/retention",
+      "path": "03_Resources/retention.md",
+      "title": "Synthetic retention policy",
+      "type": "Reference",
+      "para": "resources",
+      "revision": "sha256:885a82712759b2f400a42c013d4e225eb35af990e39558f8edc07af0e8e126dc",
+      "metadata": {
+        "generated": {
+          "at": "2026-10-24T22:21:37.417464Z",
+          "by": "codex/gpt-6"
+        },
+        "sources": [
+          {
+            "resource": "retention-source.md",
+            "title": "Synthetic retention policy revision"
+          }
+        ],
+        "title": "Synthetic retention policy",
+        "type": "Reference"
+      },
+      "trust": "unverified",
+      "stale": false,
+      "basis_outdated": false
+    },
+    "markdown": "---\ngenerated:\n  at: \"2026-10-24T22:21:37.417464Z\"\n  by: codex/gpt-6\ntitle: Synthetic retention policy\ntype: Reference\nsources:\n  - resource: retention-source.md\n    title: Synthetic retention policy revision\n---\n# Synthetic retention\n\nThe recorded retention interval is 600 seconds, according to the [synthetic policy revision](retention-source.md).\n",
+    "line_start": 1,
+    "line_end": 13
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+    "index_stale": true
+  }
+}

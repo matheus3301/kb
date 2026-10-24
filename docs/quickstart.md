@@ -1,12 +1,10 @@
 # Quickstart
 
-**Pre-release documentation.** This branch contains the repository foundation,
-not an implemented application. No working `kb` binary or release is available.
-All `kb` commands and request examples below describe the proposed
-[specification](spec.md); they become runnable as implementation lands. The
-examples follow the v0.1 clarification in `docs/interfaces.md` and shared DTOs
-in `internal/api/types.go`, integrated separately from this preparation.
-Do not treat these examples as evidence that acceptance criteria pass.
+`kb` v0.1.0 is an experimental first release with a working CLI and MCP stdio
+server. This guide follows the [v0.1 contract](interfaces.md) and shared DTOs in
+`internal/api/types.go`. Use a disposable example base while learning its write
+and recovery behavior. [Recorded validation](evidence/validation.json) describes
+observed behavior; it does not prove that all bugs are absent.
 
 ## Install the Go binary from source
 
@@ -18,13 +16,23 @@ git clone https://github.com/matheus3301/kb.git
 cd kb
 ```
 
-Once `cmd/kb` exists, install the binary from the checkout:
+Install the binary from the checkout:
 
 ```sh
-# Pre-release: requires the future cmd/kb implementation.
 go install ./cmd/kb
+kb version --json
 kb --help
 ```
+
+To install the tagged version without a checkout:
+
+```sh
+go install github.com/matheus3301/kb/cmd/kb@v0.1.0
+```
+
+The [v0.1.0 release](https://github.com/matheus3301/kb/releases/tag/v0.1.0) provides
+Linux/macOS amd64/arm64 archives and checksums. Extract the archive matching your
+platform and place its `kb` executable on your `PATH` to use a prebuilt binary.
 
 Make the Go binary installation directory available on your `PATH` if `kb` is
 not found. Installing the binary does not install a skill or register an MCP
@@ -39,7 +47,6 @@ intended knowledge directory. File arguments such as `03_Resources/memory.md`
 are relative to this root, not to the shell's current directory.
 
 ```sh
-# Pre-release: proposed commands, not yet implemented.
 kb --root ./example-knowledge init --para
 kb --root ./example-knowledge status --json
 ```
@@ -49,10 +56,16 @@ missing selected files, including PARA directories when requested, and refuses
 to overwrite existing notes or indexes. It does not require Git, change global
 agent settings, install skills, or register MCP.
 
-The proposed root selection order is `--root`, then `KB_ROOT`, then discovery
-of `.kb/config.toml` from the current directory through its ancestors. For first initialization, an explicit root or `KB_ROOT` may name a new
-directory; without either, init uses the current directory. The default content
-include covers all Markdown; operational and dependency folders are excluded. PARA is optional navigation, not an OKF requirement.
+The root selection order is `--root`, then `KB_ROOT`, then discovery
+of `.kb/config.toml` from the current directory through its ancestors. For first
+initialization, an explicit root or `KB_ROOT` may name a new directory; without
+either, init uses the current directory. The default content include covers all
+Markdown; operational and dependency folders are excluded. PARA is optional
+navigation, not an OKF requirement.
+
+Configuration is loaded when a process opens the base. Each CLI invocation
+opens it afresh; restart a long-lived MCP server after editing `.kb/config.toml`.
+An existing server does not hot-reload changes to write permissions or scope.
 
 Keep original source snapshots outside `./example-knowledge`, for example in
 `./sources`. Acquisition and preservation of originals belong to your external
@@ -61,7 +74,7 @@ does not cross that root. Original snapshots are never disposable cache.
 
 ## Create, search, and read
 
-Save this proposed create request as `create.json`. It creates a minimal OKF
+Save this create request as `create.json`. It creates a minimal OKF
 concept with the required `type`, a title, and a body:
 
 ```json
@@ -78,7 +91,6 @@ concept with the required `type`, a title, and a body:
 ```
 
 ```sh
-# Pre-release: preview, then create using the proposed request schema.
 kb --root ./example-knowledge create --input create.json --dry-run
 kb --root ./example-knowledge create --input create.json
 kb --root ./example-knowledge search "reusable memory" --limit 10 --json
@@ -93,14 +105,15 @@ the file path includes `.md`. `read` returns the current content and revision.
 `context` returns bounded source excerpts, not an LLM-generated answer.
 
 Preserve real provenance when recording sourced claims. Unknown metadata is
-allowed; body-only patches must preserve YAML comments and untouched metadata.
+allowed; body edits preserve YAML comments and untouched metadata. Meaningful
+edits refresh `generated` metadata and invalidate active verification.
 Normal writing requires a conformant native OKF base. Notes without parseable
 YAML and a nonempty string `type` are reported as invalid, not silently treated
 as supported legacy notes.
 
 ## Patch with an expected revision
 
-Copy the exact `revision` from the latest read result into `patch.json` in place
+Copy the exact `data.note.revision` from the latest read result into `patch.json` in place
 of `sha256:REPLACE_WITH_CURRENT_REVISION`. Never use a guessed hash or reuse an
 old revision after another edit.
 
@@ -123,7 +136,6 @@ old revision after another edit.
 ```
 
 ```sh
-# Pre-release: proposed revision-checked patch commands.
 kb --root ./example-knowledge patch 03_Resources/memory.md --input patch.json --dry-run
 kb --root ./example-knowledge patch 03_Resources/memory.md --input patch.json
 ```
@@ -164,21 +176,72 @@ latest read revision, including any revision produced by the previous patch:
 ```
 
 ```sh
-# Pre-release: proposed plan preview and application.
 kb --root ./example-knowledge apply --input plan.json --dry-run
 kb --root ./example-knowledge apply --input plan.json
 ```
 
 Dry-run returns affected files, bounded diffs, diagnostics, and revisions without
-writing. Review that result before applying. Initial limits are 50 operations
+writing. Review that result before applying. Limits are 50 operations
 and 4 MiB per plan. A conflicting revision or invalid operation cancels the
 whole set before publication. A single-operation input supplies operation
 fields alongside `summary`, `actor`, and `idempotency_key`; the CLI wraps it
-into an apply plan. Multi-operation plans require unique operation IDs. Index/log changes are derived automatically;
-original sources never enter the writable list. Consolidate edits to one file
+into an apply plan. Multi-operation plans require unique operation IDs.
+Index/log changes are derived automatically; original sources never enter the
+writable list. Consolidate edits to one file
 into one operation; overlapping operations are rejected in the MVP.
 
-The required crash journal coordinates multi-file publication and recovery.
+## Move, archive, and maintain navigation
+
+After applying the plan, reread `03_Resources/memory.md`. Save `move.json` with
+that current revision and a fresh key:
+
+```json
+{
+  "expected_revision": "sha256:REPLACE_WITH_CURRENT_REVISION",
+  "summary": "Move memory guidance into the example project",
+  "actor": "process:example-session",
+  "idempotency_key": "example-session/move-memory-1"
+}
+```
+
+```sh
+kb --root ./example-knowledge move 03_Resources/memory.md 01_Projects/example/memory.md --input move.json --dry-run
+kb --root ./example-knowledge move 03_Resources/memory.md 01_Projects/example/memory.md --input move.json
+kb --root ./example-knowledge read 01_Projects/example/memory.md --json
+```
+
+Moves update resolved incoming/outgoing references and change the Concept ID.
+Reread the moved note to obtain its current revision. Save `archive.json` with
+that revision and a new key:
+
+```json
+{
+  "expected_revision": "sha256:REPLACE_WITH_CURRENT_REVISION",
+  "summary": "Archive the completed example guidance",
+  "actor": "process:example-session",
+  "idempotency_key": "example-session/archive-memory-1"
+}
+```
+
+```sh
+kb --root ./example-knowledge archive 01_Projects/example/memory.md --input archive.json --dry-run
+kb --root ./example-knowledge archive 01_Projects/example/memory.md --input archive.json
+kb --root ./example-knowledge read 04_Archive/memory.md --json
+kb --root ./example-knowledge list --include-archives --limit 20 --json
+kb --root ./example-knowledge links 04_Archive/memory.md --direction both --json
+kb --root ./example-knowledge index rebuild --json
+kb --root ./example-knowledge maintain --dry-run
+kb --root ./example-knowledge maintain --apply
+```
+
+Archive defaults to the configured Archive directory plus the original basename;
+a collision is rejected. It does not mark the knowledge false or deprecated.
+Moves and patches use separate calls in v0.1. Maintenance preserves manual index
+content and updates managed regions; rebuilding the cache changes no notes.
+
+## Recover an interrupted operation
+
+The durable crash journal coordinates multi-file publication and recovery.
 External readers can still observe a transient state because multi-file rename
 is not atomic. Preserve `.kb/state/` for recovery and idempotent receipts.
 `.kb/cache/` holds only rebuildable derived data; removing it loses no knowledge.
@@ -187,7 +250,6 @@ idempotency receipts do not expire. Reads encountering a pending journal return
 `RECOVERY_REQUIRED` without changing notes. Preview and perform explicit recovery:
 
 ```sh
-# Pre-release: proposed recovery commands.
 kb --root ./example-knowledge recover --dry-run
 kb --root ./example-knowledge recover
 ```
@@ -202,7 +264,6 @@ conformant. Preview repair with `--dry-run`; it never invents missing metadata.
 ## Validate format and inspect health
 
 ```sh
-# Pre-release: proposed validation commands.
 kb --root ./example-knowledge validate --profile okf --json
 kb --root ./example-knowledge validate --profile health --json
 ```
@@ -214,6 +275,31 @@ findings, and advisories. Health does not prove semantic consistency or detect
 all contradictions; an external agent reviews meaning and evidence. A changed
 `basis_revisions` dependency requests synthesis review without automatically
 rewriting it or declaring it false. Validation does not modify notes.
+
+To export a validated knowledge snapshot after these operations:
+
+```sh
+kb --root ./example-knowledge export ./example-export --json
+```
+
+Export includes an inclusion/exclusion manifest. It does not certify unexamined
+files or back up operational journal/receipt state.
+
+## Limits and performance
+
+Operational policies are distinct from OKF's format requirements. Notes over
+1 MiB are invalid; a scoped source file over 4 MiB aborts inventory with an
+explicit error. Read/context responses have a 256 KiB ceiling. Non-string YAML
+mapping keys produce policy findings for JSON interoperability. Repair remains
+subject to these bounds; oversized or legacy collections may need deliberate
+external preparation before `kb` can operate on them. No legacy migration is
+provided.
+
+The initial 150 ms warm-search p95 and 150 MiB RSS targets were not met. The
+[recorded local benchmark](performance.md) measured 162.9 ms warm core search p95,
+180.3 MiB peak process RSS, and 594.4 ms cold core search on 10,000 synthetic
+2 KiB notes. It is not a fresh-process CLI or MCP latency benchmark, and it does
+not include an independent reindex measurement.
 
 ## Register MCP separately
 
@@ -232,23 +318,22 @@ that `kb init` executes. Adapt the outer configuration format to your client:
 }
 ```
 
-**Pre-release:** the MCP server is not implemented yet. Ensure the client can
+The server uses the official MCP Go SDK. Ensure the client can
 find `kb` and starts it with the intended working directory; relative roots
 resolve there. Use your own absolute root when the client cannot set a working
 directory. The server stays confined to its startup root.
 
-Read-only mode must hide write tools from `tools/list` and reject direct
+Read-only mode hides write tools from `tools/list` and rejects direct
 mutation calls. Remove `--read-only` only when explicitly enabling writes.
 MCP stdout is reserved for protocol messages; operational logs go to stderr.
 CLI and MCP share domain behavior, revisions, and errors.
 
 ## Optionally install the agent skill
 
-The planned skill will live at `skills/knowledge-memory/SKILL.md` in this public
-repository. Once it is published, run this from the chosen agent workdir:
+The skill is distributed at [skills/knowledge-memory/SKILL.md](../skills/knowledge-memory/SKILL.md).
+Run this from the chosen agent workdir:
 
 ```sh
-# Pre-release: requires the future published knowledge-memory skill.
 npx skills add matheus3301/kb --skill knowledge-memory
 ```
 

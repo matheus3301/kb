@@ -1,9 +1,11 @@
 ---
 type: Project Overview
 title: Project design — OKF memory for humans and agents
-description: Product, architecture, learning lifecycle, and readiness review for specification v0.3.
+description: Implemented experimental v0.1.0 product, architecture, learning lifecycle, evidence, and limits.
 tags: [okf, para, cli, mcp, architecture, memory]
-status: draft
+status: stable
+implementation_version: "0.1.0"
+implementation_status: experimental
 sources:
   - resource: spec.md
     title: Specification v0.3
@@ -18,13 +20,13 @@ generated:
 
 # Project design
 
-The authoritative v0.1 clarification is `docs/interfaces.md` in this repository;
-shared DTOs are in `internal/api/types.go`. They settle implementation details
-of the [specification](spec.md). These contracts are integrated separately from
-this documentation preparation.
+The [v0.1 interface contract](interfaces.md) and shared DTOs in
+`internal/api/types.go` clarify the [specification](spec.md).
+**v0.1.0 is an implemented experimental first release**, with observed
+[validation evidence](evidence/validation.json) and explicit limits.
 
-This will be a local tool that turns a knowledge folder into memory that humans
-and agents can query and edit. One binary will provide two modes: CLI commands
+`kb` is a local tool that turns a knowledge folder into memory that humans
+and agents can query and edit. One binary provides two modes: CLI commands
 for terminals and scripts, and an MCP stdio server for agent tools. Both use
 the same rules, revisions, and operations.
 
@@ -127,8 +129,8 @@ publishes changes while maintaining the index and history.
 
 If another session edited a note after it was read, the operation returns a
 conflict and requires rereading. A retry identified by the same key must not
-duplicate effects. These are specification requirements, not implemented
-mechanisms yet. Multi-file publication requires a durable journal and recovery;
+duplicate effects. The implementation uses revision checks, durable receipts,
+and a prepared/committed journal with recovery;
 external editors and readers cannot be promised atomic multi-file visibility.
 
 A synthesis can record revisions of supporting notes. When one changes, the
@@ -138,7 +140,7 @@ learning creates no note or event merely to record the query.
 
 ## Skill and workdir integration
 
-The product repository will contain `skills/knowledge-memory/SKILL.md`, separate
+The product repository contains [skills/knowledge-memory/SKILL.md](../skills/knowledge-memory/SKILL.md), separate
 from base content. The skill carries the reusable procedure; workdir instructions
 identify the root and require consultation on every question. One base can serve
 several workdirs, each configured explicitly.
@@ -154,14 +156,16 @@ If the base is unavailable, report that and continue.
 
 The Skills CLI's documented installation uses `npx skills add` with `--skill`
 selection. This distributes instructions. Executable installation and MCP
-registration remain separate steps. Product setup should integrate them
-explicitly in the selected workdir. This documentation revision creates or
-installs no skill and modifies no knowledge-base instructions. See the
-[quickstart](quickstart.md) for the planned installation steps.
+registration remain separate steps. Configure the root and workdir instructions
+explicitly; installation does not change global agent settings. See the
+[quickstart](quickstart.md) for working setup commands. The
+[controlled consumer observation](evidence/consumer/consumer-evidence.json) used
+an explicitly loaded local skill and an external base without AGENTS.md. It
+does not establish automatic activation across agents.
 
-## Proposed usage
+## Usage
 
-`kb` is the chosen name. These commands do not exist yet:
+With a configured example base and an existing logging note:
 
 ```sh
 kb --root ./example-knowledge search "logging decision" --json
@@ -173,45 +177,60 @@ kb --root ./example-knowledge validate --profile health --json
 kb --root ./example-knowledge mcp
 ```
 
-Through MCP, the agent will access tools such as `kb_search`, `kb_read`,
+Through MCP, the agent accesses tools such as `kb_search`, `kb_read`,
 `kb_context`, and `kb_apply` without constructing shell commands from note
 content. CLI and MCP must produce the same domain results. Read-only mode
 permits queries and blocks mutations, including direct calls to hidden write tools.
 
-## Readiness and limits
+## Evidence and limits
 
-**Ready for implementation against the v0.1 contract; still pre-release.** The spec
-defines the product, knowledge model, interfaces, and 26 acceptance criteria.
-Tests of existing tools inform design decisions; they do not validate this
-application, whose implementation has not started.
+The implementation includes native OKF parsing and presentation-preserving
+patches, lexical search, bounded context, writes with expected revisions,
+coordinated plans, move/archive, journal recovery, maintenance, export, and MCP.
+The [runtime decision](decisions/0002-v0.1.md) records Go and the selected
+libraries. No embedded model or legacy-note migration is provided.
 
-The v0.1 clarification settles the earlier contract gaps:
+Reads encountering a pending journal return `RECOVERY_REQUIRED` without note
+mutation. Explicit recovery or a subsequent mutation resolves pending state.
+Receipts do not expire in v0.1. Repair is an explicit plan, requires a conformant
+final state, and remains subject to operational size limits. External readers
+can observe intermediate multi-file states; advisory locking does not isolate
+against editors that ignore it.
 
-1. Versioned `kb.v1` DTOs define operation, result, and error shapes. Writes
-   require explicit paths and revision preconditions.
-2. A prepared/committed journal controls rollback or roll-forward; receipts do
-   not expire in v0.1. Reads return `RECOVERY_REQUIRED` without changing notes;
-   recovery is explicit or precedes a new mutation.
-3. `apply --repair` permits invalid input state and requires a conformant final
-   state. First init uses an explicit root, `KB_ROOT`, or the current directory.
-   Workdir instructions and integration setup remain explicit and separate.
-4. Go is the adopted implementation language. Parser, search, and official MCP
-   SDK versions and behavior still need prototype evidence. Cobra is the CLI
-   adapter candidate; explicit constructors and slog are the starting point.
-   Zap remains a valid alternative; Fx has no demonstrated need. Recommendations
-   alone are not installed or pinned dependencies.
+Configuration is process-scoped. CLI invocations open fresh configuration;
+restart a long-lived MCP server after `.kb/config.toml` changes. The server
+stays at its startup root and uses the official Go SDK. Read-only mode hides
+write tools and rejects direct mutation calls; tool annotations do not enforce
+permissions.
+
+Application policies distinguish valid OKF from supported operational input:
+notes over 1 MiB are invalid, scoped source files over 4 MiB abort inventory,
+non-string YAML mapping keys produce policy findings, and read/context responses
+have a 256 KiB ceiling. These limits are not imposed by OKF itself.
+
+[Recorded validation](evidence/validation.json) reports 88.4% statement coverage,
+102 top-level test functions, 314 named pass events including subtests and seeds,
+seven fuzz targets, and four CGO-free cross-builds. The
+[CLI workflow](evidence/cli-workflow.json) and consumer observation exercise
+synthetic data. This evidence supports observed behavior, not the absence of
+bugs, universal agent adherence, or semantic correctness.
+
+The [local performance benchmark](performance.md) used Apple M4/macOS arm64,
+Go 1.27.3, 10,000 synthetic 2 KiB notes, and 20 warm samples. Cold core search
+was 594.4 ms, warm p95 162.9 ms, and peak process RSS 180.3 MiB. The original
+150 ms/150 MiB targets were not met. These are core measurements, not fresh CLI
+startup or MCP transport latency. Reindexing was not independently benchmarked.
 
 ## Delivery
 
-The first prototype should traverse a complete path: read an OKF note, preserve
-YAML comments during editing, reject a conflicting revision, and expose one
-operation through MCP. It also permits evaluating the parser and distribution.
+Source installation works through `go install ./cmd/kb` from a checkout.
+Maintainers prepare Linux/macOS amd64/arm64 archives, checksums, documentation,
+skill, MIT license, and dependency notices. Tag and release publication are
+manual after CI under the current user authorization; there is no auto-merge
+or auto-release. A green workflow is evidence to review, not publication
+permission by itself.
 
-Implementation follows the spec's increments: reading and validation; search
-and context; coordinated writing and recovery; moving and health; complete MCP
-integration, export, and distribution. Recovery and idempotence must be
-demonstrated with injected failures before stable agent writing is offered.
-
-The expected outcome is that a future session can find a decision, understand
-its reasons and sources, and revise it without losing another session's work.
-Performance and binary size still need measurement.
+A future session can retrieve recorded decisions, reasons, and sources and
+propose revision-checked changes. Continuing work must retain conformance,
+metadata preservation, recovery, and source evidence while improving measured
+performance and expanding behavioral coverage.

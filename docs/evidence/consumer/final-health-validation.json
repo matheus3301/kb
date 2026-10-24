@@ -1,0 +1,16 @@
+{
+  "schema_version": "kb.v1",
+  "ok": true,
+  "data": {
+    "profile": "health",
+    "conformant": true,
+    "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+    "diagnostics": null
+  },
+  "warnings": [],
+  "meta": {
+    "root": "<external-knowledge>",
+    "generation": "sha256:ac3aebffd30c006a5aab409f9df5b6fa2db77bad994ebd1301ea9e9bbc86b657",
+    "index_stale": true
+  }
+}
