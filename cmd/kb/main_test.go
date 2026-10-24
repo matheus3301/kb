@@ -62,7 +62,11 @@ func TestMainWiresCoreAndWriter(t *testing.T) {
 func helperCommand(t *testing.T, args ...string) *exec.Cmd {
 	t.Helper()
 	argv := append([]string{"-test.run=^TestMainHelperProcess$", "--"}, args...)
-	cmd := exec.Command(os.Args[0], argv...)
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	cmd := exec.Command(executable, argv...) // #nosec G204 -- Re-executes only this Go test binary with synthetic test arguments.
 	cmd.Env = append(os.Environ(), "KB_TEST_HELPER=1")
 	return cmd
 }

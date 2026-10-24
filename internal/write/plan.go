@@ -19,7 +19,10 @@ func cloneFiles(files map[string][]byte) map[string][]byte {
 	return copy
 }
 
-func reserved(name string) bool { return path.Base(name) == "index.md" || name == "log.md" }
+func reserved(name string) bool {
+	base := path.Base(name)
+	return base == "index.md" || base == "log.md"
+}
 
 func (s *Service) conform(files map[string][]byte) error {
 	if err := validatePathSet(files); err != nil {

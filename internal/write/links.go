@@ -174,6 +174,10 @@ func (s *Service) relocate(snapshot api.Snapshot, before, after map[string][]byt
 		known[link.From][link.To] = true
 	}
 	for name, raw := range after {
+		// Project-local logs are manual documents; only the root log is maintained.
+		if path.Base(name) == "log.md" && name != "log.md" {
+			continue
+		}
 		original := name
 		if old, ok := origins[name]; ok {
 			original = old

@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/matheus3301/kb/internal/api"
 )
@@ -96,10 +97,11 @@ func TestDispatchAndBounds(t *testing.T) {
 		t.Fatal("oversized operation set accepted")
 	}
 	b.body = strings.Repeat("x", api.MaxReadBytes)
-	for _, action := range []string{"read", "context"} {
-		if e := a.Call(ctx, action, nil); e.OK || e.Error.Code != "RESPONSE_TOO_LARGE" {
-			t.Fatalf("%#v", e)
-		}
+	if e := a.Call(ctx, "read", nil); !e.OK || len(e.Data.(api.ReadResult).Markdown) >= api.MaxReadBytes {
+		t.Fatalf("read was not bounded: %#v", e)
+	}
+	if e := a.Call(ctx, "context", nil); e.OK || e.Error.Code != "RESPONSE_TOO_LARGE" {
+		t.Fatalf("%#v", e)
 	}
 	b.fail = errors.New("private backend detail")
 	e := a.Call(ctx, "status", nil)
@@ -237,5 +239,51 @@ func TestArchiveDefaultDestinationRetainsCAS(t *testing.T) {
 	op := b.plan.Operations[0]
 	if op.Kind != "move" || op.Path != "Notes/nested/old.md" || op.To != "Archive/old.md" || op.ExpectedRevision != "sha256:old" {
 		t.Fatalf("%#v", op)
+	}
+}
+
+func TestNullRequestControlsAndExtensibleMetadata(t *testing.T) {
+	for _, raw := range []string{`{"query":null}`, `{"filters":null}`, `{"filters":{"stale":null}}`, `{"limit":null}`, `{"body":null}`, `{"metadata":null}`, `{"operations":[null]}`} {
+		if err := Decode([]byte(raw), new(map[string]any)); err == nil {
+			t.Fatalf("accepted null control %s", raw)
+		}
+	}
+	var input SingleInput
+	raw := `{"path":"synthetic.md","metadata":{"custom":null,"nested":{"custom":null}},"metadata_patch":{"custom":null}}`
+	if err := Decode([]byte(raw), &input); err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := input.Metadata["custom"]; !ok {
+		t.Fatal("metadata null disappeared")
+	}
+}
+
+func TestReadEnvelopeBudgetPreservesUTF8AndSourceLines(t *testing.T) {
+	source := strings.Repeat("Synthetic memória\n", 200)
+	e := Envelope{SchemaVersion: "kb.v1", OK: true, Data: api.ReadResult{Note: api.Note{Path: "memory.md"}, Markdown: source, LineStart: 7, LineEnd: 207}, Warnings: []api.Diagnostic{}}
+	if !boundRead(&e, 1024) {
+		t.Fatal("excerpt did not fit")
+	}
+	r := e.Data.(api.ReadResult)
+	encoded, err := json.Marshal(e)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(encoded) > 1024 || !utf8.ValidString(r.Markdown) || !strings.HasPrefix(source, r.Markdown) || len(r.Diagnostics) != 1 || r.Diagnostics[0].Code != "TRUNCATED" {
+		t.Fatalf("invalid bounded excerpt %#v", r)
+	}
+	end := 7 + strings.Count(r.Markdown, "\n")
+	if strings.HasSuffix(r.Markdown, "\n") {
+		end--
+	}
+	if r.LineEnd != end {
+		t.Fatalf("source lines %d != %d", r.LineEnd, end)
+	}
+	tooLarge := Envelope{Data: api.ReadResult{Note: api.Note{Metadata: map[string]any{"oversized": strings.Repeat("x", 2048)}}, Markdown: "Small excerpt"}}
+	if boundRead(&tooLarge, 1024) {
+		t.Fatal("oversized metadata was silently dropped")
+	}
+	if boundRead(&Envelope{Data: api.ContextResult{}}, 1024) {
+		t.Fatal("non-read response was modified")
 	}
 }

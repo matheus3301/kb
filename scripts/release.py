@@ -16,6 +16,37 @@ ROOT = Path(__file__).resolve().parents[1]
 TARGETS = (("linux", "amd64"), ("linux", "arm64"), ("darwin", "amd64"), ("darwin", "arm64"))
 
 
+def dependency_notices():
+    environment = dict(os.environ, GOWORK="off", GOTOOLCHAIN="local")
+    raw = subprocess.check_output(["go", "list", "-deps", "-json", "./cmd/kb"],
+                                  cwd=ROOT, env=environment, text=True)
+    decoder = json.JSONDecoder()
+    modules = {}
+    while raw.strip():
+        package, end = decoder.raw_decode(raw.lstrip())
+        raw = raw.lstrip()[end:]
+        module = package.get("Module")
+        if not module or module.get("Main"):
+            continue
+        if module.get("Replace"):
+            raise SystemExit("release builds must not use replaced modules")
+        modules[module["Path"]] = module
+    goroot = Path(subprocess.check_output(["go", "env", "GOROOT"], env=environment, text=True).strip())
+    sections = ["# Third-party notices\n\nProject code is MIT licensed. Dependency notices follow.\n",
+                "## Go standard library\n\n```text\n" + (goroot / "LICENSE").read_text() + "\n```\n"]
+    for name, module in sorted(modules.items()):
+        directory = Path(module["Dir"])
+        found = False
+        for path in sorted(directory.iterdir()):
+            if path.is_file() and path.name.upper().startswith(("LICENSE", "COPYING", "NOTICE")):
+                found = True
+                sections.append(f"## {name}@{module['Version']} — {path.name}\n\n```text\n" +
+                                path.read_text(errors="replace") + "\n```\n")
+        if not found:
+            raise SystemExit(f"missing dependency license notice: {name}")
+    return "\n".join(sections).encode()
+
+
 def version_value(value):
     if not re.fullmatch(r"v\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?", value):
         raise argparse.ArgumentTypeError("version must be a v-prefixed semantic version")
@@ -58,9 +89,11 @@ def main():
                     raise SystemExit("release documentation must not contain symlinks or external paths")
                 documents[str(path.relative_to(ROOT))] = path.read_bytes()
     assets = []
+    documents["THIRD_PARTY_NOTICES.md"] = dependency_notices()
     for goos, goarch in TARGETS:
         binary = output / f"kb-{goos}-{goarch}"
-        env = dict(os.environ, GOOS=goos, GOARCH=goarch, CGO_ENABLED="0", GOTOOLCHAIN="local")
+        env = dict(os.environ, GOOS=goos, GOARCH=goarch, GOAMD64="v1", GOARM64="v8.0",
+                   CGO_ENABLED="0", GOTOOLCHAIN="local", GOWORK="off", GOFLAGS="")
         subprocess.run(
             ["go", "build", "-trimpath", "-ldflags",
              f"-s -w -X main.version={options.version} -X main.commit={commit}",

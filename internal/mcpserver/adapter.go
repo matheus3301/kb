@@ -96,15 +96,51 @@ func Decode(raw []byte, dst any) error {
 		return Invalid("request must be one JSON object")
 	}
 	d := json.NewDecoder(bytes.NewReader(raw))
-	d.DisallowUnknownFields()
 	d.UseNumber()
-	if err := d.Decode(dst); err != nil {
+	var object map[string]any
+	if err := d.Decode(&object); err != nil {
 		return Invalid("invalid request JSON: " + err.Error())
 	}
 	if err := d.Decode(new(any)); err != io.EOF {
 		return Invalid("request must contain exactly one JSON document")
 	}
+	if hasNullControl(object) {
+		return Invalid("request fields cannot be null; omit optional fields instead")
+	}
+	d = json.NewDecoder(bytes.NewReader(raw))
+	d.DisallowUnknownFields()
+	d.UseNumber()
+	if err := d.Decode(dst); err != nil {
+		return Invalid("invalid request JSON: " + err.Error())
+	}
 	return nil
+}
+
+// Null is meaningful inside extensible metadata. Request controls instead use
+// absence for optional fields, matching their published nonnullable schemas.
+func hasNullControl(v any) bool {
+	switch value := v.(type) {
+	case nil:
+		return true
+	case map[string]any:
+		for name, child := range value {
+			if name == "metadata" || name == "metadata_patch" {
+				if _, ok := child.(map[string]any); ok {
+					continue
+				}
+			}
+			if hasNullControl(child) {
+				return true
+			}
+		}
+	case []any:
+		for _, child := range value {
+			if hasNullControl(child) {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // ReadInput bounds file or stdin input before JSON decoding.
@@ -200,16 +236,69 @@ func (a *Adapter) Call(ctx context.Context, action string, raw []byte) Envelope 
 	}
 	limit := api.MaxPlanBytes
 	if action == "read" || action == "context" {
-		limit = api.MaxReadBytes
+		// Reserve framing space for MCP's structuredContent and compact text.
+		limit = api.MaxReadBytes - 512
 	}
 	b, marshalErr := json.Marshal(e)
 	if marshalErr != nil {
 		return Failure(root, marshalErr)
 	}
 	if len(b) > limit {
+		if action == "read" && boundRead(&e, limit) {
+			return e
+		}
 		return Failure(root, &api.DomainError{Code: "RESPONSE_TOO_LARGE", Message: "response exceeds transport limit; request a smaller range or page"})
 	}
 	return e
+}
+
+// The core bounds its result before the adapter adds a root and generation.
+// Shorten only the returned source excerpt when this envelope needs more room.
+func boundRead(e *Envelope, limit int) bool {
+	r, ok := e.Data.(api.ReadResult)
+	if !ok {
+		return false
+	}
+	original := r.Markdown
+	truncated := false
+	for _, d := range r.Diagnostics {
+		if d.Code == "TRUNCATED" {
+			truncated = true
+		}
+	}
+	if !truncated {
+		r.Diagnostics = append(r.Diagnostics, api.Diagnostic{Path: r.Note.Path, Code: "TRUNCATED", Message: "read reached the transport byte ceiling", Layer: "advisories"})
+	}
+	setExcerpt := func(n int) {
+		if n < len(original) {
+			for n > 0 && !utf8.RuneStart(original[n]) {
+				n--
+			}
+		}
+		r.Markdown = original[:n]
+		r.LineEnd = r.LineStart + strings.Count(r.Markdown, "\n")
+		if strings.HasSuffix(r.Markdown, "\n") {
+			r.LineEnd--
+		}
+		e.Data = r
+	}
+	low, high := 0, len(original)
+	for low < high {
+		middle := low + (high-low+1)/2
+		setExcerpt(middle)
+		encoded, err := json.Marshal(e)
+		if err != nil {
+			return false
+		}
+		if len(encoded) <= limit {
+			low = middle
+		} else {
+			high = middle - 1
+		}
+	}
+	setExcerpt(low)
+	encoded, err := json.Marshal(e)
+	return err == nil && len(encoded) <= limit && r.Markdown != ""
 }
 
 func nonNil(d []api.Diagnostic) []api.Diagnostic {

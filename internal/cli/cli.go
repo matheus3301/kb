@@ -175,13 +175,17 @@ type writeCloser struct{ io.Writer }
 
 func (writeCloser) Close() error { return nil }
 
-func (r *runner) input(file string) (map[string]any, error) {
+func (r *runner) input(ctx context.Context, file string) (map[string]any, error) {
 	if file == "" {
 		return map[string]any{}, nil
 	}
 	var data []byte
 	var err error
 	if file == "-" {
+		if closer, ok := r.in.(io.Closer); ok {
+			stop := context.AfterFunc(ctx, func() { _ = closer.Close() })
+			defer stop()
+		}
 		data, err = mcpserver.ReadInput(r.in)
 	} else {
 		var f *os.File
@@ -194,6 +198,9 @@ func (r *runner) input(file string) (map[string]any, error) {
 		if err == nil {
 			err = closeErr
 		}
+	}
+	if ctx.Err() != nil {
+		return nil, ctx.Err()
 	}
 	if err != nil {
 		return nil, err
@@ -279,12 +286,20 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 		cmd.Flags().Bool(name, value, "Request "+name)
 	}
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		values, err := r.input(input)
+		a, err := r.open(cmd.Context(), false, false)
 		if err != nil {
 			return r.result(mcpserver.Failure(r.root, err))
 		}
+		requestRoot := a.Reader.Root()
+		if a.ReadOnly && mcpserver.IsWrite(action) {
+			return r.result(a.Call(cmd.Context(), action, nil))
+		}
+		values, err := r.input(cmd.Context(), input)
+		if err != nil {
+			return r.result(mcpserver.Failure(requestRoot, err))
+		}
 		if (action == "create" || action == "patch" || action == "move" || action == "archive" || action == "apply") && input == "" {
-			return r.result(mcpserver.Failure(r.root, mcpserver.Invalid("--input is required for writes")))
+			return r.result(mcpserver.Failure(requestRoot, mcpserver.Invalid("--input is required for writes")))
 		}
 		for i, arg := range args {
 			key := "path"
@@ -298,7 +313,7 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 				key = "to"
 			}
 			if old, ok := values[key]; ok && old != arg {
-				return r.result(mcpserver.Failure(r.root, mcpserver.Invalid("positional argument conflicts with input "+key)))
+				return r.result(mcpserver.Failure(requestRoot, mcpserver.Invalid("positional argument conflicts with input "+key)))
 			}
 			values[key] = arg
 		}
@@ -324,7 +339,7 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 			filters, ok := values["filters"].(map[string]any)
 			if !ok {
 				if _, exists := values["filters"]; exists {
-					return r.result(mcpserver.Failure(r.root, mcpserver.Invalid("filters must be an object")))
+					return r.result(mcpserver.Failure(requestRoot, mcpserver.Invalid("filters must be an object")))
 				}
 				filters = map[string]any{}
 			}
@@ -359,11 +374,7 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 		}
 		raw, err := json.Marshal(values)
 		if err != nil {
-			return r.result(mcpserver.Failure(r.root, err))
-		}
-		a, err := r.open(cmd.Context(), false, false)
-		if err != nil {
-			return r.result(mcpserver.Failure(r.root, err))
+			return r.result(mcpserver.Failure(requestRoot, err))
 		}
 		return r.result(a.Call(cmd.Context(), action, raw))
 	}
