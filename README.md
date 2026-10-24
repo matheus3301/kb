@@ -4,46 +4,62 @@
 
 Local-first knowledge memory for humans and agents. Markdown is the source of
 truth, [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format) is the
-knowledge format, and PARA is an optional human navigation profile. A Go binary
-will provide CLI commands and an MCP stdio server backed by the same core.
+knowledge format, and PARA is an optional human navigation profile. One Go binary
+provides CLI commands and an MCP stdio server backed by the same core.
 
-**Pre-release: repository and quality foundation only. There is no application,
-working `kb` executable, or release yet.** The documentation describes the
-proposed interface. Acceptance criteria remain planned until implementation
-and evidence exist; green repository checks do not establish product readiness.
+**v0.1.0 is an experimental first release.** The implementation supports search,
+reading, bounded context, revision-checked writing, coordinated plans, recovery,
+validation, navigation maintenance, and export. Use the
+[quickstart](docs/quickstart.md) to install from source and try an example base.
+Tag and [release asset publication](https://github.com/matheus3301/kb/releases/tag/v0.1.0)
+are manual steps after final CI; that release link and version-pinned installation
+become available when the maintainer publishes v0.1.0.
 
-Start with the [public quickstart](docs/quickstart.md) for source installation
-prerequisites and the proposed create, search, read, context, revision-checked
-patch, dry-run, validation, and MCP workflow. Its product commands are explicitly
-marked pre-release until implemented.
+```sh
+git clone https://github.com/matheus3301/kb.git
+cd kb
+go install ./cmd/kb
+kb --root ./example-knowledge init --para
+```
 
-The planned tool keeps knowledge in editable OKF Markdown files, preserves YAML
-comments and unknown metadata, and uses expected revisions to reject conflicting
-writes. Coordinated changes require a durable journal and recovery. The external
-agent handles synthesis and semantic review; the core handles deterministic
-operations. These are requirements, not claims about existing behavior.
+Use the Go version in [go.mod](https://github.com/matheus3301/kb/blob/main/go.mod) and put its binary installation directory
+on your `PATH`. Linux and macOS amd64/arm64 are the release build targets.
 
-Binary installation, optional agent skill installation, and MCP registration
-are separate steps. Workdir instructions activate the memory workflow and
-identify its root. An `AGENTS.md` inside the knowledge base is optional.
+`kb` preserves untouched YAML metadata and comments, rejects stale expected
+revisions, and journals coordinated file changes for recovery. External readers
+can observe intermediate multi-file states; external editors do not honor its
+advisory lock. The [validation evidence](docs/evidence/validation.json) records
+observed behavior, not a guarantee that all bugs are absent.
 
-- [Specification](docs/spec.md)
+The external agent handles synthesis and semantic review. The core performs
+local deterministic operations without an embedded LLM, telemetry, automatic
+Git synchronization, or a required cloud service. Original sources remain
+outside the knowledge bundle. Native OKF notes are required; legacy collection
+migration is not included.
+
+Binary installation, optional [agent skill](skills/knowledge-memory/SKILL.md)
+installation, and MCP registration are separate steps. Workdir instructions
+activate the memory workflow and identify the root. An `AGENTS.md` inside the
+knowledge base is optional; installation does not change global agent settings.
+
+The initial performance targets are **not met**. On 10,000 synthetic 2 KiB notes,
+the recorded warm core search p95 is 162.9 ms and peak process RSS is 180.3 MiB,
+against targets of 150 ms and 150 MiB. See [measurement conditions and limits](docs/performance.md).
+
+- [Quickstart](docs/quickstart.md)
 - [Product and architecture](docs/project-overview.md)
-- [Research and public sources](docs/research.md)
+- [Specification](docs/spec.md) and [v0.1 interface contract](docs/interfaces.md)
 - [Quality gates and their limits](docs/quality.md)
-- [Acceptance evidence](docs/acceptance.json)
-- [Development](CONTRIBUTING.md)
-- [Implementation decisions](docs/decisions/0001-foundation.md)
+- [Acceptance inventory](docs/acceptance.json) and [recorded validation](docs/evidence/validation.json)
+- [Research and public sources](docs/research.md)
+- [Development](CONTRIBUTING.md) and [security](SECURITY.md)
+- [v0.1 implementation decisions](docs/decisions/0002-v0.1.md)
 
-For contributors, use the Go version in `go.mod` and Python 3.12 or newer:
+For contributors, use Python 3.12 or newer alongside the pinned Go toolchain:
 
 ```sh
 make tools   # install pinned development tools into .tools/bin
-make check   # run the checks used by CI
+make check   # repository checks, analysis, tests, builds, fuzzing, and CLI workflow
 ```
-
-CI validates the repository now. Application tests, coverage, fuzzing, and builds
-activate when Go source is introduced. The final distribution and public API
-must be settled before a release.
 
 This project is open source under the [MIT License](LICENSE).
