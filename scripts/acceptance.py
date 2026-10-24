@@ -64,7 +64,7 @@ def exercise(binary):
         path = "03_Resources/retention.md"
         created_request = {"path": path, "type": "Reference", "title": "Retention decision",
                            "body": "# Retention\n\nThe synthetic retention period is 300 seconds.\n",
-                           "metadata": {"status": "stable", "tags": ["storage"]},
+                           "metadata": {"status": "stable", "tags": ["storage"], "x-counter": 9007199254740993},
                            "idempotency_key": "acceptance/create-retention", "actor": "process:acceptance",
                            "summary": "Record the synthetic retention decision"}
         first = invoke("create", "--input", "-", payload=created_request)
@@ -73,7 +73,10 @@ def exercise(binary):
         assert replay["data"]["replayed"] is True
         assert (root / "log.md").read_bytes() == before_log
         assert first["data"]["changes"]
+        # Simulate a public editor change; no private collection is involved.
+        (root / path).write_text((root / path).read_text().replace("type: Reference", "type: Reference # synthetic annotation"))
         before = read(path)
+        assert before["note"]["metadata"]["x-counter"] == 9007199254740993
         expected_revision = before["note"]["revision"]
         assert expected_revision == revision((root / path).read_bytes())
         checks.append({"name": "create-read-and-durable-retry", "criteria": ["A03", "A11", "A12"]})
@@ -87,11 +90,20 @@ def exercise(binary):
         invoke("patch", path, "--input", "-", payload=patch)
         updated = read(path)
         assert "600 seconds" in updated["markdown"]
+        assert "# synthetic annotation" in (root / path).read_text()
         assert updated["note"]["revision"] != expected_revision
         conflict = dict(patch, idempotency_key="acceptance/conflict")
         rejected = invoke("patch", path, "--input", "-", payload=conflict, expected=None)
         assert rejected["error"]["code"] == "REVISION_CONFLICT"
         checks.append({"name": "preview-cas-and-body-edit", "criteria": ["A09", "A10"]})
+
+        unchanged = (root / path).read_bytes()
+        unchanged_log = (root / "log.md").read_bytes()
+        write("patch", path, expected_revision=updated["note"]["revision"],
+              metadata_patch={"status": "stable"}, idempotency_key="acceptance/noop")
+        assert (root / path).read_bytes() == unchanged
+        assert (root / "log.md").read_bytes() == unchanged_log
+        checks.append({"name": "noop-preserves-file-bytes-and-history", "criteria": ["A09"]})
 
         search = invoke("search", "retention")["data"]
         assert any(hit["path"] == path for hit in search["hits"])
@@ -123,12 +135,46 @@ def exercise(binary):
         assert (root / reference).read_bytes() == reference_before
         checks.append({"name": "batch-conflict-publishes-nothing", "criteria": ["A21"]})
 
+        source = "03_Resources/source.md"
+        valid_plan = {"idempotency_key": "acceptance/integrate-source", "summary": "Integrate synthetic evidence across concepts",
+                      "actor": "process:acceptance", "operations": [
+                          {"operation_id": "source", "kind": "create", "path": source, "type": "Source",
+                           "body": "# Synthetic source\n\nThe supplied evidence establishes the retention period.\n",
+                           "metadata": {"sources": [{"resource": "https://example.org/synthetic-policy"}]}},
+                          {"operation_id": "decision", "kind": "patch", "path": path,
+                           "expected_revision": read(path)["note"]["revision"],
+                           "body_edits": [{"old_text": "600 seconds.", "new_text": "600 seconds; see [source](source.md)."}],
+                           "metadata_patch": {"sources": [{"resource": "source.md"}]}},
+                          {"operation_id": "reference", "kind": "patch", "path": reference,
+                           "expected_revision": read(reference)["note"]["revision"],
+                           "body": "# Related evidence\n\nSee [retention](retention.md#retention) and [source](source.md).\n",
+                           "metadata_patch": {"sources": [{"resource": "source.md"}]}}]}
+        event_count = sum(line.startswith("- ") for line in (root / "log.md").read_text().splitlines())
+        invoke("apply", "--input", "-", payload=valid_plan)
+        assert (root / source).is_file()
+        assert "source.md" in (root / path).read_text() and "source.md" in (root / reference).read_text()
+        assert sum(line.startswith("- ") for line in (root / "log.md").read_text().splitlines()) == event_count + 1
+        checks.append({"name": "one-source-integrates-two-existing-concepts", "criteria": ["A21", "A25"]})
+
+        synthesis = "03_Resources/synthesis.md"
+        write("create", synthesis, type="Synthesis", title="Synthetic retention synthesis",
+              body="# Synthesis\n\nA reusable synthetic conclusion.\n",
+              metadata={"basis_revisions": [{"path": path, "revision": read(path)["note"]["revision"]},
+                                             {"path": source, "revision": read(source)["note"]["revision"]}]},
+              idempotency_key="acceptance/create-synthesis")
+        assert read(synthesis)["note"]["basis_outdated"] is False
+        write("patch", path, expected_revision=read(path)["note"]["revision"],
+              metadata_patch={"status": "draft"}, idempotency_key="acceptance/change-dependency")
+        assert read(synthesis)["note"]["basis_outdated"] is True
+        checks.append({"name": "changed-basis-signals-review-without-rewriting-synthesis", "criteria": ["A23", "A24"]})
+
         move = {"expected_revision": read(path)["note"]["revision"], "summary": "Archive synthetic decision",
                 "actor": "process:acceptance", "idempotency_key": "acceptance/archive-retention"}
         destination = "04_Archive/retention.md"
         invoke("move", path, destination, "--input", "-", payload=move)
         assert not (root / path).exists() and (root / destination).exists()
         assert "../04_Archive/retention.md#retention" in (root / reference).read_text()
+        assert destination in (root / synthesis).read_text()
         checks.append({"name": "move-maintains-incoming-link-and-anchor", "criteria": ["A13"]})
 
         for unsafe in ("../sources/original.txt", str(original)):

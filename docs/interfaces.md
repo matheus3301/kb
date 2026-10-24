@@ -74,7 +74,8 @@ absolute file arguments and case-fold destination collisions.
 The codec's Parse returns diagnostics instead of inventing missing metadata.
 Patch supports body replacement, unique exact text edits, metadata patch and
 explicit key removal, preserving unrelated presentation. Body-only edits retain
-frontmatter bytes unless trust invalidation requires removing verified. Changes
+untouched frontmatter spans; generated metadata is refreshed on meaningful edits,
+and trust invalidation removes verified. Changes
 must never add a human verification claim. Preserve unknown keys and YAML comments.
 Create calls Patch with empty input and a create operation. Document replacement
 is only for an explicit repair plan; the writer enforces that precondition.
