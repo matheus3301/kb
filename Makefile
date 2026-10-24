@@ -2,7 +2,7 @@
 
 export PATH := $(CURDIR)/.tools/bin:$(PATH)
 PYTHON ?= python3
-GORELEASER ?= goreleaser
+GORELEASER ?= $(if $(wildcard $(CURDIR)/.tools/bin/goreleaser),$(CURDIR)/.tools/bin/goreleaser,goreleaser)
 
 tools:
 	$(PYTHON) scripts/quality.py install-tools
