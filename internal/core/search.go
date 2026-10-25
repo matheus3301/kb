@@ -17,6 +17,16 @@ import (
 
 func isWord(r rune) bool { return unicode.IsLetter(r) || unicode.IsNumber(r) || unicode.IsMark(r) }
 func fold(s string, accents bool) string {
+	ascii := true
+	for i := 0; i < len(s); i++ {
+		if s[i] >= utf8.RuneSelf {
+			ascii = false
+			break
+		}
+	}
+	if ascii {
+		return strings.ToLower(s)
+	}
 	s = cases.Fold().String(norm.NFC.String(s))
 	if !accents {
 		return s
@@ -31,6 +41,23 @@ func fold(s string, accents bool) string {
 }
 func tokens(s string, accents bool) []string {
 	return strings.FieldsFunc(fold(s, accents), func(r rune) bool { return !isWord(r) })
+}
+
+// Normalize words rather than an entire body. Most words need only the ASCII
+// fast path, even in multilingual notes; full Unicode folding still applies to
+// every non-ASCII word. Retokenize its expansion to preserve word boundaries.
+func forEachToken(text string, accents bool, visit func(string)) {
+	if !utf8.ValidString(text) {
+		for _, token := range tokens(text, accents) {
+			visit(token)
+		}
+		return
+	}
+	for word := range strings.FieldsFuncSeq(text, func(r rune) bool { return !isWord(r) }) {
+		for token := range strings.FieldsFuncSeq(fold(word, accents), func(r rune) bool { return !isWord(r) }) {
+			visit(token)
+		}
+	}
 }
 func contains(set []string, v string) bool {
 	for _, x := range set {
@@ -160,7 +187,10 @@ func (s *Store) searchSnapshot(ctx context.Context, snap api.Snapshot, request a
 			return result, err
 		}
 		for term := range querySet {
-			postings := index.terms[term]
+			var postings []posting
+			if entry := index.terms[term]; entry != nil {
+				postings = entry.postings
+			}
 			idf := math.Log(1 + (float64(len(snap.Notes)-len(postings))+0.5)/(float64(len(postings))+0.5))
 			for _, p := range postings {
 				counts[p.doc]++
@@ -228,10 +258,12 @@ type posting struct {
 }
 type lexicalIndex struct {
 	generation string
-	terms      map[string][]posting
+	terms      map[string]*lexicalTerm
 	lengths    []float64
 	average    float64
 }
+
+type lexicalTerm struct{ postings []posting }
 
 func (s *Store) lexical(ctx context.Context, snap api.Snapshot) (*lexicalIndex, error) {
 	s.mu.Lock()
@@ -239,7 +271,7 @@ func (s *Store) lexical(ctx context.Context, snap api.Snapshot) (*lexicalIndex, 
 	if s.searchIndex != nil && s.searchIndex.generation == snap.Generation {
 		return s.searchIndex, nil
 	}
-	index := &lexicalIndex{generation: snap.Generation, terms: map[string][]posting{}, lengths: make([]float64, len(snap.Notes))}
+	index := &lexicalIndex{generation: snap.Generation, terms: map[string]*lexicalTerm{}, lengths: make([]float64, len(snap.Notes))}
 	for i, note := range snap.Notes {
 		if err := ctx.Err(); err != nil {
 			return nil, err
@@ -249,15 +281,21 @@ func (s *Store) lexical(ctx context.Context, snap api.Snapshot) (*lexicalIndex, 
 			text   string
 			weight float64
 		}{{note.Title, 6}, {note.Path, 4}, {strings.Join(note.Tags, " "), 5}, {note.Description, 3}, {note.Body, 1}} {
-			ts := tokens(field.text, s.config.Search.AccentFolding)
-			index.lengths[i] += float64(len(ts))
-			for _, token := range ts {
+			forEachToken(field.text, s.config.Search.AccentFolding, func(token string) {
+				index.lengths[i]++
 				tf[token] += field.weight
-			}
+			})
 		}
 		index.average += index.lengths[i]
 		for term, freq := range tf {
-			index.terms[term] = append(index.terms[term], posting{doc: i, tf: freq})
+			entry := index.terms[term]
+			if entry == nil {
+				entry = &lexicalTerm{}
+				// Keys must not retain an entire folded document through a tiny
+				// substring (for example a unique six-digit note identifier).
+				index.terms[strings.Clone(term)] = entry
+			}
+			entry.postings = append(entry.postings, posting{doc: i, tf: freq})
 		}
 	}
 	if len(snap.Notes) > 0 {

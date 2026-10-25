@@ -81,13 +81,13 @@ func (s *Service) indexes(files map[string][]byte) error {
 				continue
 			}
 			title := strings.TrimSuffix(path.Base(name), ".md")
-			note, _ := s.provider.Engine().Parse(name, data)
-			if note.Title != "" {
-				title = note.Title
+			record := s.validation(name, data)
+			if record.title != "" {
+				title = record.title
 			}
 			line := "- [" + escapeText(title) + "](" + linkURL(path.Base(name)) + ")"
-			if note.Description != "" {
-				line += " — " + escapeText(note.Description)
+			if record.description != "" {
+				line += " — " + escapeText(record.description)
 			}
 			targets[path.Base(name)] = line
 		}

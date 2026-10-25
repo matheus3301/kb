@@ -134,9 +134,10 @@ contains command syntax, JSON requests, errors, and operating limits.
 **Experimental.** Use v0.1.3 or later for the documented metadata-preservation
 fixes. [Release QA](docs/qa/verification-footer-regression.md) records the findings
 and source verification; [release notes](https://github.com/matheus3301/kb/releases)
-include installed-package results. Performance remains below the original
-[targets](docs/performance.md). Advisory locks cannot isolate arbitrary external
-editors, and health checks do not establish semantic truth.
+include installed-package results. The [performance report](docs/performance.md)
+records measured gains, original targets and remaining large-corpus limits.
+Advisory locks cannot isolate arbitrary external editors, and health checks do
+not establish semantic truth.
 
 ## Documentation
 

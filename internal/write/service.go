@@ -25,6 +25,8 @@ type Service struct {
 	now      func() time.Time
 	// fault is a test seam at durable publication boundaries, including recovery.
 	fault func(stage, name string) error
+	// Allocated on a request-local service copy, never shared across writers.
+	validationCache map[validationKey]validationRecord
 }
 
 func New(provider api.Provider) *Service { return &Service{provider: provider, now: time.Now} }
@@ -170,14 +172,16 @@ func (s *Service) Apply(ctx context.Context, plan api.Plan) (api.Receipt, error)
 				}
 			}
 		}
-		before, after, warnings, err := s.prepare(root, snapshot, plan)
+		planning := *s
+		planning.validationCache = map[validationKey]validationRecord{}
+		before, after, warnings, err := planning.prepare(root, snapshot, plan)
 		if err != nil {
 			return api.Receipt{}, err
 		}
 		var progress *api.RepairProgress
 		if plan.Incremental {
-			remaining := s.errorCount(after)
-			progress = &api.RepairProgress{ErrorsBefore: s.errorCount(before), ErrorsRemaining: remaining, Conformant: remaining == 0}
+			remaining := planning.errorCount(after)
+			progress = &api.RepairProgress{ErrorsBefore: planning.errorCount(before), ErrorsRemaining: remaining, Conformant: remaining == 0}
 		}
 		return s.publish(ctx, root, before, after, plan.IdempotencyKey, digest, plan.DryRun, warnings, progress)
 	})

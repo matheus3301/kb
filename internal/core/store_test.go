@@ -36,12 +36,20 @@ func newStore(t *testing.T, para bool) *Store {
 }
 func put(t *testing.T, s *Store, p, raw string) {
 	t.Helper()
-	name := filepath.Join(s.Root(), filepath.FromSlash(p))
-	if err := os.MkdirAll(filepath.Dir(name), 0700); err != nil {
+	root, err := os.OpenRoot(s.Root())
+	if err != nil {
 		t.Fatal(err)
 	}
-	//nolint:gosec // Synthetic fixture paths are explicitly controlled by each test.
-	if err := os.WriteFile(name, []byte(raw), 0600); err != nil {
+	defer func() {
+		if err := root.Close(); err != nil {
+			t.Error(err)
+		}
+	}()
+	name := filepath.FromSlash(p)
+	if err := root.MkdirAll(filepath.Dir(name), 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := root.WriteFile(name, []byte(raw), 0600); err != nil {
 		t.Fatal(err)
 	}
 }

@@ -212,13 +212,9 @@ func (a *Adapter) Call(ctx context.Context, action string, raw []byte) Envelope 
 		data = v
 	}
 	e := Envelope{SchemaVersion: "kb.v1", OK: true, Data: data, Warnings: []api.Diagnostic{}, Meta: Meta{Root: root}}
-	// Metadata is advisory. A recovery or mutation result must not be replaced by
-	// a failed follow-up status query after its effect has already committed.
-	if s, statusErr := a.Reader.Status(ctx); statusErr == nil {
-		e.Meta.Generation = s.Generation
-		e.Meta.IndexStale = s.IndexStale
-	}
 	switch v := data.(type) {
+	case api.ReadResult:
+		e.Meta.Generation = v.Generation
 	case api.SearchResult:
 		e.Meta.Generation = v.Generation
 		e.Warnings = nonNil(v.Warnings)
@@ -234,6 +230,24 @@ func (a *Adapter) Call(ctx context.Context, action string, raw []byte) Envelope 
 		e.Meta.IndexStale = v.IndexStale
 	case api.ExportResult:
 		e.Meta.Generation = v.Generation
+	}
+	// Compare the marker to this result's generation rather than scanning a
+	// second inventory that can differ from the actual source/result snapshot.
+	// Metadata failures never replace an already committed mutation receipt.
+	if _, status := data.(api.Status); !status {
+		e.Meta.IndexStale = true
+		if marker, ok := a.Reader.(interface {
+			IndexStale(context.Context, string) (bool, error)
+		}); ok && e.Meta.Generation != "" {
+			if stale, err := marker.IndexStale(ctx, e.Meta.Generation); err == nil {
+				e.Meta.IndexStale = stale
+			}
+		} else if status, err := a.Reader.Status(ctx); err == nil {
+			if e.Meta.Generation == "" {
+				e.Meta.Generation = status.Generation
+			}
+			e.Meta.IndexStale = status.IndexStale
+		}
 	}
 	limit := api.MaxPlanBytes
 	if action == "read" || action == "context" {

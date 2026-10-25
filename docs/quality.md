@@ -97,3 +97,14 @@ Regression tests reject write tokens in other jobs/files or removal of those
 prerequisites. The tap token is separate and scoped to the tap repository.
 [Release operations](releases.md) documents credentials and publication.
 There is no automatic merge and merging code does not create a release.
+
+## Performance workflow
+
+`make benchmark-smoke` runs the actual binary on a bounded synthetic collection
+and records CLI/MCP latency, process RSS and preview/committed repair. It is part
+of `make check` and the Linux/macOS test jobs. The harness has its own behavior
+tests. CI artifacts retain the measurements; shared-runner timing is not treated
+as a portable SLA. Large paired runs use `scripts/benchmark.py` and the declared
+method in [performance measurements](performance.md). Correctness regressions
+cover fresh bytes, directory replacement, immutable images and request-local
+validation; optimizing must not disable existing quality or durability gates.

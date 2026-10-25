@@ -267,7 +267,7 @@ func (s *Store) Links(ctx context.Context, p, direction string) ([]api.Link, err
 	if _, ok := snap.Files[p]; !ok {
 		return nil, fault("NOT_FOUND", "document not in scope")
 	}
-	return neighborhood(snap.Links, p, direction), nil
+	return neighborhood(s.withLinks(snap).Links, p, direction), nil
 }
 func neighborhood(links []api.Link, p, direction string) []api.Link {
 	out := []api.Link{}

@@ -1,4 +1,4 @@
-.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release
+.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke
 
 export PATH := $(CURDIR)/.tools/bin:$(PATH)
 PYTHON ?= python3
@@ -31,7 +31,15 @@ acceptance:
 	$(PYTHON) scripts/acceptance.py --binary .build/kb --output .build/acceptance.json
 	$(PYTHON) scripts/check_docs.py --binary .build/kb
 
-check: repo lint test build fuzz security acceptance
+benchmark:
+	go build -trimpath -o .build/kb ./cmd/kb
+	$(PYTHON) scripts/benchmark.py --binary .build/kb --output .build/performance.json
+
+benchmark-smoke:
+	go build -trimpath -o .build/kb ./cmd/kb
+	$(PYTHON) scripts/benchmark.py --binary .build/kb --sizes 100 --samples 2 --repair-samples 1 --output .build/performance-smoke.json
+
+check: repo lint test build fuzz security acceptance benchmark-smoke
 
 release-check:
 	$(GORELEASER) check
