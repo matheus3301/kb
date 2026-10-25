@@ -283,4 +283,4 @@ Inspect `error.code`, `message`, optional `details`, and `retryable`. Other
 collision codes may map to 2; do not infer behavior from a broad error family.
 Invalid input needs correction, stale cursors need a new query, conflicts need
 reconciliation, and pending transactions need recovery. Full operational response
-guidance lives in [results and MCP](../skills/knowledge-base/references/results.md).
+guidance lives in [CLI results](../skills/knowledge-base/references/results.md).

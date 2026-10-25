@@ -1,12 +1,12 @@
 ---
 name: knowledge-base
-description: Search, read, and maintain a local OKF Knowledge Base with the kb CLI or its MCP server. Use when the user requests Knowledge Base work or workdir instructions require consultation or recording reusable learning. Covers retrieval, citations, revision-checked edits, provenance, and recovery; a query alone does not warrant a write.
+description: Search, read, and maintain a local OKF Knowledge Base with the kb CLI. Use when the user requests Knowledge Base work or workdir instructions require consultation or recording reusable learning. Covers retrieval, citations, revision-checked edits, provenance, and recovery; a query alone does not warrant a write.
 ---
 
-# Knowledge Base
+# Knowledge Base CLI
 
-Use `kb` or the associated MCP server to consult the configured Knowledge Base
-and record durable learning within the current task's authorization. Read only
+Use the `kb` CLI to consult the configured Knowledge Base and record durable
+learning within the current task's authorization. Read only
 the reference needed for the operation; all references ship with this skill.
 
 ## Select the workflow
@@ -16,18 +16,18 @@ the reference needed for the operation; all references ship with this skill.
 | Find knowledge, answer with evidence, inspect dependencies | [Retrieval](references/retrieval.md) |
 | Record learning, correct a note, move/archive, coordinate edits | [Writing](references/writing.md) |
 | Review health, maintain navigation, recover, export | [Maintenance](references/maintenance.md) |
-| Interpret JSON/errors, budgets, or MCP capabilities | [Results and MCP](references/results.md) |
+| Interpret CLI JSON, errors, or budgets | [Results](references/results.md) |
 
 ## Establish scope
 
-1. Use the root supplied by the user/workdir policy, `KB_ROOT`, or the associated
-   fixed-root MCP server. CLI precedence is `--root`, then `KB_ROOT`, then nearest
+1. Use the root supplied by the user/workdir policy or `KB_ROOT`.
+   Precedence is `--root`, then `KB_ROOT`, then nearest
    ancestor containing `.kb/config.toml`. Never guess a different collection.
-2. For CLI access, check `kb version` and installed `kb COMMAND --help` when
+2. Check `kb version` and installed `kb COMMAND --help` when
    capabilities are uncertain. These instructions may be newer than the binary.
    Missing tooling/root is a setup issue: report it, and request the missing
    information if discovery fails. Do not initialize a base as a query side effect.
-3. Read `kb status` (or `kb_status`) to confirm scope and diagnostics. If access
+3. Read `kb status` to confirm scope and diagnostics. If access
    fails, state that consultation was unavailable; do not claim it occurred.
 4. Search task terms, then read promising sources with their current revisions.
    When workdir policy requires consultation on every question, honor that scope.
@@ -67,9 +67,9 @@ request and same key; a changed request needs a new key.
 
 ## Handle limits honestly
 
-Read [Results and MCP](references/results.md) for errors and truncated/degraded
+Read [Results](references/results.md) for errors and truncated/degraded
 results. For pending transactions, use [Maintenance](references/maintenance.md);
-do not edit journals by hand. A read-only MCP session omits write tools: do not
-switch transports to bypass it. Binary installation, skill installation, MCP
-registration, and global agent settings are separate setup actions, outside
-ordinary Knowledge Base work.
+do not edit journals by hand. Respect `--read-only`, disabled writes, and scoped
+paths; do not change roots or permissions to bypass a restriction. Binary
+installation, skill installation, and agent settings are separate setup actions,
+outside ordinary Knowledge Base work.

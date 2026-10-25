@@ -10,7 +10,7 @@ silently bypass this workflow.
 
 | Gate | Policy |
 | --- | --- |
-| Repository | Local Markdown/llms.txt links, self-contained skill references, complete acceptance inventory, evidence paths, and regression tests for the quality tooling. |
+| Repository | Local Markdown/llms.txt links, self-contained CLI skill references, runtime MCP catalog parity, complete acceptance inventory, evidence paths, and regression tests for the quality tooling. |
 | Workflows | actionlint; actions pinned to full SHAs; read-only token; no pull_request_target or continue-on-error. |
 | Go hygiene | gofmt, go vet, go mod tidy -diff, go mod verify, golangci-lint. |
 | Analysis | staticcheck, gosec, errcheck, resource and error checks; specific explained lint suppressions. |
@@ -42,6 +42,8 @@ The [CLI workflow evidence](evidence/cli-workflow.json) and
 [controlled agent-consumer observation](evidence/consumer/consumer-evidence.json)
 provide additional behavior evidence. The consumer explicitly loaded the locally
 installed skill in one session; automatic activation across models is not proven.
+The [independent interface evaluation](qa/independent-interfaces.md) separately
+exercises CLI + skill and MCP initialization/tool guidance without the skill.
 Evidence supports tested behavior, not the absence of bugs, universal crash
 safety, or semantic correctness.
 

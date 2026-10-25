@@ -13,8 +13,7 @@ kb list --limit 10
 
 Inspect `data.root`, diagnostics, `degraded`, `index_stale`, and the response's
 `meta`/`warnings`. Do not silently initialize, change roots, or rebuild state to
-hide an access problem. With MCP, use `kb_status` and `kb_list` against the server's
-startup root; calls cannot choose another root.
+hide an access problem. Keep the selected CLI root consistent across calls.
 
 ## Search narrowly, then expand
 
@@ -60,11 +59,6 @@ estimates, `truncated`, and `omitted`. Preserve citations when summarizing. The
 token budget is an estimate, not the model's exact tokenizer. Narrow the query or
 read individual notes if excerpts omit the evidence needed for a conclusion.
 Context has its own budgets; it does not accept list/search pagination flags.
-
-MCP equivalents are `kb_search`, `kb_read`, and `kb_context`; request fields use
-underscores, with query filters nested under `filters`. There is no `kb_links`
-tool: use `kb_read` with `include_links: true` for a bounded incoming/outgoing neighborhood, or an
-authorized CLI workflow for the full incoming/outgoing link view.
 
 ## Evaluate and finish
 

@@ -44,7 +44,7 @@ def main():
     if actual != expected:
         raise ValueError("release must contain exactly four binary archives and one source archive")
     listed = {}
-    public_docs = {"README.md", "llms.txt", "docs/quickstart.md", "docs/cli.md", "docs/agent-setup.md",
+    public_docs = {"README.md", "llms.txt", "docs/quickstart.md", "docs/cli.md", "docs/agent-setup.md", "docs/mcp.md",
                    "skills/knowledge-base/SKILL.md"}
     public_docs.update(f"skills/knowledge-base/references/{name}.md"
                        for name in ("retrieval", "writing", "maintenance", "results"))
