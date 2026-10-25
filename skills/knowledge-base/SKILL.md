@@ -1,6 +1,6 @@
 ---
 name: knowledge-base
-description: Search, read, and maintain a local OKF Knowledge Base with the kb CLI. Use when the user requests Knowledge Base work or workdir instructions require consultation or recording reusable learning. Covers retrieval, citations, revision-checked edits, provenance, and recovery; a query alone does not warrant a write.
+description: Search, read, and maintain a local OKF Knowledge Base with the kb CLI. Use for CLI-based Knowledge Base work or when workdir instructions select the CLI for consultation or recording reusable learning. Covers retrieval, citations, revision-checked edits, provenance, and recovery; a query alone does not warrant a write.
 ---
 
 # Knowledge Base CLI
