@@ -155,10 +155,13 @@ multi-file publication; timed move/preview loops are not claimed. Repeat each
 interruption scenario three times. Neither profile nor its independent review
 is claimed passed here; default-log boundaries retain deterministic tests.
 
-Durable receipts retain full-file diffs and do not expire. An ever-growing event
-log can therefore cause quadratic aggregate receipt storage; monitor/protect
-that operational state and account for backup limits. No receipt compaction,
-format change or altered idempotency guarantee is implied by the scoped workload.
+Receipt count has no automatic expiry, retention or rotation. Aggregate raw diff
+text is capped at **256 KiB per receipt**; growing full-file log diffs can
+accumulate roughly quadratic storage only while their images fit that cap.
+Excess diff text is truncated, not stored without bound; other serialized receipt
+fields remain outside the diff budget. Log/note/archive limits still constrain
+operations and rejections must report explicit errors. Monitor/protect that state;
+no automatic compaction, format change or altered replay guarantee is implied.
 
 The [large-corpus report](performance-large-corpus.md) retains the paired matrix,
 including 10k non-improvements, preview RSS increase and 50k committed-repair
@@ -175,9 +178,12 @@ choices, not fabricated human approval. Final evidence and status changes belong
 in the [finalization checklist](stability.md#finalization-checklist).
 
 Candidate integration additionally requires a **required native v0.3.1-to-candidate
-compatibility CI job** using an actual prior-release executable and disposable
-synthetic fixtures, not duplicated current implementations or cross-build proof.
-It must exercise the documented upgrade/client contract and retain evidence.
+compatibility CI job** using the actual v0.3.1 executable pinned to source commit
+`2ca104f48cc4a6551f4bbc4fae12d51432e42dff`, and asserting that candidate build
+metadata identifies the checked-out candidate HEAD. Use disposable synthetic
+fixtures, not duplicated current implementations or cross-build proof. Exercise
+the documented upgrade/client contract and retain evidence without leaking local
+workstation paths, including failure reports.
 This is an integration requirement, not a claim that the inherited workflow in
 the original `a320dea` baseline already ran that job; V01/V06 need the resulting
 workflow and exact-candidate passing evidence before finalization.

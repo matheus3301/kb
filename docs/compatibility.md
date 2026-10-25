@@ -41,13 +41,17 @@ invalid cursors. Store exact revisions for CAS, not timestamps. Trust/health
 signals do not certify factual truth, and advisory locks do not isolate external
 editors that ignore them.
 
-Durable receipts retain full-file diffs and do not expire. Repeatedly extending
-the retained event log can cause quadratic aggregate receipt storage; there is
-no automatic compaction/retention policy. Monitor log/receipt growth and archive
-limits without deleting durable replay state. D02's extended reliability profile
-explicitly disables log maintenance while retaining indexes, complemented by a
-shorter default-log-enabled profile and deterministic default-log boundary tests.
-This scoped qualification is not a changed receipt format or replay contract.
+Receipt count has no automatic expiry, retention or rotation. Each receipt's
+aggregate raw diff text is capped at **256 KiB**; full before/after file images
+are represented only while they fit, and excess diff text is truncated.
+Extending a retained event log can accumulate roughly quadratic diff storage
+while the growing images fit that cap, **not unbounded quadratic growth forever**.
+Revisions and other serialized receipt fields are outside that diff-text budget.
+Log/note/archive bounds still apply and rejected operations report explicit
+errors. Monitor/protect growing state without deleting durable replay receipts.
+D02's extended log-disabled/index-enabled profile, shorter default-log profile
+and deterministic default-log boundary tests do not change the receipt format or
+replay contract. There is no automatic compaction.
 
 ## Experimental change and upgrade policy
 

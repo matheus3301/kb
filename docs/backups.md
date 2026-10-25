@@ -118,11 +118,14 @@ There is no atomic multi-file directory publication or claim of universal crash,
 power-loss, disk/controller or filesystem durability. A successful restore is
 not a semantic validation or an end-to-end disaster-recovery certification.
 
-Operational size also grows with receipt history. Receipts retain full-file diffs
-without expiry; repeatedly extending the event log can cause quadratic aggregate
-receipt storage and eventually exceed archive limits. Monitor/protect that state;
-do not delete receipts to fit a backup. No automatic compaction or receipt-format
-change is part of this contract.
+Receipt count has no automatic expiry, retention or rotation. Receipts retain
+full before/after diff text only within a **256 KiB aggregate per-receipt diff
+budget**; excess diff text is truncated. A growing event log can therefore
+accumulate roughly quadratic diff storage while its images fit that cap, not
+indefinitely; other serialized receipt fields remain outside the diff budget.
+Existing log/note/archive bounds can reject operations with explicit errors.
+Monitor/protect growing state and archive capacity; never delete receipts to fit
+a backup. No automatic compaction or receipt-format change is part of this contract.
 
 ## Verification scope
 

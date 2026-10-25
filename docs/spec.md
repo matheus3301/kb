@@ -580,12 +580,15 @@ does not duplicate effects. Receipts currently do not expire. Request hashing
 excludes `dry_run`; dry-run persists no receipt. Check an existing receipt
 before retry preconditions so a successful retry can replay after revisions change.
 
-Receipts retain full-file diffs. Repeated extension of the retained event log
-can produce quadratic aggregate receipt storage; receipts still have no expiry
-or automatic compaction. Operators must account for this growth and backup limits,
-not delete durable replay state. D02's log-disabled extended workload and separate
-bounded default-log-enabled profile are scoped qualification choices, not receipt
-format or idempotency changes.
+Receipt count has no automatic expiry, retention or rotation. Diff text contains
+full before/after file images while they fit the aggregate **256 KiB per-receipt
+diff-text cap** (`api.MaxReadBytes`); excess text is truncated. Repeated log
+extension can accumulate roughly quadratic diff storage only while the growing
+images fit the cap, not indefinitely. Other serialized receipt fields are outside
+this budget. Existing log/note/archive bounds still apply; rejected operations
+must report explicit errors. Operators must protect growing state, not delete
+durable receipts. No automatic compaction is provided. D02's split qualification
+profiles change neither receipt format nor idempotency semantics.
 
 The v0.1 journal is `.kb/state/pending.json`, with version, request digest/key,
 prepared/committed state, before/after bytes, and receipt. It is atomically

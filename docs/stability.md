@@ -169,16 +169,22 @@ Repeat the existing 11 real observed-boundary SIGKILL scenarios **at least three
 times each**, in addition to injected publication/recovery faults and concurrency
 tests. Report timeouts/unobserved boundaries as failures, not successful kills.
 
-Rationale: durable receipts retain full-file diffs. Repeatedly extending the
-retained event log can cause quadratic aggregate receipt storage, so the extended
-profile disables logging explicitly, not receipt durability or index maintenance.
-The shorter default-log profile and existing deterministic default-log
-publication/recovery tests complement it; independent review must assess this
-scope. There is no approved receipt-format/expiry change or automatic compaction.
-Operators must account for event-log/receipt growth; deleting receipts would
-break the replay contract. Both profiles are finite observations, not universal
-crash/power-loss, network-filesystem, hostile same-user or arbitrary-editor
-isolation proof.
+Rationale: receipt count has no automatic expiry, retention or rotation.
+Receipts store before/after full-file diff text while it fits a **256 KiB aggregate
+diff-text budget per receipt** (`api.MaxReadBytes`); excess diff text is truncated.
+Repeatedly extending the retained log can therefore accumulate roughly quadratic
+diff storage **while the growing images fit that cap**, not indefinitely.
+Serialized receipts also include revisions and other fields outside the diff
+budget. Existing log/note/archive bounds still apply and rejected operations must
+report explicit errors; the diff cap is not permission to bypass those bounds.
+
+The extended profile disables logging, not receipt durability or index
+maintenance. The shorter default-log profile and deterministic default-log
+publication/recovery tests complement it; independent readiness review must assess
+the actual observations and this bounded scope. No receipt-format/expiry change
+or automatic compaction is approved. Monitor/protect event-log and receipt growth;
+deleting receipts breaks replay. Neither profile proves universal crash/power-loss,
+network-filesystem, hostile same-user or arbitrary-editor isolation.
 
 ### D03 — Measured local resource budgets, not a portable SLA
 
