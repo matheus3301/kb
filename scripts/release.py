@@ -22,6 +22,16 @@ def command(*args):
     return subprocess.check_output(args, cwd=ROOT, text=True)
 
 
+def go_license(goroot):
+    path = goroot / "LICENSE"
+    # Homebrew moves the distribution license out of libexec into the keg root.
+    if not path.is_file() and goroot.name == "libexec":
+        path = goroot.parent / "LICENSE"
+    if not path.is_file():
+        raise ValueError("missing Go standard library license notice")
+    return path.read_text()
+
+
 def dependency_notices():
     environment = dict(os.environ, GOWORK="off", GOTOOLCHAIN="local")
     raw = subprocess.check_output(["go", "list", "-deps", "-json", "./cmd/kb"],
@@ -39,7 +49,7 @@ def dependency_notices():
         modules[module["Path"]] = module
     goroot = Path(subprocess.check_output(["go", "env", "GOROOT"], env=environment, text=True).strip())
     sections = ["# Third-party notices\n\nProject code is MIT licensed. Dependency notices follow.\n",
-                "## Go standard library\n\n```text\n" + (goroot / "LICENSE").read_text() + "\n```\n"]
+                "## Go standard library\n\n```text\n" + go_license(goroot) + "\n```\n"]
     for name, module in sorted(modules.items()):
         directory = Path(module["Dir"])
         found = False
