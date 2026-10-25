@@ -192,7 +192,7 @@
       }
     ]
   },
-  "candidate_runtime_source_sha256": "9d43098ba432ee9de37058fdca8ed0a3a0d7be5753c992e2e1dd2a689459c875",
+  "candidate_runtime_source_sha256": "cb1e67874585d57d419d2932a123f94d12d117621d5c462016af313220a4d0ca",
   "hardware": "Apple M4, macOS arm64, 10 logical CPUs",
   "go_toolchain": "go1.27.3",
   "read_samples": 10,
@@ -651,6 +651,7 @@
     "make_check": "passed",
     "benchmark_harness_unit_tests": 5,
     "release_snapshot": "passed",
-    "pull_request_ci": "pending"
-  }
+    "pull_request_ci": "See PR #15 checks for validation of the exact head; local results do not imply CI success."
+  },
+  "candidate_runtime_source_fingerprint_method": "SHA256 of sorted cmd/**/*.go and internal/**/*.go excluding *_test.go, plus go.mod and go.sum; each entry is UTF-8 relative POSIX path + NUL + exact bytes + NUL."
 }
