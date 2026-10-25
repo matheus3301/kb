@@ -1,4 +1,4 @@
-.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke
+.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke retrieval-eval
 
 export PATH := $(CURDIR)/.tools/bin:$(PATH)
 PYTHON ?= python3
@@ -39,7 +39,11 @@ benchmark-smoke:
 	go build -trimpath -o .build/kb ./cmd/kb
 	$(PYTHON) scripts/benchmark.py --binary .build/kb --sizes 100 --samples 2 --repair-samples 1 --output .build/performance-smoke.json
 
-check: repo lint test build fuzz security acceptance benchmark-smoke
+retrieval-eval:
+	go build -trimpath -o .build/kb ./cmd/kb
+	$(PYTHON) scripts/retrieval_eval.py --binary .build/kb --output .build/retrieval-quality.json
+
+check: repo lint test build fuzz security acceptance benchmark-smoke retrieval-eval
 
 release-check:
 	$(GORELEASER) check
