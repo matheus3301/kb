@@ -96,6 +96,25 @@ jobs:
           cache: false
       - run: make build
 
+  release-config:
+    name: Release snapshot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
+        with:
+          version-file: .tool-versions
+          install-only: true
+      - run: make release-snapshot
+
   security:
     name: Secrets and vulnerabilities
     runs-on: ubuntu-24.04
@@ -128,7 +147,7 @@ jobs:
   gate:
     name: CI gate
     if: always()
-    needs: [repository, static, tests, security, build, dependency-review]
+    needs: [repository, static, tests, security, build, release-config, dependency-review]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

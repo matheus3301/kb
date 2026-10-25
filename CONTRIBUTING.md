@@ -45,15 +45,22 @@ instructions are covered by CODEOWNERS and the same required CI. Independent
 approval count remains zero because the sole maintainer also authors PRs;
 independent review is recommended, especially for recovery and policy changes.
 
-Release publication is manual under the current user authorization, after CI
-and review. From a clean committed checkout, maintainers can prepare archives:
+Release publication starts with an explicitly requested new version tag after
+required main CI. Install the GoReleaser version pinned in `.tool-versions`, then
+validate packaging locally without publishing:
 
 ```sh
-make release VERSION=v0.1.0
+make release-snapshot
 ```
 
-This builds Linux/macOS amd64/arm64 archives, checksums, documentation, skill,
-license, and dependency notices under `.build/release`. It does not publish a
-tag or GitHub release. There is no automatic merge or release. Performance
-changes must retain existing correctness checks and report measurements using
-the [documented benchmark](docs/performance.md).
+This checks the GoReleaser config, builds four binary archives and a source
+archive, verifies checksums/metadata/docs/licenses, generates the Homebrew
+source formula, and exercises the extracted binary and archived source build.
+PR CI requires this job as part of CI gate. It does not install globally,
+create a tag, publish a release, or update the tap. See
+[release operations](docs/releases.md) for the dedicated tag workflow and
+required tap credential. Do not reuse the withdrawn v0.1.0 version.
+
+There is no automatic merge. Performance changes must retain existing
+correctness checks and report measurements using the
+[documented benchmark](docs/performance.md).
