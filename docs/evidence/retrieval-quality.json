@@ -1,0 +1,70 @@
+{
+  "scope": "Synthetic lexical retrieval and context regression evidence; not semantic truth or v1.0 readiness.",
+  "source_baseline": {
+    "version": "v0.3.1",
+    "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+    "binary_sha256": "878c68a4066ad0dabef313e58d90be794be5f2bba5be4830d3c52aa012b9f2fb",
+    "observed_command": "python3 scripts/retrieval_eval.py --binary .build/kb-baseline --output .build/retrieval-baseline.json",
+    "passed": true,
+    "metrics_identical_to_candidate": true
+  },
+  "candidate": {
+    "runtime_changes": false,
+    "binary_sha256": "878c68a4066ad0dabef313e58d90be794be5f2bba5be4830d3c52aa012b9f2fb",
+    "baseline_binary_identical": true,
+    "observed_command": "make retrieval-eval",
+    "passed": true
+  },
+  "corpus": {
+    "path": "testdata/retrieval/corpus.json",
+    "sha256": "562af0124822b42e72125ae9307e5bc5a5fe9fb0f1164be13a8811aa6d49cc4c",
+    "concept_notes": 30,
+    "reserved_files": 2,
+    "search_cases": 31,
+    "context_cases": 8,
+    "positive_search_cases": 24,
+    "negative_search_cases": 7,
+    "as_of": "2026-01-01T00:00:00Z"
+  },
+  "observed_metrics": {
+    "macro_recall_at5": 0.9930555555555555,
+    "mrr_at5": 1.0,
+    "six_relevant_case_recall_at5": 0.8333333333333334,
+    "definition": "Recall divides unique relevant top-five hits by all annotated relevant notes; reciprocal rank is censored at five; empty relevance is null and excluded from macro means, with exact zero-hit checks."
+  },
+  "observed_interfaces": {
+    "search_context_pairs_passed": 39,
+    "source_read_pairs_passed": 8,
+    "cli_mcp_parity": true,
+    "mcp_consumer": "Independent initialized stdio process with tools/list guidance/schema checks; no CLI skill files loaded.",
+    "query_purity": true,
+    "isolated_home_unchanged": true
+  },
+  "observed_context": {
+    "full_unicode_excerpt_bytes": 506,
+    "byte_limited_excerpt_bytes": 179,
+    "byte_ceiling": 180,
+    "token_limited_excerpt_estimated_tokens": 45,
+    "token_ceiling": 45,
+    "insufficient_citation_budget_sources": 0,
+    "insufficient_citation_budget_omitted": 1,
+    "multiple_sources": 6,
+    "bounded_multiple_sources_returned": 1,
+    "bounded_multiple_sources_omitted": 5,
+    "source_revisions_and_original_excerpt_lines_checked": true,
+    "navigation_and_log_excluded": true
+  },
+  "reproduce": [
+    "make retrieval-eval",
+    "python3 -m unittest discover -s scripts -p test_retrieval_eval.py -v"
+  ],
+  "detailed_report": ".build/retrieval-quality.json (generated locally and retained as a CI artifact)",
+  "method": "docs/qa/retrieval-quality.md",
+  "limits": [
+    "Compact authored synthetic judgments, not a representative multilingual benchmark or arbitrary semantic relevance proof.",
+    "Whole-token lexical intersection and literal candidate filtering only; no Boolean/field grammar, arbitrary Unicode substrings, emoji-only matching, stemming, embeddings or semantic paraphrases.",
+    "Unverified trust fixtures only; existing tests retain verification/dependency, pagination, relationship, path/parser, recovery, concurrency, performance and package coverage.",
+    "Token estimates use UTF-8 bytes divided by four, rounded up, not a model-specific tokenizer.",
+    "Required full repository/package validation is reported separately in the pull request; these metrics alone do not establish it."
+  ]
+}
