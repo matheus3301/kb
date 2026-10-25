@@ -16,14 +16,14 @@ import (
 // New uses the official SDK for negotiation, framing, cancellation and shutdown.
 // All requests retain the root captured by the supplied adapter.
 func New(a *Adapter, version string) *mcp.Server {
-	s := mcp.NewServer(&mcp.Implementation{Name: "kb", Version: version}, &mcp.ServerOptions{PageSize: api.DefaultHits, Capabilities: &mcp.ServerCapabilities{}})
+	s := mcp.NewServer(&mcp.Implementation{Name: "kb", Version: version}, &mcp.ServerOptions{Instructions: instructions(a.ReadOnly), PageSize: api.DefaultHits, Capabilities: &mcp.ServerCapabilities{}})
 	inputs := map[string]any{"status": struct{}{}, "list": api.SearchRequest{}, "search": api.SearchRequest{}, "read": api.ReadRequest{}, "context": api.ContextRequest{}, "create": SingleInput{}, "patch": SingleInput{}, "move": SingleInput{}, "apply": api.Plan{}, "validate": ValidateInput{}}
 	for _, name := range []string{"status", "list", "search", "read", "context", "create", "patch", "move", "apply", "validate"} {
 		if a.ReadOnly && IsWrite(name) {
 			continue
 		}
 		closed := false
-		s.AddTool(&mcp.Tool{Name: "kb_" + name, Description: description(name), InputSchema: inputSchema(name, inputs[name]), Annotations: &mcp.ToolAnnotations{ReadOnlyHint: !IsWrite(name), IdempotentHint: true, OpenWorldHint: &closed}}, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		s.AddTool(&mcp.Tool{Name: "kb_" + name, Description: description(name), InputSchema: inputSchema(name, inputs[name]), OutputSchema: outputSchema(), Annotations: &mcp.ToolAnnotations{ReadOnlyHint: !IsWrite(name), IdempotentHint: true, OpenWorldHint: &closed}}, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			return toolResult(a.Call(ctx, name, req.Params.Arguments)), nil
 		})
 	}
@@ -75,27 +75,6 @@ func toolResult(e Envelope) *mcp.CallToolResult {
 		text = e.Error.Code + ": " + e.Error.Message
 	}
 	return &mcp.CallToolResult{StructuredContent: e, Content: []mcp.Content{&mcp.TextContent{Text: text}}, IsError: !e.OK}
-}
-
-func description(name string) string {
-	switch name {
-	case "status":
-		return "Inspect the fixed Knowledge Base root, generation and diagnostics."
-	case "list":
-		return "List up to 100 scoped notes; continue with the returned cursor."
-	case "search":
-		return "Search up to 4096 query characters with filters and bounded snippets."
-	case "read":
-		return "Read one scoped note or unambiguous section, up to 256 KiB."
-	case "context":
-		return "Build citable excerpts within 16000 estimated tokens and 256 KiB."
-	case "validate":
-		return "Report OKF conformance or health findings without changing notes."
-	case "apply":
-		return "Preview or apply up to 50 coordinated operations, maximum 4 MiB, with CAS and idempotency."
-	default:
-		return "Preview or apply one explicit-path " + name + " with actor, summary, idempotency and revision preconditions."
-	}
 }
 
 func mustJSON(v any) []byte {
@@ -188,6 +167,7 @@ func schema(t reflect.Type) map[string]any {
 
 func inputSchema(action string, input any) map[string]any {
 	s := schema(reflect.TypeOf(input))
+	describeFields(s)
 	p := s["properties"].(map[string]any)
 	for name, max := range map[string]int{"query": api.MaxQueryRunes, "limit": api.MaxHits, "max_tokens": api.MaxContextTokens, "max_bytes": api.MaxReadBytes} {
 		if prop, ok := p[name].(map[string]any); ok {

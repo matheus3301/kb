@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-25",
+  "source_base": "ad69013aa98fbfcc0e22221d292da4ce893ebb06",
+  "scope": "Candidate CLI-only skill and independently described MCP; synthetic external bases only.",
+  "deterministic_tests": [
+    "internal/mcpserver/catalog_test.go",
+    "internal/mcpserver/workflow_test.go",
+    "scripts/check_docs.py"
+  ],
+  "consumers": [
+    {
+      "mode": "CLI + knowledge-base skill",
+      "resources": [
+        "Installed CLI skill and bundled references",
+        "Candidate CLI with explicit external root"
+      ],
+      "observations": [
+        "Searched and read all relevant evidence",
+        "Reconciled the existing synthesis to the newer bulletin",
+        "Previewed and applied a current-revision patch",
+        "Preserved both source snapshots and recorded their basis revisions",
+        "Did not assert human verification",
+        "Repeated question changed no Markdown note, index or log"
+      ],
+      "result": "passed"
+    },
+    {
+      "mode": "MCP only",
+      "resources": [
+        "initialize instructions",
+        "tools/list descriptions, argument and output schemas",
+        "Controlled stdio MCP test client"
+      ],
+      "excluded": [
+        "CLI skill",
+        "CLI data commands",
+        "Product checkout/docs",
+        "Raw Knowledge Base file access"
+      ],
+      "observations": [
+        "Searched and read all relevant evidence through MCP",
+        "Reconciled the existing synthesis to the newer bulletin",
+        "Previewed and applied a current-revision kb_patch",
+        "Preserved both source snapshots and recorded their basis revisions",
+        "Validated structural health through kb_validate",
+        "Repeated question changed no Markdown note, index or log"
+      ],
+      "result": "passed"
+    }
+  ],
+  "limitations": [
+    "Explicitly selected interfaces in controlled sessions, not proof of universal automatic activation.",
+    "MCP operator-only capabilities remain outside the advertised ten-tool surface.",
+    "Both fixtures reported index_stale; consumers used direct source reads.",
+    "No existing private Knowledge Base, global registration, or installed Homebrew binary was changed."
+  ]
+}

@@ -70,9 +70,6 @@ exclusion manifest to the selected destination. It does not back up operational
 journals, durable retry receipts, or certify excluded files. Choose an appropriate
 new destination; do not overwrite a user's unrelated directory.
 
-Maintenance, recovery, index rebuild, and export have no MCP tools. Explain the
-missing capability and use a separately authorized CLI workflow only when its
-permissions allow it. A read-only server is not permission to bypass restrictions
-through another transport. MCP retains startup root/configuration: restart it
-after config or binary changes. See [Results and MCP](results.md) for the actual
-tool set and error handling.
+Respect CLI read-only and write-disabled errors; do not change roots or
+permissions to bypass them. Each CLI invocation opens the configured base afresh.
+See [Results](results.md) for interpreting errors and output limits.

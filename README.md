@@ -62,10 +62,10 @@ for editing and coordinated changes, or use [other installation methods](docs/in
   recovery journal.
 - **Maintain:** inspect links, validate format/health, update managed navigation,
   and export validated snapshots.
-- **Connect:** use the same Knowledge Base through a CLI, stdio MCP, or the
-  optional agent skill. The binary needs no model, Node, Git, or network at runtime.
+- **Connect:** choose CLI + the `knowledge-base` skill, or a self-contained stdio
+  MCP server. The binary needs no model, Node, Git, or network at runtime.
 
-## Agent skill
+## CLI + skill
 
 Install the [knowledge-base skill](skills/knowledge-base/SKILL.md) from the
 agent's workdir using [Skills](https://skills.sh):
@@ -74,16 +74,20 @@ agent's workdir using [Skills](https://skills.sh):
 npx skills add matheus3301/kb --skill knowledge-base
 ```
 
-The skill teaches agents when to consult the Knowledge Base, how to record
-reusable learning, and how to handle revisions, retries, and recovery. Its
-references travel with the installed skill. Configure `KB_ROOT` or an associated
-MCP server and add a deliberate workdir instruction to use it. Installation
-alone does not guarantee consultation on every question.
+The skill teaches agents how to use the CLI to consult the Knowledge Base, record
+reusable learning, and handle revisions, retries, and recovery. Its
+references travel with the installed skill. Configure `KB_ROOT` for CLI access
+and add a deliberate workdir instruction to use the skill. Installation alone
+does not guarantee consultation on every question.
 
 See [setup and upgrading the renamed skill](docs/agent-setup.md). Earlier
 releases used the installation name `knowledge-memory`.
 
 ## MCP
+
+MCP is the alternative agent interface and needs no skill. The server supplies
+operating instructions during initialization and describes tool inputs, results,
+previews, revision conflicts, retries, and access boundaries through discovery.
 
 Register a stdio server in your MCP client. Start with read-only access:
 
@@ -99,9 +103,8 @@ Register a stdio server in your MCP client. Start with read-only access:
 ```
 
 Use an absolute root if the client cannot set the intended working directory.
-[Agent setup](docs/agent-setup.md) explains write-enabled access and which
-operations are exposed. Binary installation, skill installation, and MCP
-registration are separate actions.
+[MCP guide](docs/mcp.md) explains write-enabled access and exposed operations.
+Binary installation, skill installation, and MCP registration are separate actions.
 
 ## Command map
 
@@ -134,7 +137,7 @@ editors, and health checks do not establish semantic truth.
 ## Documentation
 
 - [Quickstart](docs/quickstart.md), [CLI guide](docs/cli.md), and [installation](docs/installation.md).
-- [Agent setup](docs/agent-setup.md), [skill](skills/knowledge-base/SKILL.md), and [llms.txt](llms.txt).
+- [Agent setup](docs/agent-setup.md), [MCP guide](docs/mcp.md), [CLI skill](skills/knowledge-base/SKILL.md), and [llms.txt](llms.txt).
 - [Architecture](docs/project-overview.md), [specification](docs/spec.md), and [interface contract](docs/interfaces.md).
 - [Quality gates](docs/quality.md), [performance](docs/performance.md), and [release operations](docs/releases.md).
 

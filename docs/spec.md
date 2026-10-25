@@ -142,13 +142,16 @@ what it examined and excluded.
 ### Agent integration and skill distribution
 
 The product distributes its skill at `skills/knowledge-base/SKILL.md` in the
-code repository as `knowledge-base`. It teaches consulting
+code repository as `knowledge-base`, focused on the CLI. Agents choose either
+CLI + skill or MCP with self-contained server/tool guidance. The MCP interface
+must not depend on installing or reading the CLI skill. The skill teaches consulting
 before answering, searching before creating, preserving provenance, reviewing
 affected concepts, and applying changes with expected revisions. It contains no
 fixed personal paths; its root comes from explicit integration configuration.
 
 The workdir's `AGENTS.md`, or equivalent agent mechanism, establishes the duty
-to use the skill and identifies the base. The consultation policy always belongs
+to consult the chosen CLI or MCP interface and identifies the base. For CLI use,
+it points to the skill; for MCP use, it points to the configured server. The consultation policy always belongs
 in that entry instruction, without relying on automatic topic selection.
 Installing a skill does not prove activation on every question. Integration must
 be validated in the target agent, including with a base outside the workdir.
@@ -598,6 +601,11 @@ Do not create an event for every query without an effect.
 
 ## 11. MCP interface
 
+MCP is independently usable without the CLI skill. Initialization supplies the
+workflow, trust, scope, result, and access guidance; tools/list describes each
+operation, input field, and output envelope, including previews, conflicts and
+retry semantics. Public tool documentation must match runtime discovery.
+
 Use the same core and DTOs as the CLI. Negotiate the version supported by the
 official SDK; use MCP `2025-11-25` as the interoperability baseline demonstrated
 in the experiments. Do not implement an ad hoc JSON-RPC variant. Future
@@ -709,7 +717,7 @@ base binary.
 | A23 | A synthesis with basis_revisions for two concepts is flagged for review when either changes; it is never automatically rewritten or declared false. |
 | A24 | Health identifies an orphan, missing link, concept absent from an index, and changed dependency without claiming deterministic contradiction detection. |
 | A25 | An agent-persisted comparison retains provenance; repeating a query without learning creates no note or event. |
-| A26 | CLI/MCP operate normally without AGENTS.md inside the base. In the target agent, workdir instructions and the installed skill lead to external-base consultation before answering; reusable learning is updated and a query without new information does not write. Record observed evidence without promising universal model adherence. |
+| A26 | CLI/MCP operate normally without AGENTS.md inside the base. The target agent consults an external base through CLI + installed skill or independently through MCP initialization/tool guidance; reusable learning is updated and a query without new information does not write. Record observed evidence without promising universal model adherence. |
 
 The original delivery increments were: (1) parser/scope/validate/read;
 (2) index/search/context and reference queries; (3) create/patch/apply/transactions/log/index; (4) move/archive, links,

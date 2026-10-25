@@ -107,7 +107,7 @@ Preview and run `kb move --input move.json`. Resolved references may be rewritte
 review the affected paths. For `kb archive --input archive.json`, use the same
 shape with a fresh revision/key, omit `to` to use the configured archive directory
 and basename, or supply an explicit scoped destination. No deletion command is
-provided. MCP exposes `kb_move`; archive is a CLI convenience, not `kb_archive`.
+provided.
 
 ## Coordinate multiple notes
 

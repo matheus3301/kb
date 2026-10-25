@@ -134,6 +134,11 @@ UTC for new dates/timestamps. Cache is disposable; journal/receipts are not.
 
 ## Front ends
 
+Agents use CLI + the knowledge-base skill or a self-contained MCP server. MCP
+initialization/tool discovery supplies operating guidance, argument semantics
+and the output contract independently of skill files. The public tool catalog
+is checked against live discovery to prevent documentation drift.
+
 CLI root flag is global. All data commands offer --json and emit one `kb.v1`
 envelope with ok, data/error, warnings, and meta (root, generation, index_stale).
 Logs go to stderr. Domain exit codes remain as in the spec; a validation report

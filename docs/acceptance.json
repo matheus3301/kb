@@ -349,19 +349,22 @@
   },
   {
     "id": "A26",
-    "requirement": "CLI/MCP operate normally without AGENTS.md inside the base. In the target agent, workdir instructions and the installed skill lead to external-base consultation before answering; reusable learning is updated and a query without new information does not write. Record observed evidence without promising universal model adherence.",
+    "requirement": "CLI/MCP operate normally without AGENTS.md inside the base. The target agent consults an external base through CLI + installed skill or independently through MCP initialization/tool guidance; reusable learning is updated and a query without new information does not write. Record observed evidence without promising universal model adherence.",
     "status": "verified",
     "tests": [
       "scripts/acceptance.py",
       "skills/knowledge-base/SKILL.md",
-      "scripts/check_docs.py"
+      "scripts/check_docs.py",
+      "internal/mcpserver/catalog_test.go",
+      "internal/mcpserver/workflow_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
       "docs/evidence/cli-workflow.json",
       "docs/evidence/consumer/consumer-evidence.json",
-      "docs/evidence/knowledge-base-skill.json"
+      "docs/evidence/knowledge-base-skill.json",
+      "docs/evidence/independent-interfaces.json"
     ],
-    "verification_scope": "One real consumer explicitly loaded the locally installed skill and consulted an external base without AGENTS.md; automatic activation across all agents is not claimed."
+    "verification_scope": "Controlled consumers explicitly used CLI + the installed CLI-only skill and, separately, MCP initialization/tool guidance without the skill, on external bases without AGENTS.md. Both persisted supported learning and repeated queries without Markdown/log changes. Automatic activation across agents is not claimed."
   }
 ]

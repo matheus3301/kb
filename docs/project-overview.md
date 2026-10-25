@@ -141,6 +141,9 @@ learning creates no note or event merely to record the query.
 
 ## Skill and workdir integration
 
+Agents choose CLI + skill or MCP with self-contained server/tool guidance. The
+CLI skill is not a dependency of the MCP interface.
+
 The product repository contains [skills/knowledge-base/SKILL.md](../skills/knowledge-base/SKILL.md), separate
 from base content. The skill carries the reusable procedure; workdir instructions
 identify the root and require consultation on every question. One base can serve
@@ -150,7 +153,7 @@ Example instruction to adapt to the agent and installation:
 
 ```text
 Before answering any question, use the knowledge-base skill to consult the
-base configured through KB_ROOT (or the associated MCP server). Record reusable
+base configured through KB_ROOT using the kb CLI. Record reusable
 learning according to the skill; do not record queries without new information.
 If the base is unavailable, report that and continue.
 ```
