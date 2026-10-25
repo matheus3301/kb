@@ -40,7 +40,22 @@ Homebrew at runtime.
 Upgrade and uninstall using the normal Homebrew commands:
 
 ```sh
+brew update
 brew upgrade matheus3301/tap/kb
+kb version --json
+```
+
+For the metadata fidelity corrections identified in v0.1.1, choose **v0.1.2 or
+later** when available on the releases page. v0.1.1 can silently round decimal
+metadata and discard YAML comments when updating references during a move.
+The [QA assessment and correction evidence](qa/native-homebrew-v0.1.1.md)
+describe the affected cases and a disposable reproducer. Updating the executable
+does not restore metadata already changed by an earlier operation; use original
+files or backups to reconcile those changes.
+
+To remove the executable:
+
+```sh
 brew uninstall kb
 ```
 

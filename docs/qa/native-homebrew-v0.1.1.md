@@ -5,7 +5,7 @@ tested retrieval, concurrency, recovery, and CLI/MCP scenarios, but moving a
 source silently changes precise decimal metadata and removes YAML comments in
 dependent notes. Fix both fidelity defects before considering graduation.
 
-**Unreleased correction:** both defects now pass the source regression checks
+**Correction candidate:** both defects now pass the source regression checks
 described under [correction verification](#unreleased-correction-verification).
 The installed and published v0.1.1 still reproduces them. The historical
 assessment and counts below describe that release, not the corrected candidate.
@@ -236,8 +236,9 @@ the original failure pattern against a real built executable. `make check`
 passed with eight fuzz targets and 88.6% application statement coverage.
 
 A03 is verified again for these tested source cases. The two move fidelity
-findings are resolved in source; release distribution, performance priorities
-and the broader graduation requirements above remain separate work.
+findings are resolved in source. For packaged corrections, use v0.1.2 or later
+when available in the published releases. This verification preceded publication;
+performance priorities and the broader graduation requirements remain separate.
 
 ## Limits of this assessment
 

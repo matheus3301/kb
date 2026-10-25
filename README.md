@@ -147,8 +147,9 @@ promise that all bugs are absent or every agent activates the skill.
 move fidelity defects: automatic reference rewrites can round precise decimals
 and discard nested YAML comments in dependent metadata. The source correction
 now passes the [fidelity regressions](docs/evidence/move-fidelity-fix.json),
-including the original reproducer. **The published v0.1.1 remains affected**
-until a corrected release is distributed. The report includes concurrency,
+including the original reproducer. **Version v0.1.1 remains affected**;
+choose v0.1.2 or later from the published releases for these corrections,
+or build the current source checkout. The report includes concurrency,
 recovery, and installed CLI/MCP measurements; experimental status remains.
 
 The initial performance targets remain unmet: on 10,000 synthetic 2 KiB notes,

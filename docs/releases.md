@@ -8,8 +8,9 @@ Conventional Commit changelog groups. The configuration was informed by
 
 The earlier manual `v0.1.0` tag and release were deliberately removed. Go module
 proxies and the checksum database may retain that version; **never reuse
-`v0.1.0`**. The next publication needs a new version, such as `v0.1.1`.
-No replacement release is published just by merging this setup.
+`v0.1.0`**. The first automated publication was `v0.1.1`; it must not be moved
+or reused either. Select a new, unused version for subsequent publications.
+Merging a change does not publish a release.
 
 ## One-time tap credential
 
@@ -63,12 +64,13 @@ A green branch build alone does not request a release.
 ```sh
 git switch main
 git pull --ff-only
-git tag -a v0.1.1 -m "Release v0.1.1"
-git push origin v0.1.1
+git tag -a v0.1.2 -m "Release v0.1.2"
+git push origin v0.1.2
 ```
 
-`v0.1.1` is an example of the next unused version, not a tag created by this
-change. Choose the actual next version when publishing. A prerelease such as
+`v0.1.2` illustrates the patch release following v0.1.1. Verify that the chosen
+version has never been published before creating its tag; these examples do not
+create a release themselves. A prerelease such as
 `v0.2.0-rc.1` publishes GitHub assets but skips the stable tap.
 
 The [Release workflow](../.github/workflows/release.yml) runs three stages:
