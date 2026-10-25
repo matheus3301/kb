@@ -92,7 +92,10 @@ def formula_text(tag, commit, filename, checksum):
         raise ValueError("commit must be a full Git SHA")
     if filename != f"kb_{tag[1:]}_source.tar.gz" or not re.fullmatch(r"[a-f0-9]{64}", checksum):
         raise ValueError("invalid source archive identity")
-    return f'''class Kb < Formula
+    return f'''# frozen_string_literal: true
+
+# Install kb from its checksummed release source.
+class Kb < Formula
   desc "Local Markdown knowledge memory for humans and agents"
   homepage "https://github.com/{REPOSITORY}"
   url "https://github.com/{REPOSITORY}/releases/download/{tag}/{filename}"
