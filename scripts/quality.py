@@ -74,11 +74,30 @@ def local_link_findings(root, path):
     targets += re.findall(r"^\s*resource:\s*(\S+)", body, re.M)
     targets += re.findall(r'<(?:img|a|source)\b[^>]*\b(?:src|href)=["\']([^"\']+)', body)
     for target in targets:
+        for prefix in ("https://raw.githubusercontent.com/matheus3301/kb/main/",
+                       "https://github.com/matheus3301/kb/blob/main/"):
+            if target.startswith(prefix):
+                target = str(root / unquote(target[len(prefix):].split("#")[0]))
+                break
         if re.match(r"[a-zA-Z][a-zA-Z0-9+.-]*:", target) or target.startswith("#"):
             continue
         resolved = (path.parent / unquote(target.split("#")[0])).resolve()
         if not resolved.is_relative_to(root.resolve()) or not resolved.exists():
             findings.append(f"{path.relative_to(root)}: missing/outside link {target}")
+    return findings
+
+
+def skill_findings(directory):
+    # Validate the distributed folder, independently of the product checkout.
+    entry = directory / "SKILL.md"
+    if not entry.is_file():
+        return [f"{directory.name}: missing SKILL.md"]
+    header = re.match(r"\A---\n(.*?)\n---\n", entry.read_text(), re.S)
+    if not header or not re.search(r"^name: " + re.escape(directory.name) + r"$", header[1], re.M):
+        return [f"{directory.name}: frontmatter name must match the installed directory"]
+    findings = []
+    for path in directory.rglob("*.md"):
+        findings.extend(local_link_findings(directory, path))
     return findings
 
 
@@ -89,7 +108,7 @@ def public_content_findings(path, content):
         findings.append(f"{path}: personal workstation path in public content")
     if re.search(r"(?:file|vscode|codex)://", content):
         findings.append(f"{path}: local-only URI in public content")
-    if path.suffix == ".md":
+    if path.suffix == ".md" or path.name == "llms.txt":
         prose = re.sub(r"```.*?```", "", content, flags=re.S)
         portuguese = r"\b(?:n[aã]o|especifica[çc][aã]o|reposit[oó]rio|aprendizado|pr[oó]ximos|vis[aã]o|proposta|conhecimento)\b"
         if re.search(portuguese, prose, re.I):
@@ -134,10 +153,13 @@ def require_clean(findings):
 def repository():
     findings = []
     for path in tracked_content(ROOT):
-        if path.suffix in {".md", ".json", ".yaml", ".yml", ".go", ".py", ".toml", ".svg"}:
+        if path.suffix in {".md", ".json", ".yaml", ".yml", ".go", ".py", ".toml", ".svg"} or path.name == "llms.txt":
             findings.extend(public_content_findings(path.relative_to(ROOT), path.read_text()))
-        if path.suffix == ".md":
+        if path.suffix == ".md" or path.name == "llms.txt":
             findings.extend(local_link_findings(ROOT, path))
+    for directory in (ROOT / "skills").iterdir():
+        if directory.is_dir():
+            findings.extend(skill_findings(directory))
     workflows = ROOT / ".github/workflows"
     for path in sorted(list(workflows.glob("*.yml")) + list(workflows.glob("*.yaml"))):
         findings.extend(f"{path.name}: {f}" for f in workflow_findings(path.read_text(), path.name))

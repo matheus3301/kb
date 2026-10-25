@@ -1,10 +1,10 @@
 ---
 type: Project Overview
-title: Project design — OKF memory for humans and agents
-description: Implemented experimental v0.1.0 product, architecture, learning lifecycle, evidence, and limits.
+title: KB — Knowledge Base project design
+description: Experimental Knowledge Base product, architecture, learning lifecycle, evidence, and limits.
 tags: [okf, para, cli, mcp, architecture, memory]
 status: stable
-implementation_version: "0.1.0"
+implementation_version: "0.1.3"
 implementation_status: experimental
 sources:
   - resource: spec.md
@@ -18,19 +18,20 @@ generated:
   at: 2026-10-24T21:05:14Z
 ---
 
-# Project design
+# KB — Knowledge Base project design
 
 The [v0.1 interface contract](interfaces.md) and shared DTOs in
 `internal/api/types.go` clarify the [specification](spec.md).
-**v0.1.0 is an implemented experimental first release**, with observed
-[validation evidence](evidence/validation.json) and explicit limits.
+**The v0.1 implementation remains experimental**, with observed
+[validation evidence](evidence/validation.json) and explicit limits. Use v0.1.3
+or later for the [metadata-preservation fixes](installation.md).
 
-`kb` is a local tool that turns a knowledge folder into memory that humans
-and agents can query and edit. One binary provides two modes: CLI commands
+`kb` is a local Markdown Knowledge Base that humans and AI agents can search,
+read, and update. One binary provides two modes: CLI commands
 for terminals and scripts, and an MCP stdio server for agent tools. Both use
 the same rules, revisions, and operations.
 
-Knowledge remains in OKF Markdown files. PARA organizes human navigation. The
+Knowledge Base notes remain in OKF Markdown files. PARA organizes human navigation. The
 agent consults the base, reasons about evidence, and proposes changes; the tool
 locates, validates, and applies those changes in a controlled way. Workdir
 AGENTS.md instructions declare when to consult and record learning, pointing to
@@ -140,7 +141,7 @@ learning creates no note or event merely to record the query.
 
 ## Skill and workdir integration
 
-The product repository contains [skills/knowledge-memory/SKILL.md](../skills/knowledge-memory/SKILL.md), separate
+The product repository contains [skills/knowledge-base/SKILL.md](../skills/knowledge-base/SKILL.md), separate
 from base content. The skill carries the reusable procedure; workdir instructions
 identify the root and require consultation on every question. One base can serve
 several workdirs, each configured explicitly.
@@ -148,7 +149,7 @@ several workdirs, each configured explicitly.
 Example instruction to adapt to the agent and installation:
 
 ```text
-Before answering any question, use the knowledge-memory skill to consult the
+Before answering any question, use the knowledge-base skill to consult the
 base configured through KB_ROOT (or the associated MCP server). Record reusable
 learning according to the skill; do not record queries without new information.
 If the base is unavailable, report that and continue.

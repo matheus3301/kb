@@ -33,6 +33,17 @@ class ReleaseTests(unittest.TestCase):
                 with self.subTest(name=name, uid=uid), self.assertRaises(ValueError):
                     check_release.inspect_archive(path)
 
+    def test_llms_archive_content_uses_the_same_privacy_guard(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "synthetic.tar.gz"
+            content = ("/" + "Users/" + "synthetic-person" + "/note.md").encode()
+            with tarfile.open(path, "w:gz") as archive:
+                member = tarfile.TarInfo("llms.txt")
+                member.size = len(content)
+                archive.addfile(member, io.BytesIO(content))
+            with self.assertRaises(ValueError):
+                check_release.inspect_archive(path)
+
     def test_tag_validation_rejects_retired_or_injected_versions(self):
         for tag in ("v0.1.1", "v1.2.3-rc.1"):
             self.assertEqual(tag, release.release_tag(tag))

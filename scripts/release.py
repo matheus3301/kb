@@ -96,7 +96,7 @@ def formula_text(tag, commit, filename, checksum):
 
 # Install kb from its checksummed release source.
 class Kb < Formula
-  desc "Local Markdown knowledge memory for humans and agents"
+  desc "Local Markdown Knowledge Base for humans and AI agents"
   homepage "https://github.com/{REPOSITORY}"
   url "https://github.com/{REPOSITORY}/releases/download/{tag}/{filename}"
   sha256 "{checksum}"
@@ -110,7 +110,7 @@ class Kb < Formula
     ENV["GOTOOLCHAIN"] = "local"
     ldflags = "-s -w -X main.version=v#{{version}} -X main.commit={commit}"
     system "go", "build", *std_go_args(ldflags:), "./cmd/kb"
-    pkgshare.install "docs", "skills", "assets", "schemas", "THIRD_PARTY_NOTICES.md"
+    pkgshare.install "docs", "skills", "assets", "schemas", "llms.txt", "THIRD_PARTY_NOTICES.md"
   end
 
   test do

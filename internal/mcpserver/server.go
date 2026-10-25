@@ -80,7 +80,7 @@ func toolResult(e Envelope) *mcp.CallToolResult {
 func description(name string) string {
 	switch name {
 	case "status":
-		return "Inspect the fixed knowledge root, generation and diagnostics."
+		return "Inspect the fixed Knowledge Base root, generation and diagnostics."
 	case "list":
 		return "List up to 100 scoped notes; continue with the returned cursor."
 	case "search":

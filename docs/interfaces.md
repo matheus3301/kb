@@ -19,7 +19,7 @@ Use the shared limits in api rather than duplicating transport limits.
   cache and export, owned by the read-core agent.
 - `internal/write`: transactions, repair, maintenance and recovery, owned by the
   write-core agent. Depends on `api.Provider`, `api.Codec`, and `filelock`, not core.
-- `internal/cli`, `internal/mcpserver`, `cmd/kb`, `skills/knowledge-memory`: owned by
+- `internal/cli`, `internal/mcpserver`, `cmd/kb`, `skills/knowledge-base`: owned by
   the adapters agent. Wires `core.Store` and `write.Service` together.
 - Integration owns release packaging, end-to-end acceptance, privacy/link
   guardrails and final public documentation.
@@ -158,8 +158,8 @@ operations and release locks when their context ends.
 
 ## Release and evidence
 
-The first release includes four CGO-free binaries (Linux/macOS, amd64/arm64),
-checksums, MIT license, English docs and an installable knowledge-memory skill.
+Distribution includes four CGO-free binaries (Linux/macOS, amd64/arm64),
+checksums, MIT license, English docs and an installable knowledge-base skill.
 Only synthetic public fixtures are allowed. Public URLs use this repository or
 public upstream sources; local file links may not leave the checkout. Intentional
 multilingual search fixtures are labeled synthetic, not user data.

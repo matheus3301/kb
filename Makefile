@@ -29,6 +29,7 @@ security:
 acceptance:
 	go build -trimpath -o .build/kb ./cmd/kb
 	$(PYTHON) scripts/acceptance.py --binary .build/kb --output .build/acceptance.json
+	$(PYTHON) scripts/check_docs.py --binary .build/kb
 
 check: repo lint test build fuzz security acceptance
 

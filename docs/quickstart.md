@@ -7,32 +7,20 @@ installation. This guide uses the same CLI commands with each method. This guide
 and recovery behavior. [Recorded validation](evidence/validation.json) describes
 observed behavior; it does not prove that all bugs are absent.
 
-## Install the Go binary from source
+## Install the CLI
 
-Use Git and the Go toolchain version declared in `go.mod`. Clone the public
-source repository:
-
-```sh
-git clone https://github.com/matheus3301/kb.git
-cd kb
-```
-
-Install the binary from the checkout:
+On macOS or Linux:
 
 ```sh
-go install ./cmd/kb
-kb version --json
+brew install matheus3301/tap/kb
+kb version
 kb --help
 ```
 
-See [installation instructions](installation.md) for Homebrew and prebuilt
-binaries.
-
-Make the Go binary installation directory available on your `PATH` if `kb` is
-not found. Installing the binary does not install a skill or register an MCP
-server. Runtime queries are designed to require neither Node, a model, Git,
-credentials, nor network access. Development checks have separate prerequisites
-listed in [CONTRIBUTING.md](../CONTRIBUTING.md).
+See [installation](installation.md) for prebuilt binaries and Go source installs.
+Binary installation is separate from skill installation and MCP registration.
+The binary needs no Node, model, Git, credentials, or network at runtime.
+Development prerequisites are in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Initialize an example knowledge base
 
@@ -324,11 +312,11 @@ CLI and MCP share domain behavior, revisions, and errors.
 
 ## Optionally install the agent skill
 
-The skill is distributed at [skills/knowledge-memory/SKILL.md](../skills/knowledge-memory/SKILL.md).
+The skill is distributed at [skills/knowledge-base/SKILL.md](../skills/knowledge-base/SKILL.md).
 Run this from the chosen agent workdir:
 
 ```sh
-npx skills add matheus3301/kb --skill knowledge-memory
+npx skills add matheus3301/kb --skill knowledge-base
 ```
 
 This installs instructions, not the Go binary or an MCP registration. The
@@ -340,7 +328,7 @@ Add a deliberate instruction to that workdir's `AGENTS.md` or equivalent,
 preserving existing instructions. For example:
 
 ```text
-Use the knowledge-memory skill before answering to consult the base configured
+Use the knowledge-base skill before answering to consult the base configured
 by KB_ROOT or the associated MCP server. Search and read before creating notes.
 Record reusable learning with real sources and expected revisions. Do not write
 when a query adds no learning. If the base is unavailable, report that and continue.
@@ -351,3 +339,6 @@ Configure the root explicitly in that integration. An `AGENTS.md` inside the
 knowledge base is optional. Installing a skill alone does not guarantee that
 a model invokes it: verify the target agent consults an external base, records
 useful learning, and makes no write for a query without new information.
+
+See [agent setup](agent-setup.md) for installation scope, consultation policy,
+MCP capabilities, and upgrading from the old `knowledge-memory` skill name.

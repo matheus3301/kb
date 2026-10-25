@@ -39,6 +39,8 @@ archives:
           mtime: "{{ .CommitDate }}"
       - src: README.md
         info: *public_file
+      - src: llms.txt
+        info: *public_file
       - src: CONTRIBUTING.md
         info: *public_file
       - src: SECURITY.md
@@ -106,7 +108,7 @@ release:
   header: |
     ## kb {{ .Tag }}
 
-    Local Markdown knowledge memory for humans and agents, with CLI and MCP interfaces.
+    Local Markdown Knowledge Base for humans and AI agents, with CLI and MCP interfaces.
 
     Experimental software. See the documentation for operating limits and measured performance.
   footer: |

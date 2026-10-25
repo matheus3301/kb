@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="assets/logo.svg" alt="kb logo" width="104" height="104" />
-  <h1>kb</h1>
-  <p><strong>Knowledge that survives the session.</strong></p>
-  <p>A local Markdown knowledge base with a Go CLI and MCP server.<br />Search what you know, read the evidence, and record what you learn.</p>
+  <img src="assets/logo.svg" alt="Knowledge Base logo" width="104" height="104" />
+  <h1>KB — Knowledge Base</h1>
+  <p><strong>A local Knowledge Base for humans and AI agents.</strong></p>
+  <p>Readable Markdown. A revision-aware CLI. A shared MCP interface.</p>
 </div>
 
 <p align="center">
@@ -12,29 +12,23 @@
   <a href="#project-status"><img src="https://img.shields.io/badge/status-experimental-516276" alt="Experimental" /></a>
 </p>
 
-`kb` gives humans and agents the same memory to work with. Notes stay in readable
+`kb` lets you search, read, and update a Knowledge Base stored as
 [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format) Markdown.
-PARA is optional navigation. Your agent handles reasoning and synthesis; `kb`
-handles retrieval, references, and changes you can review.
+Use any editor to read the files. Use the CLI or MCP server to make changes
+with revision checks, previews, and recoverable transactions. Optional PARA
+folders keep projects, areas, resources, and archives easy to navigate.
 
 ## Getting started
 
-For Homebrew and prebuilt binaries, see [installation](docs/installation.md)
-and [published releases](https://github.com/matheus3301/kb/releases). To build
-from source, use the Go version declared in
-[go.mod](https://github.com/matheus3301/kb/blob/main/go.mod), and put Go's binary
-installation directory on your `PATH`:
+Install on macOS or Linux with Homebrew, then initialize a new directory:
 
 ```sh
-git clone https://github.com/matheus3301/kb.git
-cd kb
-go install ./cmd/kb
-
-export KB_ROOT="$PWD/example-knowledge"
+brew install matheus3301/tap/kb
+export KB_ROOT="$PWD/example-kb"
 kb init --para
 ```
 
-Create your first note:
+Create a note and find it:
 
 ```sh
 kb create --input - <<'JSON'
@@ -43,149 +37,111 @@ kb create --input - <<'JSON'
   "type": "Reference",
   "title": "Project decisions",
   "body": "# Project decisions\n\nSearch existing notes before adding new ones.\n",
-  "summary": "Record the memory workflow",
+  "summary": "Record the Knowledge Base workflow",
   "actor": "process:quickstart",
   "idempotency_key": "quickstart/create-decisions"
 }
 JSON
 
-kb search "project decisions" --json
-kb read 03_Resources/decisions.md --json
-kb context "search existing notes" --max-tokens 1000 --json
-kb validate --profile okf --json
+kb search "project decisions" --limit 5
+kb read 03_Resources/decisions.md
+kb context "search existing notes" --max-tokens 1000
 ```
 
-`KB_ROOT` points to the knowledge directory; note paths are relative to that
-root. Run `kb --help` to explore commands, or follow the
-[full quickstart](docs/quickstart.md) for revision-checked edits, coordinated
-plans, recovery, and export.
+Data commands return JSON by default. `KB_ROOT` selects the Knowledge Base;
+all note paths are relative to it. Follow the [quickstart](docs/quickstart.md)
+for editing and coordinated changes, or use [other installation methods](docs/installation.md).
 
-## Why kb
+## At a glance
 
-| You need | kb provides |
-| --- | --- |
-| Memory you can open in an editor | Native OKF Markdown and optional PARA folders; see current fidelity limits below. |
-| Evidence behind an answer | Lexical search and bounded context with paths, revisions, and line references. |
-| Reviewable changes | Dry-runs, expected revisions, and coordinated create/patch/move/archive plans. |
-| Reliable retries | A durable write journal, explicit recovery, and idempotency receipts. |
-| One interface across tools | JSON CLI output and an official-SDK MCP stdio server over the same core. |
-| A base that stays navigable | Link updates, managed index regions, format/health checks, and validated export. |
+- **Search and read:** lexical ranking, filters, sections, and bounded excerpts
+  with source paths, revisions, and line references.
+- **Write:** create, patch, move, and archive notes; preview changes and reconcile
+  revision conflicts before replacing content.
+- **Coordinate:** apply multi-note plans with idempotent retries and an explicit
+  recovery journal.
+- **Maintain:** inspect links, validate format/health, update managed navigation,
+  and export validated snapshots.
+- **Connect:** use the same Knowledge Base through a CLI, stdio MCP, or the
+  optional agent skill. The binary needs no model, Node, Git, or network at runtime.
 
-The binary runs locally without a model, Node, Git, credentials, or network
-access. Original source snapshots stay outside the writable knowledge bundle.
+## Agent skill
 
-## Connect your agent
+Install the [knowledge-base skill](skills/knowledge-base/SKILL.md) from the
+agent's workdir using [Skills](https://skills.sh):
 
-### MCP
+```sh
+npx skills add matheus3301/kb --skill knowledge-base
+```
 
-Add a stdio server to your MCP client's configuration. This generic example
-starts with read-only access:
+The skill teaches agents when to consult the Knowledge Base, how to record
+reusable learning, and how to handle revisions, retries, and recovery. Its
+references travel with the installed skill. Configure `KB_ROOT` or an associated
+MCP server and add a deliberate workdir instruction to use it. Installation
+alone does not guarantee consultation on every question.
+
+See [setup and upgrading the renamed skill](docs/agent-setup.md). Earlier
+releases used the installation name `knowledge-memory`.
+
+## MCP
+
+Register a stdio server in your MCP client. Start with read-only access:
 
 ```json
 {
   "mcpServers": {
     "kb": {
       "command": "kb",
-      "args": ["--root", "./example-knowledge", "mcp", "--read-only"]
+      "args": ["--root", "./example-kb", "mcp", "--read-only"]
     }
   }
 }
 ```
 
-Use the intended client working directory or replace the root with your own
-absolute path. The server stays bound to that root. Remove `--read-only` when
-you deliberately enable writes. See the [interface contract](docs/interfaces.md)
-for tools, limits, and errors.
+Use an absolute root if the client cannot set the intended working directory.
+[Agent setup](docs/agent-setup.md) explains write-enabled access and which
+operations are exposed. Binary installation, skill installation, and MCP
+registration are separate actions.
 
-### Agent skill
+## Command map
 
-Install the optional [knowledge-memory skill](skills/knowledge-memory/SKILL.md)
-from your agent workdir:
-
-```sh
-npx skills add matheus3301/kb --skill knowledge-memory
+```text
+kb
+├── init --para                    Create a Knowledge Base and optional PARA folders
+├── status / validate              Inspect scope, format, and structural health
+├── list / search                  Discover notes with filters and pagination
+├── read / context / links         Read sources, collect excerpts, and inspect references
+├── create / patch                 Add or revise a note
+├── move / archive                 Relocate notes and update resolved references
+├── apply                          Preview or execute a coordinated plan
+├── maintain / index rebuild       Maintain navigation or rebuild derived search state
+├── recover / export               Recover a pending transaction or export a snapshot
+└── mcp / version                  Serve MCP or inspect the installed build
 ```
 
-Then configure the knowledge root and add a workdir instruction to consult it
-before answering and record reusable learning. The skill installer needs
-Node/npx; the Go binary does not. Binary installation, skill installation, and
-MCP registration are separate. An `AGENTS.md` inside the knowledge base is
-optional. See [activation instructions](docs/quickstart.md#optionally-install-the-agent-skill).
-
-## The memory workflow
-
-```mermaid
-flowchart LR
-    A[Search and read] --> B[Reason with sources]
-    B --> C[Preview a change]
-    C --> D[Apply with revisions]
-    D --> A
-```
-
-Use existing concepts before creating new ones. Incorporate new evidence across
-affected notes, preserve provenance, and review changed synthesis dependencies.
-Queries do not add history entries; a session without new learning needs no
-write. Format and health checks help an external agent review the base; they do
-not establish semantic truth.
+Use `kb COMMAND --help` for installed flags. The [CLI guide](docs/cli.md)
+contains command syntax, JSON requests, errors, and operating limits.
 
 ## Project status
 
-**Experimental, with a working CLI, MCP server, and skill.** The
-[GoReleaser workflow](docs/releases.md) publishes Linux/macOS binaries and a
-checksummed source archive, then updates the
-[Homebrew tap](https://github.com/matheus3301/homebrew-tap) for stable releases.
-See [published versions](https://github.com/matheus3301/kb/releases) and
-[installation instructions](docs/installation.md). The source checkout remains
-an installation option independent of the release channel.
-
-[Recorded validation](docs/evidence/validation.json) includes 88.4% statement
-coverage, Linux/macOS tests, seven fuzz targets, CLI/MCP parity, failure/recovery
-tests, and a controlled skill consumer. These are observed results, not a
-promise that all bugs are absent or every agent activates the skill.
-
-[Native Homebrew QA of v0.1.1](docs/qa/native-homebrew-v0.1.1.md) found two
-move fidelity defects: automatic reference rewrites can round precise decimals
-and discard nested YAML comments in dependent metadata. The source correction
-now passes the [fidelity regressions](docs/evidence/move-fidelity-fix.json),
-including the original reproducer. **Version v0.1.1 remains affected**.
-v0.1.2 fixes those cases, but installed-package QA found that clearing
-`verified` can lose a trailing YAML annotation. Choose v0.1.3 or later when
-available in the published releases, or build current source. See the
-[regression and correction](docs/qa/verification-footer-regression.md).
-The original report includes concurrency,
-recovery, and installed CLI/MCP measurements; experimental status remains.
-
-The initial performance targets remain unmet: on 10,000 synthetic 2 KiB notes,
-warm core search p95 was **162.9 ms** and peak process RSS **180.3 MiB**, against
-150 ms / 150 MiB targets. Read the [measurement conditions](docs/performance.md).
-
-Native OKF is required; legacy collection migration is outside this version.
-Writes use advisory locks, so external editors can race and external readers can
-observe intermediate multi-file states. Preserve `.kb/state/` for recovery and
-retries, and restart a long-lived MCP process after configuration changes.
+**Experimental.** Use v0.1.3 or later for the documented metadata-preservation
+fixes. [Release QA](docs/qa/verification-footer-regression.md) records the findings
+and source verification; [release notes](https://github.com/matheus3301/kb/releases)
+include installed-package results. Performance remains below the original
+[targets](docs/performance.md). Advisory locks cannot isolate arbitrary external
+editors, and health checks do not establish semantic truth.
 
 ## Documentation
 
-- [Installation](docs/installation.md) and [release operations](docs/releases.md).
-- [Full quickstart](docs/quickstart.md) — initialize, query, write, recover, and export.
-- [Product and architecture](docs/project-overview.md) — how the pieces fit together.
-- [Specification](docs/spec.md) and [interface contract](docs/interfaces.md).
-- [Acceptance evidence](docs/acceptance.json), [quality gates](docs/quality.md), and [performance](docs/performance.md).
-- [Installed v0.1.1 QA and next-version priorities](docs/qa/native-homebrew-v0.1.1.md).
-- [Research](docs/research.md) and [implementation decisions](docs/decisions/0002-v0.1.md).
-- [Contributing](CONTRIBUTING.md) and [security](SECURITY.md).
+- [Quickstart](docs/quickstart.md), [CLI guide](docs/cli.md), and [installation](docs/installation.md).
+- [Agent setup](docs/agent-setup.md), [skill](skills/knowledge-base/SKILL.md), and [llms.txt](llms.txt).
+- [Architecture](docs/project-overview.md), [specification](docs/spec.md), and [interface contract](docs/interfaces.md).
+- [Quality gates](docs/quality.md), [performance](docs/performance.md), and [release operations](docs/releases.md).
 
 ## Contributing
 
-Use the pinned Go toolchain and Python 3.12 or newer:
-
-```sh
-make tools
-make check
-```
-
-Keep changes small, write Conventional Commit subjects and PR titles, and use
-synthetic fixtures. See [CONTRIBUTING.md](CONTRIBUTING.md) for the complete checks.
+Use the Go version in [go.mod](go.mod), Python 3.12+, and Conventional Commits.
+Run `make tools` and `make check`. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
