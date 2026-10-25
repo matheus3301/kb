@@ -30,12 +30,17 @@ func Generation(files map[string][]byte) string {
 		paths = append(paths, path)
 	}
 	sort.Strings(paths)
-	var inventory []byte
+	// Stream the canonical records instead of retaining a second inventory-sized
+	// byte buffer. The separators and hexadecimal revisions are wire-stable.
+	digest := sha256.New()
+	var record [1 + len("sha256:") + sha256.Size*2 + 1]byte
+	copy(record[1:], "sha256:")
+	record[len(record)-1] = '\n'
 	for _, path := range paths {
-		inventory = append(inventory, path...)
-		inventory = append(inventory, 0)
-		inventory = append(inventory, Revision(files[path])...)
-		inventory = append(inventory, '\n')
+		sum := sha256.Sum256(files[path])
+		hex.Encode(record[1+len("sha256:"):len(record)-1], sum[:])
+		_, _ = digest.Write([]byte(path))
+		_, _ = digest.Write(record[:])
 	}
-	return Revision(inventory)
+	return "sha256:" + hex.EncodeToString(digest.Sum(nil))
 }
