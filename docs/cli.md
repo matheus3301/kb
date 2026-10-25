@@ -31,8 +31,9 @@ Data commands accept `--input FILE` or `--input -` for a JSON object, maximum
 4 MiB. Unknown fields, invalid shapes, and trailing JSON are
 rejected. JSON property names use underscores. Explicit flags override their
 corresponding JSON values; a positional argument conflicting with JSON is an
-error. Write commands require an input containing `actor`, `summary`, and
-`idempotency_key` in addition to operation fields.
+error. Note-write commands require an input containing `actor`, `summary`, and
+`idempotency_key` in addition to operation fields. Operational backup/restore use
+explicit archive/destination paths instead; see [operational backups](backups.md).
 
 Data commands emit a `kb.v1` envelope with `ok`, `data` or `error`, `warnings`,
 and `meta`. Diagnostics go to stderr. Help is text; MCP stdout is JSON-RPC.

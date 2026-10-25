@@ -42,8 +42,16 @@ func TestOfficialSDKToolsAndResourceProtocol(t *testing.T) {
 	defer cleanup()
 	ctx := context.Background()
 	tools, err := cs.ListTools(ctx, nil)
-	if err != nil || len(tools.Tools) != 10 {
+	if err != nil {
 		t.Fatalf("tools: %v %#v", err, tools)
+	}
+	for tools.NextCursor != "" {
+		page, err := cs.ListTools(ctx, &mcp.ListToolsParams{Cursor: tools.NextCursor})
+		if err != nil {
+			t.Fatal(err)
+		}
+		tools.Tools = append(tools.Tools, page.Tools...)
+		tools.NextCursor = page.NextCursor
 	}
 	for _, tool := range tools.Tools {
 		if tool.Description == "" {
@@ -90,7 +98,7 @@ func TestOfficialSDKReadonly(t *testing.T) {
 	if err != nil || len(tools.Tools) != 6 {
 		t.Fatalf("%v %#v", err, tools)
 	}
-	for _, action := range []string{"create", "patch", "move", "apply"} {
+	for _, action := range []string{"create", "patch", "move", "apply", "backup", "restore"} {
 		res, err := cs.CallTool(context.Background(), &mcp.CallToolParams{Name: "kb_" + action, Arguments: map[string]any{}})
 		if err != nil || !res.IsError {
 			t.Fatalf("write not rejected: %v %#v", err, res)

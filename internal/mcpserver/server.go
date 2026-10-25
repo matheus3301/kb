@@ -17,13 +17,13 @@ import (
 // All requests retain the root captured by the supplied adapter.
 func New(a *Adapter, version string) *mcp.Server {
 	s := mcp.NewServer(&mcp.Implementation{Name: "kb", Version: version}, &mcp.ServerOptions{Instructions: instructions(a.ReadOnly), PageSize: api.DefaultHits, Capabilities: &mcp.ServerCapabilities{}})
-	inputs := map[string]any{"status": struct{}{}, "list": api.SearchRequest{}, "search": api.SearchRequest{}, "read": api.ReadRequest{}, "context": api.ContextRequest{}, "create": SingleInput{}, "patch": SingleInput{}, "move": SingleInput{}, "apply": api.Plan{}, "validate": ValidateInput{}}
-	for _, name := range []string{"status", "list", "search", "read", "context", "create", "patch", "move", "apply", "validate"} {
+	inputs := map[string]any{"status": struct{}{}, "list": api.SearchRequest{}, "search": api.SearchRequest{}, "read": api.ReadRequest{}, "context": api.ContextRequest{}, "create": SingleInput{}, "patch": SingleInput{}, "move": SingleInput{}, "apply": api.Plan{}, "validate": ValidateInput{}, "backup": api.BackupInput{}, "restore": api.RestoreInput{}}
+	for _, name := range []string{"status", "list", "search", "read", "context", "create", "patch", "move", "apply", "validate", "backup", "restore"} {
 		if a.ReadOnly && IsWrite(name) {
 			continue
 		}
 		closed := false
-		s.AddTool(&mcp.Tool{Name: "kb_" + name, Description: description(name), InputSchema: inputSchema(name, inputs[name]), OutputSchema: outputSchema(), Annotations: &mcp.ToolAnnotations{ReadOnlyHint: !IsWrite(name), IdempotentHint: true, OpenWorldHint: &closed}}, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		s.AddTool(&mcp.Tool{Name: "kb_" + name, Description: description(name), InputSchema: inputSchema(name, inputs[name]), OutputSchema: outputSchema(), Annotations: &mcp.ToolAnnotations{ReadOnlyHint: !IsWrite(name), IdempotentHint: name != "backup" && name != "restore", OpenWorldHint: &closed}}, func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			return toolResult(a.Call(ctx, name, req.Params.Arguments)), nil
 		})
 	}

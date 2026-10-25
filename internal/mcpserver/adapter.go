@@ -36,6 +36,12 @@ type Writer interface {
 	Recover(context.Context, bool) (api.Receipt, error)
 }
 
+// Operator is optional so existing read/write providers retain their contract.
+type Operator interface {
+	Backup(context.Context, api.BackupInput) (api.BackupResult, error)
+	Restore(context.Context, api.RestoreInput) (api.BackupResult, error)
+}
+
 type Meta struct {
 	Root       string `json:"root"`
 	Generation string `json:"generation"`
@@ -179,7 +185,7 @@ func Failure(root string, err error) Envelope {
 
 func IsWrite(action string) bool {
 	switch action {
-	case "create", "patch", "move", "archive", "apply", "maintain", "recover", "rebuild":
+	case "create", "patch", "move", "archive", "apply", "maintain", "recover", "rebuild", "backup", "restore":
 		return true
 	}
 	return false
@@ -386,6 +392,23 @@ func (a *Adapter) dispatch(ctx context.Context, action string, raw []byte) (any,
 			return nil, err
 		}
 		return a.Reader.Export(ctx, r.Destination)
+	case "backup", "restore":
+		operator, ok := a.Writer.(Operator)
+		if !ok {
+			return nil, Invalid("operational backup service unavailable")
+		}
+		if action == "backup" {
+			var request api.BackupInput
+			if err := Decode(raw, &request); err != nil {
+				return nil, err
+			}
+			return operator.Backup(ctx, request)
+		}
+		var request api.RestoreInput
+		if err := Decode(raw, &request); err != nil {
+			return nil, err
+		}
+		return operator.Restore(ctx, request)
 	case "maintain", "recover":
 		var r DryRunInput
 		if err := Decode(raw, &r); err != nil {

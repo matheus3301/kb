@@ -141,7 +141,7 @@ func (r *runner) command() *cobra.Command {
 	}}
 	initCmd.Flags().BoolVar(&para, "para", false, "Create initial PARA navigation")
 	c.AddCommand(initCmd)
-	for _, action := range []string{"status", "list", "search", "read", "context", "links", "create", "patch", "move", "archive", "apply", "validate", "maintain", "recover", "export"} {
+	for _, action := range []string{"status", "list", "search", "read", "context", "links", "create", "patch", "move", "archive", "apply", "validate", "maintain", "recover", "export", "backup", "restore"} {
 		c.AddCommand(r.dataCommand(action))
 	}
 	index := &cobra.Command{Use: "index", Short: "Manage the disposable search index", Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error { return cmd.Help() }}
@@ -228,6 +228,12 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 	case "export":
 		use += " [DESTINATION]"
 		maxArgs = 1
+	case "backup":
+		use += " [ARCHIVE]"
+		maxArgs = 1
+	case "restore":
+		use += " [ARCHIVE] [DESTINATION]"
+		maxArgs = 2
 	}
 	descriptions := map[string]string{
 		"rebuild":  "Rebuild the disposable search index",
@@ -246,12 +252,14 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 		"maintain": "Preview or apply managed index maintenance",
 		"recover":  "Inspect or recover an interrupted transaction",
 		"export":   "Export a validated snapshot with a scope manifest",
+		"backup":   "Back up content, configuration and durable receipts to .kb/backups",
+		"restore":  "Restore an operational archive into a new .kb/restores directory",
 	}
 	cmd := &cobra.Command{Use: use, Short: descriptions[action], Args: cobra.MaximumNArgs(maxArgs)}
 	var input string
 	var dry, apply, repair bool
 	cmd.Flags().StringVar(&input, "input", "", "JSON request file, or - for stdin (maximum 4 MiB)")
-	if mcpserver.IsWrite(action) {
+	if mcpserver.IsWrite(action) && action != "backup" && action != "restore" {
 		cmd.Flags().BoolVar(&dry, "dry-run", false, "Preview without publishing changes")
 	}
 	if action == "apply" {
@@ -330,7 +338,13 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 			if action == "export" {
 				key = "destination"
 			}
-			if i == 1 {
+			if action == "backup" || action == "restore" {
+				key = "archive"
+				if i == 1 {
+					key = "destination"
+				}
+			}
+			if i == 1 && action != "restore" {
 				key = "to"
 			}
 			if old, ok := values[key]; ok && old != arg {

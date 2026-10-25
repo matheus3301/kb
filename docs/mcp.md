@@ -37,9 +37,22 @@ Descriptions do not override the user's instructions or authorize unrelated work
 | `kb_patch` | Preview/update using the current revision. |
 | `kb_move` | Preview/relocate a note and update resolved references. |
 | `kb_apply` | Preview/execute a coordinated revision-checked plan. |
+| `kb_backup` | Create a checksummed operational snapshot in `.kb/backups`. |
+| `kb_restore` | Restore one into a new `.kb/restores` directory; never switch the server root. |
 
-Read-only mode hides the last four and rejects direct mutation attempts.
+Read-only mode hides all six write tools and rejects direct mutation attempts.
 Annotations are hints; actual access checks enforce the boundary.
+
+Operational tools are independently described at initialization and discovery.
+`kb_backup` requires `archive: ".kb/backups/snapshot.tar"`; `kb_restore` requires
+that archive and `destination: ".kb/restores/verification"`. Outputs must be new;
+restore refuses even an existing empty directory. Both refuse pending recovery,
+respect configuration-disabled writes, and have no preview or deduplication key.
+The result reports `archive`, optional `destination`, `manifest_revision`, `files`
+and `bytes`. Restart explicitly against the restored root to use it. Review the
+[format, exclusions, interruption behavior and limits](backups.md); knowledge
+export remains a different operation. Tool discovery is paginated: follow its
+`nextCursor` until all twelve tools have been received.
 
 ## Agent workflow
 

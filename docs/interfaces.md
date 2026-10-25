@@ -90,7 +90,16 @@ func write.New(provider api.Provider) *Service
 func (*Service) Apply(ctx context.Context, plan api.Plan) (api.Receipt, error)
 func (*Service) Maintain(ctx context.Context, dryRun bool) (api.Receipt, error)
 func (*Service) Recover(ctx context.Context, dryRun bool) (api.Receipt, error)
+func (*Service) Backup(ctx context.Context, request api.BackupInput) (api.BackupResult, error)
+func (*Service) Restore(ctx context.Context, request api.RestoreInput) (api.BackupResult, error)
 ```
+
+These additive `kb.v1` operations use the optional adapter `Operator` interface;
+existing Reader/Writer interfaces and response shapes are unchanged. They are
+write-class operations without note-transaction identity fields or preview.
+They use the same exclusive base lock but refuse pending recovery rather than
+recovering implicitly. See [operational backups](backups.md) for storage authority,
+the versioned archive contract, exclusions, limits and publication boundaries.
 
 `api.Operation.kind` is create, patch or move. Path is always explicit; a front end
 may derive a suggested path before constructing the operation. Create requires a
