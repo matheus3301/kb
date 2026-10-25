@@ -67,6 +67,13 @@ jobs:
                 jobs["tests"]["result"] = status
                 self.assertTrue(quality.gate_findings(jobs, "pull_request"))
 
+    def test_release_snapshot_is_required_by_the_gate(self):
+        for status in ("failure", "cancelled", "skipped"):
+            jobs = self.results()
+            jobs["release-config"]["result"] = status
+            with self.subTest(status=status):
+                self.assertTrue(quality.gate_findings(jobs, "pull_request"))
+
     def test_successful_pr_is_accepted(self):
         self.assertEqual([], quality.gate_findings(self.results(), "pull_request"))
 
