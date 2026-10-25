@@ -23,8 +23,9 @@ implemented. No private source collection or snapshots are distributed here.
 - [Skills distribution](https://github.com/vercel-labs/skills/blob/main/docs/creating-skills.md)
   supports a `skills/<name>/SKILL.md` layout. Installation uses
   [skills add](https://github.com/vercel-labs/skills/blob/main/docs/commands.md).
-  The planned command is `npx skills add matheus3301/kb --skill knowledge-memory`,
-  usable once the skill is published. Skill installation, binary installation,
+  Specification planning used the original name `knowledge-memory`. The current
+  skill is `knowledge-base`; see [agent setup](agent-setup.md) for installation
+  and upgrade instructions. Skill installation, binary installation,
   and MCP registration are separate actions.
 
 Pin implementation dependencies only after checking current official

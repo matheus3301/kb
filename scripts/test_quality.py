@@ -114,6 +114,39 @@ jobs:
             page.write_text('<img src="absent.svg" alt="Logo" /><a href="../outside.md">More</a>')
             self.assertEqual(2, len(quality.local_link_findings(root, page)))
 
+    def test_llms_raw_checkout_links_are_checked_without_network(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            page = root / "llms.txt"
+            page.write_text("[Guide](https://raw.githubusercontent.com/matheus3301/kb/main/guide.md)\n")
+            self.assertTrue(quality.local_link_findings(root, page))
+            (root / "guide.md").write_text("# Guide\n")
+            self.assertEqual([], quality.local_link_findings(root, page))
+            page.write_text("[Escape](https://raw.githubusercontent.com/matheus3301/kb/main/%2e%2e/outside.md)")
+            self.assertTrue(quality.local_link_findings(root, page))
+
+    def test_installed_skill_rejects_references_outside_its_folder(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            skill = root / "example"
+            skill.mkdir()
+            entry = skill / "SKILL.md"
+            entry.write_text("---\nname: example\ndescription: Synthetic skill\n---\n[Guide](../guide.md)\n")
+            (root / "guide.md").write_text("# Guide\n")
+            self.assertTrue(quality.skill_findings(skill))
+            entry.write_text(entry.read_text().replace("../guide.md", "guide.md"))
+            self.assertTrue(quality.skill_findings(skill))
+            (skill / "guide.md").write_text("# Guide\n")
+            self.assertEqual([], quality.skill_findings(skill))
+
+    def test_renamed_skill_requires_matching_discovery_name(self):
+        with tempfile.TemporaryDirectory() as directory:
+            skill = Path(directory) / "new-name"
+            skill.mkdir()
+            self.assertTrue(quality.skill_findings(skill))
+            (skill / "SKILL.md").write_text("---\nname: old-name\ndescription: Synthetic skill\n---\n")
+            self.assertTrue(quality.skill_findings(skill))
+
     def test_reference_and_source_links_cannot_escape_checkout(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -134,6 +167,7 @@ jobs:
         word = "conhe" + "cimento"
         self.assertTrue(quality.public_content_findings(page, word))
         self.assertEqual([], quality.public_content_findings(page, "Synthetic search text:\n```text\n" + word + "\n```"))
+        self.assertTrue(quality.public_content_findings(Path("llms.txt"), word))
 
     def test_verified_claim_with_existing_evidence_is_accepted(self):
         with tempfile.TemporaryDirectory() as directory:

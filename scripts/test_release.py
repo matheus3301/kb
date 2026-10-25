@@ -17,6 +17,25 @@ import release
 
 
 class ReleaseTests(unittest.TestCase):
+    def test_go_license_supports_official_and_homebrew_layouts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            keg = Path(directory)
+            goroot = keg / "libexec"
+            goroot.mkdir()
+            (keg / "LICENSE").write_text("Synthetic keg license\n")
+            self.assertEqual("Synthetic keg license\n", release.go_license(goroot))
+            (goroot / "LICENSE").write_text("Synthetic distribution license\n")
+            self.assertEqual("Synthetic distribution license\n", release.go_license(goroot))
+
+    def test_missing_go_license_is_not_silently_replaced(self):
+        with tempfile.TemporaryDirectory() as directory:
+            keg = Path(directory)
+            (keg / "LICENSE").write_text("Unrelated parent license\n")
+            with self.assertRaises(ValueError):
+                release.go_license(keg / "non-homebrew-root")
+            with self.assertRaises(ValueError):
+                release.go_license(keg / "nested" / "libexec")
+
     def test_archive_check_rejects_traversal_links_and_workstation_owner(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "synthetic.tar.gz"
@@ -32,6 +51,17 @@ class ReleaseTests(unittest.TestCase):
                     archive.addfile(member, io.BytesIO())
                 with self.subTest(name=name, uid=uid), self.assertRaises(ValueError):
                     check_release.inspect_archive(path)
+
+    def test_llms_archive_content_uses_the_same_privacy_guard(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "synthetic.tar.gz"
+            content = ("/" + "Users/" + "synthetic-person" + "/note.md").encode()
+            with tarfile.open(path, "w:gz") as archive:
+                member = tarfile.TarInfo("llms.txt")
+                member.size = len(content)
+                archive.addfile(member, io.BytesIO(content))
+            with self.assertRaises(ValueError):
+                check_release.inspect_archive(path)
 
     def test_tag_validation_rejects_retired_or_injected_versions(self):
         for tag in ("v0.1.1", "v1.2.3-rc.1"):

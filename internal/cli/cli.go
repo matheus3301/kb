@@ -125,9 +125,9 @@ func (r *runner) open(ctx context.Context, init, para bool) (*mcpserver.Adapter,
 }
 
 func (r *runner) command() *cobra.Command {
-	c := &cobra.Command{Use: "kb", Short: "Local, revision-aware knowledge memory", SilenceUsage: true, SilenceErrors: true, Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error { return cmd.Help() }}
+	c := &cobra.Command{Use: "kb", Short: "Local Markdown Knowledge Base for humans and AI agents", SilenceUsage: true, SilenceErrors: true, Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error { return cmd.Help() }}
 	c.CompletionOptions.DisableDefaultCmd = true
-	c.PersistentFlags().StringVar(&r.root, "root", "", "Knowledge root (then KB_ROOT, then ancestor discovery)")
+	c.PersistentFlags().StringVar(&r.root, "root", "", "Knowledge Base root (then KB_ROOT, then ancestor discovery)")
 	c.PersistentFlags().BoolVar(&r.jsonOutput, "json", false, "Emit a kb.v1 JSON envelope (also the default)")
 	c.PersistentFlags().BoolVar(&r.readOnly, "read-only", false, "Disable writes and hide MCP write tools")
 	c.PersistentFlags().StringVar(&r.asOf, "as-of", "", "Evaluate staleness at an RFC3339 timestamp")
@@ -151,7 +151,7 @@ func (r *runner) command() *cobra.Command {
 	c.AddCommand(&cobra.Command{Use: "version", Short: "Show build version", Args: cobra.NoArgs, RunE: func(_ *cobra.Command, _ []string) error {
 		return r.result(mcpserver.Envelope{SchemaVersion: "kb.v1", OK: true, Data: map[string]string{"version": r.deps.Version, "commit": r.deps.Commit}, Warnings: []api.Diagnostic{}, Meta: mcpserver.Meta{}})
 	}})
-	c.AddCommand(&cobra.Command{Use: "mcp", Short: "Serve the fixed knowledge root over stdio MCP", Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error {
+	c.AddCommand(&cobra.Command{Use: "mcp", Short: "Serve the fixed Knowledge Base over stdio MCP", Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error {
 		a, err := r.open(cmd.Context(), false, false)
 		if err != nil {
 			_, _ = fmt.Fprintln(r.errOut, err)
@@ -229,7 +229,25 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 		use += " [DESTINATION]"
 		maxArgs = 1
 	}
-	cmd := &cobra.Command{Use: use, Short: "Run knowledge " + action, Args: cobra.MaximumNArgs(maxArgs)}
+	descriptions := map[string]string{
+		"rebuild":  "Rebuild the disposable search index",
+		"status":   "Inspect the Knowledge Base scope, generation, and diagnostics",
+		"list":     "List notes with filters and cursor pagination",
+		"search":   "Search notes with lexical ranking and citable snippets",
+		"read":     "Read a note, section, or physical line range",
+		"context":  "Collect bounded source excerpts with citations",
+		"links":    "Inspect incoming and outgoing note references",
+		"create":   "Create a typed OKF note with an idempotent request",
+		"patch":    "Edit a note using its current revision",
+		"move":     "Relocate a note and update resolved references",
+		"archive":  "Move a note into the configured Archive directory",
+		"apply":    "Preview or apply a coordinated revision-checked plan",
+		"validate": "Check OKF conformance or structural health",
+		"maintain": "Preview or apply managed index maintenance",
+		"recover":  "Inspect or recover an interrupted transaction",
+		"export":   "Export a validated snapshot with a scope manifest",
+	}
+	cmd := &cobra.Command{Use: use, Short: descriptions[action], Args: cobra.MaximumNArgs(maxArgs)}
 	var input string
 	var dry, apply, repair bool
 	cmd.Flags().StringVar(&input, "input", "", "JSON request file, or - for stdin (maximum 4 MiB)")

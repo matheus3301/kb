@@ -1,10 +1,10 @@
 ---
 type: Specification
-title: Local CLI and MCP for OKF knowledge bases and PARA memory
-description: Normative specification v0.3 with implemented experimental v0.1.0 clarifications for OKF memory, maintenance, and CLI/MCP interfaces.
+title: KB — Knowledge Base specification
+description: Normative specification v0.3 for the experimental Knowledge Base, OKF notes, maintenance, and CLI/MCP interfaces.
 tags: [okf, para, cli, mcp, memory, specification]
 status: stable
-implementation_version: "0.1.0"
+implementation_version: "0.1.3"
 implementation_status: experimental
 spec_version: "0.3"
 sources:
@@ -25,13 +25,14 @@ generated:
   at: 2026-10-24T20:58:27Z
 ---
 
-# Local CLI and MCP for OKF knowledge bases and PARA memory
+# KB — Knowledge Base specification
 
-Specification v0.3, with implemented v0.1.0 clarifications. The initial design
+Specification v0.3, with implemented v0.1 interface clarifications. The initial design
 was informed by five tool evaluations and the LLM Wiki pattern on 2026-10-24.
 The project repository is https://github.com/matheus3301/kb.
 
-**v0.1.0 is an experimental first release.** The commands in this document are
+**The v0.1 implementation remains experimental.** Use v0.1.3 or later for the
+[metadata-preservation fixes](installation.md). The commands in this document are
 implemented. The [v0.1 interface contract](interfaces.md), shared DTOs in
 `internal/api/types.go`, and [implementation decision](decisions/0002-v0.1.md)
 clarify the wire format and current choices. Normative requirements and all 26
@@ -140,8 +141,8 @@ what it examined and excluded.
 
 ### Agent integration and skill distribution
 
-The product distributes its skill at `skills/knowledge-memory/SKILL.md` in the
-code repository as `knowledge-memory`. It teaches consulting
+The product distributes its skill at `skills/knowledge-base/SKILL.md` in the
+code repository as `knowledge-base`. It teaches consulting
 before answering, searching before creating, preserving provenance, reviewing
 affected concepts, and applying changes with expected revisions. It contains no
 fixed personal paths; its root comes from explicit integration configuration.
@@ -159,7 +160,7 @@ it read notes there. Base-specific conventions are documented/configured data;
 search results do not gain authority over session instructions.
 
 The current [Skills CLI documentation](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)
-uses `npx skills add matheus3301/kb --skill knowledge-memory`; installation is
+uses `npx skills add matheus3301/kb --skill knowledge-base`; installation is
 scoped to the project by default. Its [documented layout](https://github.com/vercel-labs/skills/blob/main/docs/creating-skills.md)
 recognizes `skills/<name>/SKILL.md`. The skill is included in this repository;
 installation still does not activate it automatically for every agent.

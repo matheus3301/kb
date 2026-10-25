@@ -337,12 +337,14 @@
     "requirement": "An agent-persisted comparison retains provenance; repeating a query without learning creates no note or event.",
     "status": "verified",
     "tests": [
-      "scripts/acceptance.py"
+      "scripts/acceptance.py",
+      "scripts/check_docs.py"
     ],
     "evidence": [
       "docs/evidence/validation.json",
       "docs/evidence/cli-workflow.json",
-      "docs/evidence/consumer/consumer-evidence.json"
+      "docs/evidence/consumer/consumer-evidence.json",
+      "docs/evidence/knowledge-base-skill.json"
     ]
   },
   {
@@ -351,12 +353,14 @@
     "status": "verified",
     "tests": [
       "scripts/acceptance.py",
-      "skills/knowledge-memory/SKILL.md"
+      "skills/knowledge-base/SKILL.md",
+      "scripts/check_docs.py"
     ],
     "evidence": [
       "docs/evidence/validation.json",
       "docs/evidence/cli-workflow.json",
-      "docs/evidence/consumer/consumer-evidence.json"
+      "docs/evidence/consumer/consumer-evidence.json",
+      "docs/evidence/knowledge-base-skill.json"
     ],
     "verification_scope": "One real consumer explicitly loaded the locally installed skill and consulted an external base without AGENTS.md; automatic activation across all agents is not claimed."
   }

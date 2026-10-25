@@ -10,7 +10,7 @@ silently bypass this workflow.
 
 | Gate | Policy |
 | --- | --- |
-| Repository | Local Markdown links, complete acceptance inventory, evidence paths, and regression tests for the quality tooling. |
+| Repository | Local Markdown/llms.txt links, self-contained skill references, complete acceptance inventory, evidence paths, and regression tests for the quality tooling. |
 | Workflows | actionlint; actions pinned to full SHAs; read-only token; no pull_request_target or continue-on-error. |
 | Go hygiene | gofmt, go vet, go mod tidy -diff, go mod verify, golangci-lint. |
 | Analysis | staticcheck, gosec, errcheck, resource and error checks; specific explained lint suppressions. |
@@ -30,7 +30,7 @@ the [tag-only workflow](releases.md).
 ## Implemented v0.1 validation and its limits
 
 The application is implemented. `make check` runs the required application
-checks plus the real CLI acceptance workflow (`make acceptance`). The latter
+checks plus executable documentation examples and the real CLI acceptance workflow (`make acceptance`). The latter
 builds `cmd/kb`, operates on disposable synthetic files, and checks revisions,
 coordinated ingestion, query purity, repair, references, export, and source
 immutability. [Recorded validation](evidence/validation.json) reports a successful

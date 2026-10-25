@@ -11,6 +11,7 @@ import tarfile
 import tempfile
 
 import acceptance
+import check_docs
 import release
 
 
@@ -23,7 +24,7 @@ def inspect_archive(path):
                 raise ValueError("unsafe release archive member")
             if (member.uid, member.gid) != (0, 0) or member.uname not in {"", "root"} or member.gname not in {"", "root"}:
                 raise ValueError("workstation identity in release archive metadata")
-            if member.isfile() and relative.suffix in {".md", ".json", ".svg", ".yaml", ".yml", ".toml"}:
+            if member.isfile() and relative.suffix in {".md", ".txt", ".json", ".svg", ".yaml", ".yml", ".toml"}:
                 data = archive.extractfile(member).read()
                 if re.search(rb"/(?:Users|home)/[\w.-]+|(?:file|vscode|codex)://", data):
                     raise ValueError("workstation path in release content")
@@ -43,6 +44,10 @@ def main():
     if actual != expected:
         raise ValueError("release must contain exactly four binary archives and one source archive")
     listed = {}
+    public_docs = {"README.md", "llms.txt", "docs/quickstart.md", "docs/cli.md", "docs/agent-setup.md",
+                   "skills/knowledge-base/SKILL.md"}
+    public_docs.update(f"skills/knowledge-base/references/{name}.md"
+                       for name in ("retrieval", "writing", "maintenance", "results"))
     for line in (dist / "checksums.txt").read_text().splitlines():
         checksum, name = line.split("  ")
         if name in listed or name not in expected:
@@ -55,14 +60,14 @@ def main():
             raise ValueError("release checksum mismatch")
         members = inspect_archive(dist / name)
         if name != source_name:
-            required = {"kb", "LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "docs/quickstart.md",
-                        "assets/logo.svg", "skills/knowledge-memory/SKILL.md", "schemas/kb.v1.tools.json"}
+            required = public_docs | {"kb", "LICENSE", "THIRD_PARTY_NOTICES.md",
+                                      "assets/logo.svg", "schemas/kb.v1.tools.json"}
             if not required <= members:
                 raise ValueError("binary archive is missing public documentation or licenses")
         else:
-            required = {f"kb-{version}/{entry}" for entry in ("go.mod", "cmd/kb/main.go", "LICENSE",
-                        "THIRD_PARTY_NOTICES.md", "docs/quickstart.md", "assets/logo.svg",
-                        "skills/knowledge-memory/SKILL.md", "schemas/kb.v1.tools.json")}
+            required = {f"kb-{version}/{entry}" for entry in public_docs | {
+                "go.mod", "cmd/kb/main.go", "LICENSE", "THIRD_PARTY_NOTICES.md",
+                "assets/logo.svg", "schemas/kb.v1.tools.json"}}
             if not required <= members:
                 raise ValueError("source archive is missing source, docs, or license notices")
     expected_formula = release.formula_text("v" + version, commit, source_name, listed[source_name])
@@ -80,6 +85,7 @@ def main():
         if info != {"version": "v" + version, "commit": commit}:
             raise ValueError("release binary source identity is incorrect")
         acceptance.exercise(binary)
+        check_docs.exercise(binary, native)
         source = workspace / "source"
         with tarfile.open(dist / source_name) as archive:
             archive.extractall(source, filter="data")
@@ -90,6 +96,7 @@ def main():
                         "-o", str(installed), "./cmd/kb"],
                        cwd=source / f"kb-{version}", env=env, check=True)
         acceptance.exercise(installed)
+        check_docs.exercise(installed, source / f"kb-{version}")
     print("Release snapshot passed: four platforms, source archive, checksums, privacy, docs/licenses, "
           "formula identity, extracted binary workflow, and source build workflow.")
 
