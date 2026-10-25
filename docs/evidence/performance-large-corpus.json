@@ -1,0 +1,317 @@
+{
+  "environment": {
+    "system": "Darwin",
+    "release": "25.6.0",
+    "machine": "arm64",
+    "hardware": "Apple M4",
+    "cpus": 10,
+    "go": "go version go1.27.3 darwin/arm64",
+    "gomaxprocs": 8
+  },
+  "method": {
+    "corpora": "Identical synthetic 2048-byte notes from scripts/benchmark.py; separate disposable roots per binary and corpus.",
+    "serialization": "Entire paired baseline/candidate matrix holds one shared execution slot; no concurrent build/test/profile work.",
+    "read_samples": 5,
+    "repair_samples": 3,
+    "cli": "Fresh child process per sample; child-only wait4 peak RSS, excluding fixture creation and Python.",
+    "mcp": "One reused stdio process per corpus; first request separate, then five warm requests per read operation; session-wide child-only RSS.",
+    "cache": "OS file cache not evicted; freshly generated corpus files may already be cached. No power-on disk latency claim.",
+    "writes": "Preview validation/navigation and committed repair with journal, receipt and fsync; first apply creates managed indexes, subsequent applies reuse them.",
+    "percentiles": "Nearest rank; small-sample p95 is an observation, not an SLA.",
+    "profiles": "Not enabled during this matrix."
+  },
+  "runs": [
+    {
+      "label": "baseline",
+      "version": {
+        "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+        "version": "v0.3.1"
+      },
+      "corpora": [
+        {
+          "notes": 10000,
+          "note_bytes": 2048,
+          "cli": {
+            "search": {
+              "samples": 5,
+              "p50_ms": 320.565,
+              "p95_ms": 336.371,
+              "peak_rss_mib": 114.016
+            },
+            "read": {
+              "samples": 5,
+              "p50_ms": 170.687,
+              "p95_ms": 172.94,
+              "peak_rss_mib": 97.062
+            },
+            "validate": {
+              "samples": 5,
+              "p50_ms": 168.977,
+              "p95_ms": 170.978,
+              "peak_rss_mib": 100.547
+            },
+            "repair_preview": {
+              "samples": 3,
+              "p50_ms": 497.949,
+              "p95_ms": 663.417,
+              "peak_rss_mib": 177.938
+            },
+            "repair_apply": {
+              "samples": 3,
+              "p50_ms": 1205.291,
+              "p95_ms": 1325.521,
+              "peak_rss_mib": 203.422,
+              "first_ms": 1205.291
+            }
+          },
+          "mcp": {
+            "search": {
+              "samples": 5,
+              "p50_ms": 98.418,
+              "p95_ms": 265.813,
+              "first_ms": 317.291
+            },
+            "read": {
+              "samples": 5,
+              "p50_ms": 97.953,
+              "p95_ms": 98.224,
+              "first_ms": 98.517
+            },
+            "validate": {
+              "samples": 5,
+              "p50_ms": 97.81,
+              "p95_ms": 98.071,
+              "first_ms": 97.603
+            },
+            "process_peak_rss_mib": 131.906
+          }
+        },
+        {
+          "notes": 50000,
+          "note_bytes": 2048,
+          "cli": {
+            "search": {
+              "samples": 5,
+              "p50_ms": 2502.423,
+              "p95_ms": 2604.29,
+              "peak_rss_mib": 499.141
+            },
+            "read": {
+              "samples": 5,
+              "p50_ms": 1735.936,
+              "p95_ms": 1872.754,
+              "peak_rss_mib": 425.484
+            },
+            "validate": {
+              "samples": 5,
+              "p50_ms": 1717.633,
+              "p95_ms": 1728.19,
+              "peak_rss_mib": 426.625
+            },
+            "repair_preview": {
+              "samples": 3,
+              "p50_ms": 3337.514,
+              "p95_ms": 3426.805,
+              "peak_rss_mib": 745.75
+            },
+            "repair_apply": {
+              "samples": 3,
+              "p50_ms": 6097.361,
+              "p95_ms": 8119.061,
+              "peak_rss_mib": 954.359,
+              "first_ms": 8119.061
+            }
+          },
+          "mcp": {
+            "search": {
+              "samples": 5,
+              "p50_ms": 1374.404,
+              "p95_ms": 1385.242,
+              "first_ms": 2483.923
+            },
+            "read": {
+              "samples": 5,
+              "p50_ms": 1369.532,
+              "p95_ms": 1395.498,
+              "first_ms": 1360.567
+            },
+            "validate": {
+              "samples": 5,
+              "p50_ms": 1377.042,
+              "p95_ms": 1533.533,
+              "first_ms": 1364.079
+            },
+            "process_peak_rss_mib": 579.219
+          }
+        }
+      ]
+    },
+    {
+      "label": "candidate",
+      "version": {
+        "commit": "unknown",
+        "version": "dev"
+      },
+      "corpora": [
+        {
+          "notes": 10000,
+          "note_bytes": 2048,
+          "cli": {
+            "search": {
+              "samples": 5,
+              "p50_ms": 327.412,
+              "p95_ms": 328.102,
+              "peak_rss_mib": 115.219
+            },
+            "read": {
+              "samples": 5,
+              "p50_ms": 171.943,
+              "p95_ms": 175.287,
+              "peak_rss_mib": 97.219
+            },
+            "validate": {
+              "samples": 5,
+              "p50_ms": 170.854,
+              "p95_ms": 171.695,
+              "peak_rss_mib": 97.875
+            },
+            "repair_preview": {
+              "samples": 3,
+              "p50_ms": 500.76,
+              "p95_ms": 504.019,
+              "peak_rss_mib": 176.438
+            },
+            "repair_apply": {
+              "samples": 3,
+              "p50_ms": 873.014,
+              "p95_ms": 1201.037,
+              "peak_rss_mib": 206.625,
+              "first_ms": 1201.037
+            }
+          },
+          "mcp": {
+            "search": {
+              "samples": 5,
+              "p50_ms": 99.356,
+              "p95_ms": 99.824,
+              "first_ms": 317.602
+            },
+            "read": {
+              "samples": 5,
+              "p50_ms": 97.82,
+              "p95_ms": 98.854,
+              "first_ms": 97.534
+            },
+            "validate": {
+              "samples": 5,
+              "p50_ms": 98.519,
+              "p95_ms": 99.431,
+              "first_ms": 97.802
+            },
+            "process_peak_rss_mib": 133.625
+          }
+        },
+        {
+          "notes": 50000,
+          "note_bytes": 2048,
+          "cli": {
+            "search": {
+              "samples": 5,
+              "p50_ms": 2217.418,
+              "p95_ms": 2460.436,
+              "peak_rss_mib": 488.391
+            },
+            "read": {
+              "samples": 5,
+              "p50_ms": 1419.714,
+              "p95_ms": 1437.725,
+              "peak_rss_mib": 396.109
+            },
+            "validate": {
+              "samples": 5,
+              "p50_ms": 1428.557,
+              "p95_ms": 1671.188,
+              "peak_rss_mib": 395.438
+            },
+            "repair_preview": {
+              "samples": 3,
+              "p50_ms": 3233.912,
+              "p95_ms": 3238.651,
+              "peak_rss_mib": 751.406
+            },
+            "repair_apply": {
+              "samples": 3,
+              "p50_ms": 6397.557,
+              "p95_ms": 7774.747,
+              "peak_rss_mib": 844.172,
+              "first_ms": 7774.747
+            }
+          },
+          "mcp": {
+            "search": {
+              "samples": 5,
+              "p50_ms": 1093.499,
+              "p95_ms": 1172.553,
+              "first_ms": 2213.544
+            },
+            "read": {
+              "samples": 5,
+              "p50_ms": 1093.409,
+              "p95_ms": 1189.079,
+              "first_ms": 1135.181
+            },
+            "validate": {
+              "samples": 5,
+              "p50_ms": 1086.282,
+              "p95_ms": 1087.237,
+              "first_ms": 1084.206
+            },
+            "process_peak_rss_mib": 570.875
+          }
+        }
+      ]
+    }
+  ],
+  "date": "2026-10-25",
+  "candidate_source": {
+    "base_commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+    "files_sha256": {
+      "internal/api/revision.go": "8df3953cb8f71cf485b3e9f2491d7be201bad1f5652797e78028f0e4be310ae0",
+      "internal/core/store.go": "eb3d329de205555e9c15bfb165a63ee7e0090081b7f70dd9757e86af88f95b6d"
+    },
+    "build": "go build -trimpath -o .build/kb ./cmd/kb"
+  },
+  "profiling": {
+    "method": "One source-level test-process sample per binary/corpus; corpus generated out of process; fresh store Search then runtime.GC with live store; runtime.MemStats includes test/runtime overhead. CPU/heap profiling enabled, not used as quiet latency or process RSS evidence. GOMAXPROCS=8.",
+    "corpora": [
+      {
+        "notes": 10000,
+        "baseline_retained_heap_mib": 54.165,
+        "candidate_retained_heap_mib": 53.657,
+        "baseline_total_allocated_mib": 208.949,
+        "candidate_total_allocated_mib": 193.007
+      },
+      {
+        "notes": 50000,
+        "baseline_retained_heap_mib": 264.579,
+        "candidate_retained_heap_mib": 261.99,
+        "baseline_total_allocated_mib": 1054.114,
+        "candidate_total_allocated_mib": 966.583
+      }
+    ]
+  },
+  "verification": {
+    "make_check": "passed",
+    "aggregate_statement_coverage_percent": 89.3,
+    "targeted_tests": "Canonical digest fixtures, exact inventory freshness, directory replacement, deterministic parallel errors and same-size/same-mtime edits passed.",
+    "actual_interface_smoke": "Installed baseline and candidate CLI/MCP returned identical generations, ordered hits, scores, citations and revisions on the same synthetic 100-note root; reused sessions observed a same-size/same-mtime edit; no-answer and normal queries preserved all filesystem bytes."
+  },
+  "limits": [
+    "One local paired matrix, baseline then candidate; five read/three write samples do not establish statistical significance or a portable SLA.",
+    "10k CLI read/search medians and some RSS values do not improve.",
+    "50k committed repair median increases from 6097.361 to 6397.557 ms; no universal write-speed improvement claimed.",
+    "Exact inventory scans and independently owned source/body representations remain material costs.",
+    "Conformant corpora; invalid/reserved-file-heavy inventory may over-reserve note capacity.",
+    "No power-on cache eviction, Linux runtime measurement or other hardware timing is claimed."
+  ]
+}

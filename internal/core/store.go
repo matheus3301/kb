@@ -608,14 +608,15 @@ func (s *Store) snapshot(ctx context.Context, r *os.Root) (api.Snapshot, error) 
 		return s.refreshStale(*s.cached), nil
 	}
 	generation := api.Generation(files)
-	out := api.Snapshot{Generation: generation, Files: files, Diagnostics: ds, Notes: []api.Note{}, Links: []api.Link{}}
+	out := api.Snapshot{Generation: generation, Files: files, Diagnostics: ds, Notes: make([]api.Note, 0, len(files)), Links: []api.Link{}}
 	paths := make([]string, 0, len(files))
 	for p := range files {
 		paths = append(paths, p)
 	}
 	sort.Strings(paths)
-	previous := map[string]api.Note{}
+	var previous map[string]api.Note
 	if s.cached != nil {
+		previous = make(map[string]api.Note, len(s.cached.Notes))
 		for _, note := range s.cached.Notes {
 			previous[note.Path] = note
 		}
