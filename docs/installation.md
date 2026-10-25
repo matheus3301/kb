@@ -45,9 +45,12 @@ brew upgrade matheus3301/tap/kb
 kb version --json
 ```
 
-For the metadata fidelity corrections identified in v0.1.1, choose **v0.1.2 or
-later** when available on the releases page. v0.1.1 can silently round decimal
+For the metadata fidelity corrections, choose **v0.1.3 or later** when available
+on the releases page. v0.1.1 can silently round decimal
 metadata and discard YAML comments when updating references during a move.
+v0.1.2 fixes those defects but can lose a trailing annotation when clearing
+`verified`; the [installed-package regression](qa/verification-footer-regression.md)
+documents its correction.
 The [QA assessment and correction evidence](qa/native-homebrew-v0.1.1.md)
 describe the affected cases and a disposable reproducer. Updating the executable
 does not restore metadata already changed by an earlier operation; use original

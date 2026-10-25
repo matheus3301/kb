@@ -55,6 +55,10 @@ basis_revisions:
     revision: {revision}
     unknown_decimal: 1234567890.123456789
     custom: keep # Custom basis comment
+verified:
+  - by: human:synthetic-reviewer
+    at: '2025-01-02T00:00:00Z'
+# Trailing annotation independent of verification
 ---
 # Synthetic synthesis
 """
@@ -77,10 +81,12 @@ basis_revisions:
             "# Preserve numeric precision",
             "# Basis annotation must survive",
             "# Custom basis comment",
+            "# Trailing annotation independent of verification",
         ]
         checks = {text: before.count(text) == after.count(text) for text in required}
         checks["source path updated"] = "resource: nested/source.md" in after
         checks["basis path updated"] = "path: nested/source.md" in after
+        checks["verification cleared"] = "verified:" not in after
         checks["OKF conformant"] = validation["data"]["conformant"]
         # Do not print operational roots or receipt metadata into public evidence.
         print(json.dumps({

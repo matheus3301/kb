@@ -461,6 +461,11 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 			delete(changes, key.Value)
 		} else if !removes[key.Value] {
 			out.WriteString(strings.Join(lines[start:end], ""))
+		} else if key.FootComment != "" {
+			// Clearing verification removes the field, not the standalone
+			// annotations following it. Keep their original bytes and newlines.
+			commentStart := beforeHeaderComment(lines, end, key.FootComment)
+			out.WriteString(strings.Join(lines[commentStart:end], ""))
 		}
 		cursor = end
 	}
@@ -487,6 +492,7 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 // Comments owned by the next key or the document remain outside this entry's
 // replacement. Its own foot comments are emitted once with the retained nodes.
 func beforeHeaderComment(lines []string, end int, comment string) int {
+	comment = strings.TrimRight(comment, "\r\n")
 	if comment == "" {
 		return end
 	}

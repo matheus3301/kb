@@ -151,3 +151,31 @@ func TestCodecStructuralRewritePreservesCommentOwnership(t *testing.T) {
 		}
 	}
 }
+
+func TestCodecClearingVerificationPreservesTrailingAnnotations(t *testing.T) {
+	for _, newline := range []string{"\n", "\r\n"} {
+		for _, tail := range []string{
+			"# Trailing YAML comment\n",
+			"# Trailing YAML comment\n# Second annotation\n",
+			"\n# Trailing YAML comment\n",
+			"  # Trailing YAML comment\n",
+			"# Trailing YAML comment\n\n# Next field annotation\ncustom: 'keep'\n",
+		} {
+			t.Run(newline+tail, func(t *testing.T) {
+				raw := "---\ntype: Reference\ngenerated:\n  by: process:previous\n  at: '2025-01-01T00:00:00Z'\nverified:\n  - by: human:synthetic-reviewer\n    at: '2025-01-02T00:00:00Z'\n" + tail + "---\nOriginal body\n"
+				raw = strings.ReplaceAll(raw, "\n", newline)
+				out, err := (codec{}).Patch("note.md", []byte(raw), api.Operation{BodyEdits: []api.TextEdit{{OldText: "Original body", NewText: "Revised body"}}}, "process:test", time.Unix(0, 0).UTC())
+				if err != nil {
+					t.Fatal(err)
+				}
+				want := strings.ReplaceAll(tail, "\n", newline)
+				if !strings.Contains(string(out), want) || strings.Count(string(out), "# Trailing YAML comment") != 1 || strings.Contains(string(out), "verified:") {
+					t.Fatalf("verification invalidation changed independent annotations:\n%s", out)
+				}
+				if !strings.HasSuffix(string(out), "---"+newline+"Revised body"+newline) {
+					t.Fatalf("body presentation changed: %q", out)
+				}
+			})
+		}
+	}
+}
