@@ -1,7 +1,8 @@
 # Quickstart
 
 `kb` is experimental software with a working CLI and MCP stdio server.
-The initial manual release was withdrawn; install the current source checkout. This guide follows the [v0.1 contract](interfaces.md) and shared DTOs in
+See [installation](installation.md) for Homebrew, prebuilt binaries, and source
+installation. This guide uses the same CLI commands with each method. This guide follows the [v0.1 contract](interfaces.md) and shared DTOs in
 `internal/api/types.go`. Use a disposable example base while learning its write
 and recovery behavior. [Recorded validation](evidence/validation.json) describes
 observed behavior; it does not prove that all bugs are absent.
@@ -24,8 +25,8 @@ kb version --json
 kb --help
 ```
 
-See [installation and distribution status](installation.md) for Homebrew and
-prebuilt binaries from the next automated release.
+See [installation instructions](installation.md) for Homebrew and prebuilt
+binaries.
 
 Make the Go binary installation directory available on your `PATH` if `kb` is
 not found. Installing the binary does not install a skill or register an MCP

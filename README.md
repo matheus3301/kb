@@ -19,7 +19,9 @@ handles retrieval, references, and changes you can review.
 
 ## Getting started
 
-The implementation is available from source. Use the Go version declared in
+For Homebrew and prebuilt binaries, see [installation](docs/installation.md)
+and [published releases](https://github.com/matheus3301/kb/releases). To build
+from source, use the Go version declared in
 [go.mod](https://github.com/matheus3301/kb/blob/main/go.mod), and put Go's binary
 installation directory on your `PATH`:
 
@@ -128,12 +130,13 @@ not establish semantic truth.
 
 ## Project status
 
-**Experimental, with a working CLI, MCP server, and skill.** The previous manual
-release was withdrawn. The [GoReleaser workflow](docs/releases.md) prepares
-Linux/macOS binaries and a source formula for the
-[Homebrew tap](https://github.com/matheus3301/homebrew-tap). There is currently
-no active tagged release: install from source above. Homebrew and downloadable
-binaries become available with the next publication; see [installation](docs/installation.md).
+**Experimental, with a working CLI, MCP server, and skill.** The
+[GoReleaser workflow](docs/releases.md) publishes Linux/macOS binaries and a
+checksummed source archive, then updates the
+[Homebrew tap](https://github.com/matheus3301/homebrew-tap) for stable releases.
+See [published versions](https://github.com/matheus3301/kb/releases) and
+[installation instructions](docs/installation.md). The source checkout remains
+an installation option independent of the release channel.
 
 [Recorded validation](docs/evidence/validation.json) includes 88.4% statement
 coverage, Linux/macOS tests, seven fuzz targets, CLI/MCP parity, failure/recovery
