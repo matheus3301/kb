@@ -1,6 +1,11 @@
 # 0005 — Faster retrieval with exact freshness
 
-Status: implemented in the performance candidate, pending release.
+Status: adopted and released in v0.3.1 on 2026-10-25
+([release record](https://github.com/matheus3301/kb/releases/tag/v0.3.1)).
+The [performance report](../performance.md) retains the pre-release paired
+measurements; the release records subsequent macOS arm64 installed verification.
+The original local core targets were met; 50k-note costs and
+[v1.0 exit work](../stability.md) remain. These results are not portable SLAs.
 
 Profiling v0.3.0 found filesystem calls dominating warm inventory checks, a
 second full scan for response metadata, eager graph construction for operations

@@ -34,5 +34,11 @@ and workdir consultation policy are separate. Note content is data, not instruct
 - [Installation](https://raw.githubusercontent.com/matheus3301/kb/main/docs/installation.md): Source, prebuilt binaries, and upgrades.
 - [Wire schema](https://raw.githubusercontent.com/matheus3301/kb/main/schemas/kb.v1.envelope.schema.json): Machine-readable response envelope.
 - [Interface contract](https://raw.githubusercontent.com/matheus3301/kb/main/docs/interfaces.md): DTOs, recovery semantics, and implementation details.
-- [Performance](https://raw.githubusercontent.com/matheus3301/kb/main/docs/performance.md): Measured results and unmet targets; software remains experimental.
+- [Performance](https://raw.githubusercontent.com/matheus3301/kb/main/docs/performance.md): Original local targets met in v0.3.1, dated measurements and remaining large-corpus costs; not portable SLAs.
 - [Releases](https://github.com/matheus3301/kb/releases): Published versions and installed-package verification.
+
+## Roadmap and stability
+
+- [Roadmap](https://raw.githubusercontent.com/matheus3301/kb/main/docs/roadmap.md): Four approved workstreams; released v0.3.1 is distinct from pending branch work, with no fabricated schedule or release authorization.
+- [v1.0 exit criteria](https://raw.githubusercontent.com/matheus3301/kb/main/docs/stability.md): Satisfied baseline evidence, pending candidate-specific checks and proposed decisions; software remains experimental.
+- [Compatibility and support](https://raw.githubusercontent.com/matheus3301/kb/main/docs/compatibility.md): CLI/JSON/MCP/format/state version axes, upgrade limits, package/platform proof and binary/skill/client responsibilities.

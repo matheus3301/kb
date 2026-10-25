@@ -1,9 +1,16 @@
 # Installation
 
-`kb` is experimental software for Linux and macOS. Use a stable version from
-the [releases page](https://github.com/matheus3301/kb/releases), install through
-Homebrew, or build the current source checkout. Binary, skill, and MCP setup
-are separate steps.
+`kb` is experimental software for Linux and macOS. The stable publication channel
+currently provides **v0.3.1**; a non-prerelease tag does not imply v1.0 stability.
+Use the [releases page](https://github.com/matheus3301/kb/releases), Homebrew, or
+the current source checkout. Binary, skill, and MCP setup are separate steps.
+
+[v0.3.1 installed-package verification](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
+covers real Homebrew source installation/formula testing, extracted binary and
+installed CLI/MCP workflows on **macOS arm64 only**. All four Linux/macOS
+amd64/arm64 archives are built; this is not installed runtime proof for the
+other three targets. See [compatibility/support](compatibility.md) and
+[v1.0 exit criteria](stability.md) for limits and pending evidence.
 
 ## Source checkout
 
@@ -45,8 +52,8 @@ brew upgrade matheus3301/tap/kb
 kb version --json
 ```
 
-For the metadata fidelity corrections, choose **v0.1.3 or later** when available
-on the releases page. v0.1.1 can silently round decimal
+For the metadata fidelity corrections, use **v0.1.3 or later**.
+v0.1.1 can silently round decimal
 metadata and discard YAML comments when updating references during a move.
 v0.1.2 fixes those defects but can lose a trailing annotation when clearing
 `verified`; the [installed-package regression](qa/verification-footer-regression.md)

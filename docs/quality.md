@@ -27,16 +27,18 @@ updates to development tools are separate explicit changes. No automatic merge
 is configured. Release publication requires an explicit version tag and follows
 the [tag-only workflow](releases.md).
 
-## Implemented v0.1 validation and its limits
+## Implemented validation and its limits
 
-The application is implemented. `make check` runs the required application
-checks plus executable documentation examples and the real CLI acceptance workflow (`make acceptance`). The latter
-builds `cmd/kb`, operates on disposable synthetic files, and checks revisions,
-coordinated ingestion, query purity, repair, references, export, and source
-immutability. [Recorded validation](evidence/validation.json) reports a successful
-full run with 88.4% statement coverage, 102 top-level test functions, 314 named
-pass events including subtests and fuzz seeds, seven fuzz smoke targets, and
-Linux/macOS amd64/arm64 cross-builds. These counts describe that recorded run.
+The current released baseline is experimental v0.3.1. `make check` runs the
+required application checks plus executable documentation examples and the real
+CLI acceptance workflow (`make acceptance`). The latter builds `cmd/kb`, operates
+on disposable synthetic files, and checks revisions, coordinated ingestion,
+query purity, repair, references, export, and source immutability.
+[Original validation](evidence/validation.json), dated **2026-10-24**, reports
+a successful v0.1-era run with 88.4% statement coverage, 102 top-level test
+functions, 314 named pass events including subtests and fuzz seeds, seven fuzz
+smoke targets, and Linux/macOS amd64/arm64 cross-builds. These are historical
+counts, not current v0.3.1 suite totals or final v1.0 evidence.
 
 The [CLI workflow evidence](evidence/cli-workflow.json) and
 [controlled agent-consumer observation](evidence/consumer/consumer-evidence.json)
@@ -58,11 +60,24 @@ The repository check verifies traceability, not whether the evidence proves the
 claim. Do not equate aggregate coverage or one green workflow with all criteria
 being satisfied.
 
-[Performance evidence](performance.md) records unmet initial targets: warm core
-search p95 162.9 ms versus 150 ms, and peak process RSS 180.3 MiB versus 150 MiB.
-Cold core search was 594.4 ms. These measurements used 10,000 synthetic 2 KiB
-notes on Apple M4/macOS arm64 with Go 1.27.3 and 20 warm samples. Reindexing was
-not independently benchmarked. No quality threshold is reduced by these results.
+[Performance evidence](performance.md) retains the initial v0.1 core misses:
+warm search p95 162.9 ms and peak process RSS 180.3 MiB against 150 ms/150 MiB,
+with 594.4 ms cold search. The 2026-10-25 v0.3.1 report records 117.7 ms warm
+core p95, 134.0 MiB RSS and 179.0 ms rebuild p95, meeting the original local
+targets. Both core runs used Apple M4/macOS arm64, Go 1.27.3, 10,000 synthetic
+2 KiB notes and 20 warm queries; rebuild was timed separately in the later run.
+These are not fresh CLI/MCP measurements or portable SLAs. The 50k-note CLI
+search still measured 2.19 s median/483.1 MiB peak RSS. No gate was reduced.
+
+Source tests run on **ubuntu-24.04** and **macos-15**; four-target cross-builds
+are not four-target runtime tests. The Ubuntu release snapshot executes its
+native archive and archived-source build. The
+[v0.3.1 release record](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
+separately documents actual Homebrew installation/formula and installed CLI/MCP
+verification on **macOS arm64 only**. See [compatibility/support](compatibility.md)
+for platform boundaries and the [exit checklist](stability.md) for pending
+retrieval, reliability, operational backup and scale evidence. Experimental status
+remains until independent candidate-specific review, not merely green CI.
 
 ## GitHub settings
 
