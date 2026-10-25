@@ -1,11 +1,13 @@
 # Quickstart
 
-`kb` is experimental software with a working CLI and MCP stdio server.
-See [installation](installation.md) for Homebrew, prebuilt binaries, and source
-installation. This guide uses the same CLI commands with each method. This guide follows the [v0.1 contract](interfaces.md) and shared DTOs in
-`internal/api/types.go`. Use a disposable example base while learning its write
-and recovery behavior. [Recorded validation](evidence/validation.json) describes
-observed behavior; it does not prove that all bugs are absent.
+This guide describes current integrated source preparing **v0.4.0 qualification**.
+Published production remains experimental **v0.3.1**; backup/restore below are
+merged additions, not available in that release. See [installation](installation.md)
+for Homebrew, archives and source, and check installed `kb version`/help.
+The [interface contract](interfaces.md) and shared DTOs define the requests.
+Use a disposable example base while learning writes and recovery. Historical
+[validation](evidence/validation.json) is not final-candidate qualification;
+[stable-v1 readiness](stability.md) remains pending.
 
 ## Install the CLI
 
@@ -218,7 +220,7 @@ kb --root ./example-knowledge maintain --apply
 
 Archive defaults to the configured Archive directory plus the original basename;
 a collision is rejected. It does not mark the knowledge false or deprecated.
-Moves and patches use separate calls in v0.1. Maintenance preserves manual index
+Moves and patches use separate operations. Maintenance preserves manual index
 content and updates managed regions; rebuilding the cache changes no notes.
 
 ## Recover an interrupted operation
@@ -227,7 +229,7 @@ The durable crash journal coordinates multi-file publication and recovery.
 External readers can still observe a transient state because multi-file rename
 is not atomic. Preserve `.kb/state/` for recovery and idempotent receipts.
 `.kb/cache/` holds only rebuildable derived data; removing it loses no knowledge.
-Exporting a knowledge bundle is not an operational-state backup. In v0.1,
+Exporting a knowledge bundle is not an operational-state backup. Durable
 idempotency receipts do not expire. Reads encountering a pending journal return
 `RECOVERY_REQUIRED` without changing notes. Preview and perform explicit recovery:
 
@@ -236,7 +238,8 @@ kb --root ./example-knowledge recover --dry-run
 kb --root ./example-knowledge recover
 ```
 
-A new mutation also recovers pending state before accepting its request.
+A new note mutation also recovers pending state before accepting its request.
+Operational backup/restore instead refuse pending recovery; settle it explicitly.
 Recovery rolls back before a durable commit marker and rolls forward afterward.
 Reads may create operational lock/cache files but never modify notes, config,
 or Git. For an invalid base, an explicit `apply --repair` plan may replace a
@@ -269,6 +272,28 @@ kb --root ./example-knowledge export ./example-export --json
 Export includes an inclusion/exclusion manifest. It does not certify unexamined
 files or back up operational journal/receipt state.
 
+## Stage and verify an operational backup
+
+**Current source only; not in v0.3.1.** After settling pending recovery, use new
+archive/destination names under the confined storage directories:
+
+```sh
+kb --root ./example-knowledge backup .kb/backups/quickstart.tar
+kb --root ./example-knowledge restore .kb/backups/quickstart.tar .kb/restores/quickstart
+kb --root ./example-knowledge/.kb/restores/quickstart status
+kb --root ./example-knowledge/.kb/restores/quickstart validate --profile okf
+kb --root ./example-knowledge/.kb/restores/quickstart index rebuild
+```
+
+Backup preserves exact included files, configuration and settled durable receipts.
+Restore reserves a new destination, even refusing an existing empty directory,
+and never switches an active MCP server root. Both operations require writes
+enabled and have no dry-run or idempotency key. Cache, locks and declared
+Git/dependency/agent directories are excluded; external sources are not protected.
+Same-disk staging is not disaster recovery: copy verified archives to separately
+protected storage through an authorized mechanism. Review the [backup contract](backups.md)
+for manifest version, limits, permissions, exclusions and interrupted-output handling.
+
 ## Limits and performance
 
 Operational policies are distinct from OKF's format requirements. Notes over
@@ -279,11 +304,14 @@ subject to these bounds; oversized or legacy collections may need deliberate
 external preparation before `kb` can operate on them. No legacy migration is
 provided.
 
-The initial 150 ms warm-search p95 and 150 MiB RSS targets were not met. The
-[recorded local benchmark](performance.md) measured 162.9 ms warm core search p95,
-180.3 MiB peak process RSS, and 594.4 ms cold core search on 10,000 synthetic
-2 KiB notes. It is not a fresh-process CLI or MCP latency benchmark, and it does
-not include an independent reindex measurement.
+The [historical report](performance.md) preserves the initial misses
+(162.9 ms warm core p95/180.3 MiB RSS) and v0.3.1's local targets met
+(117.7 ms/134.0 MiB, 179.0 ms rebuild p95), on Apple M4/macOS arm64 with 10k
+synthetic 2 KiB notes. Core measurements are not fresh CLI/MCP latency.
+The later [quiet 10k/50k matrix](performance-large-corpus.md) records modest 50k
+improvements but no 10k search/read improvement, a 4.9% slower 50k committed-repair
+median and increased preview RSS. These are small-sample local observations,
+not portable SLAs. D03's candidate budgets and rerun remain in the exit checklist.
 
 ## Alternative: use MCP without a skill
 

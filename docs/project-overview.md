@@ -1,11 +1,13 @@
 ---
 type: Project Overview
 title: KB — Knowledge Base project design
-description: Experimental Knowledge Base product, architecture, learning lifecycle, evidence, and limits.
+description: Candidate Knowledge Base source, architecture, learning lifecycle, evidence, and qualification limits.
 tags: [okf, para, cli, mcp, architecture, memory]
 status: stable
-implementation_version: "0.3.1"
-implementation_status: experimental
+implementation_version: unreleased
+released_version: "0.3.1"
+qualification_version: "0.4.0"
+implementation_status: candidate-qualification
 sources:
   - resource: spec.md
     title: Specification v0.3
@@ -21,12 +23,12 @@ generated:
 # KB — Knowledge Base project design
 
 The [interface contract](interfaces.md), originating in v0.1 and extended through
-v0.3.1, and shared DTOs in `internal/api/types.go` clarify the
-[specification](spec.md). **The v0.3.1 implementation remains experimental**,
-with dated [validation evidence](evidence/validation.json) and explicit limits.
-The [roadmap](roadmap.md), [v1.0 exit checklist](stability.md) and
-[compatibility policy](compatibility.md) separate shipped behavior, pending work
-and proposed commitments.
+the integrated post-v0.3.1 roadmap increments, and shared DTOs clarify the
+[specification](spec.md). **Current source is preparing v0.4.0 qualification;
+published production remains experimental v0.3.1.** The [roadmap](roadmap.md),
+[v1.0 exit checklist](stability.md) and [compatibility policy](compatibility.md)
+separate implemented source, released/installed evidence and conditional v1.x
+commitments. Stable-v1 readiness remains pending.
 
 `kb` is a local Markdown Knowledge Base that humans and AI agents can search,
 read, and update. One binary provides two modes: CLI commands
@@ -107,6 +109,13 @@ CLI. Acquisition and preservation belong to the external workflow. An OKF
 note records provenance and connects concepts and syntheses to their evidence.
 Deleting `.kb/cache/` loses no knowledge; `.kb/state/` is durable operational
 state and must be preserved for pending recovery and idempotent retries.
+
+Current source also provides [operational backup/restore](backups.md): versioned
+checksummed archives preserve exact included files, config and settled receipts,
+not pending journals or disposable cache. Storage is confined under `.kb/backups`
+and `.kb/restores`; restore creates a new root and publishes config last without
+switching the active MCP root. Excluded/external sources need separate protection.
+Same-disk staging is not off-disk disaster recovery. v0.3.1 has no such interface.
 
 ## A learning session
 
@@ -192,12 +201,15 @@ permits queries and blocks mutations, including direct calls to hidden write too
 
 The implementation includes native OKF parsing and presentation-preserving
 patches, lexical search, bounded context, writes with expected revisions,
-coordinated plans, move/archive, journal recovery, maintenance, export, and MCP.
+coordinated plans, move/archive, journal recovery, maintenance, export, operational
+backup/restore, and MCP. Retrieval evaluation is a separate synthetic CLI/MCP gate,
+not an embedded semantic model.
 The [runtime decision](decisions/0002-v0.1.md) records Go and the selected
 libraries. No embedded model or legacy-note migration is provided.
 
 Reads encountering a pending journal return `RECOVERY_REQUIRED` without note
-mutation. Explicit recovery or a subsequent mutation resolves pending state.
+mutation. Explicit recovery or a subsequent note mutation resolves pending state;
+backup/restore instead refuse it until explicitly recovered.
 Receipts currently do not expire. Repair is an explicit plan, requires a conformant
 final state by default, and remains subject to operational size limits. Explicit
 [incremental repair](decisions/0004-incremental-repair.md) permits bounded progress
@@ -230,13 +242,24 @@ The [performance report](performance.md) separates historical v0.1 core misses
 150 ms/150 MiB/10 s targets. Core runs used Apple M4/macOS arm64, Go 1.27.3,
 10,000 synthetic 2 KiB notes and 20 warm queries; reindexing was timed separately
 in the later run. These are not fresh CLI startup or MCP transport measurements.
-At 50k notes, CLI search still measured 2.19 s median/483.1 MiB peak RSS.
-Large-corpus costs remain; these observations are not portable SLAs.
+That run measured 50k CLI search at 2.19 s median/483.1 MiB RSS. The later
+[quiet paired scale report](performance-large-corpus.md) records lower 50k
+read/search costs and modest allocation reductions, but 10k non-improvements,
+increased preview RSS and a 4.9% slower 50k committed-repair median. Runs retain
+separate baselines; neither establishes a portable SLA or uniform improvement.
 
 Source CI runs on ubuntu-24.04 and macos-15, with four cross-build targets.
 [v0.3.1 installed-package verification](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
 covers macOS arm64 only. Cross-builds and native snapshot execution do not prove
 installed runtime behavior on every target.
+
+The [retrieval report](qa/retrieval-quality.md) adds a public synthetic corpus and
+actual CLI/MCP assertions for lexical membership/order, ceiling-aware Recall@5,
+citations, revisions, budgets and purity. Backup/archive/fault/concurrency and
+real-process interruption regressions extend operational evidence. Final
+candidate reruns, extended multi-seed reliability, quiet local-budget review,
+upgrade/native package qualification and independent readiness review remain
+pending under V01–V08; no historical report or model adherence substitutes for them.
 
 ## Delivery
 

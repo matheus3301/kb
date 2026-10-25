@@ -1,11 +1,13 @@
 ---
 type: Specification
 title: KB — Knowledge Base specification
-description: Normative specification v0.3 for the experimental Knowledge Base, OKF notes, maintenance, and CLI/MCP interfaces.
+description: Normative specification v0.3 for the current candidate Knowledge Base source, OKF notes, operations, and CLI/MCP interfaces.
 tags: [okf, para, cli, mcp, memory, specification]
 status: stable
-implementation_version: "0.3.1"
-implementation_status: experimental
+implementation_version: unreleased
+released_version: "0.3.1"
+qualification_version: "0.4.0"
+implementation_status: candidate-qualification
 spec_version: "0.3"
 sources:
   - id: evaluation
@@ -28,21 +30,25 @@ generated:
 # KB — Knowledge Base specification
 
 Specification v0.3, with the implementation contract originating in v0.1 and
-extended through v0.3.1. The initial design was informed by five tool evaluations
-and the LLM Wiki pattern on 2026-10-24.
+extended through the integrated post-v0.3.1 roadmap increments. The initial design
+was informed by five tool evaluations and the LLM Wiki pattern on 2026-10-24.
 The project repository is https://github.com/matheus3301/kb.
 
-**The v0.3.1 implementation remains experimental.** The commands in this document
-are implemented in that release; pending [roadmap](roadmap.md) additions are not.
-The [interface contract](interfaces.md), shared DTOs in `internal/api/types.go`,
-and [architecture decisions](decisions/0002-v0.1.md) clarify the wire format and
-current choices. Normative requirements and all 26 acceptance criteria below
-remain the product contract, not universal safety guarantees. Historical
-[validation evidence](evidence/validation.json) records tested behavior; the
-[performance report](performance.md) separates the original misses from the
-v0.3.1 local targets met and remaining large-corpus costs. The
-[v1.0 exit checklist](stability.md) and [compatibility policy](compatibility.md)
-do not declare readiness or authorize a release.
+**Current source is preparing v0.4.0 qualification; published production remains
+experimental v0.3.1.** This document describes merged source, including operational
+backup/restore not present in v0.3.1. Use tagged documentation and installed help
+for a released binary. The [interface contract](interfaces.md), shared DTOs in
+`internal/api/types.go`, and [architecture decisions](decisions/0002-v0.1.md)
+clarify the wire format and choices. Normative requirements and A01–A26 remain
+the product contract, not universal safety guarantees.
+
+Historical [validation](evidence/validation.json) and [performance](performance.md)
+remain dated evidence. The [retrieval evaluation](qa/retrieval-quality.md),
+[backup contract](backups.md) and [paired scale report](performance-large-corpus.md)
+describe implemented increments and their limits. The [v1.0 exit checklist](stability.md)
+maps them to pending candidate evidence and selected D01–D04 policy;
+[compatibility commitments](compatibility.md) remain conditional on qualification
+and independent readiness review. No document alone authorizes stable release.
 
 ## 1. Problem and expected outcome
 
@@ -411,12 +417,26 @@ diagnostics. MCP stdio stdout contains only protocol messages.
 | `kb maintain --dry-run` | Show index, link, and log repairs; apply only with `--apply`. |
 | `kb recover --dry-run` | Preview pending recovery; `kb recover` performs it explicitly. |
 | `kb export DIR` | Export a validated scope snapshot with an inclusion/exclusion manifest. |
+| `kb backup .kb/backups/snapshot.tar` | Stage a checksummed operational archive of exact included files, config and settled receipts. |
+| `kb restore .kb/backups/snapshot.tar .kb/restores/verification` | Restore into a new confined destination without changing the active root. |
 | `kb mcp` | Stdio server; `--read-only` removes and rejects write tools. |
 
 `create`, `patch`, `move`, `archive`, `apply`, and `maintain` accept `--dry-run`.
 The input file may be `-` for stdin. Do not interpolate Markdown content into
 shell commands. Export produces a validated snapshot and inclusion/exclusion
 manifest, not an operational-state backup.
+
+Operational backup/restore are merged post-v0.3.1 additions, write-class operations
+without dry-run or note-transaction identity fields. They refuse pending recovery
+instead of recovering implicitly or archiving a partial journal. Archive and
+destination storage are confined under `.kb/backups` and `.kb/restores`; an
+existing destination, even empty, is refused. The version-1 manifest declares
+exact included hashes and exclusions; restore verifies all entries and publishes
+configuration last. Cache/lock/Git/declared operational/dependency/agent directories
+are excluded. Consult the [normative operational contract](backups.md) for limits,
+permissions, hostile-archive rejection and interrupted-publication behavior.
+Same-disk staging is not off-disk disaster recovery, integrity is not authenticity,
+and restored configuration is data, not permission to execute actions.
 
 CLI envelope, shared by the core:
 
@@ -540,8 +560,9 @@ entry. The core acquires a per-base lock, revalidates revisions, plans the diff,
 and validates affected files before writing. It records a durable journal in
 `.kb/state/`, writes temporary files on the same filesystem, synchronizes, and
 replaces files by rename. After a crash, reads return `RECOVERY_REQUIRED` without changing notes.
-`kb recover` explicitly recovers or rolls back; a new mutation recovers pending
-state before accepting its request. Creating operational lock/cache files during
+`kb recover` explicitly recovers or rolls back; a new note mutation recovers
+pending state before accepting its request. Operational backup/restore instead
+refuse pending recovery. Creating operational lock/cache files during
 reads is permitted; notes, configuration, and Git remain unchanged. The cache publishes a new generation only
 after success. Failures must state whether recovery is needed; never report
 success for a partial application.
@@ -558,6 +579,13 @@ reconstruct them during recovery so a crash between publication and response
 does not duplicate effects. Receipts currently do not expire. Request hashing
 excludes `dry_run`; dry-run persists no receipt. Check an existing receipt
 before retry preconditions so a successful retry can replay after revisions change.
+
+Receipts retain full-file diffs. Repeated extension of the retained event log
+can produce quadratic aggregate receipt storage; receipts still have no expiry
+or automatic compaction. Operators must account for this growth and backup limits,
+not delete durable replay state. D02's log-disabled extended workload and separate
+bounded default-log-enabled profile are scoped qualification choices, not receipt
+format or idempotency changes.
 
 The v0.1 journal is `.kb/state/pending.json`, with version, request digest/key,
 prepared/committed state, before/after bytes, and receipt. It is atomically
@@ -639,6 +667,8 @@ transports must reuse the core and declare authentication requirements separatel
 | `kb_move` | path, destination, expected_revision, summary, key | Mapping and changed links. |
 | `kb_apply` | operations, summary, key, actor, dry_run | Plan or coordinated-application receipt. |
 | `kb_validate` | scope and okf/health profile | Report with distinct layers. |
+| `kb_backup` | confined archive path | Archive manifest revision, file and byte counts. |
+| `kb_restore` | confined archive and new destination | Restored destination and verified manifest revision/counts; active server root unchanged. |
 
 Closed input schemas, short descriptions, explicit limits. Do not expose a
 generic shell or dozens of UI tools. In read-only mode, write tools disappear
@@ -739,10 +769,11 @@ The original delivery increments were: (1) parser/scope/validate/read;
 (2) index/search/context and reference queries; (3) create/patch/apply/transactions/log/index; (4) move/archive, links,
 and health; (5) MCP, ingestion/synthesis/review workflows, export, and
 distribution. These capabilities were implemented in experimental v0.1 and remain
-in v0.3.1; subsequent changes still require behavior evidence. Workflows are
-instructions for an external agent, with no LLM calls added to the core. The
-[roadmap](roadmap.md) and [exit checklist](stability.md) track the next workstreams
-without treating them as shipped or authorizing v1.0.
+in current source. The four subsequent [roadmap](roadmap.md) increments are now
+integrated: retrieval evaluation, operational backup/restore, allocation reduction
+and stability documentation. Their candidate qualification remains pending in
+V01–V08 of the [exit checklist](stability.md). Workflows guide an external agent;
+no LLM calls were added to the core, and implementation does not authorize v1.0.
 
 Measure on macOS arm64 and Linux amd64/arm64: binary size, RSS, cold start,
 reindexing, and search p50/p95, declaring hardware and corpus. Initial targets
@@ -755,10 +786,14 @@ it missed the warm/RSS targets and did not independently time reindexing.
 The 2026-10-25 [v0.3.1 performance report](performance.md) records 117.7 ms warm
 core p95, 134.0 MiB peak RSS and 179.0 ms rebuild p95 on the same local 10k
 corpus/hardware, meeting the original targets. Core measurements are not fresh
-CLI startup or MCP transport latency. At 50k notes, fresh CLI search still costs
-2.19 s median and 483.1 MiB peak RSS. These are bounded local observations, not
-Linux measurements, arbitrary-machine SLAs or evidence of external-editor
-isolation. The report retains the historical data and full measurement method.
+CLI startup or MCP transport latency. That run's 50k CLI search cost 2.19 s
+median and 483.1 MiB RSS. The later [quiet paired matrix](performance-large-corpus.md)
+records 50k search 2502.4 → 2217.4 ms median and RSS 499.1 → 488.4 MiB,
+but 10k search/read did not improve, 50k committed-repair median rose about 4.9%
+and preview RSS increased. These separate runs must not be mixed into a favorable
+comparison. D03 defines explicit local qualification headroom and drift review;
+the original core targets remain unchanged. No Linux latency, arbitrary-machine
+SLA or external-editor isolation follows from these bounded observations.
 
 ### Implementation review — 2026-10-24
 

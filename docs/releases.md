@@ -12,6 +12,14 @@ proxies and the checksum database may retain that version; **never reuse
 or reused either. Select a new, unused version for subsequent publications.
 Merging a change does not publish a release.
 
+Current source contains all four roadmap increments; published production remains
+experimental **v0.3.1**. The intended intermediate qualification release is
+**v0.4.0**. Stable **v1.0.0** is conditional on V01–V08 and the selected D01–D04
+policies in the [exit checklist](stability.md), including exact integrated checks,
+quiet scale measurements, extended reliability/restoration, upgrades, actual
+packages/consumers and independent readiness review. A v0.4.0 publication or green
+CI does not remove experimental status or itself authorize stable publication.
+
 ## One-time tap credential
 
 Create a fine-grained GitHub token restricted to **matheus3301/homebrew-tap**
@@ -64,14 +72,15 @@ A green branch build alone does not request a release.
 ```sh
 git switch main
 git pull --ff-only
-git tag -a v0.1.3 -m "Release v0.1.3"
-git push origin v0.1.3
+git tag -a v0.4.0 -m "Release v0.4.0"
+git push origin v0.4.0
 ```
 
-`v0.1.3` illustrates the patch release following v0.1.2. Verify that the chosen
-version has never been published before creating its tag; these examples do not
-create a release themselves. A prerelease such as
-`v0.2.0-rc.1` publishes GitHub assets but skips the stable tap.
+`v0.4.0` is the intended intermediate qualification version, not a claim that it
+already exists. Verify that the selected version is unused and publication is
+authorized before tagging. Stable v1.0.0 needs the separate readiness decision;
+these examples do not create a release themselves. A prerelease publishes GitHub
+assets but does not update the stable Homebrew formula.
 
 The [Release workflow](../.github/workflows/release.yml) runs three stages:
 
@@ -123,3 +132,20 @@ After the first automated publication, verify anonymous downloads and hashes,
 `brew install matheus3301/tap/kb` / `brew test matheus3301/tap/kb` on the intended
 platforms. Snapshot validation does not replace a real installation test after
 publication. Update public installation guidance to match observed results.
+
+## Finalizing stable v1
+
+Keep the candidate release and stable readiness decision distinct. Attach exact
+v0.4.0 install/upgrade and CLI/MCP evidence before claiming that channel qualified.
+D04 requires native macOS arm64 Homebrew and Linux amd64 archive/archived-source
+execution; foreign-target cross-builds remain packaging evidence only.
+
+Use the [finalization checklist](stability.md#finalization-checklist) in a later
+docs-only PR to link measured V01–V07 outcomes, reviewer findings/dispositions and
+the explicit V08 decision. Preserve historical evidence and identify any source
+change between qualified and released artifacts; rerun affected qualification.
+Do not fabricate human approval, candidate results or release URLs. After an
+authorized stable tag, separately verify real downloads, checksums, version/commit,
+Homebrew upgrade/formula and installed CLI/MCP before updating current status to
+published/installed v1.0.0. Retain support and rollback limits in the release record.
+

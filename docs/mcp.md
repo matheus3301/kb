@@ -6,6 +6,11 @@ or shell commands: it learns the supported workflow from server initialization
 and tool discovery. [Agent setup](agent-setup.md) covers client registration and
 the workdir consultation policy.
 
+This guide describes integrated source preparing v0.4.0 qualification. Published
+production remains experimental v0.3.1, with ten write-enabled tools and no
+backup/restore; current source has twelve. Both expose six tools in read-only
+mode. Inspect installed version/discovery rather than assuming `main` is shipped.
+
 ## Operator setup
 
 Install `kb`, initialize the intended Knowledge Base, and configure a stdio client

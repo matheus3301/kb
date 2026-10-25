@@ -4,8 +4,12 @@ Status: adopted and released in v0.3.1 on 2026-10-25
 ([release record](https://github.com/matheus3301/kb/releases/tag/v0.3.1)).
 The [performance report](../performance.md) retains the pre-release paired
 measurements; the release records subsequent macOS arm64 installed verification.
-The original local core targets were met; 50k-note costs and
-[v1.0 exit work](../stability.md) remain. These results are not portable SLAs.
+The original local core targets were met. The subsequent integrated
+[allocation-reduction increment](../performance-large-corpus.md) preserves these
+freshness/publication decisions and discloses both gains and regressions.
+Current source is preparing v0.4.0 qualification; production remains experimental
+v0.3.1 and [stable-v1 exit evidence](../stability.md) remains pending. No portable
+SLA follows from these local observations. The historical decision below is unchanged.
 
 Profiling v0.3.0 found filesystem calls dominating warm inventory checks, a
 second full scan for response metadata, eager graph construction for operations

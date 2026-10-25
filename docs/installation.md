@@ -1,16 +1,20 @@
 # Installation
 
-`kb` is experimental software for Linux and macOS. The stable publication channel
-currently provides **v0.3.1**; a non-prerelease tag does not imply v1.0 stability.
-Use the [releases page](https://github.com/matheus3301/kb/releases), Homebrew, or
-the current source checkout. Binary, skill, and MCP setup are separate steps.
+`kb` remains experimental. Published production currently provides **v0.3.1**;
+integrated source is preparing **v0.4.0 qualification** with all four roadmap
+increments, including backup/restore absent from v0.3.1. No v0.4.0 publication or
+stable-v1 result is claimed here. Use the
+[releases page](https://github.com/matheus3301/kb/releases), Homebrew, or a source
+checkout; binary, skill, MCP setup and workdir activation are separate steps.
 
 [v0.3.1 installed-package verification](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
 covers real Homebrew source installation/formula testing, extracted binary and
 installed CLI/MCP workflows on **macOS arm64 only**. All four Linux/macOS
 amd64/arm64 archives are built; this is not installed runtime proof for the
-other three targets. See [compatibility/support](compatibility.md) and
-[v1.0 exit criteria](stability.md) for limits and pending evidence.
+other three targets. The selected stable-v1 qualification channels are macOS
+arm64 Homebrew and Linux amd64 native archive/archived source; those candidate
+results remain pending. Linux arm64/macOS amd64 remain cross-build/package-only.
+See [compatibility/support](compatibility.md) and [v1.0 exit criteria](stability.md).
 
 ## Source checkout
 
@@ -29,6 +33,10 @@ Put Go's binary installation directory on your `PATH`. Source installations use
 source commit. Start with the [getting started example](../README.md#getting-started)
 or the [full quickstart](quickstart.md).
 
+Current source includes merged additions that the installed release may lack.
+Use source help and the [backup contract](backups.md) only with a binary exposing
+those commands; source `dev`/`unknown` is not exact released-artifact proof.
+
 ## Homebrew
 
 The stable release workflow publishes a source formula to
@@ -39,10 +47,11 @@ brew install matheus3301/tap/kb
 kb version --json
 ```
 
-Homebrew compiles from the checksummed release source using Go as a build
-dependency. This supports macOS and Linux without distributing a cask or
-changing Gatekeeper settings. The installed `kb` binary needs neither Go nor
-Homebrew at runtime.
+Homebrew compiles the checksummed release source with Go as a build dependency.
+The formula targets macOS and Linux without a cask or Gatekeeper changes; actual
+installed-package evidence above is macOS arm64 only. The installed binary needs
+neither Go nor Homebrew at runtime. A non-prerelease publication is not itself a
+stable-v1 support guarantee.
 
 Upgrade and uninstall using the normal Homebrew commands:
 
@@ -62,6 +71,15 @@ The [QA assessment and correction evidence](qa/native-homebrew-v0.1.1.md)
 describe the affected cases and a disposable reproducer. Updating the executable
 does not restore metadata already changed by an earlier operation; use original
 files or backups to reconcile those changes.
+
+Before upgrading, settle pending recovery with the prior binary and preserve
+content, configuration and `.kb/state/` together. v0.3.1 has no backup command:
+use a reviewed operator backup procedure, not `export` alone. For qualified newer
+source use the [operational archive workflow](backups.md), verify a fresh restore
+and copy retained archives off disk. Never overwrite a live newer base with old
+content/receipts or assume reverting a binary proves safe state downgrade.
+The intended v0.3.1 → v0.4.0 → v1.0.0 path still needs exact synthetic upgrade,
+Homebrew/formula and CLI/MCP evidence under V06/V07 before being marked qualified.
 
 To remove the executable:
 

@@ -1,7 +1,9 @@
 # CLI guide
 
 `kb` operates on a local OKF Markdown Knowledge Base. This guide describes the
-current source; use `kb version` and `kb COMMAND --help` for the installed build.
+integrated source preparing v0.4.0 qualification; published production remains
+experimental v0.3.1 and does not include backup/restore. Use `kb version` and
+`kb COMMAND --help` for the installed build.
 For a first workflow, follow the [README](../README.md) and
 [quickstart](quickstart.md). For agent activation and MCP, see
 [agent setup](agent-setup.md). The [interface contract](interfaces.md) defines
@@ -249,9 +251,10 @@ kb export ./example-export
 | `export DESTINATION` | Export a validated scoped snapshot with inclusion/exclusion manifest. |
 
 A pending journal blocks reads with `RECOVERY_REQUIRED`. Prepared recovery rolls
-back; committed recovery rolls forward. A new mutation can auto-recover before
-its own work. Preserve failed recovery evidence; do not edit journals/receipts
-by hand. Advisory locking cannot isolate arbitrary external editors.
+back; committed recovery rolls forward. A new note mutation can auto-recover;
+backup/restore instead refuse pending recovery. Preserve failed recovery evidence;
+do not edit journals/receipts by hand. Advisory locking cannot isolate arbitrary
+external editors.
 
 Export is not an operational backup: it excludes journal/receipt state and does
 not certify excluded files. Choose a suitable new destination. Read-only mode

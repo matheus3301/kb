@@ -65,7 +65,7 @@ with `kb apply --repair --incremental`; initialization does not convert notes.
 - **Coordinate:** apply multi-note plans with idempotent retries and an explicit
   recovery journal.
 - **Maintain:** inspect links, validate format/health, update managed navigation,
-  and export validated snapshots.
+  export validated knowledge snapshots, and stage operational backup/restore.
 - **Connect:** choose CLI + the `knowledge-base` skill, or a self-contained stdio
   MCP server. The binary needs no model, Node, Git, or network at runtime.
 
@@ -122,33 +122,36 @@ kb
 ├── move / archive                 Relocate notes and update resolved references
 ├── apply                          Preview or execute a coordinated plan
 ├── maintain / index rebuild       Maintain navigation or rebuild derived search state
-├── recover / export               Recover a pending transaction or export a snapshot
+├── recover / export               Recover a pending transaction or export knowledge
+├── backup / restore               Stage exact operational archives (current source)
 └── mcp / version                  Serve MCP or inspect the installed build
 ```
 
+This map describes current source; backup/restore are not in published v0.3.1.
 Use `kb COMMAND --help` for installed flags. The [CLI guide](docs/cli.md)
-contains command syntax, JSON requests, errors, and operating limits.
+contains syntax, JSON requests, errors, and operating limits.
 
 ## Project status
 
-**Experimental v0.3.1.** The local core is delivered; the
-[roadmap](docs/roadmap.md) and [v1.0 exit checklist](docs/stability.md) separate
-released evidence from pending work and proposed commitments. See the
-[compatibility/support policy](docs/compatibility.md) before relying on upgrades.
-[Release notes](https://github.com/matheus3301/kb/releases/tag/v0.3.1) record
-installed-package verification on macOS arm64 only; cross-builds are not
-installed runtime tests. Use v0.1.3 or later for the documented
-[metadata-preservation fixes](docs/qa/verification-footer-regression.md).
-The [performance report](docs/performance.md) records the original local targets
-met in v0.3.1 and remaining large-corpus costs. Advisory locks cannot isolate
-arbitrary external editors, and health checks do not establish semantic truth.
+**Experimental; preparing v0.4.0 qualification.** All four initial
+[roadmap](docs/roadmap.md) increments are integrated: retrieval evaluation,
+[operational backup/restore](docs/backups.md), large-corpus allocation reduction,
+and stability policy. **Published production remains
+[v0.3.1](https://github.com/matheus3301/kb/releases/tag/v0.3.1)**, with installed
+verification on macOS arm64 only. Source capability is not package qualification.
+
+Stable v1.0.0 is pending the [candidate exit checklist](docs/stability.md) and
+independent review. See [compatibility/support](docs/compatibility.md) for version
+and platform limits, and the [paired scale report](docs/performance-large-corpus.md)
+for measured improvements **and regressions**; no portable latency SLA is claimed.
+Advisory locks cannot isolate arbitrary editors; health checks do not prove truth.
 
 ## Documentation
 
 - [Quickstart](docs/quickstart.md), [CLI guide](docs/cli.md), and [installation](docs/installation.md).
 - [Agent setup](docs/agent-setup.md), [MCP guide](docs/mcp.md), [CLI skill](skills/knowledge-base/SKILL.md), and [llms.txt](llms.txt).
 - [Architecture](docs/project-overview.md), [specification](docs/spec.md), and [interface contract](docs/interfaces.md).
-- [Quality gates](docs/quality.md), [performance](docs/performance.md), and [release operations](docs/releases.md).
+- [Quality gates](docs/quality.md), [retrieval evaluation](docs/qa/retrieval-quality.md), [backups](docs/backups.md), [performance](docs/performance.md), and [release operations](docs/releases.md).
 - [Roadmap](docs/roadmap.md), [v1.0 exit criteria](docs/stability.md), and [compatibility/support](docs/compatibility.md).
 
 ## Contributing

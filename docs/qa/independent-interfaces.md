@@ -7,6 +7,10 @@ supply the operating context without loading skill files or product docs.
 
 ## Controlled observations — 2026-10-25
 
+Historical observations on source base `ad69013aa98fbfcc0e22221d292da4ce893ebb06`,
+before operational backup/restore was integrated. The underlying evidence is
+preserved unchanged; these are not fresh v0.4.0 installed-package results.
+
 Two independent consumers received the same realistic task in separate synthetic
 external Knowledge Bases: reconcile an old 14-day synthesis with a newer 30-day
 policy bulletin, preserve evidence, and answer with citations. Neither base
@@ -44,6 +48,8 @@ advisory and relied on direct evidence reads.
   skill examples. Release snapshot checks require the public MCP guide too.
 
 These are controlled explicit-interface evaluations, not proof of automatic
-invocation or universal model adherence. MCP still exposes its current ten tools;
-operator initialization/maintenance/recovery/export/rebuild capabilities are not
+invocation or universal model adherence. The observed historical surface had ten
+write-enabled MCP tools. The current [catalog](../../schemas/kb.v1.tools.json)
+has **twelve**, adding `kb_backup` and `kb_restore`; read-only mode still has six.
+Operator initialization/maintenance/recovery/export/rebuild capabilities are not
 implied. No global setup or private collection was a product test target.

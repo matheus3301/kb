@@ -5,7 +5,9 @@ or pull requests. Report vulnerabilities using this repository's private
 vulnerability reporting facility on GitHub when enabled. Include a minimal
 synthetic reproduction, affected version, and observed impact.
 
-v0.1.0 is an experimental local application. Its tests exercise path confinement,
+`kb` is a local application: production remains experimental v0.3.1 and current
+source is preparing v0.4.0 qualification, with [stable-v1 readiness](docs/stability.md)
+pending. Its tests exercise path confinement,
 symlink/traversal rejection, case collisions, YAML resource limits, revision
 conflicts, read-only enforcement, protocol output isolation, idempotent retries,
 and interrupted-write recovery. See [recorded validation](docs/evidence/validation.json)
@@ -30,6 +32,14 @@ recovery or a subsequent mutation resolves it. External readers can observe
 intermediate multi-file states, and external editors do not obey the lock.
 Recovery refuses to overwrite an unrelated external edit. Preserve `.kb/state/`:
 its journal and receipts are durable state, unlike the rebuildable cache.
+
+Current source adds [operational backup/restore](docs/backups.md), absent from
+v0.3.1. Both refuse pending recovery; restore creates a new confined destination
+without switching the server root. Archives include sensitive content/receipts;
+private local staging, separate protected retention and operator-reviewed
+exclusions are required. Checksums prove integrity, not authenticity against an
+attacker replacing the manifest. No encryption or disaster-recovery certification
+is implied.
 
 Resource limits are application policy, not requirements of OKF: notes over
 1 MiB are invalid, scoped source files over 4 MiB abort inventory explicitly,

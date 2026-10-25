@@ -29,16 +29,17 @@ the [tag-only workflow](releases.md).
 
 ## Implemented validation and its limits
 
-The current released baseline is experimental v0.3.1. `make check` runs the
-required application checks plus executable documentation examples and the real
-CLI acceptance workflow (`make acceptance`). The latter builds `cmd/kb`, operates
-on disposable synthetic files, and checks revisions, coordinated ingestion,
-query purity, repair, references, export, and source immutability.
+Published production remains experimental v0.3.1; integrated source is preparing
+v0.4.0 qualification with all four roadmap increments implemented. `make check`
+runs required application gates, executable documentation examples, the real CLI
+acceptance workflow (`make acceptance`), bounded CLI/MCP benchmark smoke and
+deterministic retrieval evaluation (`make retrieval-eval`). All product workflows
+use disposable synthetic roots, never an operator's live collection.
 [Original validation](evidence/validation.json), dated **2026-10-24**, reports
 a successful v0.1-era run with 88.4% statement coverage, 102 top-level test
 functions, 314 named pass events including subtests and fuzz seeds, seven fuzz
 smoke targets, and Linux/macOS amd64/arm64 cross-builds. These are historical
-counts, not current v0.3.1 suite totals or final v1.0 evidence.
+counts, not current source suite totals or final v1.0 evidence.
 
 The [CLI workflow evidence](evidence/cli-workflow.json) and
 [controlled agent-consumer observation](evidence/consumer/consumer-evidence.json)
@@ -66,8 +67,10 @@ with 594.4 ms cold search. The 2026-10-25 v0.3.1 report records 117.7 ms warm
 core p95, 134.0 MiB RSS and 179.0 ms rebuild p95, meeting the original local
 targets. Both core runs used Apple M4/macOS arm64, Go 1.27.3, 10,000 synthetic
 2 KiB notes and 20 warm queries; rebuild was timed separately in the later run.
-These are not fresh CLI/MCP measurements or portable SLAs. The 50k-note CLI
-search still measured 2.19 s median/483.1 MiB peak RSS. No gate was reduced.
+These are not fresh CLI/MCP measurements or portable SLAs. That historical
+50k-note CLI search measured 2.19 s median/483.1 MiB RSS; the later
+[paired matrix](performance-large-corpus.md) reports its own baseline and
+candidate rather than substituting this earlier result. No gate was reduced.
 
 Source tests run on **ubuntu-24.04** and **macos-15**; four-target cross-builds
 are not four-target runtime tests. The Ubuntu release snapshot executes its
@@ -76,8 +79,9 @@ native archive and archived-source build. The
 separately documents actual Homebrew installation/formula and installed CLI/MCP
 verification on **macOS arm64 only**. See [compatibility/support](compatibility.md)
 for platform boundaries and the [exit checklist](stability.md) for pending
-retrieval, reliability, operational backup and scale evidence. Experimental status
-remains until independent candidate-specific review, not merely green CI.
+exact-candidate qualification. Implemented retrieval, backup and scale evidence
+does not itself satisfy V01–V08. Stable status requires the recorded readiness
+decision, not merely a green workflow.
 
 ## GitHub settings
 
@@ -123,3 +127,58 @@ as a portable SLA. Large paired runs use `scripts/benchmark.py` and the declared
 method in [performance measurements](performance.md). Correctness regressions
 cover fresh bytes, directory replacement, immutable images and request-local
 validation; optimizing must not disable existing quality or durability gates.
+
+## Candidate qualification beyond routine CI
+
+The [retrieval evaluation](qa/retrieval-quality.md) runs 31 search judgments,
+eight context cases and eight exact source reads through actual CLI and a
+separately initialized stdio MCP consumer. The
+[baseline report](evidence/retrieval-quality.json) records macro Recall@5
+0.9930556 and MRR@5 1.0, not arbitrary semantic understanding. D01 requires all
+deterministic assertions, ceiling-aware per-query recall, no unexplained category
+regression and exact citation/budget/parity/purity behavior.
+
+The [backup contract](backups.md) and synthetic CLI/MCP/archive/fault/concurrency
+regressions are implemented. Short mixed workloads and 11 observed-boundary
+SIGKILL scenarios are not D02's extended observation: at least 30 minutes across
+three seeds, four writers and 10,000 acknowledged mutation/replay outcomes, with
+**log maintenance disabled and index maintenance retained**. The harness must
+record an explicit `--maintain-log` choice and effective config; this is not a
+product CLI flag. A separate **default-log-enabled profile requires at least
+60 seconds total, three seeds/four writers and 250 acknowledged mutation/replay
+outcomes combined**, with backup/restore and restored continued operation.
+Report unique effects and replays separately. Both profiles use setup creates,
+then sustained patch/CAS/replay/read/search and periodic backup/restore; reads and
+search do not count toward mutation/replay minima. Deterministic acceptance/crash
+regressions separately cover create/move/archive/apply/preview and coordinated
+multi-file publication; timed move/preview loops are not claimed. Repeat each
+interruption scenario three times. Neither profile nor its independent review
+is claimed passed here; default-log boundaries retain deterministic tests.
+
+Durable receipts retain full-file diffs and do not expire. An ever-growing event
+log can therefore cause quadratic aggregate receipt storage; monitor/protect
+that operational state and account for backup limits. No receipt compaction,
+format change or altered idempotency guarantee is implied by the scoped workload.
+
+The [large-corpus report](performance-large-corpus.md) retains the paired matrix,
+including 10k non-improvements, preview RSS increase and 50k committed-repair
+median regression. D03 selects explicit local p95/RSS ceilings with 10% headroom
+over the worse paired observation, plus per-operation drift reporting and a
+reserved quiet candidate rerun. These are not shared-runner timing gates or a
+portable SLA; original core targets and every existing correctness gate remain.
+
+D04 selects conditional v1.x compatibility, synthetic upgrade checks, macOS
+arm64 Homebrew and Linux amd64 native archive/source qualification. Cross-built
+Linux arm64/macOS amd64 are not installed-qualified. V01–V08 require the exact
+candidate and independently reviewed evidence; D01–D04 are delegated policy
+choices, not fabricated human approval. Final evidence and status changes belong
+in the [finalization checklist](stability.md#finalization-checklist).
+
+Candidate integration additionally requires a **required native v0.3.1-to-candidate
+compatibility CI job** using an actual prior-release executable and disposable
+synthetic fixtures, not duplicated current implementations or cross-build proof.
+It must exercise the documented upgrade/client contract and retain evidence.
+This is an integration requirement, not a claim that the inherited workflow in
+the original `a320dea` baseline already ran that job; V01/V06 need the resulting
+workflow and exact-candidate passing evidence before finalization.
+
