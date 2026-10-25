@@ -16,7 +16,7 @@ the reference needed for the operation; all references ship with this skill.
 | Find knowledge, answer with evidence, inspect dependencies | [Retrieval](references/retrieval.md) |
 | Record learning, correct a note, move/archive, coordinate edits | [Writing](references/writing.md) |
 | Adopt an existing collection, diagnose lint, repair in batches | [Repair](references/repair.md) |
-| Review health, maintain navigation, recover, export | [Maintenance](references/maintenance.md) |
+| Review health, maintain navigation, recover, export, back up/restore | [Maintenance](references/maintenance.md) |
 | Interpret CLI JSON, errors, or budgets | [Results](references/results.md) |
 
 ## Establish scope

@@ -72,6 +72,47 @@ exclusion manifest to the selected destination. It does not back up operational
 journals, durable retry receipts, or certify excluded files. Choose an appropriate
 new destination; do not overwrite a user's unrelated directory.
 
+## Operational backup and restore
+
+Export is not a complete operational backup. For an authorized operational
+snapshot, first resolve any pending recovery with the workflow above, then:
+
+```sh
+kb backup .kb/backups/snapshot.tar
+kb restore .kb/backups/snapshot.tar .kb/restores/verification
+kb --root ./example-kb/.kb/restores/verification status
+kb --root ./example-kb/.kb/restores/verification validate --profile okf
+```
+
+The first two commands use the already selected root. Replace `./example-kb` in
+the last two with that same explicit root; restore never switches it implicitly.
+Both operations require writes enabled and have no dry-run. Archive/destination
+must be direct children of `.kb/backups`/`.kb/restores` respectively. Restore
+requires a nonexistent destination, refusing even an existing empty directory.
+It never overwrites a live base. Rebuild the disposable cache with `index rebuild`
+on the explicitly selected restored root when needed.
+
+Backup preserves exact regular-file bytes throughout the root, including
+out-of-scope notes/assets, `.kb/config.toml` and durable receipts. It excludes
+cache, backup/restore storage, locks, Git, dependency and agent directories; the
+versioned manifest lists actual excluded paths and included file checksums.
+Unknown operational state, pending journals, symlinks and hard links are refused,
+not silently discarded. Review exclusions; source artifacts outside the root
+need separate protection. No conformance, authenticity or off-device protection
+is implied. Protect archives like the original content, and copy them to separate
+protected storage through the user's chosen backup mechanism.
+
+Restore checks paths, sizes, entry kinds, manifest and SHA-256 before publishing
+configuration last. Ordinary failures remove only unchanged files it created;
+external edits are retained. A process interruption can leave an uninitialized
+destination or a complete root after configuration publication. Never initialize
+or resume into an incomplete directory: inspect it, retain necessary evidence,
+and select a fresh destination. Existing outputs are conflicts, not idempotent
+request replays. Do not delete pending journals or receipts to make backup work.
+Coordinate external editing; advisory locks do not protect against arbitrary
+same-user filesystem mutation or guarantee recovery from hardware power loss.
+
+
 Respect CLI read-only and write-disabled errors; do not change roots or
 permissions to bypass them. Each CLI invocation opens the configured base afresh.
 See [Results](results.md) for interpreting errors and output limits.

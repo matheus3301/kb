@@ -22,7 +22,14 @@ func TestToolCatalogMatchesRuntime(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// The ten advertised tools fit in one default discovery page.
+	for tools.NextCursor != "" {
+		page, err := cs.ListTools(context.Background(), &mcp.ListToolsParams{Cursor: tools.NextCursor})
+		if err != nil {
+			t.Fatal(err)
+		}
+		tools.Tools = append(tools.Tools, page.Tools...)
+		tools.NextCursor = page.NextCursor
+	}
 	sort.Slice(tools.Tools, func(i, j int) bool { return tools.Tools[i].Name < tools.Tools[j].Name })
 	readonly, closeReadonly := session(t, &Adapter{Reader: b, Writer: b, ReadOnly: true})
 	defer closeReadonly()
