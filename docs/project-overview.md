@@ -225,7 +225,7 @@ startup or MCP transport latency. Reindexing was not independently benchmarked.
 
 Source installation works through `go install ./cmd/kb` from a checkout. The
 earlier manual release was withdrawn; subsequent versions use the
- [GoReleaser workflow](releases.md) prepares Linux/macOS amd64/arm64 archives,
+[GoReleaser workflow](releases.md), which prepares Linux/macOS amd64/arm64 archives,
 checksums, documentation, skill, licenses, and a source archive. A dedicated
 tag-only publisher requires protected-main ancestry and exact-commit CI. A
 separate job updates the Homebrew tap with a checksummed source formula for
