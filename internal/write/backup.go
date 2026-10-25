@@ -145,10 +145,28 @@ func ensureBackupDirectory(root *os.Root, name string) error {
 	if err != nil {
 		return err
 	}
+	if err := privateBackupDirectory(info); err != nil {
+		return err
+	}
+	return syncDirectory(root, path.Dir(name))
+}
+
+func privateBackupDirectory(info os.FileInfo) error {
 	if !info.IsDir() || info.Mode().Perm()&0077 != 0 {
 		return problem("ACCESS_DENIED", "operational storage must be a private directory")
 	}
-	return syncDirectory(root, path.Dir(name))
+	return nil
+}
+
+func validateBackupDirectory(root *os.Root, name string) error {
+	if err := inspect(root, name); err != nil {
+		return err
+	}
+	info, err := root.Lstat(name)
+	if err != nil {
+		return err
+	}
+	return privateBackupDirectory(info)
 }
 
 // Backup refuses pending recovery instead of implicitly changing source state.
@@ -269,6 +287,9 @@ func (s *Service) Restore(ctx context.Context, request api.RestoreInput) (result
 	}
 	_, err = s.locked(ctx, func(root *os.Root) (receipt api.Receipt, err error) {
 		if err := pendingBackup(root); err != nil {
+			return receipt, err
+		}
+		if err := validateBackupDirectory(root, ".kb/backups"); err != nil {
 			return receipt, err
 		}
 		if err := inspect(root, request.Archive); err != nil {

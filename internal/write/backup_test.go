@@ -132,6 +132,99 @@ func TestBackupRefusesRecoveryAndUnsafeState(t *testing.T) {
 	}
 }
 
+func TestRestoreRequiresExistingPrivateSourceStorageWithoutMutation(t *testing.T) {
+	for _, kind := range []string{"public-source", "group-source", "other-source", "missing-storage", "missing-archive", "source-file", "source-symlink"} {
+		t.Run(kind, func(t *testing.T) {
+			s, p := backupSetup(t)
+			ctx := context.Background()
+			archive := api.BackupInput{Archive: ".kb/backups/snapshot.tar"}
+			if kind != "missing-storage" && kind != "source-file" {
+				if _, err := s.Backup(ctx, archive); err != nil {
+					t.Fatal(err)
+				}
+			}
+			storage := filepath.Join(p.root, ".kb/backups")
+			switch kind {
+			case "public-source", "group-source", "other-source":
+				mode := map[string]os.FileMode{"public-source": 0755, "group-source": 0710, "other-source": 0704}[kind]
+				if err := os.Chmod(storage, mode); err != nil { // #nosec G302 -- Deliberately unsafe modes verify rejection without silently fixing permissions.
+					t.Fatal(err)
+				}
+			case "missing-archive":
+				if err := os.Remove(filepath.Join(p.root, archive.Archive)); err != nil {
+					t.Fatal(err)
+				}
+			case "source-file":
+				put(t, p, ".kb/backups", []byte("not a directory"))
+			case "source-symlink":
+				if err := os.Rename(storage, storage+"-kept"); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.Symlink("backups-kept", storage); err != nil {
+					t.Fatal(err)
+				}
+			}
+			// Create the ordinary advisory lock before measuring rejected-restore purity.
+			if _, err := s.Recover(ctx, true); err != nil {
+				t.Fatal(err)
+			}
+			type entry struct {
+				mode os.FileMode
+				data string
+			}
+			snapshot := func() map[string]entry {
+				t.Helper()
+				handle, err := os.OpenRoot(p.root)
+				if err != nil {
+					t.Fatal(err)
+				}
+				files := map[string]entry{}
+				err = filepath.Walk(p.root, func(name string, info os.FileInfo, walkErr error) error {
+					if walkErr != nil {
+						return walkErr
+					}
+					relative, err := filepath.Rel(p.root, name)
+					if err != nil {
+						return err
+					}
+					var data []byte
+					if info.Mode().IsRegular() {
+						data, err = handle.ReadFile(relative)
+					} else if info.Mode()&os.ModeSymlink != 0 {
+						var target string
+						target, err = handle.Readlink(relative)
+						data = []byte(target)
+					}
+					files[name] = entry{info.Mode(), string(data)}
+					return err
+				})
+				if err := errors.Join(err, handle.Close()); err != nil {
+					t.Fatal(err)
+				}
+				return files
+			}
+			before := snapshot()
+			_, err := s.Restore(ctx, api.RestoreInput{Archive: archive.Archive, Destination: ".kb/restores/rejected"})
+			switch kind {
+			case "missing-storage", "missing-archive":
+				if !errors.Is(err, os.ErrNotExist) {
+					t.Fatalf("missing archive error changed: %v", err)
+				}
+			case "source-symlink":
+				errorCode(t, err, "PATH_OUTSIDE_ROOT")
+			default:
+				errorCode(t, err, "ACCESS_DENIED")
+			}
+			if !reflect.DeepEqual(before, snapshot()) {
+				t.Fatal("rejected restore changed paths, permissions, links or file bytes")
+			}
+			if _, err := os.Lstat(filepath.Join(p.root, ".kb/restores")); !errors.Is(err, os.ErrNotExist) {
+				t.Fatalf("rejected restore created destination storage: %v", err)
+			}
+		})
+	}
+}
+
 func TestOperationalPublicationFailuresAndRetry(t *testing.T) {
 	for _, stage := range []string{"backup-synced", "backup-published", "restore-file", "restore-validated", "restore-published"} {
 		t.Run(stage, func(t *testing.T) {
