@@ -66,6 +66,7 @@ func (s *Store) Validate(ctx context.Context, profile string) (api.ValidationRep
 		}
 		ds := append([]api.Diagnostic(nil), snap.Diagnostics...)
 		if profile == "health" {
+			snap = s.withLinks(snap)
 			// Asset presence is checked without reading or indexing its content.
 			// Keep the cached concept graph immutable and scoped to Markdown.
 			snap.Links = append([]api.Link(nil), snap.Links...)

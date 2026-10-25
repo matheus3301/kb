@@ -128,6 +128,16 @@ func glob(pattern, name string) bool {
 }
 
 func caseKey(name string) string {
+	ascii := true
+	for i := 0; i < len(name); i++ {
+		if name[i] >= 128 {
+			ascii = false
+			break
+		}
+	}
+	if ascii {
+		return strings.ToUpper(name)
+	}
 	return strings.Map(func(r rune) rune {
 		minimum := r
 		for folded := unicode.SimpleFold(r); folded != r; folded = unicode.SimpleFold(folded) {

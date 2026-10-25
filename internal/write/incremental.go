@@ -4,16 +4,42 @@ import (
 	"bytes"
 	"fmt"
 	"path"
+	"strings"
 
 	"github.com/matheus3301/kb/internal/api"
 )
 
 func (s *Service) fileDiagnostics(name string, raw []byte) []api.Diagnostic {
-	if reserved(name) {
-		return s.provider.Engine().ValidateReserved(name, raw)
+	return s.validation(name, raw).diagnostics
+}
+
+type validationKey struct{ path, revision string }
+type validationRecord struct {
+	missingType        bool
+	diagnostics        []api.Diagnostic
+	title, description string
+}
+
+// Cache by exact bytes and path only during a single plan. No timestamp-based
+// shortcut or persisted validation result can authorize a later transaction.
+func (s *Service) validation(name string, raw []byte) validationRecord {
+	key := validationKey{path: name, revision: api.Revision(raw)}
+	if record, ok := s.validationCache[key]; ok {
+		return record
 	}
-	_, ds := s.provider.Engine().Parse(name, raw)
-	return ds
+	var record validationRecord
+	if reserved(name) {
+		record.diagnostics = s.provider.Engine().ValidateReserved(name, raw)
+	} else {
+		note, ds := s.provider.Engine().Parse(name, raw)
+		record.missingType = strings.TrimSpace(note.Type) == ""
+		record.diagnostics = ds
+		record.title, record.description = note.Title, note.Description
+	}
+	if s.validationCache != nil {
+		s.validationCache[key] = record
+	}
+	return record
 }
 
 func blocking(d api.Diagnostic) bool {

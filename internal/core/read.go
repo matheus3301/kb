@@ -90,8 +90,9 @@ func (s *Store) Read(ctx context.Context, request api.ReadRequest) (api.ReadResu
 	n.Raw = nil
 	n.Metadata = cloneMap(n.Metadata)
 	n.Tags = append([]string(nil), n.Tags...)
-	out := api.ReadResult{Note: n, Markdown: selected, LineStart: start, LineEnd: end, Diagnostics: ds}
+	out := api.ReadResult{Generation: snap.Generation, Note: n, Markdown: selected, LineStart: start, LineEnd: end, Diagnostics: ds}
 	if request.IncludeLinks {
+		snap = s.withLinks(snap)
 		out.Links = neighborhood(snap.Links, request.Path, "both")
 		if len(out.Links) > api.MaxHits {
 			out.Links = out.Links[:api.MaxHits]
@@ -173,6 +174,7 @@ func (s *Store) Context(ctx context.Context, request api.ContextRequest) (api.Co
 		seen[hit.Path] = true
 	}
 	if request.IncludeLinks {
+		snap = s.withLinks(snap)
 		for _, p := range append([]string(nil), selected...) {
 			for _, link := range neighborhood(snap.Links, p, "both") {
 				target := link.To

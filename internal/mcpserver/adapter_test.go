@@ -287,3 +287,46 @@ func TestReadEnvelopeBudgetPreservesUTF8AndSourceLines(t *testing.T) {
 		t.Fatal("non-read response was modified")
 	}
 }
+
+type metadataBackend struct {
+	backend
+	statuses, markers int
+	markerError       error
+}
+
+func (b *metadataBackend) Status(ctx context.Context) (api.Status, error) {
+	b.statuses++
+	return b.backend.Status(ctx)
+}
+func (b *metadataBackend) IndexStale(_ context.Context, generation string) (bool, error) {
+	b.markers++
+	if generation != "g" {
+		panic("metadata lost result generation")
+	}
+	return false, b.markerError
+}
+func (b *metadataBackend) Read(context.Context, api.ReadRequest) (api.ReadResult, error) {
+	return api.ReadResult{Generation: "g", Markdown: "Source"}, nil
+}
+func TestResponseMetadataReusesResultSnapshotWithoutSecondInventory(t *testing.T) {
+	b := &metadataBackend{}
+	a := &Adapter{Reader: b, Writer: b}
+	for _, action := range []string{"search", "read", "validate"} {
+		e := a.Call(context.Background(), action, nil)
+		if !e.OK || e.Meta.Generation != "g" || e.Meta.IndexStale {
+			t.Fatal(e)
+		}
+	}
+	if b.statuses != 0 || b.markers != 3 {
+		t.Fatal(b.statuses, b.markers)
+	}
+	e := a.Call(context.Background(), "status", nil)
+	if !e.OK || b.statuses != 1 || b.markers != 3 {
+		t.Fatal(e, b.statuses, b.markers)
+	}
+	b.markerError = errors.New("synthetic marker failure")
+	e = a.Call(context.Background(), "apply", nil)
+	if !e.OK || !e.Meta.IndexStale {
+		t.Fatal("advisory metadata hid a confirmed receipt", e)
+	}
+}

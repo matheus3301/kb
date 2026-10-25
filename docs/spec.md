@@ -465,9 +465,12 @@ to one hop. Do not fill context with indexes and logs merely because they
 contain many keywords.
 
 External updates must become visible after a freshness check. No daemon is
-required: an incremental cache uses a file inventory, mtime/size, and hashes.
-Reading a note and every write check its current hash; a stale cache never
-authorizes overwriting a different revision.
+required. The performance candidate rereads scoped bytes with bounded workers
+and reuses only exact unchanged in-process images; size/mtime alone are never
+evidence of unchanged content. Read result metadata remains bound to its own
+snapshot. Relationship graphs are derived when requested. Reading a note and
+every write check its current hash; a stale cache never authorizes overwriting
+a different revision. See [decision 0005](decisions/0005-performance-and-freshness.md).
 
 `links` returns incoming/outgoing edges with origin (Markdown or provenance),
 target, location, and resolution state. It does not infer semantic relationships
@@ -742,8 +745,10 @@ for 10,000 synthetic notes of 2 KiB each: warm search p95 ≤ 150 ms and RSS ≤
 OKF. The [recorded local benchmark](performance.md) on Apple M4/macOS arm64,
 Go 1.27.3, 10,000 synthetic 2 KiB notes, and 20 warm samples measured 594.4 ms
 cold core search, 162.9 ms warm search p95, and 180.3 MiB peak process RSS.
-The warm-search and RSS targets were not met. This is not fresh CLI startup or
-MCP transport latency; reindexing has not been independently benchmarked here.
+The original warm-search and RSS targets were not met. This is not fresh CLI
+startup or MCP transport latency; reindexing was not independently benchmarked
+in that historical report. The [current performance report](performance.md)
+separately records candidate measurements and remaining limits.
 
 ### Implementation review — 2026-10-24
 

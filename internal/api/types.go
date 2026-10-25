@@ -145,6 +145,8 @@ type ReadRequest struct {
 }
 
 type ReadResult struct {
+	// Generation binds transport metadata to the same snapshot as the source.
+	Generation  string       `json:"-"`
 	Note        Note         `json:"note"`
 	Markdown    string       `json:"markdown"`
 	LineStart   int          `json:"line_start"`
@@ -269,6 +271,7 @@ type RepairProgress struct {
 }
 
 // Codec preserves note presentation and applies content-level policies.
+// Input byte images are immutable; edits return a new image or the unchanged input.
 type Codec interface {
 	Parse(path string, raw []byte) (Note, []Diagnostic)
 	Patch(path string, raw []byte, operation Operation, actor string, at time.Time) ([]byte, error)

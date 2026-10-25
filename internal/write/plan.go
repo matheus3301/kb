@@ -14,7 +14,9 @@ import (
 func cloneFiles(files map[string][]byte) map[string][]byte {
 	copy := make(map[string][]byte, len(files))
 	for name, data := range files {
-		copy[name] = bytes.Clone(data)
+		// Planning replaces images; codecs never mutate their input bytes.
+		// The provider snapshot already owns its images, so copy only the map.
+		copy[name] = data
 	}
 	return copy
 }
@@ -32,19 +34,13 @@ func (s *Service) conform(files map[string][]byte) error {
 		if len(raw) > api.MaxNoteBytes || !utf8.Valid(raw) {
 			return problem("INPUT_TOO_LARGE", "note is oversized or invalid UTF-8")
 		}
-		var diagnostics []api.Diagnostic
-		if reserved(name) {
-			diagnostics = s.provider.Engine().ValidateReserved(name, raw)
-		} else {
-			note, findings := s.provider.Engine().Parse(name, raw)
-			diagnostics = findings
-			if strings.TrimSpace(note.Type) == "" {
-				return problem("INVALID_FRONTMATTER", "every concept requires a nonempty textual type")
-			}
+		record := s.validation(name, raw)
+		if record.missingType {
+			return problem("INVALID_FRONTMATTER", "every concept requires a nonempty textual type")
 		}
-		for _, finding := range diagnostics {
+		for _, finding := range record.diagnostics {
 			if finding.Layer == "conformance_errors" || finding.Layer == "policy_findings" || finding.Layer == "conformance" || finding.Layer == "" {
-				return &api.DomainError{Code: "INVALID_FRONTMATTER", Message: "base does not conform", Details: diagnostics}
+				return &api.DomainError{Code: "INVALID_FRONTMATTER", Message: "base does not conform", Details: record.diagnostics}
 			}
 		}
 	}
@@ -57,9 +53,9 @@ func (s *Service) prepare(root *os.Root, snapshot api.Snapshot, plan api.Plan) (
 		if !inScope(name, s.provider.Config()) {
 			return nil, nil, nil, problem("INVALID_STATE", "provider inventory contains an out-of-scope path")
 		}
-		if err := inspect(root, name); err != nil {
-			return nil, nil, nil, err
-		}
+	}
+	if err := inspectInventory(root, before); err != nil {
+		return nil, nil, nil, err
 	}
 	if !plan.Repair {
 		if snapshot.Degraded {

@@ -9,6 +9,8 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
+	"slices"
 	"sort"
 	"strings"
 	"sync"
@@ -18,8 +20,6 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/matheus3301/kb/internal/api"
 	"github.com/matheus3301/kb/internal/filelock"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/unicode/norm"
 )
 
 const indexStart = "<!-- kb:index:start -->"
@@ -30,12 +30,14 @@ var alwaysExcluded = map[string]bool{".kb": true, ".git": true, "node_modules": 
 // Store binds all operations to one initialized local base.
 // Configure SetAsOf before sharing the store with read workers.
 type Store struct {
-	root        string
-	config      api.Config
-	mu          sync.Mutex
-	asOf        time.Time
-	cached      *api.Snapshot
-	searchIndex *lexicalIndex
+	root            string
+	config          api.Config
+	mu              sync.Mutex
+	asOf            time.Time
+	cached          *api.Snapshot
+	searchIndex     *lexicalIndex
+	graphGeneration string
+	graphLinks      []api.Link
 }
 
 func (s *Store) Root() string { return s.root }
@@ -313,7 +315,7 @@ func createMissing(r *os.Root, p string, raw []byte) error {
 	_, writeErr := f.Write(raw)
 	return errorsJoin(writeErr, f.Close())
 }
-func caseKey(p string) string { return cases.Fold().String(norm.NFC.String(p)) }
+func caseKey(p string) string { return fold(p, false) }
 func safePath(r *os.Root, p string, missing bool) error {
 	if err := validPath(p); err != nil {
 		return err
@@ -381,7 +383,7 @@ func readLimited(r *os.Root, p string, limit int) ([]byte, error) {
 
 // readInventory reuses a bounded scan buffer so freshness checks do not retain
 // another complete corpus. Complete bytes are kept even for invalid notes.
-func readInventory(r *os.Root, p string, scratch []byte) ([]byte, error) {
+func readInventory(r *os.Root, p, displayPath string, scratch []byte) ([]byte, error) {
 	f, err := r.OpenFile(p, os.O_RDONLY|syscall.O_NOFOLLOW|syscall.O_NONBLOCK, 0)
 	if err != nil {
 		return nil, err
@@ -397,7 +399,7 @@ func readInventory(r *os.Root, p string, scratch []byte) ([]byte, error) {
 	}
 	if info.Size() > api.MaxPlanBytes {
 		_ = f.Close()
-		return nil, &api.DomainError{Code: "LIMIT_EXCEEDED", Message: "scoped file exceeds safe inventory ceiling", Details: map[string]any{"path": p}}
+		return nil, &api.DomainError{Code: "LIMIT_EXCEEDED", Message: "scoped file exceeds safe inventory ceiling", Details: map[string]any{"path": displayPath}}
 	}
 	if info.Size() > int64(len(scratch)-1) {
 		scratch = make([]byte, int(info.Size())+1)
@@ -487,7 +489,7 @@ func (s *Store) Snapshot(ctx context.Context) (api.Snapshot, error) {
 	if err != nil {
 		return api.Snapshot{}, err
 	}
-	return cloneSnapshot(snap), nil
+	return cloneSnapshot(s.withLinks(snap)), nil
 }
 func (s *Store) readSnapshot(ctx context.Context) (api.Snapshot, error) {
 	var out api.Snapshot
@@ -506,25 +508,59 @@ func (s *Store) SnapshotUnlocked(ctx context.Context) (api.Snapshot, error) {
 	if err != nil {
 		return api.Snapshot{}, err
 	}
-	return cloneSnapshot(snap), nil
+	return cloneSnapshot(s.withLinks(snap)), nil
 }
 func (s *Store) snapshot(ctx context.Context, r *os.Root) (api.Snapshot, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	files := map[string][]byte{}
-	scratch := make([]byte, api.MaxNoteBytes+1)
 	var ds []api.Diagnostic
 	seen := map[string]string{}
-	err := fs.WalkDir(r.FS(), ".", func(p string, entry fs.DirEntry, walkErr error) error {
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-		if walkErr != nil {
-			return walkErr
-		}
-		if p == "." {
-			return nil
-		}
+	unchanged := s.cached != nil
+	type readJob struct {
+		dir        *os.Root
+		path, name string
+		order      int
+	}
+	jobs := make(chan readJob, 8)
+	var pending, workers sync.WaitGroup
+	var results sync.Mutex
+	var readErr error
+	readErrorOrder := -1
+	nextReadOrder := 0
+	for range min(8, runtime.GOMAXPROCS(0)) {
+		workers.Go(func() {
+			scratch := make([]byte, (64<<10)+1)
+			for job := range jobs {
+				raw, err := readInventory(job.dir, job.name, job.path, scratch)
+				old, exists := []byte(nil), false
+				if s.cached != nil {
+					old, exists = s.cached.Files[job.path]
+				}
+				same := exists && bytes.Equal(raw, old)
+				if same {
+					raw = old
+				} else {
+					raw = bytesClone(raw)
+				}
+				results.Lock()
+				if err != nil {
+					if readErrorOrder < 0 || job.order < readErrorOrder {
+						readErr = err
+						readErrorOrder = job.order
+					}
+				} else {
+					files[job.path] = raw
+					if !same {
+						unchanged = false
+					}
+				}
+				results.Unlock()
+				pending.Done()
+			}
+		})
+	}
+	err := walkInventory(ctx, r, func(dir *os.Root, p string, entry fs.DirEntry) error {
 		if !s.included(p) && entry.IsDir() {
 			for _, part := range strings.Split(p, "/") {
 				if alwaysExcluded[part] {
@@ -555,34 +591,41 @@ func (s *Store) snapshot(ctx context.Context, r *os.Root) (api.Snapshot, error) 
 			ds = append(ds, diagnostic(p, "INVALID_PATH", "special file excluded", "conformance_errors"))
 			return nil
 		}
-		raw, err := readInventory(r, p, scratch)
-		if err != nil {
-			return err
-		}
-		if s.cached != nil && bytes.Equal(raw, s.cached.Files[p]) {
-			raw = s.cached.Files[p]
-		} else {
-			raw = bytesClone(raw)
-		}
-
-		files[p] = raw
+		pending.Add(1)
+		jobs <- readJob{dir: dir, path: p, name: entry.Name(), order: nextReadOrder}
+		nextReadOrder++
 		return nil
-	})
+	}, pending.Wait)
+	close(jobs)
+	workers.Wait()
+	if readErr != nil {
+		return api.Snapshot{}, readErr
+	}
 	if err != nil {
 		return api.Snapshot{}, err
 	}
-	generation := api.Generation(files)
-	if s.cached != nil && s.cached.Generation == generation && reflectDiagnostics(ds, s.cached.Diagnostics) {
+	if unchanged && len(files) == len(s.cached.Files) && reflectDiagnostics(ds, s.cached.Diagnostics) {
 		return s.refreshStale(*s.cached), nil
 	}
+	generation := api.Generation(files)
 	out := api.Snapshot{Generation: generation, Files: files, Diagnostics: ds, Notes: []api.Note{}, Links: []api.Link{}}
 	paths := make([]string, 0, len(files))
 	for p := range files {
 		paths = append(paths, p)
 	}
 	sort.Strings(paths)
+	previous := map[string]api.Note{}
+	if s.cached != nil {
+		for _, note := range s.cached.Notes {
+			previous[note.Path] = note
+		}
+	}
 	for _, p := range paths {
-		note, nds := (codec{}).Parse(p, files[p])
+		note, reused := previous[p]
+		var nds []api.Diagnostic
+		if !reused || !bytes.Equal(note.Raw, files[p]) {
+			note, nds = (codec{}).Parse(p, files[p])
+		}
 		out.Diagnostics = append(out.Diagnostics, nds...)
 		if !hasErrors(nds) && !reserved(p) {
 			note.PARA = s.category(p)
@@ -593,7 +636,6 @@ func (s *Store) snapshot(ctx context.Context, r *os.Root) (api.Snapshot, error) 
 			out.Notes = append(out.Notes, note)
 		}
 	}
-	out.Links = buildLinks(files, out.Notes)
 	for i := range out.Notes {
 		out.Notes[i].BasisOutdated = basisChanged(out.Notes[i], files)
 	}
@@ -608,7 +650,20 @@ func reflectDiagnostics(scan, all []api.Diagnostic) bool {
 			only = append(only, d)
 		}
 	}
-	return sameValue(scan, only)
+	return slices.Equal(scan, only)
+}
+
+// Relationships are derived only when requested. Plain search/read/OKF checks
+// need neither Markdown graph parsing nor a second copy of graph allocations.
+func (s *Store) withLinks(snap api.Snapshot) api.Snapshot {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.graphGeneration != snap.Generation {
+		s.graphLinks = buildLinks(snap.Files, snap.Notes)
+		s.graphGeneration = snap.Generation
+	}
+	snap.Links = s.graphLinks
+	return snap
 }
 func cloneSnapshot(in api.Snapshot) api.Snapshot {
 	out := in
@@ -685,6 +740,24 @@ func (s *Store) Status(ctx context.Context) (api.Status, error) {
 		return nil
 	})
 	return out, err
+}
+
+// IndexStale compares the disposable marker to an already examined snapshot.
+// Response metadata must not rescan the entire collection after an operation.
+func (s *Store) IndexStale(ctx context.Context, generation string) (bool, error) {
+	stale := true
+	err := s.locked(ctx, func(r *os.Root) error {
+		if err := safePath(r, ".kb/cache/generation", true); err != nil {
+			return err
+		}
+		raw, err := readLimited(r, ".kb/cache/generation", 1024)
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
+			return err
+		}
+		stale = string(raw) != generation
+		return nil
+	})
+	return stale, err
 }
 
 var _ api.Provider = (*Store)(nil)

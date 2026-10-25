@@ -17,11 +17,13 @@
     "requirement": "CLI and MCP return the same IDs, revisions, filters, and errors on equivalent fixtures.",
     "status": "verified",
     "tests": [
-      "cmd/kb/integration_test.go"
+      "cmd/kb/integration_test.go",
+      "internal/mcpserver/adapter_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
-      "docs/evidence/cli-workflow.json"
+      "docs/evidence/cli-workflow.json",
+      "docs/evidence/performance-optimization.json"
     ]
   },
   {
@@ -104,11 +106,13 @@
     "requirement": "Search with and without accents retrieves the same expected Portuguese result set.",
     "status": "verified",
     "tests": [
-      "internal/core/store_test.go"
+      "internal/core/store_test.go",
+      "internal/core/performance_semantics_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
-      "docs/evidence/cli-workflow.json"
+      "docs/evidence/cli-workflow.json",
+      "docs/evidence/performance-optimization.json"
     ]
   },
   {
@@ -120,13 +124,15 @@
       "internal/write/service_test.go",
       "scripts/acceptance.py",
       "internal/core/metadata_test.go",
-      "cmd/kb/move_fidelity_test.go"
+      "cmd/kb/move_fidelity_test.go",
+      "internal/core/performance_semantics_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
       "docs/evidence/cli-workflow.json",
       "docs/evidence/move-fidelity-fix.json",
-      "docs/evidence/verification-footer-fix.json"
+      "docs/evidence/verification-footer-fix.json",
+      "docs/evidence/performance-optimization.json"
     ],
     "notes": "Installed v0.1.2 exposed trailing-comment loss during verification invalidation. The corrected source passes the added LF/CRLF codec/binary-acceptance regressions and all 253 original QA checks; see verification-footer-fix.json. Published v0.1.2 remains affected."
   },
@@ -195,11 +201,14 @@
       "internal/core/store_test.go",
       "internal/write/policy_test.go",
       "cmd/kb/integration_test.go",
-      "scripts/acceptance.py"
+      "scripts/acceptance.py",
+      "internal/core/inventory_test.go",
+      "internal/write/inspection_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
-      "docs/evidence/cli-workflow.json"
+      "docs/evidence/cli-workflow.json",
+      "docs/evidence/performance-optimization.json"
     ]
   },
   {
@@ -236,11 +245,13 @@
     "requirement": "External-editor changes invalidate cache and revision at the next relevant operation.",
     "status": "verified",
     "tests": [
-      "internal/core/store_test.go"
+      "internal/core/store_test.go",
+      "internal/core/inventory_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
-      "docs/evidence/cli-workflow.json"
+      "docs/evidence/cli-workflow.json",
+      "docs/evidence/performance-optimization.json"
     ]
   },
   {
