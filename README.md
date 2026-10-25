@@ -145,9 +145,11 @@ promise that all bugs are absent or every agent activates the skill.
 
 [Native Homebrew QA of v0.1.1](docs/qa/native-homebrew-v0.1.1.md) found two
 move fidelity defects: automatic reference rewrites can round precise decimals
-and discard nested YAML comments in dependent metadata. Both need fixes before
-graduating from experimental status. The report includes a disposable
-reproducer, concurrency/recovery results, and installed CLI/MCP measurements.
+and discard nested YAML comments in dependent metadata. The source correction
+now passes the [fidelity regressions](docs/evidence/move-fidelity-fix.json),
+including the original reproducer. **The published v0.1.1 remains affected**
+until a corrected release is distributed. The report includes concurrency,
+recovery, and installed CLI/MCP measurements; experimental status remains.
 
 The initial performance targets remain unmet: on 10,000 synthetic 2 KiB notes,
 warm core search p95 was **162.9 ms** and peak process RSS **180.3 MiB**, against

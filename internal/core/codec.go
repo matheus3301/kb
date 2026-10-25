@@ -148,6 +148,11 @@ func nodeValue(n *yaml.Node) any {
 	if n.Tag == "!!timestamp" {
 		return n.Value
 	}
+	if n.Tag == "!!float" {
+		if number, ok := decimalNumber(n.Value); ok {
+			return number
+		}
+	}
 	var value any
 	if err := n.Decode(&value); err != nil {
 		return n.Value
@@ -372,6 +377,11 @@ func errorsJoin(a, b error) error {
 // patchHeader replaces only changed top-level entries in block mappings.
 // Untouched key spans retain their original bytes, including comments and style.
 func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool) ([]byte, error) {
+	var err error
+	f, err = patchHeaderScalars(f, changes)
+	if err != nil {
+		return nil, err
+	}
 	if len(changes) == 0 && len(removes) == 0 {
 		return f.header, nil
 	}
@@ -383,14 +393,11 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 				continue
 			}
 			if x, ok := changes[k.Value]; ok {
-				var node yaml.Node
-				if err := encodeValue(&node, x); err != nil {
+				node, err := updatedNode(v, x)
+				if err != nil {
 					return nil, err
 				}
-				node.HeadComment = v.HeadComment
-				node.LineComment = v.LineComment
-				node.FootComment = v.FootComment
-				v = &node
+				v = node
 				delete(changes, k.Value)
 			}
 			content = append(content, k, v)
@@ -429,12 +436,14 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 		}
 		out.WriteString(strings.Join(lines[cursor:start], ""))
 		if x, ok := changes[key.Value]; ok && !removes[key.Value] {
-			var v yaml.Node
-			if err := encodeValue(&v, x); err != nil {
+			v, err := updatedNode(value, x)
+			if err != nil {
 				return nil, err
 			}
-			v.LineComment = value.LineComment
-			mapping := &yaml.Node{Kind: yaml.MappingNode, Content: []*yaml.Node{{Kind: yaml.ScalarNode, Tag: "!!str", Value: key.Value}, &v}}
+			// Leading comments are already in the retained prefix above this key.
+			encodedKey := *key
+			encodedKey.HeadComment = ""
+			mapping := &yaml.Node{Kind: yaml.MappingNode, Content: []*yaml.Node{&encodedKey, v}}
 			encoded, err := encodeNode(mapping)
 			if err != nil {
 				return nil, err

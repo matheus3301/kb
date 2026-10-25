@@ -5,6 +5,11 @@ tested retrieval, concurrency, recovery, and CLI/MCP scenarios, but moving a
 source silently changes precise decimal metadata and removes YAML comments in
 dependent notes. Fix both fidelity defects before considering graduation.
 
+**Unreleased correction:** both defects now pass the source regression checks
+described under [correction verification](#unreleased-correction-verification).
+The installed and published v0.1.1 still reproduces them. The historical
+assessment and counts below describe that release, not the corrected candidate.
+
 This is a post-release black-box assessment dated **2026-10-25**, not a claim
 that the existing test suite or format validator proves safe preservation.
 The [structured record](../evidence/native-homebrew-v0.1.1.json) includes case
@@ -120,8 +125,9 @@ Read-only diagnosis points to scalar conversion through ordinary decoded YAML
 values in [the codec](../../internal/core/codec.go), followed by replacement of
 whole metadata collections during [reference rewriting](../../internal/write/links.go).
 The observed output is consistent with binary floating-point conversion.
-Acceptance criterion A03 is reopened as `in_progress`; earlier passing fixtures
-did not cover unknown decimal precision during reference rewrites.
+Acceptance criterion A03 was reopened after this assessment; earlier passing
+fixtures did not cover unknown decimal precision during reference rewrites.
+The corrected source now includes the required regressions and new evidence.
 Fix the conversion and rewrite path; do not merely special-case these two values.
 
 ### QA-02 — P2: automatic reference rewrites discard nested YAML comments
@@ -151,7 +157,7 @@ observed preservation failure**, not a successful quality gate. Exit 0 means
 all included preservation and path-update checks pass; exit 2 means setup failed.
 `KB_BIN` can select a different installed executable for a later comparison.
 
-Until fixed, avoid automated moves or archives of linked notes whose dependent
+When using the affected release, avoid automated moves or archives of linked notes whose dependent
 metadata contains precise decimals or important comments. Review all affected
 files in previews and retain backups. Format validation alone will not detect
 these losses. Reverting a filename alone does not restore lost metadata.
@@ -206,6 +212,31 @@ and rerun the fidelity, transaction, retrieval and MCP workflows. A graduation
 decision should also establish scale budgets with measurements, test installed
 packages on supported platforms, and document backup/recovery operation. Green
 CI alone does not satisfy these requirements.
+
+## Unreleased correction verification
+
+The [source correction record](../evidence/move-fidelity-fix.json) captures
+before/after output from the same disposable probe. It exits 1 against installed
+v0.1.1 and 0 against a binary built from the corrected source. No Homebrew binary
+was replaced and no new release was published during this fix.
+
+Finite decimal YAML scalars are converted directly to exact JSON numbers,
+including exponent forms, without a binary floating-point intermediate. Path
+changes replace scalar spans when collection shape is unchanged, retaining the
+original numeric lexemes, quote styles, comments, indentation and line endings.
+Structural edits retain existing YAML nodes; editing an alias expands the edited
+value without modifying its original template or duplicating anchors.
+
+Regression coverage includes CLI and MCP against real providers with block,
+flow, CRLF and alias fixtures; moving a synthesis, coordinated moves and archive;
+unknown nested decimals, scientific notation and comments; structural metadata
+edits; and a new bounded metadata-patch fuzz target. CLI acceptance also checks
+the original failure pattern against a real built executable. `make check`
+passed with eight fuzz targets and 88.4% application statement coverage.
+
+A03 is verified again for these tested source cases. The two move fidelity
+findings are resolved in source; release distribution, performance priorities
+and the broader graduation requirements above remain separate work.
 
 ## Limits of this assessment
 

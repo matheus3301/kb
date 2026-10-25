@@ -27,18 +27,21 @@
   {
     "id": "A03",
     "requirement": "A minimal concept with only `type` conforms; unknown types and fields survive.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/core/codec_test.go",
       "scripts/acceptance.py",
-      "scripts/qa/reproduce_move_fidelity.py"
+      "scripts/qa/reproduce_move_fidelity.py",
+      "internal/core/metadata_test.go",
+      "cmd/kb/move_fidelity_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
       "docs/evidence/cli-workflow.json",
-      "docs/evidence/native-homebrew-v0.1.1.json"
+      "docs/evidence/native-homebrew-v0.1.1.json",
+      "docs/evidence/move-fidelity-fix.json"
     ],
-    "notes": "Reopened by native v0.1.1 QA: automatic move reference rewrites round unknown decimal metadata (QA-01). Existing cases pass but do not establish exact unknown-value preservation; see docs/qa/native-homebrew-v0.1.1.md."
+    "notes": "QA-01 and QA-02 are fixed in the unreleased source candidate: exact decimals, comments and unchanged spans are covered by real CLI/MCP, move/archive/batch, codec, fuzz and acceptance regressions. The original v0.1.1 distribution remains affected; see docs/evidence/move-fidelity-fix.json."
   },
   {
     "id": "A04",
@@ -111,11 +114,14 @@
     "tests": [
       "internal/core/codec_test.go",
       "internal/write/service_test.go",
-      "scripts/acceptance.py"
+      "scripts/acceptance.py",
+      "internal/core/metadata_test.go",
+      "cmd/kb/move_fidelity_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
-      "docs/evidence/cli-workflow.json"
+      "docs/evidence/cli-workflow.json",
+      "docs/evidence/move-fidelity-fix.json"
     ]
   },
   {
@@ -165,11 +171,14 @@
     "tests": [
       "internal/write/policy_test.go",
       "internal/write/markdown_test.go",
-      "scripts/acceptance.py"
+      "scripts/acceptance.py",
+      "internal/core/metadata_test.go",
+      "cmd/kb/move_fidelity_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
-      "docs/evidence/cli-workflow.json"
+      "docs/evidence/cli-workflow.json",
+      "docs/evidence/move-fidelity-fix.json"
     ]
   },
   {
