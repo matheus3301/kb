@@ -80,6 +80,9 @@ func (s *Service) prepare(root *os.Root, snapshot api.Snapshot, plan api.Plan) (
 		if op.Kind != "create" && op.Kind != "patch" && op.Kind != "move" {
 			return nil, nil, nil, problem("INVALID_PLAN", "unsupported operation kind")
 		}
+		if plan.Incremental && op.Kind != "patch" {
+			return nil, nil, nil, problem("INVALID_PLAN", "incremental repair accepts patches to existing files only")
+		}
 		paths := []string{op.Path}
 		if op.Kind == "move" {
 			paths = append(paths, op.To)
@@ -230,22 +233,33 @@ func (s *Service) prepare(root *os.Root, snapshot api.Snapshot, plan api.Plan) (
 		}
 		warnings = append(warnings, s.basisWarnings(before, after)...)
 	}
-	if err := s.conform(after); err != nil {
+	conform := func() error { return s.conform(after) }
+	if plan.Incremental {
+		conform = func() error { return s.conformIncremental(before, after) }
+		if prior := s.errorCount(before); prior > 0 && s.errorCount(after) >= prior {
+			return nil, nil, nil, problem("INVALID_PLAN", "incremental repair must reduce existing format/policy errors")
+		}
+	}
+	if err := conform(); err != nil {
 		return nil, nil, nil, err
 	}
 	if changed(before, after) {
 		if s.provider.Config().Write.MaintainIndexes {
-			if err := s.indexes(after); err != nil {
+			if plan.Incremental && !s.canMaintain(after, "index.md") {
+				warnings = append(warnings, deferredNavigation("index.md"))
+			} else if err := s.indexes(after); err != nil {
 				return nil, nil, nil, err
 			}
 		}
 		if s.provider.Config().Write.MaintainLog {
-			if err := s.log(after, plan.Summary, plan.Actor, warnings, before); err != nil {
+			if plan.Incremental && !s.canMaintain(after, "log.md") {
+				warnings = append(warnings, deferredNavigation("log.md"))
+			} else if err := s.log(after, plan.Summary, plan.Actor, warnings, before); err != nil {
 				return nil, nil, nil, err
 			}
 		}
 	}
-	if err := s.conform(after); err != nil {
+	if err := conform(); err != nil {
 		return nil, nil, nil, err
 	}
 	if err := s.dependencies(before, after, moves, authored); err != nil {

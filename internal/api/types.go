@@ -41,11 +41,16 @@ type Config struct {
 }
 
 type Diagnostic struct {
-	Path    string `json:"path,omitempty"`
-	Code    string `json:"code"`
-	Message string `json:"message"`
-	Layer   string `json:"layer"`
-	Line    int    `json:"line,omitempty"`
+	Path     string `json:"path,omitempty"`
+	Code     string `json:"code"`
+	Message  string `json:"message"`
+	Layer    string `json:"layer"`
+	Line     int    `json:"line,omitempty"`
+	Rule     string `json:"rule,omitempty"`
+	Severity string `json:"severity,omitempty"`
+	Field    string `json:"field,omitempty"`
+	Hint     string `json:"hint,omitempty"`
+	Revision string `json:"revision,omitempty"`
 }
 
 type Note struct {
@@ -186,10 +191,18 @@ type Status struct {
 }
 
 type ValidationReport struct {
-	Profile     string       `json:"profile"`
-	Conformant  bool         `json:"conformant"`
-	Generation  string       `json:"generation"`
-	Diagnostics []Diagnostic `json:"diagnostics"`
+	Profile     string            `json:"profile"`
+	Conformant  bool              `json:"conformant"`
+	Generation  string            `json:"generation"`
+	Diagnostics []Diagnostic      `json:"diagnostics"`
+	Clean       bool              `json:"clean"`
+	Strict      bool              `json:"strict,omitempty"`
+	Summary     DiagnosticSummary `json:"summary"`
+}
+
+type DiagnosticSummary struct {
+	Errors   int `json:"errors"`
+	Warnings int `json:"warnings"`
 }
 
 type ExportResult struct {
@@ -228,6 +241,7 @@ type Plan struct {
 	Actor          string      `json:"actor"`
 	DryRun         bool        `json:"dry_run,omitempty"`
 	Repair         bool        `json:"repair,omitempty"`
+	Incremental    bool        `json:"incremental,omitempty"`
 }
 
 type Change struct {
@@ -239,12 +253,19 @@ type Change struct {
 }
 
 type Receipt struct {
-	IdempotencyKey string       `json:"idempotency_key"`
-	Generation     string       `json:"generation"`
-	DryRun         bool         `json:"dry_run"`
-	Replayed       bool         `json:"replayed"`
-	Changes        []Change     `json:"changes"`
-	Warnings       []Diagnostic `json:"warnings"`
+	IdempotencyKey string          `json:"idempotency_key"`
+	Generation     string          `json:"generation"`
+	DryRun         bool            `json:"dry_run"`
+	Replayed       bool            `json:"replayed"`
+	Changes        []Change        `json:"changes"`
+	Warnings       []Diagnostic    `json:"warnings"`
+	RepairProgress *RepairProgress `json:"repair_progress,omitempty"`
+}
+
+type RepairProgress struct {
+	ErrorsBefore    int  `json:"errors_before"`
+	ErrorsRemaining int  `json:"errors_remaining"`
+	Conformant      bool `json:"conformant"`
 }
 
 // Codec preserves note presentation and applies content-level policies.

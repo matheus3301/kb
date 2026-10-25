@@ -50,12 +50,16 @@
     "tests": [
       "internal/core/store_test.go",
       "internal/write/policy_test.go",
-      "scripts/acceptance.py"
+      "scripts/acceptance.py",
+      "cmd/kb/repair_test.go",
+      "internal/write/incremental_test.go"
     ],
     "evidence": [
       "docs/evidence/validation.json",
-      "docs/evidence/cli-workflow.json"
-    ]
+      "docs/evidence/cli-workflow.json",
+      "docs/evidence/incremental-repair.json"
+    ],
+    "notes": "v0.3.0 adds explicit incremental repair: changed files conform, untouched invalid files remain exact, and blocking errors decrease. Normal writes and default repair remain strict. Search continues indexing valid concepts only."
   },
   {
     "id": "A05",

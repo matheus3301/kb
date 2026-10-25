@@ -216,6 +216,6 @@ func (s *Service) Maintain(ctx context.Context, dryRun bool) (api.Receipt, error
 			return api.Receipt{}, err
 		}
 		key := fmt.Sprintf("maintain:%s:%s", api.Generation(before), api.Generation(after))
-		return s.publish(ctx, root, before, after, key, api.Revision([]byte(key)), dryRun, nil)
+		return s.publish(ctx, root, before, after, key, api.Revision([]byte(key)), dryRun, nil, nil)
 	})
 }

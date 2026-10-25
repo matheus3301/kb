@@ -111,3 +111,17 @@ interface. Operator commands exist in the [CLI guide](cli.md); they are separate
 from agent operation through the advertised MCP surface. Advisory locks do not
 isolate arbitrary external editors. Binary/skill installation and global agent
 configuration are separate setup actions.
+
+## Diagnose and repair in batches
+
+Call `kb_validate` and inspect `data.summary`, `conformant`, `clean`, and
+actionable diagnostics. For authorized adoption, read invalid paths directly
+with `kb_read`; search only includes valid concepts. Submit `kb_apply` with
+`repair: true`, `incremental: true`, current revisions and explicit corrections
+to existing files. Preview with `dry_run: true`, inspect the diff, then execute
+the same plan. Each changed file must conform and blocking errors must decrease
+while any remain. Inspect `repair_progress` and revalidate after every batch.
+Resolve health advisories with evidence and use `kb_validate` with
+`profile: "health", strict: true` to check the zero-findings criterion. A replay
+receipt describes its original transaction, so revalidate for current state.
+These instructions also travel with server discovery; no CLI skill is needed.

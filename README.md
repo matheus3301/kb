@@ -52,6 +52,10 @@ Data commands return JSON by default. `KB_ROOT` selects the Knowledge Base;
 all note paths are relative to it. Follow the [quickstart](docs/quickstart.md)
 for editing and coordinated changes, or use [other installation methods](docs/installation.md).
 
+For an existing collection, initialize the same directory, then run
+`kb validate --profile okf`. Agents can [repair diagnosed issues in batches](skills/knowledge-base/references/repair.md)
+with `kb apply --repair --incremental`; initialization does not convert notes.
+
 ## At a glance
 
 - **Search and read:** lexical ranking, filters, sections, and bounded excerpts
