@@ -108,3 +108,46 @@ func TestCodecNestedScalarEditsPreserveUnicodeAndQuoteSpans(t *testing.T) {
 		}
 	}
 }
+
+func TestCodecStructuralRewritePreservesCommentOwnership(t *testing.T) {
+	for _, suffix := range []string{
+		"# Footer\n\nother: value\n",
+		"    # Footer\n\nother: value\n",
+		"# Footer\n\n# Next header\nother: value\n",
+		"\n# Footer\nother: value\n",
+		"# Footer\n",
+		"\n# Footer\n",
+	} {
+		t.Run(suffix, func(t *testing.T) {
+			raw := []byte("---\ntype: Reference\nsources:\n  - resource: !!str 'source.md'\n    custom: 1234567890.123456789\n" + suffix + "---\nBody\n")
+			note, _ := (codec{}).Parse("note.md", raw)
+			sources := note.Metadata["sources"].([]any)
+			sources[0].(map[string]any)["resource"] = "nested/source.md"
+			out, err := (codec{}).Patch("note.md", raw, api.Operation{MetadataPatch: map[string]any{"sources": sources}}, "process:test", time.Now())
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, comment := range []string{"# Footer", "# Next header"} {
+				if strings.Count(string(out), comment) != strings.Count(string(raw), comment) {
+					t.Fatalf("comment lost or duplicated: %s", out)
+				}
+			}
+			if !strings.Contains(string(out), "resource: !!str 'nested/source.md'") || !strings.Contains(string(out), "custom: 1234567890.123456789") {
+				t.Fatal(string(out))
+			}
+		})
+	}
+	raw := []byte("---\n# Document heading\n\n{type: Reference, sources: [{resource: source.md, custom: 1234567890.123456789}]}\n\n# Document footer\n---\nBody\n")
+	note, _ := (codec{}).Parse("note.md", raw)
+	sources := note.Metadata["sources"].([]any)
+	sources[0].(map[string]any)["resource"] = "nested/source.md"
+	out, err := (codec{}).Patch("note.md", raw, api.Operation{MetadataPatch: map[string]any{"sources": sources}}, "process:test", time.Now())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, comment := range []string{"# Document heading", "# Document footer"} {
+		if strings.Count(string(out), comment) != 1 {
+			t.Fatalf("flow document comment lost or duplicated: %s", out)
+		}
+	}
+}

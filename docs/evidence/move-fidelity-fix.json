@@ -6,9 +6,9 @@
     "QA-02": "Scalar path edits retain original spans; structural edits retain existing YAML nodes, annotations and styles."
   },
   "source_files_sha256": {
-    "internal/core/codec.go": "794a074a76e91abd443f78635c293f76fb3c57295eec045c66a57462ae1e4226",
+    "internal/core/codec.go": "e9d12b2d773e85321e4a0787011198ebdd4e607b37f7fc2e4fa2446a2ea3bbad",
     "internal/core/metadata.go": "8449ab176a146743dbd974adc52e8267818de7f76c114f76d9d38e3295e28a31",
-    "internal/core/metadata_test.go": "491754ad928790bc85a730deb5f5dabc4ad56f1c8d872f20367e7880b9743138",
+    "internal/core/metadata_test.go": "98c8a8ab85868bf208c28d22b6371f0127804556628b882202c03cc815eada3f",
     "cmd/kb/move_fidelity_test.go": "e2f6d038a9de6322ec746ad8c4cdb4e999b6d6ad599fc97dc35dc640cf0e0845",
     "scripts/acceptance.py": "07b04716aeed0c486456755d736fe228930e4215ba26586d86408e029982c1ee"
   },
@@ -50,7 +50,7 @@
       "OKF conformant": true
     },
     "before": "---\ntype: Synthesis\nsources:\n  # Source annotation must survive\n  - resource: source.md\n    unknown_decimal: 1234567890.123456789 # Preserve numeric precision\n    unknown_tiny: 0.1234567890123456789\nbasis_revisions:\n  # Basis annotation must survive\n  - path: source.md\n    revision: sha256:3bf2daa1a537e1771c86d84749d2b4b34a57acae61bbaee9925de9138376987e\n    unknown_decimal: 1234567890.123456789\n    custom: keep # Custom basis comment\n---\n# Synthetic synthesis\n",
-    "after": "---\ntype: Synthesis\nsources:\n  # Source annotation must survive\n  - resource: nested/source.md\n    unknown_decimal: 1234567890.123456789 # Preserve numeric precision\n    unknown_tiny: 0.1234567890123456789\nbasis_revisions:\n  # Basis annotation must survive\n  - path: nested/source.md\n    revision: sha256:3bf2daa1a537e1771c86d84749d2b4b34a57acae61bbaee9925de9138376987e\n    unknown_decimal: 1234567890.123456789\n    custom: keep # Custom basis comment\ngenerated:\n  at: \"2026-10-25T13:09:00.118849Z\"\n  by: process:qa\n---\n# Synthetic synthesis\n"
+    "after": "---\ntype: Synthesis\nsources:\n  # Source annotation must survive\n  - resource: nested/source.md\n    unknown_decimal: 1234567890.123456789 # Preserve numeric precision\n    unknown_tiny: 0.1234567890123456789\nbasis_revisions:\n  # Basis annotation must survive\n  - path: nested/source.md\n    revision: sha256:3bf2daa1a537e1771c86d84749d2b4b34a57acae61bbaee9925de9138376987e\n    unknown_decimal: 1234567890.123456789\n    custom: keep # Custom basis comment\ngenerated:\n  at: \"2026-10-25T13:21:37.003759Z\"\n  by: process:qa\n---\n# Synthetic synthesis\n"
   },
   "regression_tests": [
     "internal/core/metadata_test.go:TestCodecReadsExactDecimalMetadata",
@@ -59,16 +59,18 @@
     "internal/core/metadata_test.go:FuzzMetadataScalarPatch",
     "cmd/kb/move_fidelity_test.go:TestMovePreservesDependentMetadataThroughCLIAndMCP",
     "cmd/kb/move_fidelity_test.go:TestRelocatedSynthesisCoordinatedMovesAndArchivePreserveMetadata",
-    "scripts/acceptance.py:move-preserves-nested-provenance-comments-and-decimals"
+    "scripts/acceptance.py:move-preserves-nested-provenance-comments-and-decimals",
+    "internal/core/metadata_test.go:TestCodecStructuralRewritePreservesCommentOwnership"
   ],
   "verification": {
     "make_check": "passed",
-    "statement_coverage_percent": 88.4,
+    "statement_coverage_percent": 88.6,
     "fuzz_targets": 8,
     "cli_mcp_fidelity_subcases": 8,
     "relocation_batch_archive_subcases": 3,
     "native_homebrew_binary_changed": false,
-    "new_release_published": false
+    "new_release_published": false,
+    "collection_document_footer_cases": 7
   },
   "limits": [
     "Synthetic fixtures and bounded fuzzing do not establish universal YAML presentation fidelity.",

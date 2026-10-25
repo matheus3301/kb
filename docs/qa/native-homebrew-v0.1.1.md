@@ -230,9 +230,10 @@ value without modifying its original template or duplicating anchors.
 Regression coverage includes CLI and MCP against real providers with block,
 flow, CRLF and alias fixtures; moving a synthesis, coordinated moves and archive;
 unknown nested decimals, scientific notation and comments; structural metadata
-edits; and a new bounded metadata-patch fuzz target. CLI acceptance also checks
+edits; collection, adjacent-key and document comment ownership without duplicate
+annotations; and a new bounded metadata-patch fuzz target. CLI acceptance also checks
 the original failure pattern against a real built executable. `make check`
-passed with eight fuzz targets and 88.4% application statement coverage.
+passed with eight fuzz targets and 88.6% application statement coverage.
 
 A03 is verified again for these tested source cases. The two move fidelity
 findings are resolved in source; release distribution, performance priorities
