@@ -64,11 +64,11 @@ A green branch build alone does not request a release.
 ```sh
 git switch main
 git pull --ff-only
-git tag -a v0.1.2 -m "Release v0.1.2"
-git push origin v0.1.2
+git tag -a v0.1.3 -m "Release v0.1.3"
+git push origin v0.1.3
 ```
 
-`v0.1.2` illustrates the patch release following v0.1.1. Verify that the chosen
+`v0.1.3` illustrates the patch release following v0.1.2. Verify that the chosen
 version has never been published before creating its tag; these examples do not
 create a release themselves. A prerelease such as
 `v0.2.0-rc.1` publishes GitHub assets but skips the stable tap.

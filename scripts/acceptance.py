@@ -82,6 +82,10 @@ def exercise(binary):
         assert first["data"]["changes"]
         # Simulate a public editor change; no private collection is involved.
         (root / path).write_text((root / path).read_text().replace("type: Reference", "type: Reference # synthetic annotation"))
+        header, body = (root / path).read_text().split("\n---\n", 1)
+        header += ("\nverified:\n  - by: human:synthetic-reviewer\n"
+                   "    at: '2025-01-02T00:00:00Z'\n# Trailing YAML annotation")
+        (root / path).write_text(header + "\n---\n" + body)
         before = read(path)
         assert before["note"]["metadata"]["x-counter"] == 9007199254740993
         expected_revision = before["note"]["revision"]
@@ -98,11 +102,14 @@ def exercise(binary):
         updated = read(path)
         assert "600 seconds" in updated["markdown"]
         assert "# synthetic annotation" in (root / path).read_text()
+        assert (root / path).read_text().count("# Trailing YAML annotation") == 1
+        assert "verified" not in updated["note"]["metadata"]
         assert updated["note"]["revision"] != expected_revision
         conflict = dict(patch, idempotency_key="acceptance/conflict")
         rejected = invoke("patch", path, "--input", "-", payload=conflict, expected=None)
         assert rejected["error"]["code"] == "REVISION_CONFLICT"
         checks.append({"name": "preview-cas-and-body-edit", "criteria": ["A09", "A10"]})
+        checks.append({"name": "verification-invalidation-preserves-trailing-annotation", "criteria": ["A09"]})
 
         unchanged = (root / path).read_bytes()
         unchanged_log = (root / "log.md").read_bytes()

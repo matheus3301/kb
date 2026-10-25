@@ -121,8 +121,10 @@
     "evidence": [
       "docs/evidence/validation.json",
       "docs/evidence/cli-workflow.json",
-      "docs/evidence/move-fidelity-fix.json"
-    ]
+      "docs/evidence/move-fidelity-fix.json",
+      "docs/evidence/verification-footer-fix.json"
+    ],
+    "notes": "Installed v0.1.2 exposed trailing-comment loss during verification invalidation. The corrected source passes the added LF/CRLF codec/binary-acceptance regressions and all 253 original QA checks; see verification-footer-fix.json. Published v0.1.2 remains affected."
   },
   {
     "id": "A10",
