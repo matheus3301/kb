@@ -119,5 +119,5 @@ change. Do not replace published binaries just to repair a formula update.
 After the first automated publication, verify anonymous downloads and hashes,
 `kb version --json` against the release source commit, and a real
 `brew install matheus3301/tap/kb` / `brew test matheus3301/tap/kb` on the intended
-platforms. Until that publication, Homebrew installation is prepared and
-snapshot-validated, not a demonstrated public installation channel.
+platforms. Snapshot validation does not replace a real installation test after
+publication. Update public installation guidance to match observed results.

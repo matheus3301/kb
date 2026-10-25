@@ -1,10 +1,11 @@
 # Installation
 
-`kb` is experimental and currently available from source. The earlier manual
-release was withdrawn. There is no active tagged release or published `kb`
-Homebrew formula yet; the next tag will use the [automated release workflow](releases.md).
+`kb` is experimental software for Linux and macOS. Use a stable version from
+the [releases page](https://github.com/matheus3301/kb/releases), install through
+Homebrew, or build the current source checkout. Binary, skill, and MCP setup
+are separate steps.
 
-## Available now: source checkout
+## Source checkout
 
 Use Git and the Go toolchain declared in
 [go.mod](https://github.com/matheus3301/kb/blob/main/go.mod):
@@ -21,7 +22,7 @@ Put Go's binary installation directory on your `PATH`. Source installations use
 source commit. Start with the [getting started example](../README.md#getting-started)
 or the [full quickstart](quickstart.md).
 
-## After the next stable release: Homebrew
+## Homebrew
 
 The stable release workflow publishes a source formula to
 [matheus3301/homebrew-tap](https://github.com/matheus3301/homebrew-tap):
@@ -45,9 +46,9 @@ brew uninstall kb
 
 Uninstalling the executable does not delete your knowledge directory.
 
-## After publication: prebuilt binaries
+## Prebuilt binaries
 
-The [releases page](https://github.com/matheus3301/kb/releases) will contain
+The [releases page](https://github.com/matheus3301/kb/releases) contains
 CGO-free Linux/macOS archives for amd64 and arm64, a source archive, and
 `checksums.txt`. Binary archives include documentation, skill, MIT license, and
 third-party notices.
@@ -68,7 +69,7 @@ leading `v`. Extract the verified archive and place its `kb` executable in a
 directory on your `PATH`. Binary archives do not install a skill, register MCP,
 or change global agent configuration. Apple code signing and notarization are
 not configured; Homebrew source installation is the recommended macOS package
-channel once it is published.
+channel.
 
 To install a published Go module version instead, use the exact new tag from
 that release with `go install github.com/matheus3301/kb/cmd/kb@TAG`. Do not reuse

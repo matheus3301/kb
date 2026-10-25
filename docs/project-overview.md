@@ -224,14 +224,14 @@ startup or MCP transport latency. Reindexing was not independently benchmarked.
 ## Delivery
 
 Source installation works through `go install ./cmd/kb` from a checkout. The
-earlier manual release was withdrawn; there is no active tagged release.
-The [GoReleaser workflow](releases.md) prepares Linux/macOS amd64/arm64 archives,
+earlier manual release was withdrawn; subsequent versions use the
+ [GoReleaser workflow](releases.md) prepares Linux/macOS amd64/arm64 archives,
 checksums, documentation, skill, licenses, and a source archive. A dedicated
 tag-only publisher requires protected-main ancestry and exact-commit CI. A
 separate job updates the Homebrew tap with a checksummed source formula for
 macOS/Linux. Publication requires an explicit new version tag and the tap
 credential; merging configuration does not publish. See [installation](installation.md)
-for the currently available source checkout path. There is no automatic merge.
+for Homebrew, prebuilt binaries, and the source checkout path. There is no automatic merge.
 
 A future session can retrieve recorded decisions, reasons, and sources and
 propose revision-checked changes. Continuing work must retain conformance,
