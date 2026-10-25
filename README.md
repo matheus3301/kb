@@ -64,7 +64,7 @@ plans, recovery, and export.
 
 | You need | kb provides |
 | --- | --- |
-| Memory you can open in an editor | Native OKF Markdown, untouched YAML comments and metadata, optional PARA folders. |
+| Memory you can open in an editor | Native OKF Markdown and optional PARA folders; see current fidelity limits below. |
 | Evidence behind an answer | Lexical search and bounded context with paths, revisions, and line references. |
 | Reviewable changes | Dry-runs, expected revisions, and coordinated create/patch/move/archive plans. |
 | Reliable retries | A durable write journal, explicit recovery, and idempotency receipts. |
@@ -143,6 +143,14 @@ coverage, Linux/macOS tests, seven fuzz targets, CLI/MCP parity, failure/recover
 tests, and a controlled skill consumer. These are observed results, not a
 promise that all bugs are absent or every agent activates the skill.
 
+[Native Homebrew QA of v0.1.1](docs/qa/native-homebrew-v0.1.1.md) found two
+move fidelity defects: automatic reference rewrites can round precise decimals
+and discard nested YAML comments in dependent metadata. The source correction
+now passes the [fidelity regressions](docs/evidence/move-fidelity-fix.json),
+including the original reproducer. **The published v0.1.1 remains affected**
+until a corrected release is distributed. The report includes concurrency,
+recovery, and installed CLI/MCP measurements; experimental status remains.
+
 The initial performance targets remain unmet: on 10,000 synthetic 2 KiB notes,
 warm core search p95 was **162.9 ms** and peak process RSS **180.3 MiB**, against
 150 ms / 150 MiB targets. Read the [measurement conditions](docs/performance.md).
@@ -159,6 +167,7 @@ retries, and restart a long-lived MCP process after configuration changes.
 - [Product and architecture](docs/project-overview.md) — how the pieces fit together.
 - [Specification](docs/spec.md) and [interface contract](docs/interfaces.md).
 - [Acceptance evidence](docs/acceptance.json), [quality gates](docs/quality.md), and [performance](docs/performance.md).
+- [Installed v0.1.1 QA and next-version priorities](docs/qa/native-homebrew-v0.1.1.md).
 - [Research](docs/research.md) and [implementation decisions](docs/decisions/0002-v0.1.md).
 - [Contributing](CONTRIBUTING.md) and [security](SECURITY.md).
 

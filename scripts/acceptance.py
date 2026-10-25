@@ -175,6 +175,20 @@ def exercise(binary):
         assert read(synthesis)["note"]["basis_outdated"] is True
         checks.append({"name": "changed-basis-signals-review-without-rewriting-synthesis", "criteria": ["A23", "A24"]})
 
+        # An external editor can add unknown metadata and annotations. Moving
+        # its source must update only paths, not decode/re-encode measurements.
+        fidelity = root / "03_Resources/fidelity.md"
+        fidelity_metadata = (
+            "sources:\n  # Preserve the measurement annotation\n"
+            "  - resource: 'retention.md' # Preserve path annotation\n"
+            "    measurement: 1234567890.123456789\n"
+            "    interval: 0.1234567890123456789\n"
+            "basis_revisions:\n  # Preserve basis annotation\n"
+            f"  - path: '{path}'\n"
+            f"    revision: '{read(path)['note']['revision']}'\n"
+            "    custom: {precision: 1.234567890123456789e+23} # Preserve flow\n"
+        )
+        fidelity.write_text("---\ntype: Synthesis\n" + fidelity_metadata + "---\n# Synthetic measurements\n")
         move = {"expected_revision": read(path)["note"]["revision"], "summary": "Archive synthetic decision",
                 "actor": "process:acceptance", "idempotency_key": "acceptance/archive-retention"}
         destination = "04_Archive/retention.md"
@@ -183,6 +197,10 @@ def exercise(binary):
         assert "../04_Archive/retention.md#retention" in (root / reference).read_text()
         assert destination in (root / synthesis).read_text()
         checks.append({"name": "move-maintains-incoming-link-and-anchor", "criteria": ["A13"]})
+        expected_fidelity = fidelity_metadata.replace("'retention.md'", "'../04_Archive/retention.md'")
+        expected_fidelity = expected_fidelity.replace(f"'{path}'", f"'{destination}'")
+        assert expected_fidelity in fidelity.read_text(), "move changed unknown values or YAML annotations"
+        checks.append({"name": "move-preserves-nested-provenance-comments-and-decimals", "criteria": ["A03", "A13"]})
 
         for unsafe in ("../sources/original.txt", str(original)):
             invoke("read", unsafe, "--raw", expected=None)

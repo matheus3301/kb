@@ -23,6 +23,7 @@ type codec struct{}
 type frontmatter struct {
 	header, body []byte
 	node         *yaml.Node
+	document     *yaml.Node
 	newline      string
 }
 
@@ -71,6 +72,7 @@ func splitFront(raw []byte) (frontmatter, error) {
 				return f, fault("INVALID_YAML", "frontmatter must be a mapping")
 			}
 			f.node = doc.Content[0]
+			f.document = &doc
 			count, aliases := 0, 0
 			if err := checkNode(f.node, 0, &count, &aliases, map[*yaml.Node]bool{}); err != nil {
 				return f, err
@@ -147,6 +149,11 @@ func nodeValue(n *yaml.Node) any {
 	}
 	if n.Tag == "!!timestamp" {
 		return n.Value
+	}
+	if n.Tag == "!!float" {
+		if number, ok := decimalNumber(n.Value); ok {
+			return number
+		}
 	}
 	var value any
 	if err := n.Decode(&value); err != nil {
@@ -372,6 +379,11 @@ func errorsJoin(a, b error) error {
 // patchHeader replaces only changed top-level entries in block mappings.
 // Untouched key spans retain their original bytes, including comments and style.
 func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool) ([]byte, error) {
+	var err error
+	f, err = patchHeaderScalars(f, changes)
+	if err != nil {
+		return nil, err
+	}
 	if len(changes) == 0 && len(removes) == 0 {
 		return f.header, nil
 	}
@@ -383,14 +395,11 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 				continue
 			}
 			if x, ok := changes[k.Value]; ok {
-				var node yaml.Node
-				if err := encodeValue(&node, x); err != nil {
+				node, err := updatedNode(v, x)
+				if err != nil {
 					return nil, err
 				}
-				node.HeadComment = v.HeadComment
-				node.LineComment = v.LineComment
-				node.FootComment = v.FootComment
-				v = &node
+				v = node
 				delete(changes, k.Value)
 			}
 			content = append(content, k, v)
@@ -403,38 +412,47 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 			content = append(content, &yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: k}, &v)
 		}
 		f.node.Content = content
-		encoded, err := encodeNode(f.node)
+		node := f.node
+		if f.document != nil {
+			node = f.document
+		}
+		encoded, err := encodeNode(node)
 		if err != nil {
 			return nil, err
 		}
 		return []byte(strings.ReplaceAll(string(encoded), "\n", f.newline)), nil
 	}
 	lines := strings.SplitAfter(string(f.header), "\n")
+	footer := len(lines)
+	if f.document != nil {
+		footer = beforeHeaderComment(lines, footer, f.document.FootComment)
+		for footer > 0 && strings.TrimSpace(lines[footer-1]) == "" {
+			footer--
+		}
+	}
 	var out strings.Builder
 	cursor := 0
 	for i := 0; i < len(f.node.Content); i += 2 {
 		key, value := f.node.Content[i], f.node.Content[i+1]
 		start := key.Line - 1
-		end := len(lines)
+		end := footer
 		if i+2 < len(f.node.Content) {
-			end = f.node.Content[i+2].Line - 1
+			next := f.node.Content[i+2]
+			end = beforeHeaderComment(lines, next.Line-1, next.HeadComment)
 		}
-		for end > start+1 {
-			t := strings.TrimSpace(lines[end-1])
-			if t == "" || strings.HasPrefix(t, "#") {
-				end--
-			} else {
-				break
-			}
+		for end > start+1 && strings.TrimSpace(lines[end-1]) == "" {
+			end--
 		}
 		out.WriteString(strings.Join(lines[cursor:start], ""))
 		if x, ok := changes[key.Value]; ok && !removes[key.Value] {
-			var v yaml.Node
-			if err := encodeValue(&v, x); err != nil {
+			v, err := updatedNode(value, x)
+			if err != nil {
 				return nil, err
 			}
-			v.LineComment = value.LineComment
-			mapping := &yaml.Node{Kind: yaml.MappingNode, Content: []*yaml.Node{{Kind: yaml.ScalarNode, Tag: "!!str", Value: key.Value}, &v}}
+			// Leading comments are already in the retained prefix above this key.
+			encodedKey := *key
+			encodedKey.HeadComment = ""
+			mapping := &yaml.Node{Kind: yaml.MappingNode, Content: []*yaml.Node{&encodedKey, v}}
 			encoded, err := encodeNode(mapping)
 			if err != nil {
 				return nil, err
@@ -446,7 +464,7 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 		}
 		cursor = end
 	}
-	out.WriteString(strings.Join(lines[cursor:], ""))
+	out.WriteString(strings.Join(lines[cursor:footer], ""))
 	for _, k := range sortedKeys(changes) {
 		if removes[k] {
 			continue
@@ -462,7 +480,20 @@ func patchHeader(f frontmatter, changes map[string]any, removes map[string]bool)
 		}
 		out.WriteString(strings.ReplaceAll(string(encoded), "\n", f.newline))
 	}
+	out.WriteString(strings.Join(lines[footer:], ""))
 	return []byte(out.String()), nil
+}
+
+// Comments owned by the next key or the document remain outside this entry's
+// replacement. Its own foot comments are emitted once with the retained nodes.
+func beforeHeaderComment(lines []string, end int, comment string) int {
+	if comment == "" {
+		return end
+	}
+	for end > 0 && strings.TrimSpace(lines[end-1]) == "" {
+		end--
+	}
+	return max(0, end-strings.Count(comment, "\n")-1)
 }
 func sortedKeys(m map[string]any) []string {
 	keys := make([]string, 0, len(m))
