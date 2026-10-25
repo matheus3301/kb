@@ -23,7 +23,9 @@ func health(snap api.Snapshot) []api.Diagnostic {
 			continue
 		}
 		if !link.Resolved {
-			ds = append(ds, diagnostic(link.From, "BROKEN_LINK", "unresolved reference: "+link.To, "advisories"))
+			d := diagnostic(link.From, "BROKEN_LINK", "unresolved reference: "+link.To, "advisories")
+			d.Line = link.Line
+			ds = append(ds, d)
 		} else {
 			incoming[link.To] = true
 			if path.Base(link.From) == "index.md" {
@@ -56,15 +58,36 @@ func (s *Store) Validate(ctx context.Context, profile string) (api.ValidationRep
 	if profile != "okf" && profile != "health" {
 		return api.ValidationReport{}, fault("INVALID_INPUT", "validation profile must be okf or health")
 	}
-	snap, err := s.readSnapshot(ctx)
-	if err != nil {
-		return api.ValidationReport{}, err
+	var report api.ValidationReport
+	err := s.locked(ctx, func(r *os.Root) error {
+		snap, err := s.snapshot(ctx, r)
+		if err != nil {
+			return err
+		}
+		ds := append([]api.Diagnostic(nil), snap.Diagnostics...)
+		if profile == "health" {
+			// Asset presence is checked without reading or indexing its content.
+			// Keep the cached concept graph immutable and scoped to Markdown.
+			snap.Links = append([]api.Link(nil), snap.Links...)
+			for i, link := range snap.Links {
+				if !link.External && !link.Resolved && s.assetExists(r, link.To) {
+					snap.Links[i].Resolved = true
+				}
+			}
+			ds = append(ds, health(snap)...)
+		}
+		report = validationReport(profile, snap.Generation, ds, snap.Files)
+		return nil
+	})
+	return report, err
+}
+
+func (s *Store) assetExists(r *os.Root, name string) bool {
+	if strings.HasSuffix(strings.ToLower(name), ".md") || !s.included(name) || safePath(r, name, false) != nil {
+		return false
 	}
-	ds := append([]api.Diagnostic(nil), snap.Diagnostics...)
-	if profile == "health" {
-		ds = append(ds, health(snap)...)
-	}
-	return api.ValidationReport{Profile: profile, Generation: snap.Generation, Conformant: !hasErrors(snap.Diagnostics), Diagnostics: ds}, nil
+	info, err := r.Lstat(name)
+	return err == nil && info.Mode().IsRegular()
 }
 
 // Rebuild updates only disposable cache data under the shared base lock.
@@ -201,7 +224,7 @@ func (s *Store) Export(ctx context.Context, destination string) (api.ExportResul
 		manifest := struct {
 			api.ExportResult
 			Report api.ValidationReport
-		}{result, api.ValidationReport{Profile: "okf", Generation: snap.Generation, Conformant: result.Conformant, Diagnostics: snap.Diagnostics}}
+		}{result, validationReport("okf", snap.Generation, snap.Diagnostics, snap.Files)}
 		raw, err := json.MarshalIndent(manifest, "", "  ")
 		if err != nil {
 			return err

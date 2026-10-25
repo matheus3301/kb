@@ -212,7 +212,11 @@ Review preview diffs before applying within the task's authorization. Previewing
 reserves no files. Normal writes require a conformant base; an explicitly intended
 repair uses `apply --repair`, full replacement content, and current revisions.
 Preview the repair too. The final base must be conformant; repair does not bypass
-path or size policy.
+path or size policy. For bounded adoption of an existing collection, see the
+[agent repair workflow](../skills/knowledge-base/references/repair.md):
+`apply --repair --incremental` accepts existing-file patches, requires each changed
+file valid and reduces errors while preserving untouched invalid notes. Receipts
+include `repair_progress`; revalidate between batches.
 
 An uncertain outcome should be retried with the **identical request and key**.
 Completed requests replay without duplicate effects. A changed request needs a
@@ -224,6 +228,7 @@ merely replace the revision token to overwrite concurrent changes.
 ```sh
 kb validate --profile okf
 kb validate --profile health
+kb validate --profile health --strict
 kb maintain --dry-run
 kb maintain --apply
 kb index rebuild
@@ -236,6 +241,7 @@ kb export ./example-export
 | --- | --- |
 | `validate --profile okf` | Check format/policy conformance; no semantic certification. |
 | `validate --profile health` | Add structural, link, and synthesis-dependency findings. |
+| `validate --profile health --strict` | Exit 1 for any error or warning; inspect `clean` and diagnostic counts. |
 | `maintain` | Preview managed navigation by default; `--apply` publishes it, preserving manual content. |
 | `index rebuild` | Rebuild disposable derived search state. |
 | `recover` | Inspect with `--dry-run`, then recover a pending journal when authorized. |

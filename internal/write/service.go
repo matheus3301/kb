@@ -120,6 +120,9 @@ func digestPlan(plan api.Plan) (string, error) {
 }
 
 func (s *Service) Apply(ctx context.Context, plan api.Plan) (api.Receipt, error) {
+	if plan.Incremental && !plan.Repair {
+		return api.Receipt{}, problem("INVALID_PLAN", "incremental requires explicit repair mode")
+	}
 	if len(plan.Operations) < 1 || len(plan.Operations) > api.MaxOperations || strings.TrimSpace(plan.IdempotencyKey) == "" || strings.TrimSpace(plan.Actor) == "" || strings.TrimSpace(plan.Summary) == "" {
 		return api.Receipt{}, problem("INVALID_PLAN", "one to fifty operations, actor, summary and idempotency_key are required")
 	}
@@ -160,16 +163,28 @@ func (s *Service) Apply(ctx context.Context, plan api.Plan) (api.Receipt, error)
 		if err != nil {
 			return api.Receipt{}, err
 		}
+		if plan.Incremental {
+			for _, d := range snapshot.Diagnostics {
+				if _, examined := snapshot.Files[d.Path]; blocking(d) && !examined {
+					return api.Receipt{}, problem("INVALID_FRONTMATTER", "incremental repair requires a complete readable inventory; resolve scan errors first")
+				}
+			}
+		}
 		before, after, warnings, err := s.prepare(root, snapshot, plan)
 		if err != nil {
 			return api.Receipt{}, err
 		}
-		return s.publish(ctx, root, before, after, plan.IdempotencyKey, digest, plan.DryRun, warnings)
+		var progress *api.RepairProgress
+		if plan.Incremental {
+			remaining := s.errorCount(after)
+			progress = &api.RepairProgress{ErrorsBefore: s.errorCount(before), ErrorsRemaining: remaining, Conformant: remaining == 0}
+		}
+		return s.publish(ctx, root, before, after, plan.IdempotencyKey, digest, plan.DryRun, warnings, progress)
 	})
 }
 
-func (s *Service) publish(ctx context.Context, root *os.Root, before, after map[string][]byte, key, digest string, dryRun bool, warnings []api.Diagnostic) (api.Receipt, error) {
-	receipt := api.Receipt{IdempotencyKey: key, Generation: api.Generation(after), DryRun: dryRun, Changes: []api.Change{}, Warnings: warnings}
+func (s *Service) publish(ctx context.Context, root *os.Root, before, after map[string][]byte, key, digest string, dryRun bool, warnings []api.Diagnostic, progress *api.RepairProgress) (api.Receipt, error) {
+	receipt := api.Receipt{IdempotencyKey: key, Generation: api.Generation(after), DryRun: dryRun, Changes: []api.Change{}, Warnings: warnings, RepairProgress: progress}
 	paths := map[string]bool{}
 	for name := range before {
 		paths[name] = true

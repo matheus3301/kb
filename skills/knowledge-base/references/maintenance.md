@@ -10,7 +10,9 @@ kb validate --profile health
 
 `okf` checks format/policy conformance. `health` adds structural/reference and
 synthesis-dependency findings. A validation request may succeed (`ok: true`) with
-`data.conformant: false` and CLI exit 1. Inspect diagnostics, not only `ok`.
+`data.conformant: false` and CLI exit 1. Inspect diagnostics, not only `ok`. Reports also expose `clean` and
+`summary.errors/warnings`; `--strict` exits 1 for warnings too. For a degraded
+collection, follow [Repair](repair.md) to correct notes in bounded batches.
 
 Review outdated synthesis by reading its claims and current source notes. Changed
 basis revisions and stale timestamps flag a review need; they do not prove the

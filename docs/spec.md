@@ -4,7 +4,7 @@ title: KB — Knowledge Base specification
 description: Normative specification v0.3 for the experimental Knowledge Base, OKF notes, maintenance, and CLI/MCP interfaces.
 tags: [okf, para, cli, mcp, memory, specification]
 status: stable
-implementation_version: "0.1.3"
+implementation_version: "0.3.0"
 implementation_status: experimental
 spec_version: "0.3"
 sources:
@@ -267,8 +267,15 @@ presenting it as a valid concept.
 
 Normal writes require a conformant base before and after the operation. An explicit
 `apply --repair` plan permits fixing a degraded base with preview and revalidation;
-it does not invent metadata or automatically convert notes. Migrating an
-existing collection may be a separate task but does not constrain the core design.
+it does not invent metadata or automatically convert notes. The explicit incremental mode defined in [decision 0004](decisions/0004-incremental-repair.md)
+permits bounded existing-file patches while unrelated invalid files remain intact.
+Each changed file must conform, and each batch reduces errors while any remain.
+This is an agent-driven correction workflow, not automatic conversion.
+
+Diagnostics retain compatibility codes and expose specific stable rules, severity,
+correction hints, readable file revisions and field/line locations when known.
+Validation reports error/warning counts and `clean` separately from `conformant`;
+`validate --strict` also exits 1 for warnings.
 
 Separate `conformance_errors`, `policy_findings`, and `advisories`. A broken
 link or missing description, for example, is not a normative OKF error. A local
@@ -365,7 +372,9 @@ a concept updates known references and these paths in the same plan.
 deterministic checks: broken links, orphans, pages missing from indexes, source
 coverage, syntheses with changed bases, and temporal validity. Types that need
 no external source can be configured; missing provenance does not prove falsity.
-Health warnings do not block writes solely because they exist.
+Health warnings do not block writes solely because they exist. For non-Markdown
+local assets, health checks only scoped regular-file presence without following
+symlinks, reading/indexing asset bytes or validating asset fragments.
 
 The agent analyzes contradictions, conceptual gaps, and research questions using
 exposed context and relationships. The core does not claim BM25, link counts,
@@ -502,7 +511,7 @@ may have its ID generated. `body` and `body_edits` are mutually exclusive.
 Creation uses `metadata`; patches use `metadata_patch` and explicit
 `remove_metadata_keys`. A complete-file `document` replacement is accepted only
 by an explicit `repair: true` plan (`apply --repair`); repair permits an invalid
-pre-state but requires a conformant final state. Initial limit: 50 operations and 4 MiB per plan.
+pre-state but requires a conformant final state unless explicit incremental repair is selected. Initial limit: 50 operations and 4 MiB per plan.
 `--dry-run` returns affected files, bounded diffs, diagnostics, and revisions
 without writing.
 
@@ -748,7 +757,7 @@ The journal uses prepared/committed states and a durable commit marker. Recovery
 rolls back before commit and rolls forward afterward; receipts do not expire.
 Reads return `RECOVERY_REQUIRED` without changing notes; recovery is explicit
 or precedes a new mutation. `apply --repair` permits an invalid pre-state but
-requires a conformant final state within operational limits. First init selects
+requires a conformant final state unless explicit incremental repair is selected within operational limits. First init selects
 an explicit root, `KB_ROOT`, or the current directory. Workdir integration
 remains explicit, with no required AGENTS.md inside the knowledge bundle.
 

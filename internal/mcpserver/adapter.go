@@ -62,6 +62,7 @@ type SingleInput struct {
 
 type ValidateInput struct {
 	Profile string `json:"profile,omitempty"`
+	Strict  bool   `json:"strict,omitempty"`
 }
 type LinksInput struct {
 	Path      string `json:"path"`
@@ -362,7 +363,9 @@ func (a *Adapter) dispatch(ctx context.Context, action string, raw []byte) (any,
 		if r.Profile == "" {
 			r.Profile = "okf"
 		}
-		return a.Reader.Validate(ctx, r.Profile)
+		report, err := a.Reader.Validate(ctx, r.Profile)
+		report.Strict = r.Strict
+		return report, err
 	case "export":
 		var r ExportInput
 		if err := Decode(raw, &r); err != nil {
@@ -434,7 +437,7 @@ func (a *Adapter) apply(ctx context.Context, p api.Plan) (api.Receipt, error) {
 // ExitCode maps stable domain categories to the documented CLI process status.
 func ExitCode(e Envelope) int {
 	if e.OK {
-		if v, ok := e.Data.(api.ValidationReport); ok && !v.Conformant {
+		if v, ok := e.Data.(api.ValidationReport); ok && (!v.Conformant || v.Strict && !v.Clean) {
 			return 1
 		}
 		return 0

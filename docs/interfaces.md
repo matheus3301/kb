@@ -171,3 +171,18 @@ multilingual search fixtures are labeled synthetic, not user data.
 
 Every acceptance claim references actual tests and recorded evidence. Performance
 targets remain measurements to run, never claims inferred from a green CI build.
+
+## Incremental repair and validation (v0.3.0)
+
+`api.Plan.incremental` requires `repair: true` and accepts patches to existing
+files only. Every changed file must conform; unchanged invalid files remain
+byte-identical, and blocking errors must decrease while any remain. The default
+repair path still requires a conformant whole-base final state. Receipt
+`repair_progress` records error counts and conformance at that transaction,
+including preview, recovery and replay. Revalidate for current state.
+
+Validation includes `clean`, `summary.errors/warnings`, and actionable diagnostics
+with stable `rule`, `severity`, `hint`, optional `field`/`line`, and readable file
+`revision`. Compatibility `code` and `layer` remain. `strict: true` changes the
+CLI-equivalent exit criterion to require no warnings; it does not redefine
+format conformance. Both transports use the same DTOs and diagnostics.

@@ -241,7 +241,9 @@ Recovery rolls back before a durable commit marker and rolls forward afterward.
 Reads may create operational lock/cache files but never modify notes, config,
 or Git. For an invalid base, an explicit `apply --repair` plan may replace a
 complete `document`, with an expected revision, and must leave the final base
-conformant. Preview repair with `--dry-run`; it never invents missing metadata.
+conformant by default. For collections requiring multiple batches, use the
+[agent repair workflow](../skills/knowledge-base/references/repair.md) with explicit
+`--repair --incremental`. Preview repair with `--dry-run`; it never invents missing metadata.
 
 ## Validate format and inspect health
 

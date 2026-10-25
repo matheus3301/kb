@@ -29,7 +29,7 @@ type frontmatter struct {
 
 func fault(code, message string) error { return &api.DomainError{Code: code, Message: message} }
 func diagnostic(p, code, message, layer string) api.Diagnostic {
-	return api.Diagnostic{Path: p, Code: code, Message: message, Layer: layer}
+	return enrichDiagnostic(api.Diagnostic{Path: p, Code: code, Message: message, Layer: layer})
 }
 func reserved(p string) bool { return path.Base(p) == "index.md" || path.Base(p) == "log.md" }
 
@@ -175,14 +175,35 @@ func (codec) Parse(p string, raw []byte) (api.Note, []api.Diagnostic) {
 		if strings.Contains(err.Error(), "METADATA_KEY_POLICY") {
 			layer = "policy_findings"
 		}
-		return n, []api.Diagnostic{diagnostic(p, "INVALID_NOTE", err.Error(), layer)}
+		d := diagnostic(p, "INVALID_NOTE", err.Error(), layer)
+		if d.Rule == "MISSING_FRONTMATTER" {
+			d.Line = 1
+		}
+		return n, []api.Diagnostic{d}
 	}
 	n.Body = string(f.body)
 	n.Metadata = nodeValue(f.node).(map[string]any)
 	var ds []api.Diagnostic
 	add := func(code, msg, layer string) {
 		if len(ds) < 64 {
-			ds = append(ds, diagnostic(p, code, msg, layer))
+			d := diagnostic(p, code, msg, layer)
+			field, _, _ := strings.Cut(msg, " ")
+			field = strings.TrimPrefix(field, "source.")
+			if strings.HasPrefix(msg, "source.") {
+				field = "sources"
+			}
+			for i := 0; i < len(f.node.Content); i += 2 {
+				key := f.node.Content[i]
+				if key.Value == strings.Split(field, ".")[0] {
+					d.Field = field
+					d.Line = key.Line + 1
+					break
+				}
+			}
+			if code == "MISSING_TYPE" {
+				d.Field = "type"
+			}
+			ds = append(ds, d)
 		}
 	}
 	m := n.Metadata

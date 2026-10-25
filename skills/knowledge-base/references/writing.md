@@ -163,7 +163,9 @@ preview and execute the same plan; honor any task-specific approval requirement.
 
 An explicitly intended repair uses `kb apply --repair --input repair.json
 --dry-run`, then the same command without `--dry-run`. Supply full replacement
-content and current revisions; the final base must be conformant. Repair does
+content and current revisions; by default the final base must be conformant.
+For an authorized collection-wide adoption, [Repair](repair.md) explains
+`--repair --incremental`, progress receipts, and iterative validation. Repair does
 not relax size, path, concurrency, or read-only constraints. Verify intended
 content, provenance, and `kb validate` results after writes; report remaining
 uncertainty rather than treating health as semantic approval.

@@ -1,0 +1,39 @@
+{
+  "status": "targeted_regressions_and_full_quality_checks_passed",
+  "candidate_version": "v0.3.0",
+  "date": "2026-10-25",
+  "fixtures": "Synthetic only; no private collection data",
+  "checks": [
+    "53 invalid notes repaired through installed command handlers and real MCP transport in bounded plans",
+    "CLI/MCP diagnostic, preview and strict-health parity",
+    "Replay preserves progress and avoids duplicate effects",
+    "Exact original Markdown bodies preserved by explicit header-only replacement",
+    "Normal/default-repair rejection, stale revisions, invalid replacements and nonprogressing plans",
+    "Recovery at prepared, published, committed, receipt and removed boundaries",
+    "Concurrent incremental writers serialize with one CAS conflict",
+    "Invalid reserved navigation retained with explicit deferred-maintenance warning",
+    "Incomplete inventory and regressions on changed files rejected",
+    "Health recognizes existing scoped regular non-Markdown assets without reading content, following symlinks or widening read access"
+  ],
+  "commands": [
+    "go test ./cmd/kb -run 'TestHealthChecks|TestAgentRepairLoop|TestRepairRejects|TestStrictHealth' -count=1",
+    "go test -race ./internal/write -run Incremental -count=1",
+    "make check",
+    "uv run --with pyyaml python /path/to/skill-creator/scripts/quick_validate.py skills/knowledge-base"
+  ],
+  "limits": [
+    "These checks are targeted behavioral evidence, not proof of universal crash isolation or semantic truth",
+    "Incremental repair is patch-only and retains existing size, root, access, revision and recovery limits",
+    "Search omits invalid notes until explicitly repaired",
+    "Health warnings can require evidence or human decisions rather than mechanical correction"
+  ],
+  "quality_gates": [
+    "repository and workflow checks",
+    "Go static analysis and modules",
+    "race/shuffled tests and coverage threshold",
+    "Linux/macOS amd64/arm64 cross-builds",
+    "all discovered fuzz smoke targets",
+    "secret and vulnerability scans",
+    "real CLI acceptance and 43 executable documentation requests"
+  ]
+}

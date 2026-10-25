@@ -293,6 +293,9 @@ func (r *runner) dataCommand(action string) *cobra.Command {
 		stringsFlags["direction"] = "both"
 	case "validate":
 		stringsFlags["profile"] = "okf"
+		boolFlags["strict"] = false
+	case "apply":
+		boolFlags["incremental"] = false
 	}
 	for name, value := range stringsFlags {
 		cmd.Flags().String(name, value, "Request "+name)
