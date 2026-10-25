@@ -1,0 +1,2636 @@
+{
+  "assessment_date": "2026-10-25",
+  "installed_build": {
+    "commit": "9ed4f17894f094cfdb5a169aea9c147789e93de3",
+    "version": "v0.1.1"
+  },
+  "installation": {
+    "channel": "Homebrew",
+    "formula": "matheus3301/tap/kb",
+    "formula_version": "0.1.1",
+    "formula_test": "passed",
+    "native_binary_sha256": "cec0360c0c1a61f84a47caf69a0360f7270880d1c79a1d1f35347855ee663a1c"
+  },
+  "environment": {
+    "os": "macOS 26.6.2",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "ram_gib": 16
+  },
+  "decision": "retain experimental status; fix QA-01 and QA-02 before graduation",
+  "counts": {
+    "retrieval": {
+      "limitation": 4,
+      "pass": 126
+    },
+    "editing": {
+      "fail": 3,
+      "pass": 47
+    },
+    "concurrency": {
+      "pass": 45,
+      "untested": 2
+    },
+    "integration": {
+      "pass": 32
+    }
+  },
+  "counting_note": "Assertions and scenario checks, not independent user journeys. Retrieval includes 30 result-total oracle assertions from timed calls. Raw timing samples add no extra checks. Independent reproductions and filename/title probes are excluded from lane totals.",
+  "lanes": {
+    "retrieval": [
+      {
+        "name": "fixture inventory conforms",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "ranking title exceeds body",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "ranking tags exceeds body",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "ranking description exceeds body",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "ranking path exceeds body",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "repeated ranking deterministic",
+        "status": "pass",
+        "expected": [
+          "03_Resources/title.md",
+          "03_Resources/tag.md",
+          "03_Resources/quartzbeam.md",
+          "03_Resources/description.md",
+          "03_Resources/body.md"
+        ],
+        "actual": [
+          "03_Resources/title.md",
+          "03_Resources/tag.md",
+          "03_Resources/quartzbeam.md",
+          "03_Resources/description.md",
+          "03_Resources/body.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "no match returns empty",
+        "status": "pass",
+        "expected": [],
+        "actual": [],
+        "contract": true
+      },
+      {
+        "name": "ties ordered by path",
+        "status": "pass",
+        "expected": [
+          "03_Resources/tie-a.md",
+          "03_Resources/tie-b.md",
+          "03_Resources/tie-c.md"
+        ],
+        "actual": [
+          "03_Resources/tie-a.md",
+          "03_Resources/tie-b.md",
+          "03_Resources/tie-c.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "tie order deterministic",
+        "status": "pass",
+        "expected": [
+          "03_Resources/tie-a.md",
+          "03_Resources/tie-b.md",
+          "03_Resources/tie-c.md"
+        ],
+        "actual": [
+          "03_Resources/tie-a.md",
+          "03_Resources/tie-b.md",
+          "03_Resources/tie-c.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "Portuguese query memoria",
+        "status": "pass",
+        "expected": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "actual": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "Portuguese query memória",
+        "status": "pass",
+        "expected": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "actual": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "Portuguese query MEMÓRIA",
+        "status": "pass",
+        "expected": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "actual": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "Portuguese query MEMORIA",
+        "status": "pass",
+        "expected": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "actual": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "NFD query equivalence",
+        "status": "pass",
+        "expected": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "actual": [
+          "03_Resources/context.md",
+          "03_Resources/decomposed.md",
+          "03_Resources/portuguese.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "identifier s3",
+        "status": "pass",
+        "expected": [
+          "03_Resources/portuguese.md"
+        ],
+        "actual": [
+          "03_Resources/portuguese.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "identifier k8s",
+        "status": "pass",
+        "expected": [
+          "03_Resources/portuguese.md"
+        ],
+        "actual": [
+          "03_Resources/portuguese.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "identifier crossplane",
+        "status": "pass",
+        "expected": [
+          "03_Resources/portuguese.md"
+        ],
+        "actual": [
+          "03_Resources/portuguese.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "Unicode 東京",
+        "status": "limitation",
+        "expected": [
+          "03_Resources/japanese.md"
+        ],
+        "actual": [],
+        "contract": false
+      },
+      {
+        "name": "Unicode μνήμη",
+        "status": "pass",
+        "expected": [
+          "03_Resources/greek.md"
+        ],
+        "actual": [
+          "03_Resources/greek.md"
+        ],
+        "contract": false
+      },
+      {
+        "name": "Unicode 🚀",
+        "status": "limitation",
+        "expected": [
+          "03_Resources/emoji.md"
+        ],
+        "actual": [],
+        "contract": false
+      },
+      {
+        "name": "default archive and deprecated exclusion",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md",
+          "03_Resources/green.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md",
+          "03_Resources/green.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "opt in archives",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md",
+          "03_Resources/green.md",
+          "04_Archive/archived.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md",
+          "03_Resources/green.md",
+          "04_Archive/archived.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "opt in deprecated",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md",
+          "03_Resources/deprecated.md",
+          "03_Resources/green.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md",
+          "03_Resources/deprecated.md",
+          "03_Resources/green.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "tags OR within list",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "different fields AND",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "type OR within list",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md",
+          "03_Resources/green.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md",
+          "02_Areas/red.md",
+          "03_Resources/green.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "PARA filter",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "prefix filter",
+        "status": "pass",
+        "expected": [
+          "02_Areas/red.md"
+        ],
+        "actual": [
+          "02_Areas/red.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "sources true",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "sources false",
+        "status": "pass",
+        "expected": [
+          "02_Areas/red.md",
+          "03_Resources/green.md"
+        ],
+        "actual": [
+          "02_Areas/red.md",
+          "03_Resources/green.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "trust human reviewed",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "trust machine confirmed",
+        "status": "pass",
+        "expected": [
+          "02_Areas/red.md"
+        ],
+        "actual": [
+          "02_Areas/red.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "stale true",
+        "status": "pass",
+        "expected": [
+          "01_Projects/blue.md"
+        ],
+        "actual": [
+          "01_Projects/blue.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "stale false",
+        "status": "pass",
+        "expected": [
+          "02_Areas/red.md",
+          "03_Resources/green.md"
+        ],
+        "actual": [
+          "02_Areas/red.md",
+          "03_Resources/green.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "cursor walk complete no duplicates",
+        "status": "pass",
+        "expected": [
+          "03_Resources/page-00.md",
+          "03_Resources/page-01.md",
+          "03_Resources/page-02.md",
+          "03_Resources/page-03.md",
+          "03_Resources/page-04.md",
+          "03_Resources/page-05.md",
+          "03_Resources/page-06.md",
+          "03_Resources/page-07.md",
+          "03_Resources/page-08.md",
+          "03_Resources/page-09.md",
+          "03_Resources/page-10.md",
+          "03_Resources/page-11.md",
+          "03_Resources/page-12.md"
+        ],
+        "actual": [
+          "03_Resources/page-00.md",
+          "03_Resources/page-01.md",
+          "03_Resources/page-02.md",
+          "03_Resources/page-03.md",
+          "03_Resources/page-04.md",
+          "03_Resources/page-05.md",
+          "03_Resources/page-06.md",
+          "03_Resources/page-07.md",
+          "03_Resources/page-08.md",
+          "03_Resources/page-09.md",
+          "03_Resources/page-10.md",
+          "03_Resources/page-11.md",
+          "03_Resources/page-12.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "cursor binds query",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "cursor binds filters",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "cursor binds limit",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": false
+      },
+      {
+        "name": "invalid cursor nonsense",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "invalid cursor e30=",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "invalid cursor eyJvZmZzZXQiOi0xfQ",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "cursor invalidated by new note",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "fresh process observes preserved-mtime edit",
+        "status": "pass",
+        "expected": [
+          "03_Resources/fresh.md"
+        ],
+        "actual": [
+          "03_Resources/fresh.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "fresh process removes stale term",
+        "status": "pass",
+        "expected": [],
+        "actual": [],
+        "contract": true
+      },
+      {
+        "name": "fresh process observes deletion",
+        "status": "pass",
+        "expected": [],
+        "actual": [],
+        "contract": true
+      },
+      {
+        "name": "read explicit line range",
+        "status": "pass",
+        "expected": "## Alpha\nalpha sentinel\nsecond alpha line",
+        "actual": "## Alpha\nalpha sentinel\nsecond alpha line",
+        "contract": true
+      },
+      {
+        "name": "read range coordinates",
+        "status": "pass",
+        "expected": [
+          7,
+          9
+        ],
+        "actual": [
+          7,
+          9
+        ],
+        "contract": true
+      },
+      {
+        "name": "read unique section content",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "read repeated heading ambiguity",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "read invalid selection --line-start 10 --line-end 2",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "read invalid selection --line-start -1",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "read invalid selection --section Missing",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 16/100 accepts request",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 16/100 token bound",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 16/100 text byte bound",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 16/100 estimator identified",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 50/1000 accepts request",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 50/1000 token bound",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 50/1000 text byte bound",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 50/1000 estimator identified",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 50/1000 revision citation",
+        "status": "pass",
+        "expected": "sha256:57b1b2bbd6baccf539cc5e3e21f9cd66cb15a6e4f22488dd256739c0c747c975",
+        "actual": "sha256:57b1b2bbd6baccf539cc5e3e21f9cd66cb15a6e4f22488dd256739c0c747c975",
+        "contract": true
+      },
+      {
+        "name": "context 50/1000 source range valid",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 200/4096 accepts request",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 200/4096 token bound",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 200/4096 text byte bound",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 200/4096 estimator identified",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 200/4096 revision citation",
+        "status": "pass",
+        "expected": "sha256:57b1b2bbd6baccf539cc5e3e21f9cd66cb15a6e4f22488dd256739c0c747c975",
+        "actual": "sha256:57b1b2bbd6baccf539cc5e3e21f9cd66cb15a6e4f22488dd256739c0c747c975",
+        "contract": true
+      },
+      {
+        "name": "context 200/4096 source range valid",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 2000/262144 accepts request",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 2000/262144 token bound",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 2000/262144 text byte bound",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 2000/262144 estimator identified",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context 2000/262144 revision citation",
+        "status": "pass",
+        "expected": "sha256:57b1b2bbd6baccf539cc5e3e21f9cd66cb15a6e4f22488dd256739c0c747c975",
+        "actual": "sha256:57b1b2bbd6baccf539cc5e3e21f9cd66cb15a6e4f22488dd256739c0c747c975",
+        "contract": true
+      },
+      {
+        "name": "context 2000/262144 source range valid",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "large read bounded success",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "read whole envelope 256KiB ceiling",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "literal Unicode 東京",
+        "status": "limitation",
+        "expected": [
+          "03_Resources/japanese.md"
+        ],
+        "actual": [],
+        "contract": false
+      },
+      {
+        "name": "literal Unicode 🚀",
+        "status": "limitation",
+        "expected": [
+          "03_Resources/emoji.md"
+        ],
+        "actual": [],
+        "contract": false
+      },
+      {
+        "name": "read explicit section #repeat",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "read explicit section #repeat-1",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "search snippet coordinates quartzbeam 03_Resources/body.md 5",
+        "status": "pass",
+        "expected": "quartzbeam",
+        "actual": "quartzbeam",
+        "contract": true
+      },
+      {
+        "name": "search snippet coordinates memoria 03_Resources/context.md 5",
+        "status": "pass",
+        "expected": "budgetprobe ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café 0",
+        "actual": "budgetprobe ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café 0",
+        "contract": true
+      },
+      {
+        "name": "search snippet coordinates memoria 03_Resources/context.md 6",
+        "status": "pass",
+        "expected": "budgetprobe ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café 1",
+        "actual": "budgetprobe ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café ação memória café 1",
+        "contract": true
+      },
+      {
+        "name": "search snippet coordinates memoria 03_Resources/portuguese.md 5",
+        "status": "pass",
+        "expected": "Memória, café e informação. s3 k8s crossplane.",
+        "actual": "Memória, café e informação. s3 k8s crossplane.",
+        "contract": true
+      },
+      {
+        "name": "search snippet coordinates memoria 03_Resources/decomposed.md 5",
+        "status": "pass",
+        "expected": "memória ação café informação",
+        "actual": "memória ação café informação",
+        "contract": true
+      },
+      {
+        "name": "search snippet coordinates alpha sentinel 03_Resources/sections.md 7",
+        "status": "pass",
+        "expected": "## Alpha",
+        "actual": "## Alpha",
+        "contract": true
+      },
+      {
+        "name": "search snippet coordinates alpha sentinel 03_Resources/sections.md 8",
+        "status": "pass",
+        "expected": "alpha sentinel",
+        "actual": "alpha sentinel",
+        "contract": true
+      },
+      {
+        "name": "cursor invalidated by search config",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "disabled accent folding removes unaccented match",
+        "status": "pass",
+        "expected": [],
+        "actual": [],
+        "contract": true
+      },
+      {
+        "name": "retrieval after CLI create",
+        "status": "pass",
+        "expected": [
+          "03_Resources/cli-fresh.md"
+        ],
+        "actual": [
+          "03_Resources/cli-fresh.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "retrieval after CLI patch",
+        "status": "pass",
+        "expected": [
+          "03_Resources/cli-fresh.md"
+        ],
+        "actual": [
+          "03_Resources/cli-fresh.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "patched original term disappears",
+        "status": "pass",
+        "expected": [],
+        "actual": [],
+        "contract": true
+      },
+      {
+        "name": "retrieval after CLI archive hidden",
+        "status": "pass",
+        "expected": [],
+        "actual": [],
+        "contract": true
+      },
+      {
+        "name": "retrieval after CLI archive included",
+        "status": "pass",
+        "expected": [
+          "04_Archive/cli-fresh.md"
+        ],
+        "actual": [
+          "04_Archive/cli-fresh.md"
+        ],
+        "contract": true
+      },
+      {
+        "name": "context cap accounts for all 120 matches",
+        "status": "pass",
+        "expected": 120,
+        "actual": 120,
+        "contract": true
+      },
+      {
+        "name": "context cap declares truncation",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context invalid budget --max-tokens -1",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context invalid budget --max-tokens 16001",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context invalid budget --max-bytes 262145",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "context invalid budget --max-bytes -1",
+        "status": "pass",
+        "expected": true,
+        "actual": true,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 unique00042 sample 0",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 unique00042 sample 1",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 unique00042 sample 2",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 unique00042 sample 3",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 unique00042 sample 4",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 no-match-nonce-zxqv sample 0",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 no-match-nonce-zxqv sample 1",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 no-match-nonce-zxqv sample 2",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 no-match-nonce-zxqv sample 3",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 100 no-match-nonce-zxqv sample 4",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 unique00042 sample 0",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 unique00042 sample 1",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 unique00042 sample 2",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 unique00042 sample 3",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 unique00042 sample 4",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 no-match-nonce-zxqv sample 0",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 no-match-nonce-zxqv sample 1",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 no-match-nonce-zxqv sample 2",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 no-match-nonce-zxqv sample 3",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 1000 no-match-nonce-zxqv sample 4",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 unique00042 sample 0",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 unique00042 sample 1",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 unique00042 sample 2",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 unique00042 sample 3",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 unique00042 sample 4",
+        "status": "pass",
+        "expected": 1,
+        "actual": 1,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 no-match-nonce-zxqv sample 0",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 no-match-nonce-zxqv sample 1",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 no-match-nonce-zxqv sample 2",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 no-match-nonce-zxqv sample 3",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      },
+      {
+        "name": "performance query oracle 5000 no-match-nonce-zxqv sample 4",
+        "status": "pass",
+        "expected": 0,
+        "actual": 0,
+        "contract": true
+      }
+    ],
+    "editing": [
+      {
+        "name": "body-only preserves untouched YAML and UTF-8",
+        "status": "pass",
+        "expected": "Comments, numeric lexemes, nested values, body presentation survive; verification invalidated"
+      },
+      {
+        "name": "metadata patch preserves unrelated YAML presentation",
+        "status": "pass",
+        "expected": "Only requested metadata plus generated/trust fields change"
+      },
+      {
+        "name": "CRLF targeted edit preserves line ending style",
+        "status": "pass",
+        "expected": "No bare LF is introduced into a CRLF note"
+      },
+      {
+        "name": "body no-op preserves all knowledge bytes",
+        "status": "pass",
+        "expected": "No source/index/log/config change and empty receipt changes"
+      },
+      {
+        "name": "metadata no-op preserves all knowledge bytes",
+        "status": "pass",
+        "expected": "No source/index/log/config change and empty receipt changes"
+      },
+      {
+        "name": "read returns exact large YAML integer",
+        "status": "pass",
+        "expected": "9007199254740993 is returned exactly"
+      },
+      {
+        "name": "create preserves large JSON integer",
+        "status": "pass",
+        "expected": "Top-level and nested 9007199254740993 remain exact"
+      },
+      {
+        "name": "metadata patch preserves large JSON integer",
+        "status": "pass",
+        "expected": "Top-level and nested 9007199254740993 remain exact"
+      },
+      {
+        "name": "read and index rebuild preserve knowledge/config",
+        "status": "pass",
+        "expected": "Read-only operations and cache rebuild change no notes/config/index/log bytes"
+      },
+      {
+        "name": "edit rejection ambiguous",
+        "status": "pass",
+        "expected": "Reject request with no note/index/log/config mutation"
+      },
+      {
+        "name": "edit rejection missing",
+        "status": "pass",
+        "expected": "Reject request with no note/index/log/config mutation"
+      },
+      {
+        "name": "edit rejection body-and-edits",
+        "status": "pass",
+        "expected": "Reject request with no note/index/log/config mutation"
+      },
+      {
+        "name": "edit rejection missing-revision",
+        "status": "pass",
+        "expected": "Reject request with no note/index/log/config mutation"
+      },
+      {
+        "name": "CAS and durable idempotent retries",
+        "status": "pass",
+        "expected": "Stale revision fails; identical retry replays after later edit; changed key content fails"
+      },
+      {
+        "name": "multi-file preview apply retry",
+        "status": "pass",
+        "expected": "Preview is pure; three operations succeed together with one log; retry is pure"
+      },
+      {
+        "name": "multi-file failure stale",
+        "status": "pass",
+        "expected": "Entire plan rejects before any source/config/receipt mutation"
+      },
+      {
+        "name": "multi-file failure bad-type",
+        "status": "pass",
+        "expected": "Entire plan rejects before any source/config/receipt mutation"
+      },
+      {
+        "name": "multi-file failure occupied",
+        "status": "pass",
+        "expected": "Entire plan rejects before any source/config/receipt mutation"
+      },
+      {
+        "name": "multi-file failure duplicate-id",
+        "status": "pass",
+        "expected": "Entire plan rejects before any source/config/receipt mutation"
+      },
+      {
+        "name": "multi-file failure late-missing-text",
+        "status": "pass",
+        "expected": "Entire plan rejects before any source/config/receipt mutation"
+      },
+      {
+        "name": "multi-file failure same-path",
+        "status": "pass",
+        "expected": "Entire plan rejects before any source/config/receipt mutation"
+      },
+      {
+        "name": "multi-file failure move-overlap",
+        "status": "pass",
+        "expected": "Entire plan rejects before any source/config/receipt mutation"
+      },
+      {
+        "name": "move updates references/provenance and preserves literals",
+        "status": "fail",
+        "expected": "Resolved incoming Markdown/provenance/basis paths change, anchor/manual/code/unknown metadata survive",
+        "actual": "---\ntype: Synthesis\ntitle: Referencing note\n# Preserve this comment\nunknown_id: 9007199254740993\nsources:\n  - custom: keep-me\n    locator: section 1\n    resource: 03_Resources/nested/topic.md\nbasis_revisions:\n  - path: 03_Resources/nested/topic.md\n    revision: sha256:89b0559039af129c3db20497f3d47a2ee4fab828640aaff9e9e225384c0f5eb2\ngenerated:\n  at: \"2026-10-25T04:08:38.123628Z\"\n  by: process:synthetic-qa\n---\n# Links\n\n[Topic](03_Resources/nested/topic.md#topic)\n[Root topic](/03_Resources/nested/topic.md)\n`[Literal](topic.md)`\n```markdown\n[Fenced literal](topic.md)\n```\n",
+        "details": null
+      },
+      {
+        "name": "move rebases outgoing links and preserves literals",
+        "status": "pass",
+        "expected": "Outgoing relative target remains resolved after changing directories"
+      },
+      {
+        "name": "archive collision is atomic",
+        "status": "pass",
+        "expected": "Occupied default archive destination rejects without source mutation"
+      },
+      {
+        "name": "archive rewrites incoming references",
+        "status": "pass",
+        "expected": "Note moves to default archive and incoming link is updated"
+      },
+      {
+        "name": "manual index survives writes and maintenance",
+        "status": "pass",
+        "expected": "Manual intro/link/appendix survive generated-region maintenance"
+      },
+      {
+        "name": "repair success",
+        "status": "pass",
+        "expected": "Explicit repair alone can replace whole document; final base must conform"
+      },
+      {
+        "name": "repair without-flag",
+        "status": "pass",
+        "expected": "Explicit repair alone can replace whole document; final base must conform"
+      },
+      {
+        "name": "repair incomplete",
+        "status": "pass",
+        "expected": "Explicit repair alone can replace whole document; final base must conform"
+      },
+      {
+        "name": "null metadata is distinct from explicit removal",
+        "status": "pass",
+        "expected": "Null preserves the key; remove_metadata_keys removes only requested key"
+      },
+      {
+        "name": "input limit note",
+        "status": "pass",
+        "expected": "Over-limit request rejects with no durable mutation"
+      },
+      {
+        "name": "input limit operations",
+        "status": "pass",
+        "expected": "Over-limit request rejects with no durable mutation"
+      },
+      {
+        "name": "input limit input",
+        "status": "pass",
+        "expected": "Over-limit request rejects with no durable mutation"
+      },
+      {
+        "name": "export preserves note bytes and excludes operational state",
+        "status": "pass",
+        "expected": "Exported Markdown bytes match the base; no operational receipts exported"
+      },
+      {
+        "name": "invalid UTF-8 is diagnosed without mutation",
+        "status": "pass",
+        "expected": "Invalid UTF-8 makes the base nonconformant"
+      },
+      {
+        "name": "multiline Markdown title cannot inject index links",
+        "status": "pass",
+        "expected": "Title retained exactly in note; generated index treats title as text"
+      },
+      {
+        "name": "coordinated mutually referencing moves",
+        "status": "pass",
+        "expected": "Both final relative links resolve after moving two linked notes together"
+      },
+      {
+        "name": "move with explicit patch of derived referencing file",
+        "status": "pass",
+        "expected": "Either reject atomically or preserve both requested patch and automatic link rewrite"
+      },
+      {
+        "name": "coordinated create references final state",
+        "status": "pass",
+        "expected": "Notes created together resolve references against proposed final paths"
+      },
+      {
+        "name": "synthesis basis revision is checked before publication",
+        "status": "pass",
+        "expected": "Incorrect declared dependency revision rejects with no durable mutation"
+      },
+      {
+        "name": "empty exact-match input is rejected",
+        "status": "pass",
+        "expected": "Empty old_text cannot inject arbitrary content"
+      },
+      {
+        "name": "overlapping body_edits reject atomically",
+        "status": "pass",
+        "expected": "Overlapping edits cannot partially apply"
+      },
+      {
+        "name": "duplicate YAML keys are invalid",
+        "status": "pass",
+        "expected": "Duplicate keys produce bounded conformance diagnostics"
+      },
+      {
+        "name": "move to same path rejects atomically",
+        "status": "pass",
+        "expected": "Self-move does not destroy or rewrite the note"
+      },
+      {
+        "name": "repair still enforces expected revision",
+        "status": "pass",
+        "expected": "Explicit repair cannot bypass compare-and-swap"
+      },
+      {
+        "name": "move preserves unknown decimal metadata in source entry",
+        "status": "fail",
+        "expected": "Moving source changes resource path without rounding unrelated exact YAML numeric values",
+        "actual": "---\ntype: Synthesis\nsources:\n  - resource: nested/a.md\n    unknown_decimal: 1234567890.1234567\n    unknown_tiny: 0.12345678901234568\ngenerated:\n  at: \"2026-10-25T04:08:39.638659Z\"\n  by: process:synthetic-qa\n---\n# Ref\n",
+        "details": null
+      },
+      {
+        "name": "move preserves nested basis comments",
+        "status": "fail",
+        "expected": "Automatic basis path rewrites preserve nested comments and unknown fields",
+        "actual": "---\ntype: Synthesis\nbasis_revisions:\n  - custom: \"yes\"\n    path: nested/a.md\n    revision: sha256:ce0fb3c825944cba987409e9c78fba33454504962f62f32e9dfdad91d9aea868\ngenerated:\n  at: \"2026-10-25T04:08:39.761102Z\"\n  by: process:synthetic-qa\n---\n# Ref\n",
+        "details": null
+      },
+      {
+        "name": "historical log and verification reason survive update",
+        "status": "pass",
+        "expected": "New logical write preserves older entries and records trust invalidation reason"
+      },
+      {
+        "name": "CRLF metadata patch preserves presentation",
+        "status": "pass",
+        "expected": "Metadata edits retain CRLF and unrelated YAML bytes"
+      }
+    ],
+    "concurrency": [
+      {
+        "name": "48 disjoint writes with 16 concurrent processes",
+        "status": "pass",
+        "expected": "48 success, 48 notes, 48 receipts, 48 log events, every index link once",
+        "actual": {
+          "exits": {
+            "0": 48
+          },
+          "notes": 48,
+          "receipts": 48,
+          "events": 48,
+          "index_links": 48
+        }
+      },
+      {
+        "name": "disjoint base format validation",
+        "status": "pass",
+        "expected": "conformant true",
+        "actual": 0
+      },
+      {
+        "name": "16 same-revision CAS writers",
+        "status": "pass",
+        "expected": "one success, 15 REVISION_CONFLICT exit 4, one winning body, total 2 events/receipts",
+        "actual": {
+          "winners": [
+            1
+          ],
+          "loser_codes": [
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT",
+            "REVISION_CONFLICT"
+          ],
+          "exit_codes": [
+            4,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "events": 2,
+          "receipts": 2
+        }
+      },
+      {
+        "name": "16 identical concurrent idempotent creates",
+        "status": "pass",
+        "expected": "all success, 1 original, 15 replay, 1 note/event/receipt, identical generation and changes",
+        "actual": {
+          "exits": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "replayed": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "events": 1,
+          "receipts": 1
+        }
+      },
+      {
+        "name": "16 changed-payload concurrent shared keys",
+        "status": "pass",
+        "expected": "one success, 15 IDEMPOTENCY_CONFLICT, 1 event/receipt",
+        "actual": {
+          "winners": [
+            7
+          ],
+          "loser_codes": [
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "IDEMPOTENCY_CONFLICT"
+          ],
+          "exit_codes": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "events": 1,
+          "receipts": 1
+        }
+      },
+      {
+        "name": "winning shared-key receipt survives later retry",
+        "status": "pass",
+        "expected": "success replay true with no extra log event",
+        "actual": {
+          "exit": 0,
+          "replayed": true,
+          "events": 1
+        }
+      },
+      {
+        "name": "8 multi-note plans versus 4 concurrent CLI readers",
+        "status": "pass",
+        "expected": "8 successful plans; 100 successful snapshots, zero partial pairs; 8 events/receipts",
+        "actual": {
+          "write_exits": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "snapshots": 100,
+          "reader_errors": 0,
+          "partial_pairs": 0,
+          "distinct_snapshot_sizes": [
+            0,
+            6,
+            8,
+            10,
+            16
+          ],
+          "events": 8,
+          "receipts": 8
+        }
+      },
+      {
+        "name": "kill-early pending read guard",
+        "status": "pass",
+        "expected": "RECOVERY_REQUIRED; read leaves Markdown unchanged",
+        "actual": {
+          "exit": 6,
+          "code": "RECOVERY_REQUIRED",
+          "unchanged": true,
+          "published_at_signal": 0,
+          "journal_state": "prepared"
+        }
+      },
+      {
+        "name": "kill-early recovery preview",
+        "status": "pass",
+        "expected": "successful dry-run keeps all Markdown and pending journal unchanged",
+        "actual": {
+          "exit": 0,
+          "unchanged": true,
+          "pending": true
+        }
+      },
+      {
+        "name": "kill-early rollback",
+        "status": "pass",
+        "expected": "recover restores exact pre-transaction Markdown, removes pending, no receipts/log events",
+        "actual": {
+          "exit": 0,
+          "restored": true,
+          "pending": false,
+          "receipts": 0,
+          "events": 0
+        }
+      },
+      {
+        "name": "kill-early repeated recovery",
+        "status": "pass",
+        "expected": "success, exact pre-state still preserved",
+        "actual": {
+          "exit": 0,
+          "unchanged": true
+        }
+      },
+      {
+        "name": "kill-early retry after rollback",
+        "status": "pass",
+        "expected": "full 50-note commit then replay, 1 event/receipt",
+        "actual": {
+          "retry_exit": 0,
+          "replay_exit": 0,
+          "replayed": true,
+          "notes": 50,
+          "events": 1,
+          "receipts": 1
+        }
+      },
+      {
+        "name": "kill-mid pending read guard",
+        "status": "pass",
+        "expected": "RECOVERY_REQUIRED; read leaves Markdown unchanged",
+        "actual": {
+          "exit": 6,
+          "code": "RECOVERY_REQUIRED",
+          "unchanged": true,
+          "published_at_signal": 5,
+          "journal_state": "prepared"
+        }
+      },
+      {
+        "name": "kill-mid recovery preview",
+        "status": "pass",
+        "expected": "successful dry-run keeps all Markdown and pending journal unchanged",
+        "actual": {
+          "exit": 0,
+          "unchanged": true,
+          "pending": true
+        }
+      },
+      {
+        "name": "kill-mid rollback",
+        "status": "pass",
+        "expected": "recover restores exact pre-transaction Markdown, removes pending, no receipts/log events",
+        "actual": {
+          "exit": 0,
+          "restored": true,
+          "pending": false,
+          "receipts": 0,
+          "events": 0
+        }
+      },
+      {
+        "name": "kill-mid repeated recovery",
+        "status": "pass",
+        "expected": "success, exact pre-state still preserved",
+        "actual": {
+          "exit": 0,
+          "unchanged": true
+        }
+      },
+      {
+        "name": "kill-mid retry after rollback",
+        "status": "pass",
+        "expected": "full 50-note commit then replay, 1 event/receipt",
+        "actual": {
+          "retry_exit": 0,
+          "replay_exit": 0,
+          "replayed": true,
+          "notes": 50,
+          "events": 1,
+          "receipts": 1
+        }
+      },
+      {
+        "name": "term-mid pending read guard",
+        "status": "pass",
+        "expected": "RECOVERY_REQUIRED; read leaves Markdown unchanged",
+        "actual": {
+          "exit": 6,
+          "code": "RECOVERY_REQUIRED",
+          "unchanged": true,
+          "published_at_signal": 5,
+          "journal_state": "prepared"
+        }
+      },
+      {
+        "name": "term-mid recovery preview",
+        "status": "pass",
+        "expected": "successful dry-run keeps all Markdown and pending journal unchanged",
+        "actual": {
+          "exit": 0,
+          "unchanged": true,
+          "pending": true
+        }
+      },
+      {
+        "name": "term-mid rollback",
+        "status": "pass",
+        "expected": "recover restores exact pre-transaction Markdown, removes pending, no receipts/log events",
+        "actual": {
+          "exit": 0,
+          "restored": true,
+          "pending": false,
+          "receipts": 0,
+          "events": 0
+        }
+      },
+      {
+        "name": "term-mid repeated recovery",
+        "status": "pass",
+        "expected": "success, exact pre-state still preserved",
+        "actual": {
+          "exit": 0,
+          "unchanged": true
+        }
+      },
+      {
+        "name": "term-mid retry after rollback",
+        "status": "pass",
+        "expected": "full 50-note commit then replay, 1 event/receipt",
+        "actual": {
+          "retry_exit": 0,
+          "replay_exit": 0,
+          "replayed": true,
+          "notes": 50,
+          "events": 1,
+          "receipts": 1
+        }
+      },
+      {
+        "name": "kill-late pending read guard",
+        "status": "pass",
+        "expected": "RECOVERY_REQUIRED; read leaves Markdown unchanged",
+        "actual": {
+          "exit": 6,
+          "code": "RECOVERY_REQUIRED",
+          "unchanged": true,
+          "published_at_signal": 40,
+          "journal_state": "prepared"
+        }
+      },
+      {
+        "name": "kill-late recovery preview",
+        "status": "pass",
+        "expected": "successful dry-run keeps all Markdown and pending journal unchanged",
+        "actual": {
+          "exit": 0,
+          "unchanged": true,
+          "pending": true
+        }
+      },
+      {
+        "name": "kill-late rollback",
+        "status": "pass",
+        "expected": "recover restores exact pre-transaction Markdown, removes pending, no receipts/log events",
+        "actual": {
+          "exit": 0,
+          "restored": true,
+          "pending": false,
+          "receipts": 0,
+          "events": 0
+        }
+      },
+      {
+        "name": "kill-late repeated recovery",
+        "status": "pass",
+        "expected": "success, exact pre-state still preserved",
+        "actual": {
+          "exit": 0,
+          "unchanged": true
+        }
+      },
+      {
+        "name": "kill-late retry after rollback",
+        "status": "pass",
+        "expected": "full 50-note commit then replay, 1 event/receipt",
+        "actual": {
+          "retry_exit": 0,
+          "replay_exit": 0,
+          "replayed": true,
+          "notes": 50,
+          "events": 1,
+          "receipts": 1
+        }
+      },
+      {
+        "name": "crafted committed recovery preview (supplemental)",
+        "status": "pass",
+        "expected": "success and exact current bytes/pending preserved",
+        "actual": {
+          "exit": 0,
+          "unchanged": true,
+          "pending": true
+        }
+      },
+      {
+        "name": "crafted committed rollforward (supplemental)",
+        "status": "pass",
+        "expected": "exact captured after-state across all files, pending removed, durable receipt reconstructed once",
+        "actual": {
+          "exit": 0,
+          "exact_after_files": true,
+          "files": 53,
+          "pending": false,
+          "events": 1,
+          "receipts": 1
+        }
+      },
+      {
+        "name": "crafted committed receipt replay (supplemental)",
+        "status": "pass",
+        "expected": "original request replays after recovery, repeat recovery changes nothing",
+        "actual": {
+          "retry_exit": 0,
+          "replayed": true,
+          "recover_exit": 0,
+          "unchanged": true,
+          "receipts": 1,
+          "events": 1
+        }
+      },
+      {
+        "name": "crafted unknown-state journal safety (supplemental)",
+        "status": "pass",
+        "expected": "recover fails, all in-base Markdown and pending journal preserved",
+        "actual": {
+          "exit": 2,
+          "error": {
+            "code": "INVALID_STATE",
+            "message": "invalid journal header",
+            "retryable": false
+          },
+          "markdown_unchanged": true,
+          "journal_preserved": true
+        }
+      },
+      {
+        "name": "crafted unknown-version journal safety (supplemental)",
+        "status": "pass",
+        "expected": "recover fails, all in-base Markdown and pending journal preserved",
+        "actual": {
+          "exit": 2,
+          "error": {
+            "code": "INVALID_STATE",
+            "message": "invalid journal header",
+            "retryable": false
+          },
+          "markdown_unchanged": true,
+          "journal_preserved": true
+        }
+      },
+      {
+        "name": "crafted duplicate-path journal safety (supplemental)",
+        "status": "pass",
+        "expected": "recover fails, all in-base Markdown and pending journal preserved",
+        "actual": {
+          "exit": 2,
+          "error": {
+            "code": "INVALID_STATE",
+            "message": "invalid journal file",
+            "retryable": false
+          },
+          "markdown_unchanged": true,
+          "journal_preserved": true
+        }
+      },
+      {
+        "name": "crafted traversal journal safety (supplemental)",
+        "status": "pass",
+        "expected": "recover fails, all in-base Markdown and pending journal preserved",
+        "actual": {
+          "exit": 2,
+          "error": {
+            "code": "INVALID_STATE",
+            "message": "invalid journal file",
+            "retryable": false
+          },
+          "markdown_unchanged": true,
+          "journal_preserved": true
+        }
+      },
+      {
+        "name": "crafted symlink journal safety (supplemental)",
+        "status": "pass",
+        "expected": "recover fails, all in-base Markdown and pending journal preserved",
+        "actual": {
+          "exit": 5,
+          "error": {
+            "code": "PATH_OUTSIDE_ROOT",
+            "message": "symbolic links are forbidden",
+            "retryable": false
+          },
+          "markdown_unchanged": true,
+          "journal_preserved": true
+        }
+      },
+      {
+        "name": "crafted outside-root sentinels",
+        "status": "pass",
+        "expected": "outside-root files untouched",
+        "actual": {
+          "traversal": "SYNTHETIC SENTINEL\n",
+          "symlink": "SYNTHETIC SENTINEL\n"
+        }
+      },
+      {
+        "name": "external editor during transaction publication",
+        "status": "pass",
+        "expected": "REVISION_CONFLICT preserves external edit and pending journal",
+        "actual": {
+          "race_observed": true,
+          "exit": 4,
+          "error": {
+            "code": "REVISION_CONFLICT",
+            "message": "a file changed at publication",
+            "retryable": false
+          },
+          "external_edit_preserved": true,
+          "observation": {
+            "first_note_updated": true,
+            "last_note_not_published": true,
+            "pending_state": "prepared"
+          },
+          "pending": true
+        }
+      },
+      {
+        "name": "external editor recovery preserves divergent bytes",
+        "status": "pass",
+        "expected": "REVISION_CONFLICT, all Markdown and journal remain unchanged",
+        "actual": {
+          "exit": 4,
+          "code": "REVISION_CONFLICT",
+          "markdown_unchanged": true,
+          "journal_unchanged": true
+        }
+      },
+      {
+        "name": "external editor synthetic reconciliation allows recovery",
+        "status": "pass",
+        "expected": "exact pre-transaction bytes restored, only seed receipt/event remains",
+        "actual": {
+          "exit": 0,
+          "exact_before": true,
+          "pending": false,
+          "events": 1,
+          "receipts": 1
+        }
+      },
+      {
+        "name": "real SIGKILL after committed marker",
+        "status": "pass",
+        "expected": "pending committed marker; reads blocked; dry-run unchanged; rollforward exact after-state; original request replay; 1 event/receipt",
+        "actual": {
+          "attempts": [
+            {
+              "attempt": 0,
+              "signal_triggered": true,
+              "exit": -9,
+              "pending_state": "committed"
+            }
+          ],
+          "guard_code": "RECOVERY_REQUIRED",
+          "dry_exit": 0,
+          "dry_unchanged": true,
+          "recovery_exit": 0,
+          "exact_after": true,
+          "retry_exit": 0,
+          "replayed": true,
+          "events": 1,
+          "receipts": 1,
+          "pending": false
+        }
+      },
+      {
+        "name": "12 paired CAS plans versus 100 readers",
+        "status": "pass",
+        "expected": "one full paired success, 11 REVISION_CONFLICT, 100 atomic paired-title snapshots, 2 total receipts/events",
+        "actual": {
+          "winners": [
+            2
+          ],
+          "exits": [
+            4,
+            4,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "snapshots": 100,
+          "mixed_titles": 0,
+          "receipts": 2,
+          "events": 2
+        }
+      },
+      {
+        "name": "12 moves contend for one destination",
+        "status": "pass",
+        "expected": "one move succeeds; 11 reject; 11 original notes plus one target preserved; winning incoming reference rewritten once; 2 events/receipts",
+        "actual": {
+          "winners": [
+            6
+          ],
+          "loser_codes": [
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION",
+            "PATH_COLLISION"
+          ],
+          "remaining_sources": 11,
+          "destination": true,
+          "all_other_sources_preserved": true,
+          "new_reference_count": 1,
+          "events": 2,
+          "receipts": 2
+        }
+      },
+      {
+        "name": "SIGKILL during recovery of a real interrupted apply",
+        "status": "pass",
+        "expected": "apply killed after partial publish; recovery killed after partial rollback; next recovery restores exact pre-state idempotently",
+        "actual": {
+          "apply_killed": true,
+          "apply_exit": -9,
+          "published_notes": 40,
+          "recovery_killed": true,
+          "recovery_exit": -9,
+          "remaining_at_signal": 36,
+          "guard_code": "RECOVERY_REQUIRED",
+          "final_recover_exit": 0,
+          "again_exit": 0,
+          "root_markdown_exact": true,
+          "remaining_notes": 0,
+          "events": 0,
+          "receipts": 0,
+          "pending": false
+        }
+      },
+      {
+        "name": "SIGTERM while waiting on shared/exclusive lock",
+        "status": "pass",
+        "expected": "all 8 wait; terminated reader/writer exit promptly; remaining 6 succeed; only 3 writes persist",
+        "actual": {
+          "all_waiting_before_signal": true,
+          "children": [
+            {
+              "pid": 22943,
+              "owned_child": true,
+              "exit": 6,
+              "error": {
+                "code": "CANCELED",
+                "message": "operation canceled",
+                "retryable": true
+              }
+            },
+            {
+              "pid": 22944,
+              "owned_child": true,
+              "exit": 0,
+              "error": null
+            },
+            {
+              "pid": 22945,
+              "owned_child": true,
+              "exit": 0,
+              "error": null
+            },
+            {
+              "pid": 22946,
+              "owned_child": true,
+              "exit": 0,
+              "error": null
+            },
+            {
+              "pid": 22947,
+              "owned_child": true,
+              "exit": 6,
+              "error": {
+                "code": "CANCELED",
+                "message": "operation canceled",
+                "retryable": true
+              }
+            },
+            {
+              "pid": 22948,
+              "owned_child": true,
+              "exit": 0,
+              "error": null
+            },
+            {
+              "pid": 22949,
+              "owned_child": true,
+              "exit": 0,
+              "error": null
+            },
+            {
+              "pid": 22950,
+              "owned_child": true,
+              "exit": 0,
+              "error": null
+            }
+          ],
+          "events": 3,
+          "receipts": 3,
+          "terminated_write_absent": true,
+          "pending": false
+        }
+      },
+      {
+        "name": "new mutation automatically recovers real pending transaction",
+        "status": "pass",
+        "expected": "SIGKILL leaves prepared partial state; next unrelated create rolls it back then commits alone",
+        "actual": {
+          "killed_exit": -9,
+          "published_at_signal": 5,
+          "new_exit": 0,
+          "old_remaining": 0,
+          "new_exists": true,
+          "events": 1,
+          "receipts": 1,
+          "pending": false
+        }
+      },
+      {
+        "name": "Power-loss and storage-failure durability",
+        "status": "untested",
+        "expected": "durability across host power loss and failed disk/fsync operations",
+        "actual": "Not tested: only owned user-space processes were interrupted; no host restart, power cut, or storage fault injection was authorized."
+      },
+      {
+        "name": "Sustained-load fairness and exhaustive race coverage",
+        "status": "untested",
+        "expected": "no starvation or incorrect interleaving over extended workloads",
+        "actual": "Not tested: bounded workloads exercise observed interleavings, not exhaustive scheduling or long-duration load."
+      }
+    ],
+    "integration": [
+      {
+        "name": "create through installed binary",
+        "status": "pass"
+      },
+      {
+        "name": "init preserves existing Markdown",
+        "status": "pass"
+      },
+      {
+        "name": "ancestor root discovery",
+        "status": "pass"
+      },
+      {
+        "name": "KB_ROOT overrides discovery",
+        "status": "pass"
+      },
+      {
+        "name": "explicit root overrides KB_ROOT",
+        "status": "pass"
+      },
+      {
+        "name": "CLI reads preserve notes and config",
+        "status": "pass"
+      },
+      {
+        "name": "reject unsafe read ../other/index.md",
+        "status": "pass"
+      },
+      {
+        "name": "reject unsafe read /etc/hosts",
+        "status": "pass"
+      },
+      {
+        "name": "reject unsafe read 03_Resources/../../other/index.md",
+        "status": "pass"
+      },
+      {
+        "name": "reject symlink read",
+        "status": "pass"
+      },
+      {
+        "name": "reject unsafe write without outside effect",
+        "status": "pass"
+      },
+      {
+        "name": "CLI read-only rejects mutation",
+        "status": "pass"
+      },
+      {
+        "name": "read-only init has no base side effects",
+        "status": "pass"
+      },
+      {
+        "name": "MCP writable tool inventory",
+        "status": "pass"
+      },
+      {
+        "name": "CLI MCP search data parity",
+        "status": "pass"
+      },
+      {
+        "name": "CLI MCP read data parity",
+        "status": "pass"
+      },
+      {
+        "name": "CLI MCP context data parity",
+        "status": "pass"
+      },
+      {
+        "name": "MCP create visible to CLI",
+        "status": "pass"
+      },
+      {
+        "name": "MCP resources reflect new note",
+        "status": "pass"
+      },
+      {
+        "name": "MCP reject resource kb://local/../other/index.md",
+        "status": "pass"
+      },
+      {
+        "name": "MCP reject resource kb://remote/03_Resources/alpha.md",
+        "status": "pass"
+      },
+      {
+        "name": "MCP reject resource kb://local/%2e%2e/other/index.md",
+        "status": "pass"
+      },
+      {
+        "name": "MCP rejects unknown input fields",
+        "status": "pass"
+      },
+      {
+        "name": "MCP reads preserve Markdown",
+        "status": "pass"
+      },
+      {
+        "name": "MCP read-only hides mutations",
+        "status": "pass"
+      },
+      {
+        "name": "MCP read-only blocks direct hidden tool call",
+        "status": "pass"
+      },
+      {
+        "name": "long-lived server initial fixture",
+        "status": "pass"
+      },
+      {
+        "name": "same-length same-mtime external edit refreshes live MCP search",
+        "status": "pass"
+      },
+      {
+        "name": "live MCP resources reflect externally added note",
+        "status": "pass"
+      },
+      {
+        "name": "live MCP resources remove externally deleted note",
+        "status": "pass"
+      },
+      {
+        "name": "CLI write visible in live MCP search",
+        "status": "pass"
+      },
+      {
+        "name": "live MCP 25 repeated requests remain responsive",
+        "status": "pass"
+      }
+    ]
+  },
+  "fresh_cli_timings": [
+    {
+      "notes": 100,
+      "root": "perf-100",
+      "query": "retrievalprobe",
+      "samples": 8,
+      "first_run_samples": 1,
+      "subsequent_samples": 7,
+      "file_bytes": 191700,
+      "fixture_method": "Direct compliant UTF-8 Markdown files after kb init; no source-built CLI. Setup excluded. All 8 timed calls use separate installed-binary processes.",
+      "first_run_ms": 13.770374935120344,
+      "subsequent_process_ms": [
+        13.509250013157725,
+        12.996166944503784,
+        13.718125061132014,
+        13.55562498793006,
+        13.398958020843565,
+        13.606874970719218,
+        13.43654200900346
+      ],
+      "subsequent_p50_ms": 13.509250013157725,
+      "subsequent_p95_nearest_rank_ms": 13.718125061132014
+    },
+    {
+      "notes": 1000,
+      "root": "perf-1000",
+      "query": "retrievalprobe",
+      "samples": 8,
+      "first_run_samples": 1,
+      "subsequent_samples": 7,
+      "file_bytes": 1917000,
+      "fixture_method": "Direct compliant UTF-8 Markdown files after kb init; no source-built CLI. Setup excluded. All 8 timed calls use separate installed-binary processes.",
+      "first_run_ms": 81.53225004207343,
+      "subsequent_process_ms": [
+        80.76454198453575,
+        81.88337495084852,
+        81.05529099702835,
+        80.54787502624094,
+        83.02179200109094,
+        87.63220789842308,
+        84.95275001041591
+      ],
+      "subsequent_p50_ms": 81.88337495084852,
+      "subsequent_p95_nearest_rank_ms": 87.63220789842308
+    },
+    {
+      "notes": 5000,
+      "root": "perf-5000",
+      "query": "retrievalprobe",
+      "samples": 8,
+      "first_run_samples": 1,
+      "subsequent_samples": 7,
+      "file_bytes": 9585000,
+      "fixture_method": "Direct compliant UTF-8 Markdown files after kb init; no source-built CLI. Setup excluded. All 8 timed calls use separate installed-binary processes.",
+      "first_run_ms": 410.24137497879565,
+      "subsequent_process_ms": [
+        400.67020803689957,
+        388.5164159582928,
+        389.5688330521807,
+        390.32999996561557,
+        388.5427910136059,
+        396.47816692013294,
+        386.8234170367941
+      ],
+      "subsequent_p50_ms": 389.5688330521807,
+      "subsequent_p95_nearest_rank_ms": 400.67020803689957
+    },
+    {
+      "notes": 100,
+      "root": "perf-100",
+      "query": "unique00042",
+      "samples": 5,
+      "fresh_process_ms": [
+        14.321750029921532,
+        13.447499950416386,
+        13.043083949014544,
+        13.079291908070445,
+        12.96333409845829
+      ],
+      "p50_ms": 13.079291908070445,
+      "p95_nearest_rank_ms": 14.321750029921532
+    },
+    {
+      "notes": 100,
+      "root": "perf-100",
+      "query": "no-match-nonce-zxqv",
+      "samples": 5,
+      "fresh_process_ms": [
+        13.488832977600396,
+        13.27916607260704,
+        12.953749974258244,
+        13.069250038824975,
+        12.91283406317234
+      ],
+      "p50_ms": 13.069250038824975,
+      "p95_nearest_rank_ms": 13.488832977600396
+    },
+    {
+      "notes": 1000,
+      "root": "perf-1000",
+      "query": "unique00042",
+      "samples": 5,
+      "fresh_process_ms": [
+        86.15916594862938,
+        81.51887496933341,
+        81.21249999385327,
+        81.78508398123085,
+        81.61933405790478
+      ],
+      "p50_ms": 81.61933405790478,
+      "p95_nearest_rank_ms": 86.15916594862938
+    },
+    {
+      "notes": 1000,
+      "root": "perf-1000",
+      "query": "no-match-nonce-zxqv",
+      "samples": 5,
+      "fresh_process_ms": [
+        82.18629204202443,
+        82.78858300764114,
+        81.14154206123203,
+        81.33004198316485,
+        83.24358297977597
+      ],
+      "p50_ms": 82.18629204202443,
+      "p95_nearest_rank_ms": 83.24358297977597
+    },
+    {
+      "notes": 5000,
+      "root": "perf-5000",
+      "query": "unique00042",
+      "samples": 5,
+      "fresh_process_ms": [
+        398.5163338948041,
+        396.4688749983907,
+        391.9929580297321,
+        388.33358394913375,
+        389.6404590923339
+      ],
+      "p50_ms": 391.9929580297321,
+      "p95_nearest_rank_ms": 398.5163338948041
+    },
+    {
+      "notes": 5000,
+      "root": "perf-5000",
+      "query": "no-match-nonce-zxqv",
+      "samples": 5,
+      "fresh_process_ms": [
+        393.65466602612287,
+        389.153333962895,
+        385.34945889841765,
+        389.7174580488354,
+        387.2812920017168
+      ],
+      "p50_ms": 389.153333962895,
+      "p95_nearest_rank_ms": 393.65466602612287
+    }
+  ],
+  "live_mcp_timings": [
+    {
+      "notes": 100,
+      "query": "retrievalprobe",
+      "startup_ms": 5.695,
+      "first_ms": 14.028,
+      "samples": 20,
+      "p50_ms": 4.377,
+      "p95_ms": 5.342,
+      "total": 100
+    },
+    {
+      "notes": 100,
+      "query": "unique00042",
+      "startup_ms": 5.695,
+      "first_ms": 4.526,
+      "samples": 20,
+      "p50_ms": 4.059,
+      "p95_ms": 4.229,
+      "total": 1
+    },
+    {
+      "notes": 100,
+      "query": "no-match-nonce-zxqv",
+      "startup_ms": 5.695,
+      "first_ms": 4.054,
+      "samples": 20,
+      "p50_ms": 3.933,
+      "p95_ms": 4.659,
+      "total": 0
+    },
+    {
+      "notes": 1000,
+      "query": "retrievalprobe",
+      "startup_ms": 5.724,
+      "first_ms": 127.771,
+      "samples": 20,
+      "p50_ms": 36.818,
+      "p95_ms": 38.635,
+      "total": 1000
+    },
+    {
+      "notes": 1000,
+      "query": "unique00042",
+      "startup_ms": 5.724,
+      "first_ms": 38.444,
+      "samples": 20,
+      "p50_ms": 36.304,
+      "p95_ms": 37.231,
+      "total": 1
+    },
+    {
+      "notes": 1000,
+      "query": "no-match-nonce-zxqv",
+      "startup_ms": 5.724,
+      "first_ms": 34.855,
+      "samples": 20,
+      "p50_ms": 35.639,
+      "p95_ms": 40.196,
+      "total": 0
+    },
+    {
+      "notes": 5000,
+      "query": "retrievalprobe",
+      "startup_ms": 7.433,
+      "first_ms": 620.831,
+      "samples": 20,
+      "p50_ms": 190.543,
+      "p95_ms": 202.509,
+      "total": 5000
+    },
+    {
+      "notes": 5000,
+      "query": "unique00042",
+      "startup_ms": 7.433,
+      "first_ms": 191.426,
+      "samples": 20,
+      "p50_ms": 190.28,
+      "p95_ms": 194.47,
+      "total": 1
+    },
+    {
+      "notes": 5000,
+      "query": "no-match-nonce-zxqv",
+      "startup_ms": 7.433,
+      "first_ms": 189.286,
+      "samples": 20,
+      "p50_ms": 190.679,
+      "p95_ms": 195.21,
+      "total": 0
+    }
+  ],
+  "live_mcp_sampling": {
+    "limit": 10,
+    "samples_after_first": 20,
+    "p95_method": "nearest rank",
+    "timing": "one live server per corpus; fresh first search; OS caches not purged; after other lanes"
+  },
+  "independent_move_reproduction": {
+    "build": {
+      "commit": "9ed4f17894f094cfdb5a169aea9c147789e93de3",
+      "version": "v0.1.1"
+    },
+    "checks": {
+      "unknown_decimal: 1234567890.123456789": false,
+      "unknown_tiny: 0.1234567890123456789": false,
+      "# Source annotation must survive": false,
+      "# Preserve numeric precision": false,
+      "# Basis annotation must survive": false,
+      "# Custom basis comment": false,
+      "source path updated": true,
+      "basis path updated": true,
+      "OKF conformant": true
+    },
+    "before": "---\ntype: Synthesis\nsources:\n  # Source annotation must survive\n  - resource: source.md\n    unknown_decimal: 1234567890.123456789 # Preserve numeric precision\n    unknown_tiny: 0.1234567890123456789\nbasis_revisions:\n  # Basis annotation must survive\n  - path: source.md\n    revision: sha256:3bf2daa1a537e1771c86d84749d2b4b34a57acae61bbaee9925de9138376987e\n    unknown_decimal: 1234567890.123456789\n    custom: keep # Custom basis comment\n---\n# Synthetic synthesis\n",
+    "after": "---\ntype: Synthesis\nsources:\n  - resource: nested/source.md\n    unknown_decimal: 1234567890.1234567\n    unknown_tiny: 0.12345678901234568\nbasis_revisions:\n  - custom: keep\n    path: nested/source.md\n    revision: sha256:3bf2daa1a537e1771c86d84749d2b4b34a57acae61bbaee9925de9138376987e\n    unknown_decimal: 1234567890.1234567\ngenerated:\n  at: \"2026-10-25T04:11:21.337615Z\"\n  by: process:qa\n---\n# Synthetic synthesis\n"
+  },
+  "limitations": [
+    "Process termination does not simulate power loss or storage failure.",
+    "One native macOS host; synthetic corpus; no sustained fairness or exhaustive schedule proof.",
+    "No new RSS profile or independent reindex/write-scale benchmark.",
+    "Other lanes shared host during CLI timing; MCP measured afterward."
+  ],
+  "local_evidence_retained": true,
+  "runtime_changes": false
+}

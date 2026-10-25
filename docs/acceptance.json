@@ -27,15 +27,18 @@
   {
     "id": "A03",
     "requirement": "A minimal concept with only `type` conforms; unknown types and fields survive.",
-    "status": "verified",
+    "status": "in_progress",
     "tests": [
       "internal/core/codec_test.go",
-      "scripts/acceptance.py"
+      "scripts/acceptance.py",
+      "scripts/qa/reproduce_move_fidelity.py"
     ],
     "evidence": [
       "docs/evidence/validation.json",
-      "docs/evidence/cli-workflow.json"
-    ]
+      "docs/evidence/cli-workflow.json",
+      "docs/evidence/native-homebrew-v0.1.1.json"
+    ],
+    "notes": "Reopened by native v0.1.1 QA: automatic move reference rewrites round unknown decimal metadata (QA-01). Existing cases pass but do not establish exact unknown-value preservation; see docs/qa/native-homebrew-v0.1.1.md."
   },
   {
     "id": "A04",
