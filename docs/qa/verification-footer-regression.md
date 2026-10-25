@@ -1,5 +1,12 @@
 # Verification footer regression after v0.1.2
 
+Historical v0.1.2/pre-v0.1.3 report from 2026-10-25. The correction subsequently
+shipped; [v0.3.1 release verification](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
+records later macOS arm64 installed-package results. The source-candidate counts
+and publication instructions below preserve the state at the time of this report,
+not a current pending-release claim. See [installation](../installation.md) for
+the affected releases and [stability](../stability.md) for current readiness.
+
 Post-publication QA of the real Homebrew v0.1.2 package found a regression:
 body edits and metadata patches that invalidate `verified` can remove a
 standalone YAML comment immediately after that field. The original precision

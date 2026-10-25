@@ -1,7 +1,9 @@
 # 0003 — GoReleaser and a Homebrew source formula
 
-Status: adopted for the next automated release; supersedes the manual packaging
-and distribution decisions in [0002](0002-v0.1.md).
+Status: adopted for automated releases beginning with v0.1.1 on 2026-10-25;
+supersedes the manual packaging and distribution decisions in
+[0002](0002-v0.1.md). The withdrawn initial release is historical context, not
+the current distribution status; v0.3.1 is published and remains experimental.
 
 The initial CLI/MCP implementation is usable from source, but its manual tag and
 release were withdrawn at the maintainer's request. Preserve the implementation,

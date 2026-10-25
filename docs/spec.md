@@ -4,7 +4,7 @@ title: KB — Knowledge Base specification
 description: Normative specification v0.3 for the experimental Knowledge Base, OKF notes, maintenance, and CLI/MCP interfaces.
 tags: [okf, para, cli, mcp, memory, specification]
 status: stable
-implementation_version: "0.3.0"
+implementation_version: "0.3.1"
 implementation_status: experimental
 spec_version: "0.3"
 sources:
@@ -27,18 +27,22 @@ generated:
 
 # KB — Knowledge Base specification
 
-Specification v0.3, with implemented v0.1 interface clarifications. The initial design
-was informed by five tool evaluations and the LLM Wiki pattern on 2026-10-24.
+Specification v0.3, with the implementation contract originating in v0.1 and
+extended through v0.3.1. The initial design was informed by five tool evaluations
+and the LLM Wiki pattern on 2026-10-24.
 The project repository is https://github.com/matheus3301/kb.
 
-**The v0.1 implementation remains experimental.** Use v0.1.3 or later for the
-[metadata-preservation fixes](installation.md). The commands in this document are
-implemented. The [v0.1 interface contract](interfaces.md), shared DTOs in
-`internal/api/types.go`, and [implementation decision](decisions/0002-v0.1.md)
-clarify the wire format and current choices. Normative requirements and all 26
-acceptance criteria below remain the product contract; they are not universal
-safety guarantees. [Validation evidence](evidence/validation.json) records tested
-behavior, and [performance measurements](performance.md) disclose unmet targets.
+**The v0.3.1 implementation remains experimental.** The commands in this document
+are implemented in that release; pending [roadmap](roadmap.md) additions are not.
+The [interface contract](interfaces.md), shared DTOs in `internal/api/types.go`,
+and [architecture decisions](decisions/0002-v0.1.md) clarify the wire format and
+current choices. Normative requirements and all 26 acceptance criteria below
+remain the product contract, not universal safety guarantees. Historical
+[validation evidence](evidence/validation.json) records tested behavior; the
+[performance report](performance.md) separates the original misses from the
+v0.3.1 local targets met and remaining large-corpus costs. The
+[v1.0 exit checklist](stability.md) and [compatibility policy](compatibility.md)
+do not declare readiness or authorize a release.
 
 ## 1. Problem and expected outcome
 
@@ -175,7 +179,7 @@ not to run the CLI/MCP. The CLI can also be used without MCP. `kb init` remains
 limited to the base. Integration setup is a separate, explicit action: preserve
 existing instructions, show changes, and never implicitly register agents or
 edit global configuration. Do not implement a custom skill installer in the
-core. In v0.1, the [quickstart](quickstart.md) documents explicit binary and
+core. The [quickstart](quickstart.md) documents explicit binary and
 skill installation, root selection, MCP configuration, and workdir instructions;
 there is no combined automatic integration installer.
 
@@ -411,8 +415,8 @@ diagnostics. MCP stdio stdout contains only protocol messages.
 
 `create`, `patch`, `move`, `archive`, `apply`, and `maintain` accept `--dry-run`.
 The input file may be `-` for stdin. Do not interpolate Markdown content into
-shell commands. Export is implemented in v0.1 with a validated snapshot and
-inclusion/exclusion manifest.
+shell commands. Export produces a validated snapshot and inclusion/exclusion
+manifest, not an operational-state backup.
 
 CLI envelope, shared by the core:
 
@@ -435,7 +439,7 @@ validation, `2` usage/configuration, `3` not found, `4` revision conflict,
 
 ## 7. Search and reading
 
-v0.1 uses a local weighted lexical index with BM25 scoring by note and
+The implementation uses a local weighted lexical index with BM25 scoring by note and
 section-aware excerpts, cached in-process with on-disk freshness checks.
 Title, path, description, and tags have greater weight than body text.
 Portuguese search must accept both `memoria` and `memória`, preserving original
@@ -551,7 +555,7 @@ and document this limit without promising absolute isolation.
 request returns the previous result without duplicating notes or log entries;
 reusing the key with another request fails. Store receipts in the journal and
 reconstruct them during recovery so a crash between publication and response
-does not duplicate effects. In v0.1 receipts do not expire. Request hashing
+does not duplicate effects. Receipts currently do not expire. Request hashing
 excludes `dry_run`; dry-run persists no receipt. Check an existing receipt
 before retry preconditions so a successful retry can replay after revisions change.
 
@@ -684,7 +688,7 @@ only in an adapter. Model and parser do not depend on a running MCP server.
 
 Adopted implementation language: **Go**, for binary distribution and nearby Go
 references, as recorded in the foundation decision. Rust was a suitable design
-alternative, but v0.1 uses Go. The experiments did not compare custom Rust and
+alternative, but the implementation uses Go. The experiments did not compare custom Rust and
 Go implementations and do not prove either superior.
 
 The runtime uses Cobra 1.10.2, the official MCP Go SDK 1.8.0,
@@ -734,21 +738,27 @@ base binary.
 The original delivery increments were: (1) parser/scope/validate/read;
 (2) index/search/context and reference queries; (3) create/patch/apply/transactions/log/index; (4) move/archive, links,
 and health; (5) MCP, ingestion/synthesis/review workflows, export, and
-distribution. These capabilities are implemented in experimental v0.1;
-subsequent changes still require behavior evidence. Workflows are
-instructions for an external agent, with no LLM calls added to the core.
+distribution. These capabilities were implemented in experimental v0.1 and remain
+in v0.3.1; subsequent changes still require behavior evidence. Workflows are
+instructions for an external agent, with no LLM calls added to the core. The
+[roadmap](roadmap.md) and [exit checklist](stability.md) track the next workstreams
+without treating them as shipped or authorizing v1.0.
 
 Measure on macOS arm64 and Linux amd64/arm64: binary size, RSS, cold start,
 reindexing, and search p50/p95, declaring hardware and corpus. Initial targets
 for 10,000 synthetic notes of 2 KiB each: warm search p95 ≤ 150 ms and RSS ≤
-150 MiB; full reindex ≤ 10 s. These remain targets, not requirements implied by
-OKF. The [recorded local benchmark](performance.md) on Apple M4/macOS arm64,
-Go 1.27.3, 10,000 synthetic 2 KiB notes, and 20 warm samples measured 594.4 ms
-cold core search, 162.9 ms warm search p95, and 180.3 MiB peak process RSS.
-The original warm-search and RSS targets were not met. This is not fresh CLI
-startup or MCP transport latency; reindexing was not independently benchmarked
-in that historical report. The [current performance report](performance.md)
-separately records candidate measurements and remaining limits.
+150 MiB; full reindex ≤ 10 s. These are product targets, not OKF requirements.
+The historical v0.1 core report on Apple M4/macOS arm64, Go 1.27.3 and 20 warm
+samples measured 594.4 ms cold search, 162.9 ms warm p95 and 180.3 MiB peak RSS;
+it missed the warm/RSS targets and did not independently time reindexing.
+
+The 2026-10-25 [v0.3.1 performance report](performance.md) records 117.7 ms warm
+core p95, 134.0 MiB peak RSS and 179.0 ms rebuild p95 on the same local 10k
+corpus/hardware, meeting the original targets. Core measurements are not fresh
+CLI startup or MCP transport latency. At 50k notes, fresh CLI search still costs
+2.19 s median and 483.1 MiB peak RSS. These are bounded local observations, not
+Linux measurements, arbitrary-machine SLAs or evidence of external-editor
+isolation. The report retains the historical data and full measurement method.
 
 ### Implementation review — 2026-10-24
 
@@ -774,5 +784,6 @@ automatic activation across agents is not established. The
 [acceptance inventory](acceptance.json) retains the authoritative criterion
 labels and evidence references. Coverage and successful tests do not establish
 absence of bugs, absolute isolation from external editors, or semantic truth.
-Performance limitations above remain open. See the [project overview](project-overview.md)
+The original warm/RSS misses were addressed locally in v0.3.1; large-corpus costs
+and broader measurement limits remain. See the [project overview](project-overview.md)
 for the product and architecture.

@@ -131,13 +131,17 @@ contains command syntax, JSON requests, errors, and operating limits.
 
 ## Project status
 
-**Experimental.** Use v0.1.3 or later for the documented metadata-preservation
-fixes. [Release QA](docs/qa/verification-footer-regression.md) records the findings
-and source verification; [release notes](https://github.com/matheus3301/kb/releases)
-include installed-package results. The [performance report](docs/performance.md)
-records measured gains, original targets and remaining large-corpus limits.
-Advisory locks cannot isolate arbitrary external editors, and health checks do
-not establish semantic truth.
+**Experimental v0.3.1.** The local core is delivered; the
+[roadmap](docs/roadmap.md) and [v1.0 exit checklist](docs/stability.md) separate
+released evidence from pending work and proposed commitments. See the
+[compatibility/support policy](docs/compatibility.md) before relying on upgrades.
+[Release notes](https://github.com/matheus3301/kb/releases/tag/v0.3.1) record
+installed-package verification on macOS arm64 only; cross-builds are not
+installed runtime tests. Use v0.1.3 or later for the documented
+[metadata-preservation fixes](docs/qa/verification-footer-regression.md).
+The [performance report](docs/performance.md) records the original local targets
+met in v0.3.1 and remaining large-corpus costs. Advisory locks cannot isolate
+arbitrary external editors, and health checks do not establish semantic truth.
 
 ## Documentation
 
@@ -145,6 +149,7 @@ not establish semantic truth.
 - [Agent setup](docs/agent-setup.md), [MCP guide](docs/mcp.md), [CLI skill](skills/knowledge-base/SKILL.md), and [llms.txt](llms.txt).
 - [Architecture](docs/project-overview.md), [specification](docs/spec.md), and [interface contract](docs/interfaces.md).
 - [Quality gates](docs/quality.md), [performance](docs/performance.md), and [release operations](docs/releases.md).
+- [Roadmap](docs/roadmap.md), [v1.0 exit criteria](docs/stability.md), and [compatibility/support](docs/compatibility.md).
 
 ## Contributing
 

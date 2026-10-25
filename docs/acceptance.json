@@ -43,7 +43,7 @@
       "docs/evidence/native-homebrew-v0.1.1.json",
       "docs/evidence/move-fidelity-fix.json"
     ],
-    "notes": "QA-01 and QA-02 are fixed in the unreleased source candidate: exact decimals, comments and unchanged spans are covered by real CLI/MCP, move/archive/batch, codec, fuzz and acceptance regressions. The original v0.1.1 distribution remains affected; see docs/evidence/move-fidelity-fix.json."
+    "notes": "QA-01 and QA-02 were corrected after v0.1.1 and are included in v0.3.1: exact decimals, comments and unchanged spans are covered by real CLI/MCP, move/archive/batch, codec, fuzz and acceptance regressions. The original v0.1.1 distribution remains affected; move-fidelity-fix.json preserves the pre-publication source evidence, not installed-package proof."
   },
   {
     "id": "A04",
@@ -134,7 +134,7 @@
       "docs/evidence/verification-footer-fix.json",
       "docs/evidence/performance-optimization.json"
     ],
-    "notes": "Installed v0.1.2 exposed trailing-comment loss during verification invalidation. The corrected source passes the added LF/CRLF codec/binary-acceptance regressions and all 253 original QA checks; see verification-footer-fix.json. Published v0.1.2 remains affected."
+    "notes": "Installed v0.1.2 exposed trailing-comment loss during verification invalidation. The correction is included in v0.3.1; verification-footer-fix.json retains the pre-publication LF/CRLF codec/binary-acceptance and 253 original QA checks. Published v0.1.2 remains affected. Current installed-package scope is recorded separately in the v0.3.1 release notes."
   },
   {
     "id": "A10",

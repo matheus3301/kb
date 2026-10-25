@@ -4,7 +4,7 @@ title: KB — Knowledge Base project design
 description: Experimental Knowledge Base product, architecture, learning lifecycle, evidence, and limits.
 tags: [okf, para, cli, mcp, architecture, memory]
 status: stable
-implementation_version: "0.1.3"
+implementation_version: "0.3.1"
 implementation_status: experimental
 sources:
   - resource: spec.md
@@ -20,11 +20,13 @@ generated:
 
 # KB — Knowledge Base project design
 
-The [v0.1 interface contract](interfaces.md) and shared DTOs in
-`internal/api/types.go` clarify the [specification](spec.md).
-**The v0.1 implementation remains experimental**, with observed
-[validation evidence](evidence/validation.json) and explicit limits. Use v0.1.3
-or later for the [metadata-preservation fixes](installation.md).
+The [interface contract](interfaces.md), originating in v0.1 and extended through
+v0.3.1, and shared DTOs in `internal/api/types.go` clarify the
+[specification](spec.md). **The v0.3.1 implementation remains experimental**,
+with dated [validation evidence](evidence/validation.json) and explicit limits.
+The [roadmap](roadmap.md), [v1.0 exit checklist](stability.md) and
+[compatibility policy](compatibility.md) separate shipped behavior, pending work
+and proposed commitments.
 
 `kb` is a local Markdown Knowledge Base that humans and AI agents can search,
 read, and update. One binary provides two modes: CLI commands
@@ -196,8 +198,10 @@ libraries. No embedded model or legacy-note migration is provided.
 
 Reads encountering a pending journal return `RECOVERY_REQUIRED` without note
 mutation. Explicit recovery or a subsequent mutation resolves pending state.
-Receipts do not expire in v0.1. Repair is an explicit plan, requires a conformant
-final state, and remains subject to operational size limits. External readers
+Receipts currently do not expire. Repair is an explicit plan, requires a conformant
+final state by default, and remains subject to operational size limits. Explicit
+[incremental repair](decisions/0004-incremental-repair.md) permits bounded progress
+while preserving untouched invalid notes. External readers
 can observe intermediate multi-file states; advisory locking does not isolate
 against editors that ignore it.
 
@@ -212,18 +216,27 @@ notes over 1 MiB are invalid, scoped source files over 4 MiB abort inventory,
 non-string YAML mapping keys produce policy findings, and read/context responses
 have a 256 KiB ceiling. These limits are not imposed by OKF itself.
 
-[Recorded validation](evidence/validation.json) reports 88.4% statement coverage,
-102 top-level test functions, 314 named pass events including subtests and seeds,
-seven fuzz targets, and four CGO-free cross-builds. The
+[Original validation](evidence/validation.json), dated 2026-10-24, reports
+88.4% statement coverage, 102 top-level test functions, 314 named pass events
+including subtests and seeds, seven fuzz targets, and four CGO-free cross-builds.
+These are historical counts, not current suite totals. The
 [CLI workflow](evidence/cli-workflow.json) and consumer observation exercise
-synthetic data. This evidence supports observed behavior, not the absence of
-bugs, universal agent adherence, or semantic correctness.
+synthetic data. Evidence supports observed behavior, not absence of bugs,
+universal agent adherence or semantic correctness.
 
-The [local performance benchmark](performance.md) used Apple M4/macOS arm64,
-Go 1.27.3, 10,000 synthetic 2 KiB notes, and 20 warm samples. Cold core search
-was 594.4 ms, warm p95 162.9 ms, and peak process RSS 180.3 MiB. The original
-150 ms/150 MiB targets were not met. These are core measurements, not fresh CLI
-startup or MCP transport latency. Reindexing was not independently benchmarked.
+The [performance report](performance.md) separates historical v0.1 core misses
+(162.9 ms warm p95/180.3 MiB RSS) from the 2026-10-25 v0.3.1 measurements
+(117.7 ms/134.0 MiB, with 179.0 ms rebuild p95), meeting the original local
+150 ms/150 MiB/10 s targets. Core runs used Apple M4/macOS arm64, Go 1.27.3,
+10,000 synthetic 2 KiB notes and 20 warm queries; reindexing was timed separately
+in the later run. These are not fresh CLI startup or MCP transport measurements.
+At 50k notes, CLI search still measured 2.19 s median/483.1 MiB peak RSS.
+Large-corpus costs remain; these observations are not portable SLAs.
+
+Source CI runs on ubuntu-24.04 and macos-15, with four cross-build targets.
+[v0.3.1 installed-package verification](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
+covers macOS arm64 only. Cross-builds and native snapshot execution do not prove
+installed runtime behavior on every target.
 
 ## Delivery
 

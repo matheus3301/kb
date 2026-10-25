@@ -1,15 +1,22 @@
 # Performance measurements
 
-The performance candidate optimizes v0.3.0 without changing ranking, format
-policy, revision checks or durable publication. Markdown remains authoritative;
-there is no new daemon, database, network dependency or timestamp-only cache.
+The performance work shipped in experimental
+[v0.3.1](https://github.com/matheus3301/kb/releases/tag/v0.3.1) on 2026-10-25,
+optimizing v0.3.0 without changing ranking, format policy, revision checks or
+durable publication. Markdown remains authoritative; there is no new daemon,
+database, network dependency or timestamp-only cache. The paired report below
+retains its original **candidate** labels and pre-release binary identity; the
+release notes separately record subsequent macOS arm64 installed-package proof.
+The [roadmap](roadmap.md) and [exit checklist](stability.md) keep additional
+large-corpus work and v1.0 readiness pending.
 
 ## Paired CLI and MCP measurements
 
 Measured on Apple M4/macOS arm64, 10 logical CPUs, Go 1.27.3, on 2026-10-25.
-Baseline is the installed Homebrew v0.3.0; candidate is the unreleased performance
-branch. Runs were serialized baseline then candidate using the same synthetic
-corpora and script. Each read has 10 samples; each repair has three. The
+Baseline is the installed Homebrew v0.3.0; candidate was the pre-release
+performance branch subsequently shipped as v0.3.1. Runs were serialized baseline
+then candidate using the same synthetic corpora and script. Each read has 10
+samples; each repair has three. The
 [machine-readable report](evidence/performance-optimization.json) includes all
 1,000/10,000/50,000-note results, exact method, source fingerprint and limits.
 
