@@ -1,0 +1,46 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  text: string;
+  action?: string;
+}
+const { id, label, text, action = 'Copy' } = Astro.props;
+---
+<div class="copy-block">
+  <div class="copy-heading">
+    <span>{label}</span>
+    <button class="copy-button" type="button" data-copy-target={id} aria-label={`${action} ${label.toLowerCase()}`} hidden>
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M12 4V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h1" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span data-copy-label>{action}</span>
+    </button>
+  </div>
+  <pre tabindex="0" aria-label={label}><code id={id}>{text}</code></pre>
+  <p class="copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+</div>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-target]').forEach((button) => {
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      const block = button.closest('.copy-block');
+      const status = block?.querySelector<HTMLElement>('[role="status"]');
+      const label = button.querySelector<HTMLElement>('[data-copy-label]');
+      const target = document.getElementById(button.dataset.copyTarget ?? '');
+      if (!status || !label || !target) return;
+      button.disabled = true;
+      label.textContent = 'Copying…';
+      try {
+        await navigator.clipboard.writeText(target.textContent ?? '');
+        label.textContent = 'Copied';
+        status.textContent = 'Copied to clipboard.';
+        status.dataset.state = 'success';
+      } catch {
+        label.textContent = 'Try again';
+        status.textContent = 'Clipboard unavailable. Select and copy the text manually.';
+        status.dataset.state = 'error';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>
