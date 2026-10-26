@@ -57,16 +57,8 @@ func backupInventory(ctx context.Context, root *os.Root) (backupManifest, error)
 	m := backupManifest{Version: backupVersion, Kind: "kb-operational-backup", Files: []backupEntry{}, Excluded: []string{}}
 	var total int64
 	count := 0
-	err := fs.WalkDir(root.FS(), ".", func(name string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil {
-			return walkErr
-		}
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-		if name == "." {
-			return nil
-		}
+	paths := map[string][]byte{}
+	err := walkBackupInventory(ctx, root, func(dir *os.Root, name string, entry fs.DirEntry) error {
 		count++
 		if count > maxBackupFiles*2 {
 			return problem("INPUT_TOO_LARGE", "backup inventory exceeds entry limit")
@@ -79,16 +71,14 @@ func backupInventory(ctx context.Context, root *os.Root) (backupManifest, error)
 			m.Excluded = append(m.Excluded, name)
 			return nil
 		}
-		if err := inspect(root, name); err != nil {
-			return err
-		}
+		paths[name] = nil
 		if entry.IsDir() {
 			return nil
 		}
 		if err := backupPath(name); err != nil {
 			return err
 		}
-		data, err := backupFile(root, name)
+		data, err := backupFile(dir, entry.Name())
 		if err != nil {
 			return err
 		}
@@ -99,22 +89,38 @@ func backupInventory(ctx context.Context, root *os.Root) (backupManifest, error)
 		}
 		return nil
 	})
+	if err == nil {
+		err = inspectInventory(root, paths)
+	}
 	sortEntries(m.Files)
 	sort.Strings(m.Excluded)
 	return m, err
 }
 
-func backupFile(root *os.Root, name string) ([]byte, error) {
-	if err := inspect(root, name); err != nil {
+func backupFile(root *os.Root, name string) (data []byte, err error) {
+	parent, err := backupParent(root, name, nil)
+	if err != nil {
 		return nil, err
 	}
-	f, err := openRead(root, name)
+	defer func() { err = errors.Join(err, parent.Close()) }()
+	base := path.Base(name)
+	before, err := parent.Lstat(base)
+	if err != nil {
+		return nil, err
+	}
+	if before.Mode()&os.ModeSymlink != 0 {
+		return nil, problem("PATH_OUTSIDE_ROOT", "symbolic links are forbidden")
+	}
+	f, err := openRead(parent, base)
 	if err != nil {
 		return nil, err
 	}
 	info, statErr := f.Stat()
 	if statErr != nil {
 		return nil, errors.Join(statErr, f.Close())
+	}
+	if !os.SameFile(before, info) {
+		return nil, errors.Join(problem("REVISION_CONFLICT", "a backup file changed during access"), f.Close())
 	}
 	stat, ok := info.Sys().(*syscall.Stat_t)
 	if !info.Mode().IsRegular() || !ok || stat.Nlink != 1 {
@@ -126,6 +132,9 @@ func backupFile(root *os.Root, name string) ([]byte, error) {
 	data, readErr := io.ReadAll(io.LimitReader(f, maxBackupFileBytes+1))
 	err = errors.Join(readErr, f.Close())
 	if err != nil {
+		return nil, err
+	}
+	if err := backupParentIdentity(root, name, parent); err != nil {
 		return nil, err
 	}
 	if int64(len(data)) > maxBackupFileBytes {
@@ -327,7 +336,7 @@ func (s *Service) Restore(ctx context.Context, request api.RestoreInput) (result
 			return receipt, err
 		}
 		defer func() { err = errors.Join(err, dest.Close()) }()
-		var files []backupEntry
+		var files []restoredFile
 		var directories []string
 		published := false
 		defer func() {
@@ -335,11 +344,13 @@ func (s *Service) Restore(ctx context.Context, request api.RestoreInput) (result
 				err = errors.Join(err, cleanupRestore(root, dest, request.Destination, created, files, directories))
 			}
 		}()
-		identity := func() error {
-			if err := inspect(root, request.Destination); err != nil {
+		identity := func() (err error) {
+			parent, err := backupParent(root, request.Destination, nil)
+			if err != nil {
 				return err
 			}
-			current, err := root.Lstat(request.Destination)
+			defer func() { err = errors.Join(err, parent.Close()) }()
+			current, err := parent.Lstat(path.Base(request.Destination))
 			if err != nil {
 				return err
 			}
@@ -391,16 +402,28 @@ func (s *Service) Restore(ctx context.Context, request api.RestoreInput) (result
 		if err != nil {
 			return receipt, err
 		}
-		expected := append([]backupEntry(nil), files...)
+		expected := make([]backupEntry, len(files))
+		for i, file := range files {
+			expected[i] = file.entry
+		}
 		sortEntries(expected)
 		if !slices.Equal(actual.Files, expected) || len(actual.Excluded) != 0 {
 			return receipt, problem("REVISION_CONFLICT", "restore destination changed before publication")
+		}
+		if err := inspect(root, request.Destination); err != nil {
+			return receipt, err
+		}
+		if err := inspect(dest, ".kb/config.toml"); err != nil {
+			return receipt, err
 		}
 		entry := backupEntry{Path: ".kb/config.toml", Size: int64(len(config)), Revision: api.Revision(config)}
 		if err := restoreFile(dest, entry, config, &directories, &files); err != nil {
 			return receipt, err
 		}
 		if err := identity(); err != nil {
+			return receipt, err
+		}
+		if err := inspect(root, request.Destination); err != nil {
 			return receipt, err
 		}
 		if err := syncDirectory(root, ".kb/restores"); err != nil {
@@ -416,53 +439,39 @@ func (s *Service) Restore(ctx context.Context, request api.RestoreInput) (result
 	return result, err
 }
 
-func restoreFile(dest *os.Root, entry backupEntry, data []byte, directories *[]string, files *[]backupEntry) error {
-	// Collect missing parents, then create shallowest first.
-	var missing []string
-	for dir := path.Dir(entry.Path); dir != "."; dir = path.Dir(dir) {
-		if _, err := dest.Lstat(dir); err == nil {
-			break
-		} else if !errors.Is(err, os.ErrNotExist) {
-			return err
-		}
-		missing = append(missing, dir)
-	}
-	for i := len(missing) - 1; i >= 0; i-- {
-		if err := inspect(dest, missing[i]); err != nil {
-			return err
-		}
-		if err := dest.Mkdir(missing[i], 0700); err != nil {
-			return err
-		}
-		*directories = append(*directories, missing[i])
-		if err := syncDirectory(dest, path.Dir(missing[i])); err != nil {
-			return err
-		}
-	}
-	if err := inspect(dest, entry.Path); err != nil {
-		return err
-	}
-	f, err := dest.OpenFile(entry.Path, os.O_CREATE|os.O_EXCL|os.O_WRONLY|syscall.O_NOFOLLOW, 0600)
+func restoreFile(dest *os.Root, entry backupEntry, data []byte, directories *[]string, files *[]restoredFile) (err error) {
+	parent, err := backupParent(dest, entry.Path, directories)
 	if err != nil {
 		return err
 	}
+	defer func() { err = errors.Join(err, parent.Close()) }()
+	name := path.Base(entry.Path)
+	f, err := parent.OpenFile(name, os.O_CREATE|os.O_EXCL|os.O_WRONLY|syscall.O_NOFOLLOW, 0600)
+	if err != nil {
+		return err
+	}
+	created, err := f.Stat()
+	if err != nil {
+		return errors.Join(err, f.Close(), parent.Remove(name))
+	}
 	_, writeErr := f.Write(data)
 	if err := errors.Join(writeErr, f.Sync(), f.Close()); err != nil {
-		return errors.Join(err, dest.Remove(entry.Path))
+		return errors.Join(err, removeOwnedRestoreLeaf(parent, name, created))
 	}
-	*files = append(*files, entry)
-	return syncDirectory(dest, path.Dir(entry.Path))
+	*files = append(*files, restoredFile{entry: entry, identity: created})
+	return errors.Join(syncDirectory(parent, "."), backupParentIdentity(dest, entry.Path, parent))
 }
 
-func cleanupRestore(parent, dest *os.Root, name string, created os.FileInfo, files []backupEntry, directories []string) error {
+func cleanupRestore(parent, dest *os.Root, name string, created os.FileInfo, files []restoredFile, directories []string) error {
 	var errs []error
+	// A fresh batch avoids quadratic sibling scans. If names became ambiguous,
+	// retain the incomplete destination rather than deleting external state.
+	if err := inspectInventory(dest, restoredFilePaths(files, directories)); err != nil {
+		return err
+	}
 	for i := len(files) - 1; i >= 0; i-- {
 		entry := files[i]
-		data, err := backupFile(dest, entry.Path)
-		if err == nil && api.Revision(data) == entry.Revision {
-			err = dest.Remove(entry.Path)
-		}
-		if err != nil {
+		if err := removeRestoredFile(dest, entry); err != nil {
 			errs = append(errs, err)
 		}
 	}

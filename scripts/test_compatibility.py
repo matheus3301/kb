@@ -1,7 +1,9 @@
 """Reject false-positive compatibility evidence and preserve authoritative snapshot boundaries."""
 import copy
 import json
+import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -155,6 +157,114 @@ class ReportFailureTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 2)
                 self.assertIn("must be supplied together", result.stderr)
                 self.assertFalse(output.exists())
+
+
+@unittest.skipUnless(shutil.which("go"), "Go toolchain required for actual prior-archive regressions")
+class PriorArchiveProcessTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.build = tempfile.TemporaryDirectory(prefix="kb-prior-archive-binary-")
+        cls.addClassCleanup(cls.build.cleanup)
+        cls.binary = Path(cls.build.name) / "kb"
+        repository = Path(qualification.__file__).resolve().parents[1]
+        cls.commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repository, text=True).strip()
+        cls.version = "v0.0.0-archive-regression"
+        subprocess.run(["go", "build", "-trimpath", "-ldflags",
+                        f"-X main.version={cls.version} -X main.commit={cls.commit}",
+                        "-o", str(cls.binary), "./cmd/kb"], cwd=repository,
+                       env=dict(os.environ, GOMAXPROCS="2"), check=True, capture_output=True, timeout=120)
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="kb-prior-archive-regression-")
+        self.addCleanup(temporary.cleanup)
+        self.workspace = Path(temporary.name).resolve()
+        home = self.workspace / "home"
+        home.mkdir()
+        environment = {"PATH": "", "HOME": str(home), "TMPDIR": str(self.workspace), "LANG": "C.UTF-8", "GOMAXPROCS": "2"}
+        self.old = qualification.CLI(self.binary, self.workspace / "producer", environment)
+        self.consumer = qualification.CLI(self.binary, self.workspace / "consumer", environment)
+        self.create, self.patch = qualification.seed(self.old)
+        self.old.run("patch", "fidelity.md", payload=self.patch)
+        self.edge = {"status": "producing",
+                     "producer": qualification.identity(self.binary, self.version, self.commit, "baseline"),
+                     "consumer": qualification.identity(self.binary, self.version, self.commit, "candidate")}
+
+    def consume(self, prior, cli=None):
+        qualification.restore_prior_archive(cli or self.consumer, prior, self.edge, [self.create], self.patch)
+
+    def test_real_prior_archive_preserves_old_receipts_and_allows_candidate_writes(self):
+        prior = qualification.produce_prior_archive(self.old, self.edge)
+        self.consume(prior)
+        restored = qualification.CLI(self.binary, self.consumer.root / ".kb/restores/prior", self.consumer.environment)
+        self.assertIn("900 seconds", restored.run("read", "fidelity.md")["data"]["markdown"])
+        self.assertIn("Candidate writes after restoring a prior archive.",
+                      restored.run("read", "after-prior-restore.md")["data"]["markdown"])
+        self.assertEqual((restored.root / "source.bin").read_bytes(), prior["expected"]["source.bin"])
+        for path, raw in prior["expected"].items():
+            if path.startswith(".kb/state/receipts/"):
+                self.assertEqual((restored.root / path).read_bytes(), raw)
+        self.assertEqual(qualification.storage_snapshot(self.old.root), prior["source_snapshot"])
+        self.assertEqual(self.edge["status"], "passed")
+
+    def test_changed_archive_bytes_fail_before_candidate_initialization(self):
+        prior = qualification.produce_prior_archive(self.old, self.edge)
+        prior["archive"].write_bytes(prior["archive"].read_bytes() + b"unexpected")
+        with self.assertRaises(qualification.CompatibilityFailure):
+            self.consume(prior)
+        self.assertFalse(self.consumer.root.exists())
+        self.assertNotEqual(self.edge["status"], "passed")
+
+    def test_corrupt_archive_with_matching_file_hash_is_rejected_by_actual_restore(self):
+        prior = qualification.produce_prior_archive(self.old, self.edge)
+        corrupt = bytearray(prior["archive"].read_bytes())
+        corrupt[512] ^= 1
+        prior["archive"].write_bytes(corrupt)
+        # Model corrupt producer bytes even when their recorded outer checksum matches.
+        prior["archive_sha256"] = qualification.hashlib.sha256(corrupt).hexdigest()
+        prior["source_snapshot"] = qualification.storage_snapshot(self.old.root)
+        with self.assertRaises(qualification.CompatibilityFailure):
+            self.consume(prior)
+        self.assertFalse((self.consumer.root / ".kb/restores/prior/.kb/config.toml").exists())
+        self.assertEqual(qualification.storage_snapshot(self.old.root), prior["source_snapshot"])
+        self.assertNotEqual(self.edge["status"], "passed")
+
+    def test_note_asset_config_receipt_and_file_set_mismatches_cannot_pass(self):
+        prior = qualification.produce_prior_archive(self.old, self.edge)
+        receipt = next(path for path in prior["expected"] if path.startswith(".kb/state/receipts/"))
+        mutations = [("fidelity.md", b"lost comments"), ("source.bin", b"changed source"),
+                     (".kb/config.toml", b"version = 1\n# changed config\n"), (receipt, b"changed receipt"),
+                     (receipt, None), ("unexpected.md", b"unexpected")]
+        for number, (path, raw) in enumerate(mutations):
+            with self.subTest(path=path, deleted=raw is None):
+                altered = dict(prior, expected=dict(prior["expected"]))
+                if raw is None:
+                    del altered["expected"][path]
+                else:
+                    altered["expected"][path] = raw
+                cli = qualification.CLI(self.binary, self.workspace / f"mismatch-{number}", self.consumer.environment)
+                with self.assertRaises(qualification.CompatibilityFailure):
+                    self.consume(altered, cli)
+                self.assertEqual(qualification.storage_snapshot(self.old.root), prior["source_snapshot"])
+                self.assertNotEqual(self.edge["status"], "passed")
+
+    def test_wrong_manifest_identity_fails_even_when_restored_bytes_match(self):
+        prior = qualification.produce_prior_archive(self.old, self.edge)
+        with self.assertRaises(qualification.CompatibilityFailure):
+            self.consume(dict(prior, manifest_revision="sha256:" + "0" * 64))
+        restored_root = self.consumer.root / ".kb/restores/prior"
+        self.assertEqual(qualification.authoritative(restored_root), prior["expected"])
+        self.assertNotEqual(self.edge["status"], "passed")
+
+    def test_byte_exact_archive_without_old_receipts_still_fails_replay(self):
+        for receipt in (self.old.root / ".kb/state/receipts").glob("*.json"):
+            receipt.unlink()
+        prior = qualification.produce_prior_archive(self.old, self.edge)
+        with self.assertRaises(qualification.CompatibilityFailure):
+            self.consume(prior)
+        restored_root = self.consumer.root / ".kb/restores/prior"
+        self.assertEqual(qualification.authoritative(restored_root), prior["expected"])
+        self.assertEqual(qualification.storage_snapshot(self.old.root), prior["source_snapshot"])
+        self.assertNotEqual(self.edge["status"], "passed")
 
 
 if __name__ == "__main__":

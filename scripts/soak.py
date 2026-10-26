@@ -335,6 +335,21 @@ def qualification(runs, seeds, minimum):
     return acknowledged
 
 
+def publish_report(report, destination):
+    try:
+        output = Path(destination)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(report, indent=2) + '\n')
+    except Exception as error:
+        failure = public_failure(error)
+        failure.update(operation='report-output', check='report-output-write')
+        report['failures'].append(failure)
+        report['ok'] = False
+    print(json.dumps({'ok': report['ok'], 'rounds': [r['rounds'] for r in report['runs']],
+                      'acknowledged_work': report.get('acknowledged_work'), 'failures': report['failures']}))
+    return 0 if report['ok'] else 1
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--binary', required=True)
@@ -350,14 +365,23 @@ def main():
     if (args.writers < 4 or args.minimum_work < 1 or len(set(args.seeds)) != len(args.seeds)
             or any(not math.isfinite(n) or n <= 0 for n in (args.duration, args.backup_interval, args.command_timeout))):
         parser.error('require >=4 writers, unique seeds, and positive finite durations/minimum-work')
-    binary = str(Path(args.binary).resolve())
     report = {'schema_version': 'kb.soak.v1', 'ok': False, 'platform': {'system': platform.system(),
               'release': platform.release(), 'machine': platform.machine(), 'python': platform.python_version()},
-              'binary_revision': revision(Path(binary).read_bytes()), 'writers': args.writers, 'seeds': args.seeds,
+              'binary_revision': None, 'writers': args.writers, 'seeds': args.seeds,
               'requested_seconds': args.duration, 'minimum_work': args.minimum_work,
               'backup_interval_seconds': args.backup_interval, 'command_timeout_seconds': args.command_timeout,
               'profile': {'maintain_indexes': True, 'maintain_log': args.maintain_log, 'notes': args.writers + 1},
               'runs': [], 'failures': [], 'scope': 'finite synthetic local-process correctness; not power-loss proof'}
+    preflight_started = time.monotonic()
+    try:
+        binary = str(Path(args.binary).resolve())
+        report['binary_revision'] = revision(Path(binary).read_bytes())
+    except Exception as error:
+        failure = public_failure(error)
+        failure.update(operation='binary-preflight', check='binary-identity-read')
+        report['failures'].append(failure)
+        report.update(acknowledged_work=0, totals={}, elapsed_seconds=time.monotonic() - preflight_started)
+        return publish_report(report, args.output)
     started = time.monotonic()
     for seed in args.seeds:
         run = run_seed(binary, seed, args.writers, args.duration / len(args.seeds), args.backup_interval, args.command_timeout, args.maintain_log)
@@ -373,12 +397,7 @@ def main():
     except RuntimeError as error:
         report['failures'].append(public_failure(error))
     report['elapsed_seconds'] = time.monotonic() - started
-    output = Path(args.output)
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2) + '\n')
-    print(json.dumps({'ok': report['ok'], 'rounds': [r['rounds'] for r in report['runs']],
-                      'acknowledged_work': report.get('acknowledged_work'), 'failures': report['failures']}))
-    return 0 if report['ok'] else 1
+    return publish_report(report, args.output)
 
 
 if __name__ == '__main__':

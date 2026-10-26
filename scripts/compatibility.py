@@ -319,6 +319,57 @@ def restore_source_policy(cli, archive):
         storage.chmod(0o700)
 
 
+def produce_prior_archive(cli, edge):
+    """Capture an archive from the prior executable before any candidate touches its fixture."""
+    require(not (cli.root / ".kb/state/pending.json").exists(), "prior archive requires settled source")
+    expected = authoritative(cli.root)
+    archive = ".kb/backups/prior.tar"
+    result = cli.run("backup", payload={"archive": archive})["data"]
+    require(authoritative(cli.root) == expected, "prior backup changed authoritative source bytes")
+    archive_path = cli.root / archive
+    digest = hashlib.sha256(archive_path.read_bytes()).hexdigest()
+    edge.update(status="produced", archive_path=archive, archive_sha256=digest,
+                manifest_revision=result["manifest_revision"], files=result["files"], bytes=result["bytes"])
+    return {"source": cli, "expected": expected, "source_snapshot": storage_snapshot(cli.root),
+            "archive": archive_path, "archive_sha256": digest, "manifest_revision": result["manifest_revision"]}
+
+
+def restore_prior_archive(cli, prior, edge, creates, patch):
+    """Restore exact prior-produced bytes into separate candidate staging, then replay and write."""
+    edge["status"] = "restoring"
+    archive_bytes = prior["archive"].read_bytes()
+    require(hashlib.sha256(archive_bytes).hexdigest() == prior["archive_sha256"], "prior archive bytes changed")
+    cli.run("init")
+    storage = cli.root / ".kb/backups"
+    storage.mkdir(mode=0o700)
+    staged = storage / "prior.tar"
+    staged.write_bytes(archive_bytes)
+    require(hashlib.sha256(staged.read_bytes()).hexdigest() == prior["archive_sha256"], "staged prior archive bytes changed")
+    destination = ".kb/restores/prior"
+    result = cli.run("restore", payload={"archive": ".kb/backups/prior.tar", "destination": destination})["data"]
+    require(result["manifest_revision"] == prior["manifest_revision"], "prior archive manifest identity changed")
+    restored = CLI(cli.binary, cli.root / destination, cli.environment)
+    require(authoritative(restored.root) == prior["expected"], "prior archive restored bytes differ")
+    replay(restored, ("patch", "fidelity.md"), patch)
+    for create in creates:
+        replay(restored, ("create",), create)
+    require(authoritative(restored.root) == prior["expected"], "prior receipt replay changed restored bytes")
+    read = restored.run("read", "fidelity.md")["data"]
+    require(read["note"]["revision"] == revision(prior["expected"]["fidelity.md"]), "prior restored revision changed")
+    restored.run("patch", "fidelity.md", payload=request("after-prior-restore", expected_revision=read["note"]["revision"],
+                 body_edits=[{"old_text": "600 seconds", "new_text": "900 seconds"}]))
+    require("900 seconds" in restored.run("read", "fidelity.md")["data"]["markdown"], "prior restored patch did not persist")
+    restored.run("create", payload=request("create-after-prior-restore", path="after-prior-restore.md",
+                 type="Reference", body="# Continued evidence\nCandidate writes after restoring a prior archive.\n"))
+    require("Candidate writes after restoring a prior archive." in
+            restored.run("read", "after-prior-restore.md")["data"]["markdown"], "prior restored create did not persist")
+    require(storage_snapshot(prior["source"].root) == prior["source_snapshot"], "prior archive consumer changed original root")
+    require(hashlib.sha256(staged.read_bytes()).hexdigest() == prior["archive_sha256"], "prior archive changed during consumption")
+    edge.update(status="passed", restored_manifest_revision=result["manifest_revision"],
+                replayed_requests=len(creates) + 1, continued_writes=["patch", "create"], source_unchanged=True,
+                authoritative_bytes_exact=True, restore_destination=destination)
+
+
 def backup_restore(cli, creates, patch):
     before = authoritative(cli.root)
     backup = cli.run("backup", payload={"archive": ".kb/backups/cli.tar"})["data"]
@@ -445,6 +496,7 @@ def seed(cli):
                 b"x-extension: {custom: 'unchanged'} # Preserve flow\r\n# Trailing YAML annotation\r\n"
                 b"---\r\n# Evidence\r\nquartzcompat retention is 300 seconds.\r\n")
     (cli.root / "fidelity.md").write_bytes(fidelity)
+    (cli.root / "source.bin").write_bytes(b"\x00\x01\x80\xffSynthetic immutable source\n")
     patch = request("fidelity-patch", expected_revision=revision(fidelity),
                     body_edits=[{"old_text": "300 seconds", "new_text": "600 seconds"}])
     return create, patch
@@ -487,6 +539,19 @@ def qualify(baseline, candidate, candidate_version, candidate_commit, report,
         report["checks"].append("baseline-independent-mcp")
         old.run("patch", "fidelity.md", payload=patch)
         preserved = (root / "fidelity.md").read_bytes()
+        if OPERATIONAL_TOOLS <= old_tools:
+            report["active_check"] = "prior-produced-archive"
+            edge = {"status": "producing", "producer": report["identities"]["baseline"],
+                    "consumer": report["identities"]["candidate"]}
+            report["prior_archive"] = edge
+            prior = produce_prior_archive(old, edge)
+            staging = CLI(candidate, workspace / "prior-archive-consumer", environment)
+            restore_prior_archive(staging, prior, edge, [create, old_mcp_create], patch)
+            report["checks"].append("prior-produced-archive")
+        else:
+            report["prior_archive"] = {"status": "not_applicable", "reason": "baseline has no operational archive tools",
+                                       "producer": report["identities"]["baseline"],
+                                       "consumer": report["identities"]["candidate"]}
         report["active_check"] = "upgrade-cli-and-receipts"
         common_contract(new)
         require((root / "fidelity.md").read_bytes() == preserved, "upgrade changed note bytes")
@@ -558,6 +623,8 @@ def main():
     except (CompatibilityFailure, OSError, ValueError, KeyError, TypeError, RuntimeError, subprocess.SubprocessError) as error:
         # Do not copy subprocess output, private executable paths or temporary roots into public evidence.
         report["failure"] = {"check": report["active_check"], "type": type(error).__name__}
+        if report.get("prior_archive", {}).get("status") in {"producing", "produced", "restoring"}:
+            report["prior_archive"]["status"] = "failed"
         if isinstance(error, CompatibilityFailure):
             report["failure"]["invariant"] = str(error)
     encoded = json.dumps(report, indent=2, sort_keys=True) + "\n"
