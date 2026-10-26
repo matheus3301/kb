@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none" role="img" aria-labelledby="title desc">
-  <title id="title">kb</title>
-  <desc id="desc">A lowercase kb monogram. The blue b forms a connected page around a shared vertical spine.</desc>
-  <rect x="4" y="4" width="120" height="120" rx="28" fill="#142C45"/>
-  <path d="M31 31V97M31 64L54 42M31 64L55 88" stroke="#F5F8FD" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M72 31V88H83C106 88 106 57 83 57H72" stroke="#8EB8FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="72" cy="57" r="5" fill="#3662EA"/>
-</svg>

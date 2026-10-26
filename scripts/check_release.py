@@ -63,13 +63,13 @@ def main():
         members = inspect_archive(dist / name)
         if name != source_name:
             required = public_docs | {"kb", "LICENSE", "THIRD_PARTY_NOTICES.md",
-                                      "assets/logo.svg", "schemas/kb.v1.tools.json"}
+                                      "assets/logo.png", "assets/BRAND.md", "schemas/kb.v1.tools.json"}
             if not required <= members:
                 raise ValueError("binary archive is missing public documentation or licenses")
         else:
             required = {f"kb-{version}/{entry}" for entry in public_docs | {
                 "go.mod", "cmd/kb/main.go", "LICENSE", "THIRD_PARTY_NOTICES.md",
-                "assets/logo.svg", "schemas/kb.v1.tools.json"}}
+                "assets/logo.png", "assets/BRAND.md", "schemas/kb.v1.tools.json"}}
             if not required <= members:
                 raise ValueError("source archive is missing source, docs, or license notices")
     expected_formula = release.formula_text("v" + version, commit, source_name, listed[source_name])

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.svg" alt="Knowledge Base logo" width="104" height="104" />
+  <img src="assets/logo.png" alt="Knowledge Base blue-jay mascot" width="104" height="104" />
   <h1>KB — Knowledge Base</h1>
   <p><strong>Your Knowledge Base. In Markdown. In your terminal.</strong></p>
   <p>Local files for you. A CLI and a skill for your agent.</p>
