@@ -138,6 +138,16 @@ commands, environment, response bodies or paths. OS errors expose only their
 numeric errno. Keep detailed local diagnostics outside public evidence; publish
 only reviewed aggregate results.
 
+Binary identity preflight failures (missing, unreadable or invalid file targets)
+also exit nonzero and write a bounded failure report before starting any seed.
+They identify `binary-preflight` / `binary-identity-read`, retain the OS error type
+and errno, and report a null binary revision with zero acknowledged work.
+If the requested report destination cannot be written, stdout contains a
+path-free JSON failure summary with `report-output` / `report-output-write`;
+no report file is promised in that case. Neither path prints an exception
+traceback containing executable, root or source paths. Successful binary
+preflight, workload execution, counting and qualification semantics are unchanged.
+
 ## Deterministic interruption coverage
 
 The existing `TestRealProcessInterruptionRecoveryAndOperationalArchives` covers
@@ -218,3 +228,24 @@ issues, Go tests with 88.6% aggregate statement coverage, four build targets,
 43 executable documentation requests, benchmark smoke and retrieval evaluation.
 The shared runner serialized heavy commands; no gate or threshold was weakened.
 Coverage is not a durability or semantic-correctness proof.
+
+### Preflight privacy regression
+
+The focused harness suite now passes 14 tests. New real-process cases cover a
+missing binary, a directory instead of a binary, an unreadable binary on a
+non-root account, and a blocked output destination. They require nonzero exits,
+path-free stdout/stderr/report metadata, and no seed runs on binary identity
+failure. A report-publication regression also rejects a false success when the
+workload had qualified but evidence publication fails. Existing timeout,
+execution-permission, replay, conflict, provenance and useful-work checks remain
+in the suite. These checks do not modify the active qualification sandboxes or
+their preserved binaries.
+
+The preflight-hardening `make check` passed with 79 Python tests, zero static
+analysis issues, 88.7% aggregate Go statement coverage, four build targets,
+12 fuzz smoke targets, security checks, CLI acceptance, documentation workflows,
+retrieval evaluation and the existing three-second real CLI soak smoke. That
+smoke completed eight rounds and 80 acknowledged mutation/replay outcomes;
+it is not an extended qualification result. Separate direct invocations confirmed
+missing/non-file/unreadable binaries return exit 1, zero work, no seed runs and
+empty stderr; a blocked report target returns a sanitized exit-1 stdout summary.

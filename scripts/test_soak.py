@@ -2,11 +2,14 @@
 from collections import Counter
 import copy
 import json
+import io
+import os
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 import soak
 
@@ -205,6 +208,83 @@ sys.exit(status)
             report = soak.public_failure(caught.exception)
             self.assertEqual(report['check'], 'unexpected exit or error code')
             self.assertNotIn(marker, json.dumps(report))
+
+    def test_binary_identity_preflight_failures_are_path_free_and_start_no_runs(self):
+        with tempfile.TemporaryDirectory(prefix='private-preflight-fixture-') as directory:
+            root = Path(directory)
+            harness = Path(soak.__file__).resolve()
+            cases = [('missing', 'FileNotFoundError'), ('directory', 'IsADirectoryError')]
+            if os.geteuid() != 0:
+                cases.append(('unreadable', 'PermissionError'))
+            for case, error_type in cases:
+                with self.subTest(case=case):
+                    binary = root / case
+                    if case == 'directory':
+                        binary.mkdir()
+                    elif case == 'unreadable':
+                        binary.write_bytes(b'Synthetic unreadable executable')
+                        binary.chmod(0)
+                    output = root / (case + '.json')
+                    result = subprocess.run([
+                        sys.executable, str(harness), '--binary', str(binary),
+                        '--output', str(output), '--duration', '0.01', '--seeds', '1729',
+                        '--writers', '4', '--minimum-work', '1'],
+                        capture_output=True, text=True, timeout=5)
+                    self.assertEqual(result.returncode, 1)
+                    self.assertEqual(result.stderr, '')
+                    text = output.read_text()
+                    report = json.loads(text)
+                    self.assertIs(report['ok'], False)
+                    self.assertIsNone(report['binary_revision'])
+                    self.assertEqual(report['runs'], [])
+                    self.assertEqual(report['acknowledged_work'], 0)
+                    failure = report['failures'][0]
+                    self.assertEqual(failure['category'], 'os-error')
+                    self.assertEqual(failure['error_type'], error_type)
+                    self.assertEqual(failure['operation'], 'binary-preflight')
+                    self.assertEqual(failure['check'], 'binary-identity-read')
+                    self.assertEqual(json.loads(result.stdout)['failures'], report['failures'])
+                    for private in (str(binary), str(root), str(harness), str(harness.parent),
+                                    str(Path.home()), str(tempfile.gettempdir()), 'Traceback'):
+                        for surface in (text, result.stdout, result.stderr):
+                            self.assertNotIn(private, surface)
+
+    def test_unwritable_output_has_sanitized_nonzero_stdout_without_traceback(self):
+        with tempfile.TemporaryDirectory(prefix='private-output-fixture-') as directory:
+            root = Path(directory)
+            blocker = root / 'not-a-directory'
+            blocker.write_bytes(b'Preserve this synthetic file')
+            harness = Path(soak.__file__).resolve()
+            binary = root / 'missing-binary'
+            output = blocker / 'report.json'
+            result = subprocess.run([
+                sys.executable, str(harness), '--binary', str(binary),
+                '--output', str(output), '--duration', '0.01', '--seeds', '1729',
+                '--minimum-work', '1'], capture_output=True, text=True, timeout=5)
+            self.assertEqual(result.returncode, 1)
+            self.assertEqual(result.stderr, '')
+            report = json.loads(result.stdout)
+            self.assertIs(report['ok'], False)
+            self.assertEqual([failure['operation'] for failure in report['failures']],
+                             ['binary-preflight', 'report-output'])
+            self.assertEqual(report['failures'][1]['check'], 'report-output-write')
+            self.assertEqual(blocker.read_bytes(), b'Preserve this synthetic file')
+            for private in (str(binary), str(output), str(root), str(harness), str(Path.home()), 'Traceback'):
+                self.assertNotIn(private, result.stdout + result.stderr)
+
+    def test_failed_report_publication_cannot_report_a_successful_qualification(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = {'ok': True, 'runs': [], 'acknowledged_work': 10000, 'failures': []}
+            stdout = io.StringIO()
+            with mock.patch('sys.stdout', stdout):
+                status = soak.publish_report(report, directory)
+            self.assertEqual(status, 1)
+            result = json.loads(stdout.getvalue())
+            self.assertIs(result['ok'], False)
+            self.assertEqual(result['acknowledged_work'], 10000)
+            self.assertEqual(result['failures'][0]['operation'], 'report-output')
+            self.assertEqual(result['failures'][0]['category'], 'os-error')
+            self.assertNotIn(directory, stdout.getvalue())
 
 
 if __name__ == '__main__':
