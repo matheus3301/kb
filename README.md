@@ -145,8 +145,9 @@ Fresh controlled installed **CLI + knowledge-base skill** and independently
 descriptive **stdio MCP** consumers both passed, including separate learning/query
 contexts and byte-pure no-write follow-ups. MCP needed neither the skill nor CLI
 data commands. See [release/installed identities, consumer results and limits](docs/compatibility.md#current-qualification-status).
-**Final postpublication method/results and V08/documentation review remain pending**;
-these observed passes are not a claim that final review has approved delivery.
+Independent automated review approved the bounded delivery and documentation.
+The [delivery record](docs/qa/v1-delivery.md) retains evidence, earlier failed
+attempts and the normal protected-integration conditions.
 
 The unchanged runtime source has completed bounded local candidate qualification,
 including the 30-minute log-disabled/index-enabled profile and a separate shorter

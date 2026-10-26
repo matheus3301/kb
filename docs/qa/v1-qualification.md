@@ -6,8 +6,9 @@ including **34,840 extended ACK and 27 exact backup/restores** plus the separate
 1,200-ACK default-log companion. [v1.0.0 delivery](v1-delivery.md) now records
 actual publication, native/source guards and Homebrew installation without
 relabeling these measurements. Both final installed consumers passed and received
-bounded independent acceptance; only combined-docs review/protected integration
-remain pending. All earlier failed consumer attempts remain failed history.
+bounded independent acceptance. Final automated documentation review is approved
+subject to normal protected integration, recorded in [PR25](https://github.com/matheus3301/kb/pull/25).
+All earlier failed consumer attempts remain failed history.
 
 ## Exact source and executable
 
@@ -65,7 +66,7 @@ Git/artifact hashing and arithmetic, not a gate or runtime rerun.
 | V05 resources | One whole fresh 16-row + three-core-target matrix passed; independent D03 audit accepted | Bounded host result, not V08 or a portable SLA |
 | V06 upgrades | Candidate.5 eight/nine-check reports retained; separate actual installed-v1 eight/nine-check upgrades passed | No automatic downgrade or blanket older-version promise |
 | V07 packages/consumers | Actual published/native/source/tap/Homebrew proofs and final CLI17/MCP20 consumers passed with bounded independent result acceptance | Finite tested scope; separate released/candidate/installed identities |
-| V08 final closure | Prepublication approval, F1 closure and final installed-consumer result acceptance observed | Combined postpublication documentation-head review and protected integration pending; not human approval |
+| V08 final closure | Prepublication approval, F1 closure, installed-consumer acceptance and final automated documentation review observed; P01 receipt corrected | Exact successor-head and merged-main CI required through PR25; no human approval or predicted CI outcome |
 
 ## D01 — Unchanged judgments, fresh observations
 
@@ -268,9 +269,10 @@ Both final fresh-context installed consumers passed and received bounded
 independent result acceptance. All six older failures remain failed, with
 observer false negatives, observed capacity rejection and unattributed failures
 distinguished in the [delivery record](v1-delivery.md). No blanket provider or
-product attribution follows. Final combined-documentation review and protected
-integration remain pending. The [stability checklist](../stability.md) centralizes
-status; automated review is not human approval or overall final-completion sign-off.
+product attribution follows. Final automated documentation review approved the
+bounded record and its precise receipt/status projection. The [stability checklist](../stability.md)
+records scope and [PR25](https://github.com/matheus3301/kb/pull/25) records actual
+protected-integration checks; automated review is not human approval.
 
 ## Public reproduction, after the active qualification slot is released
 

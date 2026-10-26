@@ -1,9 +1,9 @@
 # v1.0.0 release and installed-delivery evidence
 
-**Published, Homebrew-installed and consumer-qualified; final combined-docs review
-and protected integration remain pending.** This report records actual release,
-installation and final fresh-context consumer observations, not overall final
-completion. The [whitelisted evidence](../evidence/v1-delivery.json) retains
+**Published, Homebrew-installed, consumer-qualified and independently reviewed.**
+This report records actual release, installation, final fresh-context consumers
+and bounded automated review. [PR25](https://github.com/matheus3301/kb/pull/25)
+records the required exact successor-head and merged-main integration checks. The [whitelisted evidence](../evidence/v1-delivery.json) retains
 identities, checks, timestamps and all failed consumer-attempt hashes without
 private paths, session identifiers, prompts, answers or raw tool arguments.
 
@@ -144,16 +144,23 @@ product defect is inferred from these observer/provider/unattributed outcomes.
 Independent **automated OMP**, not human, prepublication review accepted bounded
 candidate.5 source/evidence and closed F1. Actual exact PR/main CI and the guarded
 release satisfied its publication conditions. Independent bounded review has
-now accepted both final installed-consumer results. **Final postpublication V08
-still awaits the combined documentation head and protected integration**; the
-coordinator will record the final review receipt/disposition separately.
+now accepted both final installed-consumer results. Final postpublication V08
+approved exact documentation head `b33739b` and this bounded receipt/status
+projection. Its only receipt finding P01 is corrected: consumer-review SHA-256
+`1a5301b060cb1d9ef7b4232e7e8260ff34ffbd29de51389f2c5b800e34e80f32`.
+The final review receipt SHA-256 is
+`45a18f0aca18d0e104aa1d22f3858351265a4bec4394f6514d7c1074955f68f3`.
+The [structured record](../evidence/v1-delivery.json) identifies automated roles,
+unchanged scope and the required protected-integration conditions. No human
+approval or future CI result is invented.
 
 The immutable v1.0.0 tag/source archive, published **2026-10-26 07:56:16 UTC**,
 contains the dated prepublication documentation snapshot. This **2026-10-26
 postpublication record** adds subsequently observed delivery/consumer facts;
 it does not move the tag, replace release assets or rewrite old reports.
-V07 actual outcomes are complete, but overall final closure is not claimed.
-The [stability checklist](../stability.md) centralizes the remaining gate.
+V07 outcomes and the bounded automated V08 review are complete. Actual final
+Git integration and checks are recorded in [PR25](https://github.com/matheus3301/kb/pull/25);
+the [stability checklist](../stability.md) centralizes qualification and scope.
 Finite synthetic local-process/filesystem evidence does not establish arbitrary
 history size, portable latency, hostile-editor isolation or hardware power-loss
 safety. All earlier qualification failures and nonimprovements remain intact.

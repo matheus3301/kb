@@ -1,7 +1,6 @@
 {
   "schema_version": "kb.v1-delivery.v1",
-  "status": "PUBLISHED_AND_HOMEBREW_INSTALLED; both final installed consumers PASS; final combined-docs review/protected integration pending",
-  "overall_delivery_closure_complete": false,
+  "status": "STABLE_V1_RELEASE_AND_INSTALLED_QUALIFICATION_APPROVED; final integration governed by exact-head/main CI in PR25",
   "release": {
     "version": "v1.0.0",
     "source_commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
@@ -530,9 +529,28 @@
     }
   },
   "postpublication_independent_review": {
-    "status": "PENDING_COMBINED_DOCUMENTATION_HEAD_AND_PROTECTED_INTEGRATION",
+    "status": "APPROVED_SUBJECT_TO_PROTECTED_INTEGRATION",
+    "reviewed_head": "b33739b9015fab60456f42ac878cb24f18c6a10f",
+    "reviewer_role": "Independent automated focused OMP reviewer",
+    "human_approval": false,
+    "receipt_sha256": "45a18f0aca18d0e104aa1d22f3858351265a4bec4394f6514d7c1074955f68f3",
     "consumer_results_accepted": true,
-    "receipt_sha256": null
+    "consumer_review_receipt_sha256": "1a5301b060cb1d9ef7b4232e7e8260ff34ffbd29de51389f2c5b800e34e80f32",
+    "P01": "CLOSED: actual accepted consumer receipt and provenance recorded",
+    "approved_successor_scope": "Only known receipt/status projection and dependent public hashes; runtime, measured artifacts, failures and substantive support scope unchanged.",
+    "integration_conditions": [
+      "Required CI must pass on the exact successor PR head.",
+      "Normal protected merge and exact merged-main CI must pass.",
+      "Actual results and final closure are recorded in the public PR/release receipts after execution, not predicted here."
+    ],
+    "integration_evidence_url": "https://github.com/matheus3301/kb/pull/25",
+    "confirming_automated_review": {
+      "reviewed_head": "b33739b9015fab60456f42ac878cb24f18c6a10f",
+      "reviewer_role": "Fresh independent automated OMP final-delivery reviewer",
+      "human_approval": false,
+      "receipt_sha256": "d25f833bfe41b2bf1db97aff2d44bb4b42bb09a3c4c5cbbad86d057ce64fcba7",
+      "decision": "Bounded conditional approval; same receipt/status projection and protected successor/main CI requirements."
+    }
   },
   "V07_complete": true,
   "input_receipt_sha256": {
@@ -553,7 +571,10 @@
     "v1-agent-mcp-attempt2.json": "d3ee67436a8ac950bc71834c50ab5e24df18c1da7f63245bc6884a89a2e0d639",
     "v1-agent-mcp-attempt3.json": "a6a6920cbf9c15ddd817994280859ba10aa805b9425b18e9c098691909e32e2a",
     "v1-agent-mcp-attempt4-structured.json": "29209611532415db281508232c7c57a0d73aff186af767849702dfd579b03e5f",
-    "consumer-method-review-editor-snapshot": "dc7d1888b8acdb81c01dfb38be0285459cf1f78349c47125e6814f0b14a7ab15"
+    "consumer-method-review-editor-snapshot": "dc7d1888b8acdb81c01dfb38be0285459cf1f78349c47125e6814f0b14a7ab15",
+    "independent_consumer_result_review": "1a5301b060cb1d9ef7b4232e7e8260ff34ffbd29de51389f2c5b800e34e80f32",
+    "final_postpublication_review": "45a18f0aca18d0e104aa1d22f3858351265a4bec4394f6514d7c1074955f68f3",
+    "confirming_final_delivery_review": "d25f833bfe41b2bf1db97aff2d44bb4b42bb09a3c4c5cbbad86d057ce64fcba7"
   },
   "editor_static_validation": {
     "actual_downloaded_archive_hashes_checked": 5,
@@ -745,8 +766,8 @@
       "Full-root byte purity and both teardowns",
       "CLI read/bash trace allowed-scope condition closed for this run"
     ],
-    "provenance": "Coordinator relayed actual visible independent decision; final receipt is being finalized and is not required to publish this factual proposal.",
-    "receipt_sha256": null
+    "provenance": "Actual bounded independent automated fresh-session consumer receipt; its stored bytes and scope were independently checked. Not human approval or a general model-obedience guarantee.",
+    "receipt_sha256": "1a5301b060cb1d9ef7b4232e7e8260ff34ffbd29de51389f2c5b800e34e80f32"
   },
   "documentation_snapshot_boundary": {
     "immutable_tag": "v1.0.0",
@@ -762,5 +783,7 @@
     "retry_delay_respected": true,
     "provenance": "Coordinator-confirmed separate event, not an HTTP-status attribution for MCP4 or any earlier unknown failure.",
     "product_result": false
-  }
+  },
+  "release_and_installed_qualification_complete": true,
+  "documentation_review_complete": true
 }

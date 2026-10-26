@@ -1,6 +1,8 @@
 # v1.0 exit criteria
 
-**v1.0.0 is published, Homebrew-installed and consumer-qualified; final combined-docs review/integration is pending.**
+**v1.0.0 is published, Homebrew-installed, consumer-qualified and independently
+reviewed.** [PR25](https://github.com/matheus3301/kb/pull/25) records the required
+exact-head and merged-main checks for the final documentation integration.
 The [actual delivery report](qa/v1-delivery.md) binds released source
 `0a6d04d3c25840b2c71c0b98d50478dc6749879a`, published native/archive-source guards,
 tap publication and the actual macOS arm64 upgrade/formula test.
@@ -142,12 +144,15 @@ not proofs of relevance, isolation, durability or readiness.
   Final fresh-context consumers passed **CLI+skill 17/17 and MCP-only 20/20**;
   independent automated review accepted their actual facts/citations, allowed
   tools, byte purity and teardowns. Earlier failures remain failed history.
-- [ ] **V08 — Final independent documentation/integration closure.**
+- [x] **V08 — Independent source, delivery and documentation review.**
   Independent automated focused OMP review accepted prepublication source/evidence,
-  closed F1 and accepted both final installed-consumer results within their
-  bounded scope. Exact PR/main CI and guarded publication passed. Only the final
-  combined postpublication documentation head and protected integration remain
-  pending. This is **not human approval** or overall final-completion sign-off.
+  closed F1, accepted both final installed consumers and approved documentation
+  head `b33739b` plus the precise receipt/status projection. P01 is closed by
+  binding the actual consumer-review receipt. [The delivery evidence](evidence/v1-delivery.json)
+  records this automated decision and its unchanged scope. Exact successor-head
+  checks, normal protected merge and merged-main CI are required and recorded
+  in [PR25](https://github.com/matheus3301/kb/pull/25); no future CI result or human
+  approval is asserted by the review record.
 
 ## Qualification policy — D01–D04
 
@@ -289,18 +294,19 @@ publication from that documentation.
 
 - [x] Identify frozen candidate.5 source/build/executable and current local source/
   snapshot receipts, keeping actual v0.4.0 publication and old CI historical.
-- [ ] Attach exact-current-head hosted CI and final docs/release binding.
-- [ ] Independently validate the actual completed candidate.5 extended D02 report;
+- [x] Attach exact released-source hosted CI and final release/source binding.
+  Final documentation successors use the same protected CI; actual results live
+  in [PR25](https://github.com/matheus3301/kb/pull/25), without self-referential claims.
+- [x] Independently validate the completed candidate.5 extended D02 report;
   retain all failed attempts and distinct source/artifact identities.
-- [ ] Attach V07 installed Homebrew/native Linux and independent consumer evidence;
+- [x] Attach V07 installed Homebrew/native Linux and independent consumer evidence;
   state channel/client limits and distinguish source/snapshot/installed checks.
-- [ ] Record V08 reviewer identity/role, scope, findings, disposition and explicit
-  readiness decision. Do not invent independent human approval.
-- [ ] Reconcile README, llms.txt, spec, interfaces, installation, quickstart,
+- [x] Record automated V08 reviewer role, scope, findings, disposition and bounded
+  readiness decision. P01 is corrected; no independent human approval is invented.
+- [x] Reconcile README, llms.txt, spec, interfaces, installation, quickstart,
   roadmap, quality, compatibility, decision summaries and release guidance;
-  preserve historical reports and update status only to observed facts.
-- [ ] If stable publication is authorized, select unused v1.0.0, qualify any
-  intervening changes, publish under the normal protected workflow and verify
-  actual installed artifacts. Add only real release/evidence URLs, then update
-  current status with observed version/commit and remaining support limits.
+  preserve historical reports and record only observed outcomes.
+- [x] Publish unused v1.0.0 through the normal guarded workflow and verify actual
+  assets, source, Homebrew and independent consumers. Keep immutable tags/assets
+  and the documented support limits.
 

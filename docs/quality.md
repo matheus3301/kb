@@ -194,8 +194,9 @@ drift independently. Current outcomes belong in the [exit checklist](stability.m
 
 D04 defines the [v1.x compatibility policy](compatibility.md), synthetic upgrade
 checks, macOS arm64 Homebrew and Linux amd64 native archive/source qualification.
-Actual V06/V07 checks and prepublication review conditions are fulfilled; proposed
-policy activation and final postpublication review are recorded separately in that policy.
+Actual V06/V07 checks and prepublication conditions are fulfilled. The bounded
+final automated postpublication review and active v1.x policy are recorded there,
+with normal protected-integration requirements.
 Cross-built Linux arm64/macOS amd64 are not installed-qualified. V01–V08 require
 the exact candidate and independently reviewed evidence; D01–D04 are delegated
 policy choices, not fabricated human approval. Current evidence and status belong

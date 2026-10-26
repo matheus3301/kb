@@ -3,8 +3,9 @@
 Published and Homebrew-installed production is stable
 **[v1.0.0](https://github.com/matheus3301/kb/releases/tag/v1.0.0)** at
 `0a6d04d3c25840b2c71c0b98d50478dc6749879a`. Actual package, installed functional
-and both fresh controlled CLI + skill/MCP consumer checks passed. Final
-postpublication method/results and V08/documentation review remain pending.
+and both fresh controlled CLI + skill/MCP consumer checks passed. Independent
+automated postpublication review approved the bounded method, results and
+documentation, subject to normal protected integration.
 Product version, wire version, knowledge format, configuration, operational
 state and backup format are separate axes. `kb.v1` is not product v1.0.
 
@@ -72,8 +73,9 @@ and structured oracle
 `c3ddc974c8ec69f175d324c6bdaaf57ba3d69082e142cf6588d1999d926259e2`.
 This finite-fixture oracle checks each typed current fact and its own exact
 path/revision/physical fact range, not arbitrary prose or general truth.
-Bounded independent method acceptance and actual cited-line inspection do not
-constitute final postpublication V08 approval or human review.
+Bounded independent method/result acceptance and final automated V08 approval
+are separately recorded in the [delivery evidence](evidence/v1-delivery.json).
+Neither is human approval or a general model-obedience guarantee.
 
 Earlier attempts remain failed, not retroactively green:
 
@@ -94,9 +96,9 @@ Earlier attempts remain failed, not retroactively green:
 The two final passes are distinct fresh observations under the justified
 structured method, not edits to failed reports. Runtime source, executable and
 resource/workload thresholds did not change. Controlled explicit activation is
-not universal model/client obedience. **Final postpublication review of the fresh
-method/results and V08/documentation remains pending** in the
-[exit checklist](stability.md).
+not universal model/client obedience. Final automated postpublication review
+accepted this bounded evidence and documentation; the [exit checklist](stability.md)
+records scope and the required protected-integration conditions.
 
 ### Prepublication local candidate observations
 
@@ -131,8 +133,8 @@ persisted formats, receipt retention and log-growth limits below still apply.
 
 These profiles were observed on candidate.5, not rerun on the Homebrew source
 build or the Linux native archive. Package and installed checks above bind their
-own artifacts. Final postpublication method/results and V08/documentation review
-belongs in the [exit checklist](stability.md), separate from these observed checks.
+own artifacts. The final automated postpublication review is recorded in the
+[exit checklist](stability.md), separate from these observed checks.
 
 The [qualification record](qa/v1-qualification.md) preserves prepublication
 candidate.5 evidence, candidate.3's failed restore and all earlier failed matrices.
@@ -215,10 +217,10 @@ cannot recover already lost metadata; reconcile with original files/backups.
 
 ## v1.x commitments
 
-The following D04 commitments are the proposed active policy for stable v1.0.0:
-actual V06/V07 checks and the prepublication review conditions are fulfilled.
-Final postpublication method/results and V08/documentation review remain pending
-in the [exit checklist](stability.md); this proposal does not claim that approval.
+The following D04 commitments apply to the stable v1.x line. Actual V06/V07
+checks, prepublication conditions and the bounded final automated V08 review
+are complete. [The exit checklist](stability.md) records evidence and normal
+protected-integration requirements; no human approval is claimed.
 
 - Preserve documented CLI command/flag meanings and exit mappings within v1.x.
   Additive opt-in commands/flags are allowed; removals, changed defaults with
