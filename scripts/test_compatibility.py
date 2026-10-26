@@ -1,5 +1,6 @@
 """Reject false-positive compatibility evidence and preserve authoritative snapshot boundaries."""
 import copy
+import io
 import json
 import os
 from pathlib import Path
@@ -8,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 import compatibility as qualification
 
@@ -145,6 +147,8 @@ class ReportFailureTests(unittest.TestCase):
             self.assertLessEqual(len(result.stdout.encode()), 32 * 1024)
             self.assertNotIn(str(workspace), result.stdout + result.stderr)
             self.assertNotIn(private_name.name, result.stdout + result.stderr)
+            self.assertEqual(result.stderr, "")
+            self.assertNotIn(str(Path(qualification.__file__).resolve()), result.stdout + result.stderr)
 
     def test_additional_origin_flags_are_required_together_before_executable_access(self):
         for flags in [["--baseline-version", "v0.4.0"], ["--baseline-commit", "a" * 40]]:
@@ -157,6 +161,63 @@ class ReportFailureTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 2)
                 self.assertIn("must be supplied together", result.stderr)
                 self.assertFalse(output.exists())
+
+    def test_output_publication_failures_are_bounded_and_path_free(self):
+        with tempfile.TemporaryDirectory(prefix="private-compatibility-output-") as directory:
+            workspace = Path(directory)
+            harness = Path(qualification.__file__).resolve()
+            baseline = workspace / "private-baseline"
+            candidate = workspace / "private-candidate"
+            blocker = workspace / "regular-file"
+            blocker.write_bytes(b"Preserve the synthetic blocking file")
+            output_directory = workspace / "output-directory"
+            output_directory.mkdir()
+            for label, output in [("blocked-parent", blocker / "report.json"),
+                                  ("directory-output", output_directory)]:
+                with self.subTest(output=label):
+                    result = subprocess.run([
+                        sys.executable, str(harness), "--baseline", str(baseline),
+                        "--candidate", str(candidate), "--output", str(output)],
+                        text=True, capture_output=True, timeout=10)
+                    self.assertEqual(result.returncode, 1)
+                    self.assertEqual(result.stderr, "")
+                    report = json.loads(result.stdout)
+                    self.assertIs(report["ok"], False)
+                    self.assertEqual(report["failure"]["check"], "report-output-write")
+                    self.assertLessEqual(len(result.stdout.encode()), 32 * 1024)
+                    for private in (str(baseline), str(candidate), str(output), str(workspace),
+                                    str(harness), str(Path.home()), str(tempfile.gettempdir()), "Traceback"):
+                        self.assertNotIn(private, result.stdout + result.stderr)
+                    self.assertEqual(blocker.read_bytes(), b"Preserve the synthetic blocking file")
+                    self.assertEqual(list(output_directory.iterdir()), [])
+
+    def test_qualified_work_cannot_report_success_when_report_write_fails(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = {"report_version": 1, "ok": True, "checks": ["prior-produced-archive"]}
+            stdout = io.StringIO()
+            with mock.patch("sys.stdout", stdout):
+                status = qualification.publish_report(report, Path(directory))
+            self.assertEqual(status, 1)
+            public = json.loads(stdout.getvalue())
+            self.assertIs(public["ok"], False)
+            self.assertEqual(public["failure"]["check"], "report-output-write")
+            self.assertNotIn(directory, stdout.getvalue())
+
+    def test_report_size_limit_fails_with_bounded_diagnostic_not_oversized_payload(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "report.json"
+            marker = "synthetic-private-diagnostic"
+            report = {"report_version": 1, "ok": True, "checks": [], "detail": marker * 4096}
+            stdout = io.StringIO()
+            with mock.patch("sys.stdout", stdout):
+                status = qualification.publish_report(report, output)
+            self.assertEqual(status, 1)
+            public = json.loads(stdout.getvalue())
+            self.assertIs(public["ok"], False)
+            self.assertEqual(public["failure"], {"check": "report-output-write", "type": "CompatibilityFailure"})
+            self.assertLessEqual(len(stdout.getvalue().encode()), 32 * 1024)
+            self.assertNotIn(marker, stdout.getvalue())
+            self.assertFalse(output.exists())
 
 
 @unittest.skipUnless(shutil.which("go"), "Go toolchain required for actual prior-archive regressions")

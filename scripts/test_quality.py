@@ -50,6 +50,48 @@ jobs:
             with self.subTest(name=name, altered=altered[:80]):
                 self.assertTrue(quality.workflow_findings(altered, name))
 
+    def test_published_archive_verification_cannot_be_removed_or_skipped(self):
+        workflow = (quality.ROOT / ".github/workflows/release.yml").read_text()
+        start, end = workflow.index("  verify-published:\n"), workflow.index("  tap:\n")
+        verified = workflow[start:end]
+        mutations = [
+            workflow[:start] + workflow[end:],
+            workflow.replace("run: python3 scripts/check_release.py", "run: true"),
+            workflow.replace("    needs: publish\n", "    needs: []\n"),
+            workflow.replace("        os: [ubuntu-24.04, macos-15]", "        os: [ubuntu-24.04]"),
+            workflow.replace("      fail-fast: false", "      fail-fast: true"),
+            workflow.replace("          ref: ${{ github.ref }}", "          ref: main"),
+        ]
+        for condition in ("false", "always()", "failure()", "cancelled()"):
+            mutations.append(workflow.replace(verified, verified.replace(
+                "    needs: publish\n", f"    needs: publish\n    if: ${{{{ {condition} }}}}\n")))
+        for altered in mutations:
+            with self.subTest(altered=altered[start:start + 150]):
+                self.assertTrue(quality.workflow_findings(altered, "release.yml"))
+
+    def test_published_archive_expected_identity_is_not_trusted_from_artifacts(self):
+        workflow = (quality.ROOT / ".github/workflows/release.yml").read_text()
+        for before, after in (
+            ('release.release_tag(os.environ["GITHUB_REF_NAME"])', 'os.environ["GITHUB_REF_NAME"]'),
+            ('["git", "rev-parse", "HEAD"]', '["git", "rev-parse", "main"]'),
+            ('{"version": version, "commit": commit}', '{"version": "latest", "commit": "artifact-value"}'),
+            ('command.extend(["--pattern", filename])', 'command.extend(["--pattern", "*"])'),
+            ('subprocess.run(command, check=True)', 'subprocess.run(command, check=False)'),
+        ):
+            with self.subTest(before=before):
+                self.assertTrue(quality.workflow_findings(workflow.replace(before, after), "release.yml"))
+
+    def test_tap_requires_successful_complete_published_matrix(self):
+        workflow = (quality.ROOT / ".github/workflows/release.yml").read_text()
+        for before, after in (
+            ("needs: [publish, verify-published]", "needs: publish"),
+            ("needs: [publish, verify-published]", "needs: verify-published"),
+            ("success() && !contains(github.ref_name, '-')", "always() && !contains(github.ref_name, '-')"),
+            ("success() && !contains(github.ref_name, '-')", "success()"),
+        ):
+            with self.subTest(after=after):
+                self.assertTrue(quality.workflow_findings(workflow.replace(before, after), "release.yml"))
+
     def test_inline_permission_mapping_is_rejected(self):
         self.assertTrue(quality.workflow_findings("permissions: {contents: write}"))
 

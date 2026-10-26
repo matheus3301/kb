@@ -1,13 +1,13 @@
 # Implementation contract
 
 This document closes implementation gaps in spec v0.3. It originated with
-v0.1.0 and includes the integrated post-v0.3.1 roadmap additions; the public wire
-version remains `kb.v1`. `internal/api/types.go` is the shared DTO contract.
-Current source is preparing v0.4.0 qualification; published production remains
-experimental v0.3.1 and lacks backup/restore. The [compatibility policy](compatibility.md)
-separates these axes and conditional v1.x commitments; the [exit checklist](stability.md)
-does not declare readiness. Package ownership below records the original split;
-coordinate shared-type changes explicitly.
+v0.1.0 and includes the v0.4.0 operational interfaces; the public wire version
+remains `kb.v1`. `internal/api/types.go` is the shared DTO contract.
+This is the checked-out implementation contract, not an assertion that `main`
+has been released. Use the installed version's tag and the
+[compatibility policy](compatibility.md) for published behavior, qualification
+status and separate product, wire, knowledge, configuration, durable-state and
+archive versions. Performance corrections do not imply format migrations.
 
 `api.Revision` is SHA-256 of complete file bytes, prefixed `sha256:`. Shared
 `api.Generation` hashes sorted scoped Markdown paths joined as path, NUL,
@@ -17,16 +17,18 @@ Use the shared limits in api rather than duplicating transport limits.
 
 ## Package ownership
 
-- `internal/api`: shared types, owned by integration.
-- `internal/filelock`: advisory shared/exclusive locks, owned by the read-core agent.
-- `internal/core`: scope, config, codec, inventory, search, links, context, validation,
-  cache and export, owned by the read-core agent.
-- `internal/write`: transactions, repair, maintenance and recovery, owned by the
-  write-core agent. Depends on `api.Provider`, `api.Codec`, and `filelock`, not core.
-- `internal/cli`, `internal/mcpserver`, `cmd/kb`, `skills/knowledge-base`: owned by
-  the adapters agent. Wires `core.Store` and `write.Service` together.
-- Integration owns release packaging, end-to-end acceptance, privacy/link
-  guardrails and final public documentation.
+- `internal/api`: shared DTOs, limits and domain provider/codec contracts.
+- `internal/filelock`: local advisory shared/exclusive locks.
+- `internal/core`: scope, configuration, codec, inventory, lexical search,
+  relationships, context, validation, cache and export.
+- `internal/write`: transactions, repair, maintenance, recovery and operational
+  backup/restore. Depends on provider/codec contracts and locking, not CLI/MCP.
+- `internal/cli`, `internal/mcpserver` and `cmd/kb`: adapters and explicit
+  composition of `core.Store` and `write.Service`.
+- `skills/knowledge-base`: CLI-only operating instructions, installed separately;
+  MCP supplies independent initialization and discovery guidance.
+
+Domain behavior stays independent of CLI, MCP, logging backends and agent setup.
 
 ## Read core API
 

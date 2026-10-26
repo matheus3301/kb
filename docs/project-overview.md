@@ -1,13 +1,9 @@
 ---
 type: Project Overview
 title: KB — Knowledge Base project design
-description: Candidate Knowledge Base source, architecture, learning lifecycle, evidence, and qualification limits.
+description: Knowledge Base architecture, learning lifecycle, evidence, and operating limits.
 tags: [okf, para, cli, mcp, architecture, memory]
 status: stable
-implementation_version: unreleased
-released_version: "0.3.1"
-qualification_version: "0.4.0"
-implementation_status: candidate-qualification
 sources:
   - resource: spec.md
     title: Specification v0.3
@@ -22,13 +18,12 @@ generated:
 
 # KB — Knowledge Base project design
 
-The [interface contract](interfaces.md), originating in v0.1 and extended through
-the integrated post-v0.3.1 roadmap increments, and shared DTOs clarify the
-[specification](spec.md). **Current source is preparing v0.4.0 qualification;
-published production remains experimental v0.3.1.** The [roadmap](roadmap.md),
-[v1.0 exit checklist](stability.md) and [compatibility policy](compatibility.md)
-separate implemented source, released/installed evidence and conditional v1.x
-commitments. Stable-v1 readiness remains pending.
+The [interface contract](interfaces.md), shared DTOs and [specification](spec.md)
+describe the local CLI and stdio MCP interfaces at the checked-out revision.
+Use the installed binary's tagged documentation for shipped behavior. The
+[compatibility policy](compatibility.md), [README project status](../README.md#project-status)
+and [exit checklist](stability.md) centralize current release/qualification facts;
+source integration, readiness, publication and installation are separate.
 
 `kb` is a local Markdown Knowledge Base that humans and AI agents can search,
 read, and update. One binary provides two modes: CLI commands
@@ -48,9 +43,12 @@ and its configuration.
 ```mermaid
 flowchart TD
     H[Human: terminal and scripts] --> CLI[CLI]
-    A[Agent: consultation and reasoning] --> MCP[MCP stdio]
-    I[Workdir AGENTS.md] -. activates .-> SKILL[Product skill: memory workflows]
-    SKILL -. guides .-> A
+    A[Agent: CLI operations] --> CLI
+    M[Agent: standalone MCP tools] --> MCP[MCP stdio]
+    I[Workdir consultation policy] -. selects root and interface .-> A
+    I -. selects root and interface .-> M
+    SKILL[knowledge-base CLI skill] -. guides .-> A
+    MCP -. initialization and discovery .-> M
     CLI --> CORE[Shared core]
     MCP --> CORE
     CORE --> READ[Search, reading, context, and relationships]
@@ -62,6 +60,7 @@ flowchart TD
     READ --> CACHE[Rebuildable cache]
     WRITE --> STATE[Durable journal and receipts]
     RAW[Preserved original sources] -. read through external tools .-> A
+    RAW -. read through external tools .-> M
     H -. edit in any editor .-> KB
 ```
 
@@ -110,12 +109,12 @@ note records provenance and connects concepts and syntheses to their evidence.
 Deleting `.kb/cache/` loses no knowledge; `.kb/state/` is durable operational
 state and must be preserved for pending recovery and idempotent retries.
 
-Current source also provides [operational backup/restore](backups.md): versioned
-checksummed archives preserve exact included files, config and settled receipts,
-not pending journals or disposable cache. Storage is confined under `.kb/backups`
-and `.kb/restores`; restore creates a new root and publishes config last without
-switching the active MCP root. Excluded/external sources need separate protection.
-Same-disk staging is not off-disk disaster recovery. v0.3.1 has no such interface.
+Since v0.4.0, [operational backup/restore](backups.md) provides versioned
+checksummed archives preserving exact included files, configuration and settled
+receipts, not pending journals or disposable cache. Storage is confined under
+`.kb/backups` and `.kb/restores`; restore creates a new root and publishes config
+last without switching the active MCP root. Excluded/external sources need separate
+protection. Same-disk staging is not off-disk disaster recovery.
 
 ## A learning session
 
@@ -249,17 +248,25 @@ increased preview RSS and a 4.9% slower 50k committed-repair median. Runs retain
 separate baselines; neither establishes a portable SLA or uniform improvement.
 
 Source CI runs on ubuntu-24.04 and macos-15, with four cross-build targets.
-[v0.3.1 installed-package verification](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
-covers macOS arm64 only. Cross-builds and native snapshot execution do not prove
-installed runtime behavior on every target.
+The required native channels are macOS arm64 Homebrew and Linux amd64 archive/
+archived-source execution; Linux arm64 and macOS amd64 remain package/cross-build
+only until executed. See the [current evidence boundary](compatibility.md#platform-and-maintenance-support).
 
 The [retrieval report](qa/retrieval-quality.md) adds a public synthetic corpus and
 actual CLI/MCP assertions for lexical membership/order, ceiling-aware Recall@5,
 citations, revisions, budgets and purity. Backup/archive/fault/concurrency and
-real-process interruption regressions extend operational evidence. Final
-candidate reruns, extended multi-seed reliability, quiet local-budget review,
-upgrade/native package qualification and independent readiness review remain
-pending under V01–V08; no historical report or model adherence substitutes for them.
+real-process interruption regressions extend operational evidence. Qualification
+must bind reruns, multi-seed reliability, quiet resource budgets, upgrade/native
+packages and independent review to the exact candidate. Historical reports and
+model adherence are not substitutes; current outcomes belong in the [exit checklist](stability.md).
+
+The [receipt-history report](qa/backup-performance-v1.md) preserves the failed
+v0.4.0 extended attempt and the causal directory-scan repair. Its three-sample
+2,000-receipt comparison measured backup median 24.45 s to 0.47 s and restore
+23.88 s to 9.93 s on one macOS arm64 host. Restore sync cost and retained-state
+growth remain material; these measurements do not replace candidate-specific
+30-minute log-disabled/index-enabled and separate 60-second default-log profiles,
+quiet resource-budget qualification or final readiness review.
 
 ## Delivery
 
@@ -267,11 +274,14 @@ Source installation works through `go install ./cmd/kb` from a checkout. The
 earlier manual release was withdrawn; subsequent versions use the
 [GoReleaser workflow](releases.md), which prepares Linux/macOS amd64/arm64 archives,
 checksums, documentation, skill, licenses, and a source archive. A dedicated
-tag-only publisher requires protected-main ancestry and exact-commit CI. A
-separate job updates the Homebrew tap with a checksummed source formula for
-macOS/Linux. Publication requires an explicit new version tag and the tap
-credential; merging configuration does not publish. See [installation](installation.md)
-for Homebrew, prebuilt binaries, and the source checkout path. There is no automatic merge.
+tag-only publisher requires protected-main ancestry and exact-commit CI. A read-only
+Linux/macOS matrix then downloads and exercises published native archives and
+archived source; only successful publication and the entire matrix unblock the
+Homebrew tap update. This is not an installed Homebrew test. Publication requires
+an explicit new version tag and, for the non-prerelease tap, its credential.
+Configured automation does not prove a job has executed. See [release operations](releases.md)
+and [installation](installation.md); merging configuration does not publish.
+There is no automatic merge.
 
 A future session can retrieve recorded decisions, reasons, and sources and
 propose revision-checked changes. Continuing work must retain conformance,

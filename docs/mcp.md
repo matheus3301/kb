@@ -6,10 +6,13 @@ or shell commands: it learns the supported workflow from server initialization
 and tool discovery. [Agent setup](agent-setup.md) covers client registration and
 the workdir consultation policy.
 
-This guide describes integrated source preparing v0.4.0 qualification. Published
-production remains experimental v0.3.1, with ten write-enabled tools and no
-backup/restore; current source has twelve. Both expose six tools in read-only
-mode. Inspect installed version/discovery rather than assuming `main` is shipped.
+The checked-out contract exposes twelve write-enabled tools, including
+backup/restore, or six in read-only mode. The prior v0.3.1 release exposes ten
+write-enabled tools and has no backup/restore. Inspect installed version/discovery
+and its tagged documentation rather than assuming `main` is shipped. The
+[compatibility policy](compatibility.md) and
+[release records](https://github.com/matheus3301/kb/releases) centralize current
+version and qualification facts; `kb.v1` is independent of product version.
 
 ## Operator setup
 
@@ -18,6 +21,9 @@ with `kb --root ROOT mcp`. Add `--read-only` to disable mutations. Only this set
 requires the binary command; subsequent agent operations use MCP tools/resources.
 The startup root and configuration are fixed. No tool accepts a root override.
 Restart after an operator changes configuration or the binary.
+After client registration, start a new agent turn/session and verify discovery
+against the intended root rather than assuming the existing conversation has
+activated the new configuration.
 
 ## Discovery contract
 

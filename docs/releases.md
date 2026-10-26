@@ -12,13 +12,12 @@ proxies and the checksum database may retain that version; **never reuse
 or reused either. Select a new, unused version for subsequent publications.
 Merging a change does not publish a release.
 
-Current source contains all four roadmap increments; published production remains
-experimental **v0.3.1**. The intended intermediate qualification release is
-**v0.4.0**. Stable **v1.0.0** is conditional on V01–V08 and the selected D01–D04
-policies in the [exit checklist](stability.md), including exact integrated checks,
-quiet scale measurements, extended reliability/restoration, upgrades, actual
-packages/consumers and independent readiness review. A v0.4.0 publication or green
-CI does not remove experimental status or itself authorize stable publication.
+This guide describes the configured release flow at the checked-out revision,
+not proof of a publication or installation. The [compatibility policy](compatibility.md),
+[README project status](../README.md#project-status) and [readiness checklist](stability.md)
+centralize current version and qualification facts. Green CI, an experimental tag
+or paired improvements alone do not authorize stable publication. Preserve
+immutable releases and failed observations; qualify the intended artifact.
 
 ## One-time tap credential
 
@@ -49,10 +48,12 @@ make release-snapshot
 `make release-snapshot` validates the config, builds all targets with
 `--snapshot --skip=publish`, generates a Homebrew formula, and inspects actual
 archives. It verifies checksums, normalized owners, public docs/licenses, source
-identity, and formula identity; executes the extracted native binary against an
-isolated synthetic base; and builds the archived source and exercises it too.
-It does not install globally or write to GitHub or the tap. Outputs live under
-`.build/dist/` and `.build/homebrew/`, both ignored by Git.
+and formula identities; installs the extracted host-native binary into a
+temporary prefix; and exercises actual acceptance, documentation and independent
+CLI/MCP backup/restore consumers there. It builds archived source and repeats
+those workflows. Foreign archives are inspected, not executed. No global
+installation or GitHub/tap write occurs. Outputs live under ignored
+`.build/dist/` and `.build/homebrew/`.
 
 PR CI requires the release snapshot job as part of **CI gate**, alongside the
 existing application checks. Unit regressions cover missing/failed exact-commit
@@ -67,32 +68,58 @@ A green branch build alone does not request a release.
 1. Merge the intended change through a PR with a Conventional Commit title.
 2. Wait for **CI gate** to pass on the exact merged `main` commit.
 3. Ensure the tap secret is configured for a stable release.
-4. Fetch current main and create a new, unused semantic version tag:
+4. Select a new, unused version only after the required readiness/publication authorization.
 
 ```sh
 git switch main
 git pull --ff-only
-git tag -a v0.4.0 -m "Release v0.4.0"
-git push origin v0.4.0
+version=v1.0.0
+git tag -a "$version" -m "Release $version"
+git push origin "$version"
 ```
 
-`v0.4.0` is the intended intermediate qualification version, not a claim that it
-already exists. Verify that the selected version is unused and publication is
-authorized before tagging. Stable v1.0.0 needs the separate readiness decision;
-these examples do not create a release themselves. A prerelease publishes GitHub
-assets but does not update the stable Homebrew formula.
+This is an example for **after** explicit v1 readiness and publication
+authorization, not a command to run while qualification is pending.
+Do not move or reuse any existing version tag. Verify the selected new version
+is unused before tagging. A prerelease publishes GitHub assets without updating
+the non-prerelease Homebrew formula.
 
-The [Release workflow](../.github/workflows/release.yml) runs three stages:
+The [Release workflow](../.github/workflows/release.yml) runs four stages:
+
+```mermaid
+flowchart LR
+    V[Verify source and exact-commit CI] --> P[Publish GitHub assets]
+    P --> L[Read-only published verification: ubuntu-24.04]
+    P --> M[Read-only published verification: macos-15]
+    L --> T[Update non-prerelease Homebrew tap]
+    M --> T
+    P --> T
+```
 
 1. **Verify**: require a valid tag, reject retired `v0.1.0`, require the tagged
    commit to belong to `origin/main`, require the latest exact-commit **CI gate**
    from the GitHub Actions app to succeed, and rerun `make tools check`.
 2. **Publish**: use the sole job-scoped `contents: write` token to run pinned
    GoReleaser. Generate a formula from the checksummed source archive and retain
-   it as a workflow artifact for 30 days.
-3. **Tap**: download that artifact from the same workflow run, reconstruct and
+   it as a workflow artifact for 30 days for non-prereleases.
+3. **Verify published**: a read-only, `fail-fast: false` matrix on
+   **ubuntu-24.04 and macos-15** downloads the actual published assets for the
+   selected tag. Expected version comes from that tag; expected full source
+   commit comes independently from checkout HEAD, not downloaded metadata.
+   Prepare a local source-formula expectation, then reuse `scripts/check_release.py`
+   for checksums/privacy/identity, temporary-prefix native CLI/docs/MCP workflows
+   and archived-source execution. Inspect foreign archives without executing them.
+4. **Tap**: require successful publication **and every verify-published matrix
+   arm**, then download the formula from the same workflow run, reconstruct and
    verify its expected content against the tag/commit, and update only
    `Formula/kb.rb` in `matheus3301/homebrew-tap` using its expected existing SHA.
+   Prereleases never update the tap.
+
+The published-verification stage is configured, not established runtime evidence
+until a real release executes it. Record the actual job outcomes and UTC
+timestamps with the release evidence. Neither temporary-prefix installation nor
+archived-source execution is `brew install`/`brew test`; separately qualify the
+Homebrew installation and final artifact identities.
 
 All checkout steps disable persisted credentials; actions use full commit SHAs.
 The workflow runs only on version tag pushes. PRs, forks, ordinary main pushes,
@@ -123,11 +150,17 @@ a retry of an older version cannot downgrade a newer tap formula. Different
 tag runs serialize their tap jobs. Unexpected external changes cause a SHA
 conflict rather than a blind overwrite.
 
+If published verification fails, assets may already exist but the tap must remain
+blocked. Diagnose the failure and rerun the failed verification jobs against the
+same immutable assets and independent identities. Do not replace artifacts or
+publish a formula to bypass a failed matrix. This flow does not unpublish assets
+or provide automatic rollback.
+
 If artifact retention has expired, regenerate the formula from the published
 source archive, exact commit, and its verified checksum in a reviewed maintenance
 change. Do not replace published binaries just to repair a formula update.
 
-After the first automated publication, verify anonymous downloads and hashes,
+After each authorized publication, verify anonymous downloads and hashes,
 `kb version --json` against the release source commit, and a real
 `brew install matheus3301/tap/kb` / `brew test matheus3301/tap/kb` on the intended
 platforms. Snapshot validation does not replace a real installation test after
@@ -135,15 +168,21 @@ publication. Update public installation guidance to match observed results.
 
 ## Finalizing stable v1
 
-Keep the candidate release and stable readiness decision distinct. Attach exact
-v0.4.0 install/upgrade and CLI/MCP evidence before claiming that channel qualified.
-D04 requires native macOS arm64 Homebrew and Linux amd64 archive/archived-source
-execution; foreign-target cross-builds remain packaging evidence only.
+Keep candidate readiness, publication and installed verification distinct. Earlier
+release installation/formula, asset/checksum and CLI + skill/MCP observations do
+not qualify later artifacts. D04 requires actual macOS arm64 Homebrew and Linux
+amd64 native archive/archived-source workflows; Linux arm64 and macOS amd64 remain
+package/cross-build-only. Current evidence belongs in the
+[compatibility policy](compatibility.md) and [exit checklist](stability.md).
 
-Use the [finalization checklist](stability.md#finalization-checklist) in a later
-docs-only PR to link measured V01–V07 outcomes, reviewer findings/dispositions and
-the explicit V08 decision. Preserve historical evidence and identify any source
-change between qualified and released artifacts; rerun affected qualification.
+Use the [finalization checklist](stability.md#finalization-checklist) to bind
+measured V01–V07 outcomes, reviewer findings/dispositions and the explicit V08
+decision to one candidate. Both immutable v0.3.1 and v0.4.0 compatibility origins
+must pass; capable prior binaries must themselves produce archives consumed by
+the candidate. Candidate-specific extended reliability and the quiet resource
+envelope must pass without hiding failed attempts or changing ceilings.
+Preserve historical evidence and identify any source change between qualified
+and released artifacts; rerun affected checks.
 Do not fabricate human approval, candidate results or release URLs. After an
 authorized stable tag, separately verify real downloads, checksums, version/commit,
 Homebrew upgrade/formula and installed CLI/MCP before updating current status to

@@ -5,9 +5,10 @@ or pull requests. Report vulnerabilities using this repository's private
 vulnerability reporting facility on GitHub when enabled. Include a minimal
 synthetic reproduction, affected version, and observed impact.
 
-`kb` is a local application: production remains experimental v0.3.1 and current
-source is preparing v0.4.0 qualification, with [stable-v1 readiness](docs/stability.md)
-pending. Its tests exercise path confinement,
+`kb` is a local application. The [compatibility policy](docs/compatibility.md)
+and [release records](https://github.com/matheus3301/kb/releases) distinguish
+the checked-out contract, supported versions and observed qualification.
+Its tests exercise path confinement,
 symlink/traversal rejection, case collisions, YAML resource limits, revision
 conflicts, read-only enforcement, protocol output isolation, idempotent retries,
 and interrupted-write recovery. See [recorded validation](docs/evidence/validation.json)
@@ -33,13 +34,20 @@ intermediate multi-file states, and external editors do not obey the lock.
 Recovery refuses to overwrite an unrelated external edit. Preserve `.kb/state/`:
 its journal and receipts are durable state, unlike the rebuildable cache.
 
-Current source adds [operational backup/restore](docs/backups.md), absent from
-v0.3.1. Both refuse pending recovery; restore creates a new confined destination
+[Operational backup/restore](docs/backups.md) is available since v0.4.0.
+Both refuse pending recovery; restore creates a new confined destination
 without switching the server root. Archives include sensitive content/receipts;
 private local staging, separate protected retention and operator-reviewed
 exclusions are required. Checksums prove integrity, not authenticity against an
 attacker replacing the manifest. No encryption or disaster-recovery certification
 is implied.
+
+Receipts have no automatic expiry, rotation or compaction. Protect growing
+durable state and review storage/resource limits; do not delete receipts to
+make backup succeed. The [receipt-history scaling report](docs/qa/backup-performance-v1.md)
+retains the failed v0.4.0 observation and bounded candidate repair evidence.
+Neither performance improvements nor finite interruption tests establish
+universal crash/power-loss durability or isolation from malicious same-user changes.
 
 Resource limits are application policy, not requirements of OKF: notes over
 1 MiB are invalid, scoped source files over 4 MiB abort inventory explicitly,
@@ -47,12 +55,17 @@ and read/context responses have a 256 KiB ceiling. Non-string YAML mapping keys
 produce policy findings. Explicit repair remains subject to operational size
 limits; it is not an unrestricted recovery tool or legacy migration facility.
 
-CI has no deployment credentials. Pull-request workflows use a read-only token,
-checkout does not persist credentials, and external actions use commit SHAs.
-There is no `pull_request_target` execution path for untrusted branch content,
-or automatic merge. The dedicated tag-only [release workflow](docs/releases.md)
-checks main ancestry and successful exact-commit CI before publication. Only its
-verified publisher job receives contents: write for kb. A separate secret is
-restricted to the Homebrew tap and used only for publishing its source formula.
-PRs and snapshots receive no release credentials. See the
-[quality policy](docs/quality.md) for review settings and their limits.
+Pull-request CI and snapshots receive no deployment credentials. Pull-request
+workflows use read-only tokens, checkout does not persist credentials and external
+actions use commit SHAs. There is no `pull_request_target` execution path for
+untrusted branch content or automatic merge.
+
+The dedicated tag-only [release workflow](docs/releases.md) checks main ancestry
+and successful exact-commit CI before publication. Only its verified publisher
+job receives `contents: write` for kb. Published-asset verification runs with
+read-only permissions and independent tag/checkout expectations on Linux/macOS;
+the whole matrix must succeed before tap publication. A separate tap-scoped
+secret is presence-checked before non-prerelease publication and used to write
+the Homebrew source formula. Configured checks are not observed release execution
+or a real Homebrew installation. See the [quality policy](docs/quality.md) for
+review settings and their limits.

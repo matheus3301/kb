@@ -1,13 +1,9 @@
 ---
 type: Specification
 title: KB — Knowledge Base specification
-description: Normative specification v0.3 for the current candidate Knowledge Base source, OKF notes, operations, and CLI/MCP interfaces.
+description: Normative specification v0.3 for Knowledge Base source, OKF notes, operations, and CLI/MCP interfaces.
 tags: [okf, para, cli, mcp, memory, specification]
 status: stable
-implementation_version: unreleased
-released_version: "0.3.1"
-qualification_version: "0.4.0"
-implementation_status: candidate-qualification
 spec_version: "0.3"
 sources:
   - id: evaluation
@@ -34,19 +30,20 @@ extended through the integrated post-v0.3.1 roadmap increments. The initial desi
 was informed by five tool evaluations and the LLM Wiki pattern on 2026-10-24.
 The project repository is https://github.com/matheus3301/kb.
 
-**Current source is preparing v0.4.0 qualification; published production remains
-experimental v0.3.1.** This document describes merged source, including operational
-backup/restore not present in v0.3.1. Use tagged documentation and installed help
-for a released binary. The [interface contract](interfaces.md), shared DTOs in
-`internal/api/types.go`, and [architecture decisions](decisions/0002-v0.1.md)
-clarify the wire format and choices. Normative requirements and A01–A26 remain
-the product contract, not universal safety guarantees.
+This document describes the checked-out contract. Use tagged documentation and
+installed help for a particular binary; the [compatibility policy](compatibility.md)
+and [README project status](../README.md#project-status) centralize published,
+installed and qualification status. The [interface contract](interfaces.md),
+shared DTOs in `internal/api/types.go` and
+[architecture decisions](decisions/0002-v0.1.md) clarify the wire format and
+choices. Normative requirements and A01–A26 remain the product contract,
+not universal safety guarantees.
 
 Historical [validation](evidence/validation.json) and [performance](performance.md)
 remain dated evidence. The [retrieval evaluation](qa/retrieval-quality.md),
 [backup contract](backups.md) and [paired scale report](performance-large-corpus.md)
 describe implemented increments and their limits. The [v1.0 exit checklist](stability.md)
-maps them to pending candidate evidence and selected D01–D04 policy;
+maps them to candidate evidence and selected D01–D04 policy;
 [compatibility commitments](compatibility.md) remain conditional on qualification
 and independent readiness review. No document alone authorizes stable release.
 
@@ -426,7 +423,7 @@ The input file may be `-` for stdin. Do not interpolate Markdown content into
 shell commands. Export produces a validated snapshot and inclusion/exclusion
 manifest, not an operational-state backup.
 
-Operational backup/restore are merged post-v0.3.1 additions, write-class operations
+Operational backup/restore, available since v0.4.0, are write-class operations
 without dry-run or note-transaction identity fields. They refuse pending recovery
 instead of recovering implicitly or archiving a partial journal. Archive and
 destination storage are confined under `.kb/backups` and `.kb/restores`; an
@@ -473,6 +470,10 @@ Expired notes remain available and marked; they do not automatically become
 deprecated. Literal search and empty-query inventory have distinct documented
 semantics; regex operators are not implicit.
 
+Literal mode remains bounded by lexical candidate retrieval rather than
+unrestricted substring scanning. Arbitrary CJK substrings and emoji-only queries
+have known limits; neither mode promises semantic or universal Unicode matching.
+
 Each hit contains `id`, `path`, `title`, `type`, `para`, `revision`, `score`,
 `parse_status`, `okf`, and snippets `{heading, line_start, line_end, text}`.
 Ties are ordered deterministically by path. Pagination uses a cursor bound to
@@ -489,7 +490,7 @@ to one hop. Do not fill context with indexes and logs merely because they
 contain many keywords.
 
 External updates must become visible after a freshness check. No daemon is
-required. The performance candidate rereads scoped bytes with bounded workers
+required. The runtime rereads scoped bytes with bounded workers
 and reuses only exact unchanged in-process images; size/mtime alone are never
 evidence of unchanged content. Read result metadata remains bound to its own
 snapshot. Relationship graphs are derived when requested. Reading a note and
@@ -590,8 +591,16 @@ must report explicit errors. Operators must protect growing state, not delete
 durable receipts. No automatic compaction is provided. D02's split qualification
 profiles change neither receipt format nor idempotency semantics.
 
-The v0.1 journal is `.kb/state/pending.json`, with version, request digest/key,
-prepared/committed state, before/after bytes, and receipt. It is atomically
+The v1 candidate's receipt-history performance repair changes directory
+inspection work, not note/configuration/journal/receipt/archive formats or retry
+semantics. The [causal scaling report](qa/backup-performance-v1.md) retains the
+failed v0.4.0 attempt, exact-byte regressions and bounded paired observations.
+Successful small snapshots do not establish unbounded retention or qualify the
+separate extended log-disabled and shorter default-log workloads.
+
+The version-1 journal, introduced in v0.1, is `.kb/state/pending.json`. It records
+request digest/key, prepared/committed state, before/after bytes and the receipt.
+Its format version is independent of the product version. It is atomically
 written and fsynced before publication. Synchronize files and directory metadata,
 then persist the durable commit marker. Recovery rolls back before that marker
 and rolls forward after it, reconstructing receipts under
@@ -774,9 +783,10 @@ and health; (5) MCP, ingestion/synthesis/review workflows, export, and
 distribution. These capabilities were implemented in experimental v0.1 and remain
 in current source. The four subsequent [roadmap](roadmap.md) increments are now
 integrated: retrieval evaluation, operational backup/restore, allocation reduction
-and stability documentation. Their candidate qualification remains pending in
-V01–V08 of the [exit checklist](stability.md). Workflows guide an external agent;
-no LLM calls were added to the core, and implementation does not authorize v1.0.
+and stability documentation. V01–V08 of the [exit checklist](stability.md) track
+candidate-specific outcomes separately from implementation. Workflows guide an
+external agent; no LLM calls were added to the core, and implementation does not
+authorize v1.0.
 
 Measure on macOS arm64 and Linux amd64/arm64: binary size, RSS, cold start,
 reindexing, and search p50/p95, declaring hardware and corpus. Initial targets

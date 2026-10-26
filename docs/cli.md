@@ -1,9 +1,11 @@
 # CLI guide
 
 `kb` operates on a local OKF Markdown Knowledge Base. This guide describes the
-integrated source preparing v0.4.0 qualification; published production remains
-experimental v0.3.1 and does not include backup/restore. Use `kb version` and
-`kb COMMAND --help` for the installed build.
+checked-out contract. Use the installed binary's tagged documentation,
+`kb version` and `kb COMMAND --help`; do not assume `main` is already shipped.
+The [compatibility policy](compatibility.md) and
+[release records](https://github.com/matheus3301/kb/releases) track version-specific
+capabilities and qualification separately from the `kb.v1` wire format.
 For a first workflow, follow the [README](../README.md) and
 [quickstart](quickstart.md). For agent activation and MCP, see
 [agent setup](agent-setup.md). The [interface contract](interfaces.md) defines
