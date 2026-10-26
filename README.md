@@ -9,7 +9,7 @@
   <a href="https://github.com/matheus3301/kb/actions/workflows/ci.yml"><img src="https://github.com/matheus3301/kb/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <a href="https://github.com/matheus3301/kb/blob/main/go.mod"><img src="https://img.shields.io/github/go-mod/go-version/matheus3301/kb" alt="Go version" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-3662EA" alt="MIT license" /></a>
-  <a href="#project-status"><img src="https://img.shields.io/badge/status-experimental-516276" alt="Experimental" /></a>
+  <a href="#project-status"><img src="https://img.shields.io/badge/status-stable-516276" alt="Stable" /></a>
 </p>
 
 `kb` lets you search, read, and update a Knowledge Base stored as
@@ -129,34 +129,35 @@ kb
 └── mcp / version                  Serve MCP or inspect the installed build
 ```
 
-This map is available in v0.4.0, including backup/restore. Use
-`kb COMMAND --help` for installed flags. The [CLI guide](docs/cli.md) contains
-syntax, JSON requests, errors, and operating limits.
+This command map, including backup/restore, has been available since v0.4.0.
+Use `kb COMMAND --help` for installed flags. The [CLI guide](docs/cli.md)
+contains syntax, JSON requests, errors and operating limits.
 
 ## Project status
 
-**Local candidate qualification completed; final review and publication pending.**
-Published and installed production remains experimental
-**[v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0)**.
-`v1.0.0-candidate.5` passed source checks, a local native/archive-source release
-snapshot, the complete local resource matrix and both reliability profiles.
-The 30-minute log-disabled/index-enabled profile completed **34,840 main-root
-mutation/replay acknowledgments and 27 backup/restore checkpoints**; the separate
-shorter default-log companion also passed. These are bounded local observations,
-not a portable SLA or a guarantee for arbitrary receipt histories.
+**Stable [v1.0.0](https://github.com/matheus3301/kb/releases/tag/v1.0.0) is published
+and installed through macOS arm64 Homebrew.** Actual published native archives
+and archived source passed verification on Linux amd64 and macOS arm64 before
+the tap update. The Homebrew upgrade, formula test, installed CLI acceptance,
+43 documentation requests and both prior-version upgrade workflows passed.
 
-See [candidate identity, results and limits](docs/compatibility.md#current-qualification-status).
-Final independent V08 review, successful latest exact-head protected CI, actual
-publication/package verification and Homebrew/installed CLI + skill/MCP consumers
-remain pending. Publication and installed verification are separate steps.
-The [exit checklist](docs/stability.md) governs the decision; no approval or
-published/installed v1 is claimed. Earlier [qualification history](docs/qa/v1-qualification.md)
-and failed attempts remain tied to their original artifacts.
+Fresh controlled installed **CLI + knowledge-base skill** and independently
+descriptive **stdio MCP** consumers both passed, including separate learning/query
+contexts and byte-pure no-write follow-ups. MCP needed neither the skill nor CLI
+data commands. See [release/installed identities, consumer results and limits](docs/compatibility.md#current-qualification-status).
+**Final postpublication method/results and V08/documentation review remain pending**;
+these observed passes are not a claim that final review has approved delivery.
 
-Primary native scope is macOS arm64 Homebrew and Linux amd64 native archive/
-archived-source execution. Linux arm64 and macOS amd64 remain package/cross-build-only.
-No arbitrary-editor isolation, universal power-loss guarantee or factual-truth
-certification is claimed; see [compatibility/support](docs/compatibility.md).
+The unchanged runtime source has completed bounded local candidate qualification,
+including the 30-minute log-disabled/index-enabled profile and a separate shorter
+default-log companion. Those observations do not establish portable timing or
+capacity for arbitrary receipt histories. The [qualification record](docs/qa/v1-qualification.md)
+retains the prepublication evidence and failed history; the [exit checklist](docs/stability.md)
+tracks final closure separately from publication.
+
+Linux arm64 and macOS amd64 remain package/cross-build-only. No arbitrary-editor
+isolation, universal power-loss guarantee, LTS or SLA is claimed; see
+[compatibility/support](docs/compatibility.md).
 
 ## Documentation
 

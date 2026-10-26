@@ -73,16 +73,15 @@ A green branch build alone does not request a release.
 ```sh
 git switch main
 git pull --ff-only
-version=v1.0.0
+: "${version:?Set version to a new, unused authorized semantic version}"
 git tag -a "$version" -m "Release $version"
 git push origin "$version"
 ```
 
-This is an example for **after** explicit v1 readiness and publication
-authorization, not a command to run while qualification is pending.
-Do not move or reuse any existing version tag. Verify the selected new version
-is unused before tagging. A prerelease publishes GitHub assets without updating
-the non-prerelease Homebrew formula.
+Run these commands only after the intended version's qualification and explicit
+publication authorization. Never move or reuse an existing version tag; verify
+the selected new version is unused before tagging. A prerelease publishes GitHub
+assets without updating the non-prerelease Homebrew formula.
 
 The [Release workflow](../.github/workflows/release.yml) runs four stages:
 
@@ -115,11 +114,11 @@ flowchart LR
    `Formula/kb.rb` in `matheus3301/homebrew-tap` using its expected existing SHA.
    Prereleases never update the tap.
 
-The published-verification stage is configured, not established runtime evidence
-until a real release executes it. Record the actual job outcomes and UTC
-timestamps with the release evidence. Neither temporary-prefix installation nor
-archived-source execution is `brew install`/`brew test`; separately qualify the
-Homebrew installation and final artifact identities.
+For each release, record actual published-verification job outcomes and UTC
+timestamps with the [release/channel evidence](compatibility.md#current-qualification-status).
+Configuration and snapshots do not establish that outcome. Neither temporary-prefix
+installation nor archived-source execution is `brew install`/`brew test`;
+separately qualify Homebrew and the final installed identities.
 
 All checkout steps disable persisted credentials; actions use full commit SHAs.
 The workflow runs only on version tag pushes. PRs, forks, ordinary main pushes,

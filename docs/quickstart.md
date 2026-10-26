@@ -294,13 +294,13 @@ Same-disk staging is not disaster recovery: copy verified archives to separately
 protected storage through an authorized mechanism. Review the [backup contract](backups.md)
 for manifest version, limits, permissions, exclusions and interrupted-output handling.
 
-The released v0.4.0 binary has a reproduced performance problem with growing
-receipt histories. A [candidate repair](qa/backup-performance-v1.md) removes
-repeated directory scans while preserving fresh byte/path checks; restore sync
-cost and retained-state growth remain. The original extended run exceeded the
-qualification harness's unchanged 30-second command deadline and failed.
-Small successful backups or faster paired samples do not prove an unbounded
-history fits operational limits or that extended qualification has passed.
+Backup/restore cost depends on scoped bytes, file count and retained receipt
+history. The [compatibility policy](compatibility.md) records release-specific
+corrections and bounded qualification; the [historical receipt-history report](qa/backup-performance-v1.md)
+retains the failed v0.4.0 observation and its original deadline. Receipts and
+event-log growth need explicit operator monitoring. Small successful snapshots,
+paired speedups or a bounded extended pass do not establish portable latency or
+capacity for arbitrary histories.
 
 ## Limits and performance
 
