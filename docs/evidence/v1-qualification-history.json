@@ -1,0 +1,4819 @@
+{
+  "schema_version": "kb.v1-qualification-history.v1",
+  "publication_state": "reviewable-candidate-evidence; not stable publication or installed-v1 proof",
+  "legacy_7ceed_failed_matrices": [
+    {
+      "attempt": 1,
+      "qualification_passed": false,
+      "method": "One reserved shared slot; all OMP workers idle; no concurrent coordinator builds/tests/soaks. Baseline then candidate, OS caches not evicted; five read and three repair samples. Rebuild separately measured with five samples. Machine-specific observations, not portable SLA.",
+      "started_utc": "2026-10-26T01:11:28Z",
+      "finished_utc": "2026-10-26T01:15:20Z",
+      "all_workers_idle": true,
+      "GOMAXPROCS": 8,
+      "checks": [
+        {
+          "notes": 10000,
+          "operation": "CLI search",
+          "p95_ms": 329.118,
+          "ceiling_ms": 380,
+          "peak_rss_mib": 114.047,
+          "rss_ceiling_mib": 130,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI read",
+          "p95_ms": 173.652,
+          "ceiling_ms": 200,
+          "peak_rss_mib": 99.297,
+          "rss_ceiling_mib": 110,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI validate",
+          "p95_ms": 172.433,
+          "ceiling_ms": 190,
+          "peak_rss_mib": 97.953,
+          "rss_ceiling_mib": 120,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI repair preview",
+          "p95_ms": 508.101,
+          "ceiling_ms": 730,
+          "peak_rss_mib": 176.938,
+          "rss_ceiling_mib": 200,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI committed repair",
+          "p95_ms": 1210.496,
+          "ceiling_ms": 1460,
+          "peak_rss_mib": 178.766,
+          "rss_ceiling_mib": 230,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP search",
+          "p95_ms": 99.705,
+          "ceiling_ms": 300,
+          "peak_rss_mib": 132.547,
+          "rss_ceiling_mib": 150,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP read",
+          "p95_ms": 99.199,
+          "ceiling_ms": 110,
+          "peak_rss_mib": 132.547,
+          "rss_ceiling_mib": 150,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP validate",
+          "p95_ms": 98.949,
+          "ceiling_ms": 110,
+          "peak_rss_mib": 132.547,
+          "rss_ceiling_mib": 150,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI search",
+          "p95_ms": 4191.294,
+          "ceiling_ms": 2870,
+          "peak_rss_mib": 488.453,
+          "rss_ceiling_mib": 550,
+          "pass": false
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI read",
+          "p95_ms": 1444.149,
+          "ceiling_ms": 2070,
+          "peak_rss_mib": 393.109,
+          "rss_ceiling_mib": 470,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI validate",
+          "p95_ms": 1552.939,
+          "ceiling_ms": 1910,
+          "peak_rss_mib": 396.344,
+          "rss_ceiling_mib": 470,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI repair preview",
+          "p95_ms": 3827.358,
+          "ceiling_ms": 3770,
+          "peak_rss_mib": 756.766,
+          "rss_ceiling_mib": 830,
+          "pass": false
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI committed repair",
+          "p95_ms": 8568.702,
+          "ceiling_ms": 8940,
+          "peak_rss_mib": 838.406,
+          "rss_ceiling_mib": 1050,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP search",
+          "p95_ms": 1291.99,
+          "ceiling_ms": 1530,
+          "peak_rss_mib": 557.219,
+          "rss_ceiling_mib": 640,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP read",
+          "p95_ms": 1083.598,
+          "ceiling_ms": 1540,
+          "peak_rss_mib": 557.219,
+          "rss_ceiling_mib": 640,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP validate",
+          "p95_ms": 1089.848,
+          "ceiling_ms": 1690,
+          "peak_rss_mib": 557.219,
+          "rss_ceiling_mib": 640,
+          "pass": true
+        }
+      ],
+      "drift": [
+        {
+          "notes": 10000,
+          "operation": "CLI search",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 327.829,
+            "p95_ms": 347.698,
+            "peak_rss_mib": 111.203
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 328.105,
+            "p95_ms": 329.118,
+            "peak_rss_mib": 114.047
+          },
+          "p50_percent": 0.08419023332286724,
+          "p95_percent": -5.343717824088712
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI read",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 173.051,
+            "p95_ms": 173.323,
+            "peak_rss_mib": 100.656
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 173.488,
+            "p95_ms": 173.652,
+            "peak_rss_mib": 99.297
+          },
+          "p50_percent": 0.2525267117786223,
+          "p95_percent": 0.1898190084408835
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI validate",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 171.346,
+            "p95_ms": 172.056,
+            "peak_rss_mib": 98.875
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 171.942,
+            "p95_ms": 172.433,
+            "peak_rss_mib": 97.953
+          },
+          "p50_percent": 0.3478342068096163,
+          "p95_percent": 0.2191147068396182
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI repair preview",
+          "baseline": {
+            "samples": 3,
+            "p50_ms": 494.937,
+            "p95_ms": 497.221,
+            "peak_rss_mib": 169.0
+          },
+          "candidate": {
+            "samples": 3,
+            "p50_ms": 505.99,
+            "p95_ms": 508.101,
+            "peak_rss_mib": 176.938
+          },
+          "p50_percent": 2.233213520104571,
+          "p95_percent": 2.188161803302746
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI committed repair",
+          "baseline": {
+            "samples": 3,
+            "p50_ms": 867.192,
+            "p95_ms": 1170.983,
+            "peak_rss_mib": 205.469,
+            "first_ms": 1170.983
+          },
+          "candidate": {
+            "samples": 3,
+            "p50_ms": 879.422,
+            "p95_ms": 1210.496,
+            "peak_rss_mib": 178.766,
+            "first_ms": 1210.496
+          },
+          "p50_percent": 1.4102989879980488,
+          "p95_percent": 3.374344461021228
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP search",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 99.352,
+            "p95_ms": 102.907,
+            "first_ms": 316.749
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 99.143,
+            "p95_ms": 99.705,
+            "first_ms": 320.677
+          },
+          "p50_percent": -0.21036315323295085,
+          "p95_percent": -3.111547319424335
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP read",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 100.013,
+            "p95_ms": 121.276,
+            "first_ms": 105.795
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 97.94,
+            "p95_ms": 99.199,
+            "first_ms": 98.835
+          },
+          "p50_percent": -2.0727305450291555,
+          "p95_percent": -18.203931528084695
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP validate",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 98.924,
+            "p95_ms": 100.512,
+            "first_ms": 98.83
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 97.897,
+            "p95_ms": 98.949,
+            "first_ms": 99.129
+          },
+          "p50_percent": -1.0381707169139998,
+          "p95_percent": -1.5550382043935107
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI search",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 2570.515,
+            "p95_ms": 3469.355,
+            "peak_rss_mib": 489.547
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 2620.815,
+            "p95_ms": 4191.294,
+            "peak_rss_mib": 488.453
+          },
+          "p50_percent": 1.956806320912352,
+          "p95_percent": 20.809026461691005
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI read",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1802.325,
+            "p95_ms": 1839.922,
+            "peak_rss_mib": 434.266
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1443.367,
+            "p95_ms": 1444.149,
+            "peak_rss_mib": 393.109
+          },
+          "p50_percent": -19.916385779479285,
+          "p95_percent": -21.510314024181465
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI validate",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1558.814,
+            "p95_ms": 1689.793,
+            "peak_rss_mib": 431.938
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1439.871,
+            "p95_ms": 1552.939,
+            "peak_rss_mib": 396.344
+          },
+          "p50_percent": -7.630352306304666,
+          "p95_percent": -8.098861813251668
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI repair preview",
+          "baseline": {
+            "samples": 3,
+            "p50_ms": 3323.436,
+            "p95_ms": 3497.815,
+            "peak_rss_mib": 749.203
+          },
+          "candidate": {
+            "samples": 3,
+            "p50_ms": 3702.613,
+            "p95_ms": 3827.358,
+            "peak_rss_mib": 756.766
+          },
+          "p50_percent": 11.409186155532991,
+          "p95_percent": 9.42139592860114
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI committed repair",
+          "baseline": {
+            "samples": 3,
+            "p50_ms": 6452.723,
+            "p95_ms": 8393.41,
+            "peak_rss_mib": 890.5,
+            "first_ms": 8393.41
+          },
+          "candidate": {
+            "samples": 3,
+            "p50_ms": 6156.828,
+            "p95_ms": 8568.702,
+            "peak_rss_mib": 838.406,
+            "first_ms": 8568.702
+          },
+          "p50_percent": -4.585583481578237,
+          "p95_percent": 2.0884479609598383
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP search",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1221.367,
+            "p95_ms": 1473.962,
+            "first_ms": 2354.277
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1079.674,
+            "p95_ms": 1291.99,
+            "first_ms": 2242.873
+          },
+          "p50_percent": -11.601181299314621,
+          "p95_percent": -12.345772821823086
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP read",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1152.235,
+            "p95_ms": 1335.863,
+            "first_ms": 1369.115
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1054.82,
+            "p95_ms": 1083.598,
+            "first_ms": 1256.173
+          },
+          "p50_percent": -8.454438547692089,
+          "p95_percent": -18.884047241371317
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP validate",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1119.049,
+            "p95_ms": 1124.807,
+            "first_ms": 1121.192
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1080.794,
+            "p95_ms": 1089.848,
+            "first_ms": 1056.004
+          },
+          "p50_percent": -3.4185276962849565,
+          "p95_percent": -3.1079998613095405
+        }
+      ],
+      "core": {
+        "samples": 20,
+        "warm_p95_ms": 114.0,
+        "peak_rss_mib": 130.2,
+        "warm_ceiling_ms": 150,
+        "rss_ceiling_mib": 150,
+        "cli_rebuild_10k_p95_ms": 186.333,
+        "rebuild_ceiling_ms": 10000,
+        "rebuild_scope": "Fresh CLI index rebuild includes the core call plus startup; not a separately inferred pure-core timing."
+      },
+      "baseline": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+          "version": "v0.3.1"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": false,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 327.829,
+                "p95_ms": 347.698,
+                "peak_rss_mib": 111.203
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 173.051,
+                "p95_ms": 173.323,
+                "peak_rss_mib": 100.656
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 171.346,
+                "p95_ms": 172.056,
+                "peak_rss_mib": 98.875
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 494.937,
+                "p95_ms": 497.221,
+                "peak_rss_mib": 169.0
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 867.192,
+                "p95_ms": 1170.983,
+                "peak_rss_mib": 205.469,
+                "first_ms": 1170.983
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 99.352,
+                "p95_ms": 102.907,
+                "first_ms": 316.749
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 100.013,
+                "p95_ms": 121.276,
+                "first_ms": 105.795
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 98.924,
+                "p95_ms": 100.512,
+                "first_ms": 98.83
+              },
+              "process_peak_rss_mib": 131.078
+            }
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 2570.515,
+                "p95_ms": 3469.355,
+                "peak_rss_mib": 489.547
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 1802.325,
+                "p95_ms": 1839.922,
+                "peak_rss_mib": 434.266
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 1558.814,
+                "p95_ms": 1689.793,
+                "peak_rss_mib": 431.938
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 3323.436,
+                "p95_ms": 3497.815,
+                "peak_rss_mib": 749.203
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 6452.723,
+                "p95_ms": 8393.41,
+                "peak_rss_mib": 890.5,
+                "first_ms": 8393.41
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 1221.367,
+                "p95_ms": 1473.962,
+                "first_ms": 2354.277
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 1152.235,
+                "p95_ms": 1335.863,
+                "first_ms": 1369.115
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 1119.049,
+                "p95_ms": 1124.807,
+                "first_ms": 1121.192
+              },
+              "process_peak_rss_mib": 579.797
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+          "version": "v1.0.0-candidate"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": false,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 328.105,
+                "p95_ms": 329.118,
+                "peak_rss_mib": 114.047
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 173.488,
+                "p95_ms": 173.652,
+                "peak_rss_mib": 99.297
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 171.942,
+                "p95_ms": 172.433,
+                "peak_rss_mib": 97.953
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 505.99,
+                "p95_ms": 508.101,
+                "peak_rss_mib": 176.938
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 879.422,
+                "p95_ms": 1210.496,
+                "peak_rss_mib": 178.766,
+                "first_ms": 1210.496
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 99.143,
+                "p95_ms": 99.705,
+                "first_ms": 320.677
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 97.94,
+                "p95_ms": 99.199,
+                "first_ms": 98.835
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 97.897,
+                "p95_ms": 98.949,
+                "first_ms": 99.129
+              },
+              "process_peak_rss_mib": 132.547
+            }
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 2620.815,
+                "p95_ms": 4191.294,
+                "peak_rss_mib": 488.453
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 1443.367,
+                "p95_ms": 1444.149,
+                "peak_rss_mib": 393.109
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 1439.871,
+                "p95_ms": 1552.939,
+                "peak_rss_mib": 396.344
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 3702.613,
+                "p95_ms": 3827.358,
+                "peak_rss_mib": 756.766
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 6156.828,
+                "p95_ms": 8568.702,
+                "peak_rss_mib": 838.406,
+                "first_ms": 8568.702
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 1079.674,
+                "p95_ms": 1291.99,
+                "first_ms": 2242.873
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 1054.82,
+                "p95_ms": 1083.598,
+                "first_ms": 1256.173
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 1080.794,
+                "p95_ms": 1089.848,
+                "first_ms": 1056.004
+              },
+              "process_peak_rss_mib": 557.219
+            }
+          }
+        ]
+      },
+      "baseline_rebuild": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+          "version": "v0.3.1"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": true,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 175.286,
+                "p95_ms": 176.437,
+                "peak_rss_mib": 100.0
+              }
+            },
+            "mcp": {}
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 1452.467,
+                "p95_ms": 1708.918,
+                "peak_rss_mib": 429.406
+              }
+            },
+            "mcp": {}
+          }
+        ]
+      },
+      "candidate_rebuild": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+          "version": "v1.0.0-candidate"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": true,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 177.436,
+                "p95_ms": 186.333,
+                "peak_rss_mib": 97.844
+              }
+            },
+            "mcp": {}
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 1365.619,
+                "p95_ms": 1368.613,
+                "peak_rss_mib": 399.781
+              }
+            },
+            "mcp": {}
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 2,
+      "qualification_passed": false,
+      "method": "One reserved shared slot; all OMP workers idle; no concurrent coordinator builds/tests/soaks. Baseline then candidate, OS caches not evicted; five read and three repair samples. Rebuild separately measured with five samples. Machine-specific observations, not portable SLA.",
+      "started_utc": "2026-10-26T01:15:34Z",
+      "finished_utc": "2026-10-26T01:19:16Z",
+      "all_workers_idle": true,
+      "GOMAXPROCS": 8,
+      "checks": [
+        {
+          "notes": 10000,
+          "operation": "CLI search",
+          "p95_ms": 331.135,
+          "ceiling_ms": 380,
+          "peak_rss_mib": 115.156,
+          "rss_ceiling_mib": 130,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI read",
+          "p95_ms": 175.276,
+          "ceiling_ms": 200,
+          "peak_rss_mib": 97.781,
+          "rss_ceiling_mib": 110,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI validate",
+          "p95_ms": 173.421,
+          "ceiling_ms": 190,
+          "peak_rss_mib": 97.844,
+          "rss_ceiling_mib": 120,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI repair preview",
+          "p95_ms": 509.343,
+          "ceiling_ms": 730,
+          "peak_rss_mib": 178.5,
+          "rss_ceiling_mib": 200,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI committed repair",
+          "p95_ms": 1205.554,
+          "ceiling_ms": 1460,
+          "peak_rss_mib": 179.797,
+          "rss_ceiling_mib": 230,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP search",
+          "p95_ms": 101.802,
+          "ceiling_ms": 300,
+          "peak_rss_mib": 133.438,
+          "rss_ceiling_mib": 150,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP read",
+          "p95_ms": 101.918,
+          "ceiling_ms": 110,
+          "peak_rss_mib": 133.438,
+          "rss_ceiling_mib": 150,
+          "pass": true
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP validate",
+          "p95_ms": 117.925,
+          "ceiling_ms": 110,
+          "peak_rss_mib": 133.438,
+          "rss_ceiling_mib": 150,
+          "pass": false
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI search",
+          "p95_ms": 2388.359,
+          "ceiling_ms": 2870,
+          "peak_rss_mib": 485.266,
+          "rss_ceiling_mib": 550,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI read",
+          "p95_ms": 1684.104,
+          "ceiling_ms": 2070,
+          "peak_rss_mib": 397.609,
+          "rss_ceiling_mib": 470,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI validate",
+          "p95_ms": 1703.895,
+          "ceiling_ms": 1910,
+          "peak_rss_mib": 408.984,
+          "rss_ceiling_mib": 470,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI repair preview",
+          "p95_ms": 3326.196,
+          "ceiling_ms": 3770,
+          "peak_rss_mib": 751.125,
+          "rss_ceiling_mib": 830,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI committed repair",
+          "p95_ms": 7907.702,
+          "ceiling_ms": 8940,
+          "peak_rss_mib": 816.859,
+          "rss_ceiling_mib": 1050,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP search",
+          "p95_ms": 1098.319,
+          "ceiling_ms": 1530,
+          "peak_rss_mib": 572.531,
+          "rss_ceiling_mib": 640,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP read",
+          "p95_ms": 1252.459,
+          "ceiling_ms": 1540,
+          "peak_rss_mib": 572.531,
+          "rss_ceiling_mib": 640,
+          "pass": true
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP validate",
+          "p95_ms": 1090.09,
+          "ceiling_ms": 1690,
+          "peak_rss_mib": 572.531,
+          "rss_ceiling_mib": 640,
+          "pass": true
+        }
+      ],
+      "drift": [
+        {
+          "notes": 10000,
+          "operation": "CLI search",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 329.597,
+            "p95_ms": 334.022,
+            "peak_rss_mib": 113.781
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 328.818,
+            "p95_ms": 331.135,
+            "peak_rss_mib": 115.156
+          },
+          "p50_percent": -0.23634923861564072,
+          "p95_percent": -0.8643143266012454
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI read",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 175.015,
+            "p95_ms": 175.948,
+            "peak_rss_mib": 98.531
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 174.138,
+            "p95_ms": 175.276,
+            "peak_rss_mib": 97.781
+          },
+          "p50_percent": -0.5010999057223575,
+          "p95_percent": -0.38193102507558807
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI validate",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 174.087,
+            "p95_ms": 175.466,
+            "peak_rss_mib": 97.891
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 172.068,
+            "p95_ms": 173.421,
+            "peak_rss_mib": 97.844
+          },
+          "p50_percent": -1.1597649451136394,
+          "p95_percent": -1.1654679539056079
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI repair preview",
+          "baseline": {
+            "samples": 3,
+            "p50_ms": 508.733,
+            "p95_ms": 509.521,
+            "peak_rss_mib": 174.422
+          },
+          "candidate": {
+            "samples": 3,
+            "p50_ms": 508.748,
+            "p95_ms": 509.343,
+            "peak_rss_mib": 178.5
+          },
+          "p50_percent": 0.00294850147326553,
+          "p95_percent": -0.03493477207023865
+        },
+        {
+          "notes": 10000,
+          "operation": "CLI committed repair",
+          "baseline": {
+            "samples": 3,
+            "p50_ms": 899.801,
+            "p95_ms": 1245.272,
+            "peak_rss_mib": 197.266,
+            "first_ms": 1245.272
+          },
+          "candidate": {
+            "samples": 3,
+            "p50_ms": 886.316,
+            "p95_ms": 1205.554,
+            "peak_rss_mib": 179.797,
+            "first_ms": 1205.554
+          },
+          "p50_percent": -1.4986647047513846,
+          "p95_percent": -3.189503979853381
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP search",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 100.905,
+            "p95_ms": 101.032,
+            "first_ms": 324.819
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 99.999,
+            "p95_ms": 101.802,
+            "first_ms": 322.666
+          },
+          "p50_percent": -0.8978742381447913,
+          "p95_percent": 0.7621347691820546
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP read",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 100.218,
+            "p95_ms": 101.024,
+            "first_ms": 101.951
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 100.919,
+            "p95_ms": 101.918,
+            "first_ms": 99.121
+          },
+          "p50_percent": 0.6994751441856684,
+          "p95_percent": 0.8849382324992217
+        },
+        {
+          "notes": 10000,
+          "operation": "Warm MCP validate",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 99.958,
+            "p95_ms": 100.688,
+            "first_ms": 99.168
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 98.963,
+            "p95_ms": 117.925,
+            "first_ms": 101.252
+          },
+          "p50_percent": -0.9954180755917585,
+          "p95_percent": 17.119219767996174
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI search",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 2409.338,
+            "p95_ms": 2463.954,
+            "peak_rss_mib": 500.844
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 2217.988,
+            "p95_ms": 2388.359,
+            "peak_rss_mib": 485.266
+          },
+          "p50_percent": -7.942015607606756,
+          "p95_percent": -3.06803617275323
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI read",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1428.896,
+            "p95_ms": 1470.296,
+            "peak_rss_mib": 426.984
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1444.398,
+            "p95_ms": 1684.104,
+            "peak_rss_mib": 397.609
+          },
+          "p50_percent": 1.0848935121940295,
+          "p95_percent": 14.541833753203438
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI validate",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1439.352,
+            "p95_ms": 1729.903,
+            "peak_rss_mib": 433.125
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1470.102,
+            "p95_ms": 1703.895,
+            "peak_rss_mib": 408.984
+          },
+          "p50_percent": 2.1363780367832153,
+          "p95_percent": -1.5034368979069956
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI repair preview",
+          "baseline": {
+            "samples": 3,
+            "p50_ms": 3263.906,
+            "p95_ms": 3380.786,
+            "peak_rss_mib": 748.734
+          },
+          "candidate": {
+            "samples": 3,
+            "p50_ms": 3302.321,
+            "p95_ms": 3326.196,
+            "peak_rss_mib": 751.125
+          },
+          "p50_percent": 1.176964042469364,
+          "p95_percent": -1.614713264903489
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI committed repair",
+          "baseline": {
+            "samples": 3,
+            "p50_ms": 6339.121,
+            "p95_ms": 8530.134,
+            "peak_rss_mib": 821.328,
+            "first_ms": 8530.134
+          },
+          "candidate": {
+            "samples": 3,
+            "p50_ms": 7081.073,
+            "p95_ms": 7907.702,
+            "peak_rss_mib": 816.859,
+            "first_ms": 7907.702
+          },
+          "p50_percent": 11.704335664203281,
+          "p95_percent": -7.296860752715018
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP search",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1084.465,
+            "p95_ms": 1090.894,
+            "first_ms": 2195.623
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1095.787,
+            "p95_ms": 1098.319,
+            "first_ms": 2217.897
+          },
+          "p50_percent": 1.0440170959874262,
+          "p95_percent": 0.680634415442749
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP read",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1078.061,
+            "p95_ms": 1079.215,
+            "first_ms": 1094.36
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1101.259,
+            "p95_ms": 1252.459,
+            "first_ms": 1361.589
+          },
+          "p50_percent": 2.151826288122849,
+          "p95_percent": 16.05277910332974
+        },
+        {
+          "notes": 50000,
+          "operation": "Warm MCP validate",
+          "baseline": {
+            "samples": 5,
+            "p50_ms": 1074.841,
+            "p95_ms": 1081.346,
+            "first_ms": 1080.337
+          },
+          "candidate": {
+            "samples": 5,
+            "p50_ms": 1074.567,
+            "p95_ms": 1090.09,
+            "first_ms": 1070.433
+          },
+          "p50_percent": -0.02549214255874732,
+          "p95_percent": 0.8086218472163287
+        }
+      ],
+      "core": {
+        "samples": 20,
+        "warm_p95_ms": 116.3,
+        "peak_rss_mib": 124.1,
+        "warm_ceiling_ms": 150,
+        "rss_ceiling_mib": 150,
+        "cli_rebuild_10k_p95_ms": 178.45,
+        "rebuild_ceiling_ms": 10000,
+        "rebuild_scope": "Fresh CLI index rebuild includes the core call plus startup; not a separately inferred pure-core timing."
+      },
+      "baseline": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+          "version": "v0.3.1"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": false,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 329.597,
+                "p95_ms": 334.022,
+                "peak_rss_mib": 113.781
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 175.015,
+                "p95_ms": 175.948,
+                "peak_rss_mib": 98.531
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 174.087,
+                "p95_ms": 175.466,
+                "peak_rss_mib": 97.891
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 508.733,
+                "p95_ms": 509.521,
+                "peak_rss_mib": 174.422
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 899.801,
+                "p95_ms": 1245.272,
+                "peak_rss_mib": 197.266,
+                "first_ms": 1245.272
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 100.905,
+                "p95_ms": 101.032,
+                "first_ms": 324.819
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 100.218,
+                "p95_ms": 101.024,
+                "first_ms": 101.951
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 99.958,
+                "p95_ms": 100.688,
+                "first_ms": 99.168
+              },
+              "process_peak_rss_mib": 129.797
+            }
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 2409.338,
+                "p95_ms": 2463.954,
+                "peak_rss_mib": 500.844
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 1428.896,
+                "p95_ms": 1470.296,
+                "peak_rss_mib": 426.984
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 1439.352,
+                "p95_ms": 1729.903,
+                "peak_rss_mib": 433.125
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 3263.906,
+                "p95_ms": 3380.786,
+                "peak_rss_mib": 748.734
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 6339.121,
+                "p95_ms": 8530.134,
+                "peak_rss_mib": 821.328,
+                "first_ms": 8530.134
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 1084.465,
+                "p95_ms": 1090.894,
+                "first_ms": 2195.623
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 1078.061,
+                "p95_ms": 1079.215,
+                "first_ms": 1094.36
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 1074.841,
+                "p95_ms": 1081.346,
+                "first_ms": 1080.337
+              },
+              "process_peak_rss_mib": 574.531
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+          "version": "v1.0.0-candidate"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": false,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 328.818,
+                "p95_ms": 331.135,
+                "peak_rss_mib": 115.156
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 174.138,
+                "p95_ms": 175.276,
+                "peak_rss_mib": 97.781
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 172.068,
+                "p95_ms": 173.421,
+                "peak_rss_mib": 97.844
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 508.748,
+                "p95_ms": 509.343,
+                "peak_rss_mib": 178.5
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 886.316,
+                "p95_ms": 1205.554,
+                "peak_rss_mib": 179.797,
+                "first_ms": 1205.554
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 99.999,
+                "p95_ms": 101.802,
+                "first_ms": 322.666
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 100.919,
+                "p95_ms": 101.918,
+                "first_ms": 99.121
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 98.963,
+                "p95_ms": 117.925,
+                "first_ms": 101.252
+              },
+              "process_peak_rss_mib": 133.438
+            }
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 2217.988,
+                "p95_ms": 2388.359,
+                "peak_rss_mib": 485.266
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 1444.398,
+                "p95_ms": 1684.104,
+                "peak_rss_mib": 397.609
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 1470.102,
+                "p95_ms": 1703.895,
+                "peak_rss_mib": 408.984
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 3302.321,
+                "p95_ms": 3326.196,
+                "peak_rss_mib": 751.125
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 7081.073,
+                "p95_ms": 7907.702,
+                "peak_rss_mib": 816.859,
+                "first_ms": 7907.702
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 5,
+                "p50_ms": 1095.787,
+                "p95_ms": 1098.319,
+                "first_ms": 2217.897
+              },
+              "read": {
+                "samples": 5,
+                "p50_ms": 1101.259,
+                "p95_ms": 1252.459,
+                "first_ms": 1361.589
+              },
+              "validate": {
+                "samples": 5,
+                "p50_ms": 1074.567,
+                "p95_ms": 1090.09,
+                "first_ms": 1070.433
+              },
+              "process_peak_rss_mib": 572.531
+            }
+          }
+        ]
+      },
+      "baseline_rebuild": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+          "version": "v0.3.1"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": true,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 180.435,
+                "p95_ms": 180.627,
+                "peak_rss_mib": 100.547
+              }
+            },
+            "mcp": {}
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 1447.596,
+                "p95_ms": 1457.038,
+                "peak_rss_mib": 424.562
+              }
+            },
+            "mcp": {}
+          }
+        ]
+      },
+      "candidate_rebuild": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+          "version": "v1.0.0-candidate"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": true,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 176.275,
+                "p95_ms": 178.45,
+                "peak_rss_mib": 99.203
+              }
+            },
+            "mcp": {}
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 1428.654,
+                "p95_ms": 1433.043,
+                "peak_rss_mib": 391.922
+              }
+            },
+            "mcp": {}
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 3,
+      "label": "third-failed-fixed-runtime-attempt",
+      "qualification_passed": false,
+      "verdict": {
+        "status": "failed-local-D03",
+        "pass": false,
+        "source_commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+        "candidate_version": "v1.0.0-candidate",
+        "current_head": "adc9fab83a6dad8b4fc3251e3a2a1ca04cb95654",
+        "sample_counts": {
+          "read": 20,
+          "repair": 3,
+          "rebuild": 5,
+          "core": 20
+        },
+        "GOMAXPROCS": 8,
+        "started_utc": "2026-10-26T01:57:53Z",
+        "finished_utc": "2026-10-26T02:06:25Z",
+        "environment": {
+          "system": "Darwin",
+          "release": "25.6.0",
+          "macos": "26.6.2",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "load_average_start": [
+          2.1123046875,
+          2.12109375,
+          2.4140625
+        ],
+        "load_average_end": [
+          5.2900390625,
+          5.8955078125,
+          4.51171875
+        ],
+        "plan_sha256": "51b6850a514cf8997fbf520ed9ba1bc933cd345eb84972f8108f83a834f6ac52",
+        "core_binary_sha256": "9bc378fc81d05aade8f215f3bea5b4817e09b27d152c1d2a4e6852e75d8db994",
+        "warnings": [
+          "Experiment plan, not passing performance evidence; earlier two failed fixed-source rounds remain failures.",
+          "No portable SLA or statistical-significance claim. OS background applications are not controlled; OS caches are not evicted.",
+          "Baseline precedes candidate once. No automatic repeat, sample exclusion, fallback, selected-best report or ceiling change.",
+          "Twenty read samples use original nearest-rank p95 (19th ordered value); three repair samples still use the observed maximum.",
+          "MCP raw durations include its separate first request plus 20 warm samples. max_ms is warm-sample maximum; all_requests_max_ms also includes first.",
+          "MCP RSS remains one session-wide peak; per-request RSS is not measured and sample_peak_rss_mib is null, never replicated into invented samples.",
+          "Unchanged core benchmark emits 20-sample warm p95, cold time and process RSS only, not raw warm samples/max/per-query RSS. Core RSS includes fixture/calibration.",
+          "Fresh CLI rebuild includes startup plus core work; the 10k 10-second target is checked. Both 50k rebuild pairs are reported without an invented 50k ceiling.",
+          "A D03 pass is not stable-v1 readiness, D02 success, installed qualification or human approval."
+        ],
+        "checks": [
+          {
+            "notes": 10000,
+            "operation": "CLI search",
+            "transport": "cli",
+            "action": "search",
+            "p95_ms": 384.47,
+            "ceiling_ms": 380,
+            "peak_rss_mib": 115.828,
+            "rss_ceiling_mib": 130,
+            "pass": false
+          },
+          {
+            "notes": 10000,
+            "operation": "CLI read",
+            "transport": "cli",
+            "action": "read",
+            "p95_ms": 198.702,
+            "ceiling_ms": 200,
+            "peak_rss_mib": 98.594,
+            "rss_ceiling_mib": 110,
+            "pass": true
+          },
+          {
+            "notes": 10000,
+            "operation": "CLI validate",
+            "transport": "cli",
+            "action": "validate",
+            "p95_ms": 176.478,
+            "ceiling_ms": 190,
+            "peak_rss_mib": 99.484,
+            "rss_ceiling_mib": 120,
+            "pass": true
+          },
+          {
+            "notes": 10000,
+            "operation": "CLI repair preview",
+            "transport": "cli",
+            "action": "repair_preview",
+            "p95_ms": 521.136,
+            "ceiling_ms": 730,
+            "peak_rss_mib": 178.312,
+            "rss_ceiling_mib": 200,
+            "pass": true
+          },
+          {
+            "notes": 10000,
+            "operation": "CLI committed repair",
+            "transport": "cli",
+            "action": "repair_apply",
+            "p95_ms": 1205.993,
+            "ceiling_ms": 1460,
+            "peak_rss_mib": 179.781,
+            "rss_ceiling_mib": 230,
+            "pass": true
+          },
+          {
+            "notes": 10000,
+            "operation": "Warm MCP search",
+            "transport": "mcp",
+            "action": "search",
+            "p95_ms": 101.686,
+            "ceiling_ms": 300,
+            "peak_rss_mib": 135.156,
+            "rss_ceiling_mib": 150,
+            "pass": true
+          },
+          {
+            "notes": 10000,
+            "operation": "Warm MCP read",
+            "transport": "mcp",
+            "action": "read",
+            "p95_ms": 101.452,
+            "ceiling_ms": 110,
+            "peak_rss_mib": 135.156,
+            "rss_ceiling_mib": 150,
+            "pass": true
+          },
+          {
+            "notes": 10000,
+            "operation": "Warm MCP validate",
+            "transport": "mcp",
+            "action": "validate",
+            "p95_ms": 100.946,
+            "ceiling_ms": 110,
+            "peak_rss_mib": 135.156,
+            "rss_ceiling_mib": 150,
+            "pass": true
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI search",
+            "transport": "cli",
+            "action": "search",
+            "p95_ms": 2480.866,
+            "ceiling_ms": 2870,
+            "peak_rss_mib": 491.328,
+            "rss_ceiling_mib": 550,
+            "pass": true
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI read",
+            "transport": "cli",
+            "action": "read",
+            "p95_ms": 1660.201,
+            "ceiling_ms": 2070,
+            "peak_rss_mib": 400.844,
+            "rss_ceiling_mib": 470,
+            "pass": true
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI validate",
+            "transport": "cli",
+            "action": "validate",
+            "p95_ms": 1703.019,
+            "ceiling_ms": 1910,
+            "peak_rss_mib": 400.344,
+            "rss_ceiling_mib": 470,
+            "pass": true
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI repair preview",
+            "transport": "cli",
+            "action": "repair_preview",
+            "p95_ms": 3271.663,
+            "ceiling_ms": 3770,
+            "peak_rss_mib": 750.594,
+            "rss_ceiling_mib": 830,
+            "pass": true
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI committed repair",
+            "transport": "cli",
+            "action": "repair_apply",
+            "p95_ms": 7716.551,
+            "ceiling_ms": 8940,
+            "peak_rss_mib": 842.891,
+            "rss_ceiling_mib": 1050,
+            "pass": true
+          },
+          {
+            "notes": 50000,
+            "operation": "Warm MCP search",
+            "transport": "mcp",
+            "action": "search",
+            "p95_ms": 1300.456,
+            "ceiling_ms": 1530,
+            "peak_rss_mib": 545.375,
+            "rss_ceiling_mib": 640,
+            "pass": true
+          },
+          {
+            "notes": 50000,
+            "operation": "Warm MCP read",
+            "transport": "mcp",
+            "action": "read",
+            "p95_ms": 1138.457,
+            "ceiling_ms": 1540,
+            "peak_rss_mib": 545.375,
+            "rss_ceiling_mib": 640,
+            "pass": true
+          },
+          {
+            "notes": 50000,
+            "operation": "Warm MCP validate",
+            "transport": "mcp",
+            "action": "validate",
+            "p95_ms": 1287.198,
+            "ceiling_ms": 1690,
+            "peak_rss_mib": 545.375,
+            "rss_ceiling_mib": 640,
+            "pass": true
+          }
+        ],
+        "drift": [
+          {
+            "notes": 10000,
+            "operation": "CLI search",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 324.0,
+              "p95_ms": 487.272,
+              "peak_rss_mib": 114.688,
+              "first_ms": 328.987,
+              "max_ms": 487.702
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 332.495,
+              "p95_ms": 384.47,
+              "peak_rss_mib": 115.828,
+              "first_ms": 384.47,
+              "max_ms": 467.93
+            },
+            "p50_ms_delta": 8.495000000000005,
+            "p50_ms_percent": 2.621913580246904,
+            "p95_ms_delta": -102.80199999999996,
+            "p95_ms_percent": -21.09745686187591,
+            "first_ms_delta": 55.483000000000004,
+            "first_ms_percent": 16.864800128880475,
+            "max_ms_delta": -19.77199999999999,
+            "max_ms_percent": -4.054115012856208,
+            "peak_rss_mib_baseline": 114.688,
+            "peak_rss_mib_candidate": 115.828,
+            "peak_rss_mib_delta": 1.1400000000000006,
+            "peak_rss_percent": 0.994001116071419
+          },
+          {
+            "notes": 10000,
+            "operation": "CLI read",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 172.38,
+              "p95_ms": 176.604,
+              "peak_rss_mib": 100.422,
+              "first_ms": 170.031,
+              "max_ms": 177.715
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 176.103,
+              "p95_ms": 198.702,
+              "peak_rss_mib": 98.594,
+              "first_ms": 173.798,
+              "max_ms": 317.776
+            },
+            "p50_ms_delta": 3.723000000000013,
+            "p50_ms_percent": 2.159763313609475,
+            "p95_ms_delta": 22.097999999999985,
+            "p95_ms_percent": 12.51274036828156,
+            "first_ms_delta": 3.766999999999996,
+            "first_ms_percent": 2.21547835394722,
+            "max_ms_delta": 140.061,
+            "max_ms_percent": 78.81214303801029,
+            "peak_rss_mib_baseline": 100.422,
+            "peak_rss_mib_candidate": 98.594,
+            "peak_rss_mib_delta": -1.828000000000003,
+            "peak_rss_percent": -1.8203182569556553
+          },
+          {
+            "notes": 10000,
+            "operation": "CLI validate",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 171.543,
+              "p95_ms": 174.578,
+              "peak_rss_mib": 100.781,
+              "first_ms": 171.257,
+              "max_ms": 174.92
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 175.018,
+              "p95_ms": 176.478,
+              "peak_rss_mib": 99.484,
+              "first_ms": 173.613,
+              "max_ms": 178.255
+            },
+            "p50_ms_delta": 3.4749999999999943,
+            "p50_ms_percent": 2.025731157785504,
+            "p95_ms_delta": 1.9000000000000057,
+            "p95_ms_percent": 1.088338736839689,
+            "first_ms_delta": 2.3559999999999945,
+            "first_ms_percent": 1.3757101899484425,
+            "max_ms_delta": 3.335000000000008,
+            "max_ms_percent": 1.9065858678253056,
+            "peak_rss_mib_baseline": 100.781,
+            "peak_rss_mib_candidate": 99.484,
+            "peak_rss_mib_delta": -1.2970000000000113,
+            "peak_rss_percent": -1.2869489288655722
+          },
+          {
+            "notes": 10000,
+            "operation": "CLI repair preview",
+            "baseline": {
+              "samples": 3,
+              "p50_ms": 505.298,
+              "p95_ms": 510.403,
+              "peak_rss_mib": 175.984,
+              "first_ms": 510.403,
+              "max_ms": 510.403
+            },
+            "candidate": {
+              "samples": 3,
+              "p50_ms": 517.356,
+              "p95_ms": 521.136,
+              "peak_rss_mib": 178.312,
+              "first_ms": 521.136,
+              "max_ms": 521.136
+            },
+            "p50_ms_delta": 12.057999999999993,
+            "p50_ms_percent": 2.386314610388318,
+            "p95_ms_delta": 10.732999999999947,
+            "p95_ms_percent": 2.10284814156656,
+            "first_ms_delta": 10.732999999999947,
+            "first_ms_percent": 2.10284814156656,
+            "max_ms_delta": 10.732999999999947,
+            "max_ms_percent": 2.10284814156656,
+            "peak_rss_mib_baseline": 175.984,
+            "peak_rss_mib_candidate": 178.312,
+            "peak_rss_mib_delta": 2.328000000000003,
+            "peak_rss_percent": 1.3228475315937738
+          },
+          {
+            "notes": 10000,
+            "operation": "CLI committed repair",
+            "baseline": {
+              "samples": 3,
+              "p50_ms": 883.033,
+              "p95_ms": 1176.518,
+              "peak_rss_mib": 206.719,
+              "first_ms": 1176.518,
+              "max_ms": 1176.518
+            },
+            "candidate": {
+              "samples": 3,
+              "p50_ms": 897.509,
+              "p95_ms": 1205.993,
+              "peak_rss_mib": 179.781,
+              "first_ms": 1205.993,
+              "max_ms": 1205.993
+            },
+            "p50_ms_delta": 14.475999999999999,
+            "p50_ms_percent": 1.6393498317729849,
+            "p95_ms_delta": 29.47499999999991,
+            "p95_ms_percent": 2.5052740374562843,
+            "first_ms_delta": 29.47499999999991,
+            "first_ms_percent": 2.5052740374562843,
+            "max_ms_delta": 29.47499999999991,
+            "max_ms_percent": 2.5052740374562843,
+            "peak_rss_mib_baseline": 206.719,
+            "peak_rss_mib_candidate": 179.781,
+            "peak_rss_mib_delta": -26.937999999999988,
+            "peak_rss_percent": -13.03121628877848
+          },
+          {
+            "notes": 10000,
+            "operation": "Warm MCP search",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 97.94,
+              "p95_ms": 103.328,
+              "first_ms": 318.15,
+              "max_ms": 104.73,
+              "first_duration_ms": 318.150041,
+              "all_requests_max_ms": 318.15,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 100.742,
+              "p95_ms": 101.686,
+              "first_ms": 326.356,
+              "max_ms": 101.799,
+              "first_duration_ms": 326.356333,
+              "all_requests_max_ms": 326.356,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "p50_ms_delta": 2.8020000000000067,
+            "p50_ms_percent": 2.8609352664896948,
+            "p95_ms_delta": -1.641999999999996,
+            "p95_ms_percent": -1.5891142768658995,
+            "first_ms_delta": 8.206000000000017,
+            "first_ms_percent": 2.5792865000785925,
+            "max_ms_delta": -2.9309999999999974,
+            "max_ms_percent": -2.798625035806357,
+            "peak_rss_mib_baseline": 133.25,
+            "peak_rss_mib_candidate": 135.156,
+            "peak_rss_mib_delta": 1.906000000000006,
+            "peak_rss_percent": 1.4303939962476697
+          },
+          {
+            "notes": 10000,
+            "operation": "Warm MCP read",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 97.476,
+              "p95_ms": 98.479,
+              "first_ms": 98.775,
+              "max_ms": 98.725,
+              "first_duration_ms": 98.774625,
+              "all_requests_max_ms": 98.775,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 100.111,
+              "p95_ms": 101.452,
+              "first_ms": 102.048,
+              "max_ms": 105.533,
+              "first_duration_ms": 102.048459,
+              "all_requests_max_ms": 105.533,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "p50_ms_delta": 2.635000000000005,
+            "p50_ms_percent": 2.703229512905736,
+            "p95_ms_delta": 2.972999999999999,
+            "p95_ms_percent": 3.0189177388072475,
+            "first_ms_delta": 3.272999999999996,
+            "first_ms_percent": 3.313591495823842,
+            "max_ms_delta": 6.808000000000007,
+            "max_ms_percent": 6.8959230184856946,
+            "peak_rss_mib_baseline": 133.25,
+            "peak_rss_mib_candidate": 135.156,
+            "peak_rss_mib_delta": 1.906000000000006,
+            "peak_rss_percent": 1.4303939962476697
+          },
+          {
+            "notes": 10000,
+            "operation": "Warm MCP validate",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 97.47,
+              "p95_ms": 98.702,
+              "first_ms": 96.805,
+              "max_ms": 100.328,
+              "first_duration_ms": 96.805333,
+              "all_requests_max_ms": 100.328,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 99.931,
+              "p95_ms": 100.946,
+              "first_ms": 99.937,
+              "max_ms": 101.35,
+              "first_duration_ms": 99.937042,
+              "all_requests_max_ms": 101.35,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "p50_ms_delta": 2.4609999999999985,
+            "p50_ms_percent": 2.524879450087214,
+            "p95_ms_delta": 2.2439999999999998,
+            "p95_ms_percent": 2.273510161901471,
+            "first_ms_delta": 3.131999999999991,
+            "first_ms_percent": 3.2353700738598112,
+            "max_ms_delta": 1.0219999999999914,
+            "max_ms_percent": 1.0186587991388052,
+            "peak_rss_mib_baseline": 133.25,
+            "peak_rss_mib_candidate": 135.156,
+            "peak_rss_mib_delta": 1.906000000000006,
+            "peak_rss_percent": 1.4303939962476697
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI search",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 2272.125,
+              "p95_ms": 2451.554,
+              "peak_rss_mib": 517.219,
+              "first_ms": 2271.268,
+              "max_ms": 2510.878
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 2228.118,
+              "p95_ms": 2480.866,
+              "peak_rss_mib": 491.328,
+              "first_ms": 2209.657,
+              "max_ms": 2481.528
+            },
+            "p50_ms_delta": -44.00700000000006,
+            "p50_ms_percent": -1.936821257633281,
+            "p95_ms_delta": 29.311999999999898,
+            "p95_ms_percent": 1.195649779690755,
+            "first_ms_delta": -61.610999999999876,
+            "first_ms_percent": -2.712625722724038,
+            "max_ms_delta": -29.350000000000364,
+            "max_ms_percent": -1.1689138221769535,
+            "peak_rss_mib_baseline": 517.219,
+            "peak_rss_mib_candidate": 491.328,
+            "peak_rss_mib_delta": -25.891000000000076,
+            "peak_rss_percent": -5.00580991804247
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI read",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 1452.223,
+              "p95_ms": 1686.597,
+              "peak_rss_mib": 435.391,
+              "first_ms": 1447.289,
+              "max_ms": 1706.918
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 1432.276,
+              "p95_ms": 1660.201,
+              "peak_rss_mib": 400.844,
+              "first_ms": 1429.308,
+              "max_ms": 1697.184
+            },
+            "p50_ms_delta": -19.94699999999989,
+            "p50_ms_percent": -1.3735493791242726,
+            "p95_ms_delta": -26.395999999999958,
+            "p95_ms_percent": -1.5650448803122496,
+            "first_ms_delta": -17.980999999999995,
+            "first_ms_percent": -1.2423918097905773,
+            "max_ms_delta": -9.733999999999924,
+            "max_ms_percent": -0.5702675816881664,
+            "peak_rss_mib_baseline": 435.391,
+            "peak_rss_mib_candidate": 400.844,
+            "peak_rss_mib_delta": -34.547000000000025,
+            "peak_rss_percent": -7.934706964544514
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI validate",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 1437.494,
+              "p95_ms": 1681.938,
+              "peak_rss_mib": 429.953,
+              "first_ms": 1427.333,
+              "max_ms": 1721.332
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 1458.888,
+              "p95_ms": 1703.019,
+              "peak_rss_mib": 400.344,
+              "first_ms": 1470.862,
+              "max_ms": 1720.394
+            },
+            "p50_ms_delta": 21.394000000000005,
+            "p50_ms_percent": 1.4882844728395295,
+            "p95_ms_delta": 21.080999999999904,
+            "p95_ms_percent": 1.2533755703242333,
+            "first_ms_delta": 43.528999999999996,
+            "first_ms_percent": 3.049673762184435,
+            "max_ms_delta": -0.9380000000001019,
+            "max_ms_percent": -0.05449268357295978,
+            "peak_rss_mib_baseline": 429.953,
+            "peak_rss_mib_candidate": 400.344,
+            "peak_rss_mib_delta": -29.60899999999998,
+            "peak_rss_percent": -6.886566671240802
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI repair preview",
+            "baseline": {
+              "samples": 3,
+              "p50_ms": 3281.933,
+              "p95_ms": 3583.27,
+              "peak_rss_mib": 746.859,
+              "first_ms": 3281.933,
+              "max_ms": 3583.27
+            },
+            "candidate": {
+              "samples": 3,
+              "p50_ms": 3270.731,
+              "p95_ms": 3271.663,
+              "peak_rss_mib": 750.594,
+              "first_ms": 3271.663,
+              "max_ms": 3271.663
+            },
+            "p50_ms_delta": -11.20199999999977,
+            "p50_ms_percent": -0.3413232384695153,
+            "p95_ms_delta": -311.60699999999997,
+            "p95_ms_percent": -8.69616300195073,
+            "first_ms_delta": -10.269999999999982,
+            "first_ms_percent": -0.31292534003588557,
+            "max_ms_delta": -311.60699999999997,
+            "max_ms_percent": -8.69616300195073,
+            "peak_rss_mib_baseline": 746.859,
+            "peak_rss_mib_candidate": 750.594,
+            "peak_rss_mib_delta": 3.7350000000000136,
+            "peak_rss_percent": 0.5000943953276327
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI committed repair",
+            "baseline": {
+              "samples": 3,
+              "p50_ms": 6414.896,
+              "p95_ms": 8519.273,
+              "peak_rss_mib": 823.609,
+              "first_ms": 8519.273,
+              "max_ms": 8519.273
+            },
+            "candidate": {
+              "samples": 3,
+              "p50_ms": 6381.688,
+              "p95_ms": 7716.551,
+              "peak_rss_mib": 842.891,
+              "first_ms": 7716.551,
+              "max_ms": 7716.551
+            },
+            "p50_ms_delta": -33.20799999999963,
+            "p50_ms_percent": -0.5176701227892044,
+            "p95_ms_delta": -802.7219999999988,
+            "p95_ms_percent": -9.4224237208973,
+            "first_ms_delta": -802.7219999999988,
+            "first_ms_percent": -9.4224237208973,
+            "max_ms_delta": -802.7219999999988,
+            "max_ms_percent": -9.4224237208973,
+            "peak_rss_mib_baseline": 823.609,
+            "peak_rss_mib_candidate": 842.891,
+            "peak_rss_mib_delta": 19.281999999999925,
+            "peak_rss_percent": 2.341159457946662
+          },
+          {
+            "notes": 50000,
+            "operation": "Warm MCP search",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 1078.02,
+              "p95_ms": 1096.502,
+              "first_ms": 2218.126,
+              "max_ms": 1207.524,
+              "first_duration_ms": 2218.126458,
+              "all_requests_max_ms": 2218.126,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 1083.364,
+              "p95_ms": 1300.456,
+              "first_ms": 2204.5,
+              "max_ms": 1306.48,
+              "first_duration_ms": 2204.500291,
+              "all_requests_max_ms": 2204.5,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "p50_ms_delta": 5.344000000000051,
+            "p50_ms_percent": 0.4957236414908861,
+            "p95_ms_delta": 203.95399999999995,
+            "p95_ms_percent": 18.600422069453582,
+            "first_ms_delta": -13.626000000000204,
+            "first_ms_percent": -0.6143023435097983,
+            "max_ms_delta": 98.95600000000013,
+            "max_ms_percent": 8.194950990622152,
+            "peak_rss_mib_baseline": 581.75,
+            "peak_rss_mib_candidate": 545.375,
+            "peak_rss_mib_delta": -36.375,
+            "peak_rss_percent": -6.252685861624407
+          },
+          {
+            "notes": 50000,
+            "operation": "Warm MCP read",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 1078.06,
+              "p95_ms": 1085.422,
+              "first_ms": 1222.427,
+              "max_ms": 1126.532,
+              "first_duration_ms": 1222.427417,
+              "all_requests_max_ms": 1222.427,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 1081.7,
+              "p95_ms": 1138.457,
+              "first_ms": 1073.918,
+              "max_ms": 1296.624,
+              "first_duration_ms": 1073.91825,
+              "all_requests_max_ms": 1296.624,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "p50_ms_delta": 3.6400000000001,
+            "p50_ms_percent": 0.3376435448861903,
+            "p95_ms_delta": 53.03500000000008,
+            "p95_ms_percent": 4.886118025984376,
+            "first_ms_delta": -148.50900000000001,
+            "first_ms_percent": -12.14870090402127,
+            "max_ms_delta": 170.0920000000001,
+            "max_ms_percent": 15.098727776929554,
+            "peak_rss_mib_baseline": 581.75,
+            "peak_rss_mib_candidate": 545.375,
+            "peak_rss_mib_delta": -36.375,
+            "peak_rss_percent": -6.252685861624407
+          },
+          {
+            "notes": 50000,
+            "operation": "Warm MCP validate",
+            "baseline": {
+              "samples": 20,
+              "p50_ms": 1080.432,
+              "p95_ms": 1133.237,
+              "first_ms": 1074.999,
+              "max_ms": 1295.258,
+              "first_duration_ms": 1074.998709,
+              "all_requests_max_ms": 1295.258,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "candidate": {
+              "samples": 20,
+              "p50_ms": 1083.153,
+              "p95_ms": 1287.198,
+              "first_ms": 1075.109,
+              "max_ms": 1295.508,
+              "first_duration_ms": 1075.109459,
+              "all_requests_max_ms": 1295.508,
+              "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+            },
+            "p50_ms_delta": 2.7210000000000036,
+            "p50_ms_percent": 0.2518437069616519,
+            "p95_ms_delta": 153.961,
+            "p95_ms_percent": 13.585948923305535,
+            "first_ms_delta": 0.10999999999989996,
+            "first_ms_percent": 0.010232567658197134,
+            "max_ms_delta": 0.25,
+            "max_ms_percent": 0.019301173974595187,
+            "peak_rss_mib_baseline": 581.75,
+            "peak_rss_mib_candidate": 545.375,
+            "peak_rss_mib_delta": -36.375,
+            "peak_rss_percent": -6.252685861624407
+          }
+        ],
+        "rebuild_drift": [
+          {
+            "notes": 10000,
+            "operation": "CLI index rebuild",
+            "baseline": {
+              "samples": 5,
+              "p50_ms": 176.296,
+              "p95_ms": 179.104,
+              "peak_rss_mib": 100.109,
+              "first_ms": 179.104,
+              "max_ms": 179.104
+            },
+            "candidate": {
+              "samples": 5,
+              "p50_ms": 175.525,
+              "p95_ms": 176.853,
+              "peak_rss_mib": 97.438,
+              "first_ms": 176.853,
+              "max_ms": 176.853
+            },
+            "p50_ms_delta": -0.7709999999999866,
+            "p50_ms_percent": -0.43733266778598345,
+            "p95_ms_delta": -2.2510000000000048,
+            "p95_ms_percent": -1.2568116848311606,
+            "first_ms_delta": -2.2510000000000048,
+            "first_ms_percent": -1.2568116848311606,
+            "max_ms_delta": -2.2510000000000048,
+            "max_ms_percent": -1.2568116848311606,
+            "peak_rss_mib_baseline": 100.109,
+            "peak_rss_mib_candidate": 97.438,
+            "peak_rss_mib_delta": -2.6709999999999923,
+            "peak_rss_percent": -2.668091779959836
+          },
+          {
+            "notes": 50000,
+            "operation": "CLI index rebuild",
+            "baseline": {
+              "samples": 5,
+              "p50_ms": 1493.368,
+              "p95_ms": 1656.361,
+              "peak_rss_mib": 425.375,
+              "first_ms": 1426.188,
+              "max_ms": 1656.361
+            },
+            "candidate": {
+              "samples": 5,
+              "p50_ms": 1421.884,
+              "p95_ms": 1426.169,
+              "peak_rss_mib": 393.922,
+              "first_ms": 1426.169,
+              "max_ms": 1426.169
+            },
+            "p50_ms_delta": -71.48399999999992,
+            "p50_ms_percent": -4.786763878695666,
+            "p95_ms_delta": -230.192,
+            "p95_ms_percent": -13.897453514058833,
+            "first_ms_delta": -0.019000000000005457,
+            "first_ms_percent": -0.0013322226803169634,
+            "max_ms_delta": -230.192,
+            "max_ms_percent": -13.897453514058833,
+            "peak_rss_mib_baseline": 425.375,
+            "peak_rss_mib_candidate": 393.922,
+            "peak_rss_mib_delta": -31.452999999999975,
+            "peak_rss_percent": -7.3941816044666435
+          }
+        ],
+        "core": {
+          "samples": 20,
+          "warm_p95_ms": 115.6,
+          "peak_rss_mib": 131.7,
+          "cold_ms": 333.7,
+          "max_ms": null,
+          "recording_limit": "Unchanged core benchmark emits 20-sample warm p95, cold time and process RSS only, not raw warm samples/max/per-query RSS. Core RSS includes fixture/calibration.",
+          "rebuild_scope": "Fresh CLI rebuild includes startup plus core work; the 10k 10-second target is checked. Both 50k rebuild pairs are reported without an invented 50k ceiling."
+        },
+        "core_checks": [
+          {
+            "metric": "warm_p95_ms",
+            "observed": 115.6,
+            "ceiling": 150,
+            "pass": true
+          },
+          {
+            "metric": "peak_rss_mib",
+            "observed": 131.7,
+            "ceiling": 150,
+            "pass": true
+          },
+          {
+            "metric": "cli_rebuild_10k_p95_ms",
+            "observed": 176.853,
+            "ceiling": 10000,
+            "pass": true
+          }
+        ],
+        "retained_artifact_sha256": {
+          "final-quiet-baseline.json": "97b19ec90789bae27caf0feebe14655c34bf2ea640457aa63711027cbb94d07b",
+          "final-quiet-baseline.log": "eeb0997c076baae66e80ca253e64ef36efcf4cda6082c1084832429c2af4d282",
+          "final-quiet-baseline.raw.json": "98a4ac528b77221aa93af80ebc03fb7204f9d94c0a9343aee1eddc58f7f9acfe",
+          "final-quiet-baseline-rebuild.json": "735dab75c8c3119e73dcaf01530e896481d71d47a31d8fbbc39bf7771efcef3a",
+          "final-quiet-baseline-rebuild.log": "88124a2f48c9e84a3f11c750bf9b32ee6f9793722859bc03b661ea17f3a9a34c",
+          "final-quiet-baseline-rebuild.raw.json": "7c363a598796a9b46a0a69d3e46a531370231ff0b8b579d70ddd1f9c9dc7a051",
+          "final-quiet-candidate.json": "bb6fbb9eda5a7cadad4c0244918190f593feaeacae190953c06bbc46c73c5ce3",
+          "final-quiet-candidate.log": "4c66a68fc49c373988123881415193358d48c33ec0e18038a5f101662901b6f6",
+          "final-quiet-candidate.raw.json": "ed6138e00c9c8614eb4a4753b88ed45c366925637a765a1515796dc4232cbbba",
+          "final-quiet-candidate-rebuild.json": "90d391f4e54f1cea0547f545a318150bb0e4c2ea848796b61ba03895132ac555",
+          "final-quiet-candidate-rebuild.log": "2889f11286bcf0e6e38c5bbed6d67e33ebbd1cf44c80f0ac3ceb22942c0e803e",
+          "final-quiet-candidate-rebuild.raw.json": "218d0cb72eb1fc6366c2c29d461794a01f793a6e43bcc03bbdb0a9bb6c665829",
+          "final-quiet-core.log": "45e7512ff97c062be041d9363ab8f68667249893190eb509d06245dec604645c",
+          "final-quiet-core-bench": "9bc378fc81d05aade8f215f3bea5b4817e09b27d152c1d2a4e6852e75d8db994",
+          "final-quiet-run.json": "d1efcde54793fc757cab6f4ba8ae8d6ffb40882002cd62e343876a4b12911ca5"
+        },
+        "all_coordinated_workers_idle": true,
+        "finished_soak_report_sha256": {
+          "endurance-fixed": "4bc8e53a3c6339ea341e0ef668ce4e5ee2abb37332a1ad81c7a1650deb3e098a",
+          "default-log-fixed": "2ab6abb3048536f78b331b9696fc7004e95ea01c8d45b5a87bfaa1af1b68f347"
+        }
+      },
+      "baseline": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+          "version": "v0.3.1"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": false,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 20,
+                "p50_ms": 324.0,
+                "p95_ms": 487.272,
+                "peak_rss_mib": 114.688,
+                "first_ms": 328.987,
+                "max_ms": 487.702
+              },
+              "read": {
+                "samples": 20,
+                "p50_ms": 172.38,
+                "p95_ms": 176.604,
+                "peak_rss_mib": 100.422,
+                "first_ms": 170.031,
+                "max_ms": 177.715
+              },
+              "validate": {
+                "samples": 20,
+                "p50_ms": 171.543,
+                "p95_ms": 174.578,
+                "peak_rss_mib": 100.781,
+                "first_ms": 171.257,
+                "max_ms": 174.92
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 505.298,
+                "p95_ms": 510.403,
+                "peak_rss_mib": 175.984,
+                "first_ms": 510.403,
+                "max_ms": 510.403
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 883.033,
+                "p95_ms": 1176.518,
+                "peak_rss_mib": 206.719,
+                "first_ms": 1176.518,
+                "max_ms": 1176.518
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 20,
+                "p50_ms": 97.94,
+                "p95_ms": 103.328,
+                "first_ms": 318.15,
+                "max_ms": 104.73,
+                "first_duration_ms": 318.150041,
+                "all_requests_max_ms": 318.15,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "read": {
+                "samples": 20,
+                "p50_ms": 97.476,
+                "p95_ms": 98.479,
+                "first_ms": 98.775,
+                "max_ms": 98.725,
+                "first_duration_ms": 98.774625,
+                "all_requests_max_ms": 98.775,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "validate": {
+                "samples": 20,
+                "p50_ms": 97.47,
+                "p95_ms": 98.702,
+                "first_ms": 96.805,
+                "max_ms": 100.328,
+                "first_duration_ms": 96.805333,
+                "all_requests_max_ms": 100.328,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "process_peak_rss_mib": 133.25,
+              "process_peak_rss_mib_raw": 133.25
+            }
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 20,
+                "p50_ms": 2272.125,
+                "p95_ms": 2451.554,
+                "peak_rss_mib": 517.219,
+                "first_ms": 2271.268,
+                "max_ms": 2510.878
+              },
+              "read": {
+                "samples": 20,
+                "p50_ms": 1452.223,
+                "p95_ms": 1686.597,
+                "peak_rss_mib": 435.391,
+                "first_ms": 1447.289,
+                "max_ms": 1706.918
+              },
+              "validate": {
+                "samples": 20,
+                "p50_ms": 1437.494,
+                "p95_ms": 1681.938,
+                "peak_rss_mib": 429.953,
+                "first_ms": 1427.333,
+                "max_ms": 1721.332
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 3281.933,
+                "p95_ms": 3583.27,
+                "peak_rss_mib": 746.859,
+                "first_ms": 3281.933,
+                "max_ms": 3583.27
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 6414.896,
+                "p95_ms": 8519.273,
+                "peak_rss_mib": 823.609,
+                "first_ms": 8519.273,
+                "max_ms": 8519.273
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 20,
+                "p50_ms": 1078.02,
+                "p95_ms": 1096.502,
+                "first_ms": 2218.126,
+                "max_ms": 1207.524,
+                "first_duration_ms": 2218.126458,
+                "all_requests_max_ms": 2218.126,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "read": {
+                "samples": 20,
+                "p50_ms": 1078.06,
+                "p95_ms": 1085.422,
+                "first_ms": 1222.427,
+                "max_ms": 1126.532,
+                "first_duration_ms": 1222.427417,
+                "all_requests_max_ms": 1222.427,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "validate": {
+                "samples": 20,
+                "p50_ms": 1080.432,
+                "p95_ms": 1133.237,
+                "first_ms": 1074.999,
+                "max_ms": 1295.258,
+                "first_duration_ms": 1074.998709,
+                "all_requests_max_ms": 1295.258,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "process_peak_rss_mib": 581.75,
+              "process_peak_rss_mib_raw": 581.75
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+          "version": "v1.0.0-candidate"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": false,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 20,
+                "p50_ms": 332.495,
+                "p95_ms": 384.47,
+                "peak_rss_mib": 115.828,
+                "first_ms": 384.47,
+                "max_ms": 467.93
+              },
+              "read": {
+                "samples": 20,
+                "p50_ms": 176.103,
+                "p95_ms": 198.702,
+                "peak_rss_mib": 98.594,
+                "first_ms": 173.798,
+                "max_ms": 317.776
+              },
+              "validate": {
+                "samples": 20,
+                "p50_ms": 175.018,
+                "p95_ms": 176.478,
+                "peak_rss_mib": 99.484,
+                "first_ms": 173.613,
+                "max_ms": 178.255
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 517.356,
+                "p95_ms": 521.136,
+                "peak_rss_mib": 178.312,
+                "first_ms": 521.136,
+                "max_ms": 521.136
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 897.509,
+                "p95_ms": 1205.993,
+                "peak_rss_mib": 179.781,
+                "first_ms": 1205.993,
+                "max_ms": 1205.993
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 20,
+                "p50_ms": 100.742,
+                "p95_ms": 101.686,
+                "first_ms": 326.356,
+                "max_ms": 101.799,
+                "first_duration_ms": 326.356333,
+                "all_requests_max_ms": 326.356,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "read": {
+                "samples": 20,
+                "p50_ms": 100.111,
+                "p95_ms": 101.452,
+                "first_ms": 102.048,
+                "max_ms": 105.533,
+                "first_duration_ms": 102.048459,
+                "all_requests_max_ms": 105.533,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "validate": {
+                "samples": 20,
+                "p50_ms": 99.931,
+                "p95_ms": 100.946,
+                "first_ms": 99.937,
+                "max_ms": 101.35,
+                "first_duration_ms": 99.937042,
+                "all_requests_max_ms": 101.35,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "process_peak_rss_mib": 135.156,
+              "process_peak_rss_mib_raw": 135.15625
+            }
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "search": {
+                "samples": 20,
+                "p50_ms": 2228.118,
+                "p95_ms": 2480.866,
+                "peak_rss_mib": 491.328,
+                "first_ms": 2209.657,
+                "max_ms": 2481.528
+              },
+              "read": {
+                "samples": 20,
+                "p50_ms": 1432.276,
+                "p95_ms": 1660.201,
+                "peak_rss_mib": 400.844,
+                "first_ms": 1429.308,
+                "max_ms": 1697.184
+              },
+              "validate": {
+                "samples": 20,
+                "p50_ms": 1458.888,
+                "p95_ms": 1703.019,
+                "peak_rss_mib": 400.344,
+                "first_ms": 1470.862,
+                "max_ms": 1720.394
+              },
+              "repair_preview": {
+                "samples": 3,
+                "p50_ms": 3270.731,
+                "p95_ms": 3271.663,
+                "peak_rss_mib": 750.594,
+                "first_ms": 3271.663,
+                "max_ms": 3271.663
+              },
+              "repair_apply": {
+                "samples": 3,
+                "p50_ms": 6381.688,
+                "p95_ms": 7716.551,
+                "peak_rss_mib": 842.891,
+                "first_ms": 7716.551,
+                "max_ms": 7716.551
+              }
+            },
+            "mcp": {
+              "search": {
+                "samples": 20,
+                "p50_ms": 1083.364,
+                "p95_ms": 1300.456,
+                "first_ms": 2204.5,
+                "max_ms": 1306.48,
+                "first_duration_ms": 2204.500291,
+                "all_requests_max_ms": 2204.5,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "read": {
+                "samples": 20,
+                "p50_ms": 1081.7,
+                "p95_ms": 1138.457,
+                "first_ms": 1073.918,
+                "max_ms": 1296.624,
+                "first_duration_ms": 1073.91825,
+                "all_requests_max_ms": 1296.624,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "validate": {
+                "samples": 20,
+                "p50_ms": 1083.153,
+                "p95_ms": 1287.198,
+                "first_ms": 1075.109,
+                "max_ms": 1295.508,
+                "first_duration_ms": 1075.109459,
+                "all_requests_max_ms": 1295.508,
+                "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+              },
+              "process_peak_rss_mib": 545.375,
+              "process_peak_rss_mib_raw": 545.375
+            }
+          }
+        ]
+      },
+      "baseline_rebuild": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+          "version": "v0.3.1"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": true,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 176.296,
+                "p95_ms": 179.104,
+                "peak_rss_mib": 100.109,
+                "first_ms": 179.104,
+                "max_ms": 179.104
+              }
+            },
+            "mcp": {}
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 1493.368,
+                "p95_ms": 1656.361,
+                "peak_rss_mib": 425.375,
+                "first_ms": 1426.188,
+                "max_ms": 1656.361
+              }
+            },
+            "mcp": {}
+          }
+        ]
+      },
+      "candidate_rebuild": {
+        "environment": {
+          "system": "Darwin",
+          "machine": "arm64",
+          "cpus": 10,
+          "python": "3.14.4"
+        },
+        "binary_version": {
+          "commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+          "version": "v1.0.0-candidate"
+        },
+        "method": "Fresh CLI process per sample; one reused stdio MCP process per corpus; OS page cache not evicted; RSS excludes fixture creation; repair preview includes validation/navigation planning; committed repair includes fsync, journal and receipt publication, with first navigation creation reported separately.",
+        "rebuild_only": true,
+        "corpora": [
+          {
+            "notes": 10000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 175.525,
+                "p95_ms": 176.853,
+                "peak_rss_mib": 97.438,
+                "first_ms": 176.853,
+                "max_ms": 176.853
+              }
+            },
+            "mcp": {}
+          },
+          {
+            "notes": 50000,
+            "note_bytes": 2048,
+            "cli": {
+              "index_rebuild": {
+                "samples": 5,
+                "p50_ms": 1421.884,
+                "p95_ms": 1426.169,
+                "peak_rss_mib": 393.922,
+                "first_ms": 1426.169,
+                "max_ms": 1426.169
+              }
+            },
+            "mcp": {}
+          }
+        ]
+      },
+      "frozen_source_artifacts": [
+        {
+          "basename": "final-quiet-driver.log",
+          "sha256": "sha256:addfeffbf72c6884fcfbb7fd6259a82d56d45bcc9285e8aa6de11b27cdc845ce",
+          "bytes": 633,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-budget-results.json",
+          "sha256": "sha256:bef996b27668e4a727d6154bf7060c53adb55e66c47f8b924df1776c204fb52a",
+          "bytes": 55141,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-core.log",
+          "sha256": "sha256:45e7512ff97c062be041d9363ab8f68667249893190eb509d06245dec604645c",
+          "bytes": 471,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-core-bench",
+          "sha256": "sha256:9bc378fc81d05aade8f215f3bea5b4817e09b27d152c1d2a4e6852e75d8db994",
+          "bytes": 8406354,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-candidate-rebuild.raw.json",
+          "sha256": "sha256:218d0cb72eb1fc6366c2c29d461794a01f793a6e43bcc03bbdb0a9bb6c665829",
+          "bytes": 4198,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-candidate-rebuild.log",
+          "sha256": "sha256:2889f11286bcf0e6e38c5bbed6d67e33ebbd1cf44c80f0ac3ceb22942c0e803e",
+          "bytes": 720,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-candidate-rebuild.json",
+          "sha256": "sha256:90d391f4e54f1cea0547f545a318150bb0e4c2ea848796b61ba03895132ac555",
+          "bytes": 1884,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-baseline-rebuild.raw.json",
+          "sha256": "sha256:7c363a598796a9b46a0a69d3e46a531370231ff0b8b579d70ddd1f9c9dc7a051",
+          "bytes": 4193,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-baseline-rebuild.log",
+          "sha256": "sha256:88124a2f48c9e84a3f11c750bf9b32ee6f9793722859bc03b661ea17f3a9a34c",
+          "bytes": 720,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-baseline-rebuild.json",
+          "sha256": "sha256:735dab75c8c3119e73dcaf01530e896481d71d47a31d8fbbc39bf7771efcef3a",
+          "bytes": 1874,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-candidate.raw.json",
+          "sha256": "sha256:ed6138e00c9c8614eb4a4753b88ed45c366925637a765a1515796dc4232cbbba",
+          "bytes": 64308,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-candidate.log",
+          "sha256": "sha256:4c66a68fc49c373988123881415193358d48c33ec0e18038a5f101662901b6f6",
+          "bytes": 10002,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-candidate.json",
+          "sha256": "sha256:bb6fbb9eda5a7cadad4c0244918190f593feaeacae190953c06bbc46c73c5ce3",
+          "bytes": 18983,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-baseline.raw.json",
+          "sha256": "sha256:98a4ac528b77221aa93af80ebc03fb7204f9d94c0a9343aee1eddc58f7f9acfe",
+          "bytes": 64307,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-baseline.log",
+          "sha256": "sha256:eeb0997c076baae66e80ca253e64ef36efcf4cda6082c1084832429c2af4d282",
+          "bytes": 9969,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-baseline.json",
+          "sha256": "sha256:97b19ec90789bae27caf0feebe14655c34bf2ea640457aa63711027cbb94d07b",
+          "bytes": 18940,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-run.json",
+          "sha256": "sha256:d1efcde54793fc757cab6f4ba8ae8d6ffb40882002cd62e343876a4b12911ca5",
+          "bytes": 2515,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-plan.json",
+          "sha256": "sha256:51b6850a514cf8997fbf520ed9ba1bc933cd345eb84972f8108f83a834f6ac52",
+          "bytes": 14914,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-instrumentation-selfcheck-v2.json",
+          "sha256": "sha256:d4b6b883a878a866f15b8b1d2cf5b03e1ce6acdaf6de302aa69b192b96136c6b",
+          "bytes": 2212,
+          "raw_publication": false
+        },
+        {
+          "basename": "final-quiet-instrumentation-selfcheck.json",
+          "sha256": "sha256:d4a14110f5eb590e666b11cb646d689b720bbf3b0032fcb0baeb4ffa0e0af616",
+          "bytes": 1663,
+          "raw_publication": false
+        },
+        {
+          "basename": "measure-final-quiet.py",
+          "sha256": "sha256:7a128ed4eff04b01114d32dfb2322eab0c17098b3503c7de07f42c191c61d7cb",
+          "bytes": 24701,
+          "raw_publication": false
+        },
+        {
+          "basename": "selfcheck-final-quiet.py",
+          "sha256": "sha256:ede2687ea02697e8385940a64963e3d6e2fa9aaf3f261e0455676e0018a80c2f",
+          "bytes": 13398,
+          "raw_publication": false
+        }
+      ],
+      "initial_run_manifest_note": "The preserved start manifest says running-not-qualified; the separate completed verdict is failed-local-D03. Neither original was edited."
+    }
+  ],
+  "source_b71_CGO1_failed_matrix": {
+    "status": "failed-local-D03",
+    "pass": false,
+    "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+    "current_head": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+    "candidate_version": "v1.0.0-candidate.2",
+    "started_utc": "2026-10-26T02:49:26Z",
+    "finished_utc": "2026-10-26T02:57:50Z",
+    "sample_counts": {
+      "read": 20,
+      "repair": 3,
+      "rebuild": 5,
+      "core": 20
+    },
+    "environment": {
+      "system": "Darwin",
+      "release": "25.6.0",
+      "macos": "26.6.2",
+      "machine": "arm64",
+      "cpus": 10,
+      "python": "3.14.4"
+    },
+    "GOMAXPROCS": 8,
+    "load_average_start": [
+      1.98681640625,
+      2.07568359375,
+      2.26611328125
+    ],
+    "load_average_end": [
+      5.79931640625,
+      5.54345703125,
+      4.080078125
+    ],
+    "plan_sha256": "2792b27974cd6ceb809cd32e8bef09c9df8d7c1850c09fbb8c2bea2c08f89a9a",
+    "warnings": [
+      "Experiment plan, not passing performance evidence; all three earlier 7ceed fixed-source rounds remain failures.",
+      "No portable SLA or statistical-significance claim. OS background applications are not controlled; OS caches are not evicted.",
+      "Baseline precedes candidate once. No automatic repeat, sample exclusion, fallback, selected-best report or ceiling change.",
+      "Twenty read samples use original nearest-rank p95 (19th ordered value); three repair samples still use the observed maximum.",
+      "MCP raw durations include its separate first request plus 20 warm samples. max_ms is warm-sample maximum; all_requests_max_ms also includes first.",
+      "MCP RSS remains one session-wide peak; per-request RSS is not measured and sample_peak_rss_mib is null, never replicated into invented samples.",
+      "Unchanged core benchmark emits 20-sample warm p95, cold time and process RSS only, not raw warm samples/max/per-query RSS. Core RSS includes fixture/calibration.",
+      "Fresh CLI rebuild includes startup plus core work; the 10k 10-second target is checked. Both 50k rebuild pairs are reported without an invented 50k ceiling.",
+      "A D03 pass is not stable-v1 readiness, D02 success, installed qualification or human approval."
+    ],
+    "checks": [
+      {
+        "notes": 10000,
+        "operation": "CLI search",
+        "transport": "cli",
+        "action": "search",
+        "p95_ms": 292.876,
+        "ceiling_ms": 380,
+        "peak_rss_mib": 115.875,
+        "rss_ceiling_mib": 130,
+        "pass": true
+      },
+      {
+        "notes": 10000,
+        "operation": "CLI read",
+        "transport": "cli",
+        "action": "read",
+        "p95_ms": 176.789,
+        "ceiling_ms": 200,
+        "peak_rss_mib": 99.531,
+        "rss_ceiling_mib": 110,
+        "pass": true
+      },
+      {
+        "notes": 10000,
+        "operation": "CLI validate",
+        "transport": "cli",
+        "action": "validate",
+        "p95_ms": 234.312,
+        "ceiling_ms": 190,
+        "peak_rss_mib": 98.516,
+        "rss_ceiling_mib": 120,
+        "pass": false
+      },
+      {
+        "notes": 10000,
+        "operation": "CLI repair preview",
+        "transport": "cli",
+        "action": "repair_preview",
+        "p95_ms": 514.561,
+        "ceiling_ms": 730,
+        "peak_rss_mib": 179.047,
+        "rss_ceiling_mib": 200,
+        "pass": true
+      },
+      {
+        "notes": 10000,
+        "operation": "CLI committed repair",
+        "transport": "cli",
+        "action": "repair_apply",
+        "p95_ms": 1201.764,
+        "ceiling_ms": 1460,
+        "peak_rss_mib": 192.406,
+        "rss_ceiling_mib": 230,
+        "pass": true
+      },
+      {
+        "notes": 10000,
+        "operation": "Warm MCP search",
+        "transport": "mcp",
+        "action": "search",
+        "p95_ms": 100.613,
+        "ceiling_ms": 300,
+        "peak_rss_mib": 132.75,
+        "rss_ceiling_mib": 150,
+        "pass": true
+      },
+      {
+        "notes": 10000,
+        "operation": "Warm MCP read",
+        "transport": "mcp",
+        "action": "read",
+        "p95_ms": 100.415,
+        "ceiling_ms": 110,
+        "peak_rss_mib": 132.75,
+        "rss_ceiling_mib": 150,
+        "pass": true
+      },
+      {
+        "notes": 10000,
+        "operation": "Warm MCP validate",
+        "transport": "mcp",
+        "action": "validate",
+        "p95_ms": 100.48,
+        "ceiling_ms": 110,
+        "peak_rss_mib": 132.75,
+        "rss_ceiling_mib": 150,
+        "pass": true
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI search",
+        "transport": "cli",
+        "action": "search",
+        "p95_ms": 2145.302,
+        "ceiling_ms": 2870,
+        "peak_rss_mib": 491.391,
+        "rss_ceiling_mib": 550,
+        "pass": true
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI read",
+        "transport": "cli",
+        "action": "read",
+        "p95_ms": 1703.405,
+        "ceiling_ms": 2070,
+        "peak_rss_mib": 405.016,
+        "rss_ceiling_mib": 470,
+        "pass": true
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI validate",
+        "transport": "cli",
+        "action": "validate",
+        "p95_ms": 1629.526,
+        "ceiling_ms": 1910,
+        "peak_rss_mib": 397.906,
+        "rss_ceiling_mib": 470,
+        "pass": true
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI repair preview",
+        "transport": "cli",
+        "action": "repair_preview",
+        "p95_ms": 3412.714,
+        "ceiling_ms": 3770,
+        "peak_rss_mib": 756.781,
+        "rss_ceiling_mib": 830,
+        "pass": true
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI committed repair",
+        "transport": "cli",
+        "action": "repair_apply",
+        "p95_ms": 8027.445,
+        "ceiling_ms": 8940,
+        "peak_rss_mib": 840.359,
+        "rss_ceiling_mib": 1050,
+        "pass": true
+      },
+      {
+        "notes": 50000,
+        "operation": "Warm MCP search",
+        "transport": "mcp",
+        "action": "search",
+        "p95_ms": 1180.672,
+        "ceiling_ms": 1530,
+        "peak_rss_mib": 554.094,
+        "rss_ceiling_mib": 640,
+        "pass": true
+      },
+      {
+        "notes": 50000,
+        "operation": "Warm MCP read",
+        "transport": "mcp",
+        "action": "read",
+        "p95_ms": 1237.632,
+        "ceiling_ms": 1540,
+        "peak_rss_mib": 554.094,
+        "rss_ceiling_mib": 640,
+        "pass": true
+      },
+      {
+        "notes": 50000,
+        "operation": "Warm MCP validate",
+        "transport": "mcp",
+        "action": "validate",
+        "p95_ms": 1085.958,
+        "ceiling_ms": 1690,
+        "peak_rss_mib": 554.094,
+        "rss_ceiling_mib": 640,
+        "pass": true
+      }
+    ],
+    "drift": [
+      {
+        "notes": 10000,
+        "operation": "CLI search",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 320.333,
+          "p95_ms": 334.37,
+          "peak_rss_mib": 114.312,
+          "first_ms": 334.37,
+          "max_ms": 488.922
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 283.143,
+          "p95_ms": 292.876,
+          "peak_rss_mib": 115.875,
+          "first_ms": 286.681,
+          "max_ms": 347.606
+        },
+        "p50_ms_delta": -37.190000000000055,
+        "p50_ms_percent": -11.609793558578119,
+        "p95_ms_delta": -41.49400000000003,
+        "p95_ms_percent": -12.409606124951411,
+        "first_ms_delta": -47.68900000000002,
+        "first_ms_percent": -14.26234410981847,
+        "max_ms_delta": -141.31600000000003,
+        "max_ms_percent": -28.903587893365412,
+        "peak_rss_mib_baseline": 114.312,
+        "peak_rss_mib_candidate": 115.875,
+        "peak_rss_mib_delta": 1.5630000000000024,
+        "peak_rss_percent": 1.3673105185807222
+      },
+      {
+        "notes": 10000,
+        "operation": "CLI read",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 173.123,
+          "p95_ms": 176.197,
+          "peak_rss_mib": 100.797,
+          "first_ms": 171.013,
+          "max_ms": 178.541
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 174.865,
+          "p95_ms": 176.789,
+          "peak_rss_mib": 99.531,
+          "first_ms": 174.327,
+          "max_ms": 178.17
+        },
+        "p50_ms_delta": 1.7420000000000186,
+        "p50_ms_percent": 1.0062210104954339,
+        "p95_ms_delta": 0.5919999999999845,
+        "p95_ms_percent": 0.33598755937955804,
+        "first_ms_delta": 3.313999999999993,
+        "first_ms_percent": 1.937864372883924,
+        "max_ms_delta": -0.3710000000000093,
+        "max_ms_percent": -0.20779540833758547,
+        "peak_rss_mib_baseline": 100.797,
+        "peak_rss_mib_candidate": 99.531,
+        "peak_rss_mib_delta": -1.2659999999999911,
+        "peak_rss_percent": -1.2559897616000404
+      },
+      {
+        "notes": 10000,
+        "operation": "CLI validate",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 171.993,
+          "p95_ms": 174.492,
+          "peak_rss_mib": 100.172,
+          "first_ms": 173.743,
+          "max_ms": 174.777
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 175.398,
+          "p95_ms": 234.312,
+          "peak_rss_mib": 98.516,
+          "first_ms": 172.601,
+          "max_ms": 289.392
+        },
+        "p50_ms_delta": 3.405000000000001,
+        "p50_ms_percent": 1.9797317332682196,
+        "p95_ms_delta": 59.82000000000002,
+        "p95_ms_percent": 34.28237397703049,
+        "first_ms_delta": -1.141999999999996,
+        "first_ms_percent": -0.6572926679060398,
+        "max_ms_delta": 114.61500000000001,
+        "max_ms_percent": 65.57785063252031,
+        "peak_rss_mib_baseline": 100.172,
+        "peak_rss_mib_candidate": 98.516,
+        "peak_rss_mib_delta": -1.6559999999999917,
+        "peak_rss_percent": -1.6531565706983886
+      },
+      {
+        "notes": 10000,
+        "operation": "CLI repair preview",
+        "baseline": {
+          "samples": 3,
+          "p50_ms": 510.222,
+          "p95_ms": 512.28,
+          "peak_rss_mib": 173.484,
+          "first_ms": 510.222,
+          "max_ms": 512.28
+        },
+        "candidate": {
+          "samples": 3,
+          "p50_ms": 513.798,
+          "p95_ms": 514.561,
+          "peak_rss_mib": 179.047,
+          "first_ms": 513.798,
+          "max_ms": 514.561
+        },
+        "p50_ms_delta": 3.576000000000022,
+        "p50_ms_percent": 0.7008713853969395,
+        "p95_ms_delta": 2.2810000000000628,
+        "p95_ms_percent": 0.4452643085812502,
+        "first_ms_delta": 3.576000000000022,
+        "first_ms_percent": 0.7008713853969395,
+        "max_ms_delta": 2.2810000000000628,
+        "max_ms_percent": 0.4452643085812502,
+        "peak_rss_mib_baseline": 173.484,
+        "peak_rss_mib_candidate": 179.047,
+        "peak_rss_mib_delta": 5.562999999999988,
+        "peak_rss_percent": 3.206635770445687
+      },
+      {
+        "notes": 10000,
+        "operation": "CLI committed repair",
+        "baseline": {
+          "samples": 3,
+          "p50_ms": 890.019,
+          "p95_ms": 1199.244,
+          "peak_rss_mib": 206.438,
+          "first_ms": 1199.244,
+          "max_ms": 1199.244
+        },
+        "candidate": {
+          "samples": 3,
+          "p50_ms": 896.15,
+          "p95_ms": 1201.764,
+          "peak_rss_mib": 192.406,
+          "first_ms": 1201.764,
+          "max_ms": 1201.764
+        },
+        "p50_ms_delta": 6.130999999999972,
+        "p50_ms_percent": 0.6888616984581208,
+        "p95_ms_delta": 2.519999999999982,
+        "p95_ms_percent": 0.21013238340155116,
+        "first_ms_delta": 2.519999999999982,
+        "first_ms_percent": 0.21013238340155116,
+        "max_ms_delta": 2.519999999999982,
+        "max_ms_percent": 0.21013238340155116,
+        "peak_rss_mib_baseline": 206.438,
+        "peak_rss_mib_candidate": 192.406,
+        "peak_rss_mib_delta": -14.031999999999982,
+        "peak_rss_percent": -6.79719819025566
+      },
+      {
+        "notes": 10000,
+        "operation": "Warm MCP search",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 99.897,
+          "p95_ms": 102.065,
+          "first_ms": 316.614,
+          "max_ms": 103.897,
+          "first_duration_ms": 316.614041,
+          "all_requests_max_ms": 316.614,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 99.925,
+          "p95_ms": 100.613,
+          "first_ms": 273.772,
+          "max_ms": 100.767,
+          "first_duration_ms": 273.771959,
+          "all_requests_max_ms": 273.772,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "p50_ms_delta": 0.027999999999991587,
+        "p50_ms_percent": 0.028028869735829964,
+        "p95_ms_delta": -1.4519999999999982,
+        "p95_ms_percent": -1.4226228383872996,
+        "first_ms_delta": -42.841999999999985,
+        "first_ms_percent": -13.531303100936787,
+        "max_ms_delta": -3.1300000000000097,
+        "max_ms_percent": -3.012599016333495,
+        "peak_rss_mib_baseline": 134.125,
+        "peak_rss_mib_candidate": 132.75,
+        "peak_rss_mib_delta": -1.375,
+        "peak_rss_percent": -1.0251630941286116
+      },
+      {
+        "notes": 10000,
+        "operation": "Warm MCP read",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 99.416,
+          "p95_ms": 100.387,
+          "first_ms": 98.965,
+          "max_ms": 100.761,
+          "first_duration_ms": 98.965167,
+          "all_requests_max_ms": 100.761,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 99.196,
+          "p95_ms": 100.415,
+          "first_ms": 99.85,
+          "max_ms": 100.538,
+          "first_duration_ms": 99.849792,
+          "all_requests_max_ms": 100.538,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "p50_ms_delta": -0.21999999999999886,
+        "p50_ms_percent": -0.2212923473082773,
+        "p95_ms_delta": 0.028000000000005798,
+        "p95_ms_percent": 0.02789205773656711,
+        "first_ms_delta": 0.8849999999999909,
+        "first_ms_percent": 0.8942555448895995,
+        "max_ms_delta": -0.22299999999999898,
+        "max_ms_percent": -0.22131578686197528,
+        "peak_rss_mib_baseline": 134.125,
+        "peak_rss_mib_candidate": 132.75,
+        "peak_rss_mib_delta": -1.375,
+        "peak_rss_percent": -1.0251630941286116
+      },
+      {
+        "notes": 10000,
+        "operation": "Warm MCP validate",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 99.061,
+          "p95_ms": 100.306,
+          "first_ms": 98.993,
+          "max_ms": 101.417,
+          "first_duration_ms": 98.9935,
+          "all_requests_max_ms": 101.417,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 99.266,
+          "p95_ms": 100.48,
+          "first_ms": 98.921,
+          "max_ms": 100.796,
+          "first_duration_ms": 98.921125,
+          "all_requests_max_ms": 100.796,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "p50_ms_delta": 0.2049999999999983,
+        "p50_ms_percent": 0.20694319661622718,
+        "p95_ms_delta": 0.1740000000000066,
+        "p95_ms_percent": 0.17346918429606006,
+        "first_ms_delta": -0.07199999999998852,
+        "first_ms_percent": -0.07273241542330444,
+        "max_ms_delta": -0.6209999999999951,
+        "max_ms_percent": -0.6123233777374559,
+        "peak_rss_mib_baseline": 134.125,
+        "peak_rss_mib_candidate": 132.75,
+        "peak_rss_mib_delta": -1.375,
+        "peak_rss_percent": -1.0251630941286116
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI search",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 2306.585,
+          "p95_ms": 2549.845,
+          "peak_rss_mib": 518.172,
+          "first_ms": 2295.139,
+          "max_ms": 2672.738
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 1959.358,
+          "p95_ms": 2145.302,
+          "peak_rss_mib": 491.391,
+          "first_ms": 1965.828,
+          "max_ms": 2221.511
+        },
+        "p50_ms_delta": -347.2270000000001,
+        "p50_ms_percent": -15.053726613153218,
+        "p95_ms_delta": -404.54299999999967,
+        "p95_ms_percent": -15.865395739741029,
+        "first_ms_delta": -329.31100000000015,
+        "first_ms_percent": -14.3481941616608,
+        "max_ms_delta": -451.22699999999986,
+        "max_ms_percent": -16.882575097147566,
+        "peak_rss_mib_baseline": 518.172,
+        "peak_rss_mib_candidate": 491.391,
+        "peak_rss_mib_delta": -26.781000000000006,
+        "peak_rss_percent": -5.16836108473634
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI read",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 1438.996,
+          "p95_ms": 1517.701,
+          "peak_rss_mib": 432.312,
+          "first_ms": 1434.132,
+          "max_ms": 1642.805
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 1436.27,
+          "p95_ms": 1703.405,
+          "peak_rss_mib": 405.016,
+          "first_ms": 1443.98,
+          "max_ms": 1743.098
+        },
+        "p50_ms_delta": -2.7260000000001128,
+        "p50_ms_percent": -0.18943763568488592,
+        "p95_ms_delta": 185.70399999999995,
+        "p95_ms_percent": 12.23587518226581,
+        "first_ms_delta": 9.847999999999956,
+        "first_ms_percent": 0.6866871389802354,
+        "max_ms_delta": 100.29299999999989,
+        "max_ms_percent": 6.10498507126529,
+        "peak_rss_mib_baseline": 432.312,
+        "peak_rss_mib_candidate": 405.016,
+        "peak_rss_mib_delta": -27.295999999999992,
+        "peak_rss_percent": -6.313958437424816
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI validate",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 1435.8,
+          "p95_ms": 1539.659,
+          "peak_rss_mib": 432.438,
+          "first_ms": 1433.957,
+          "max_ms": 1626.355
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 1451.722,
+          "p95_ms": 1629.526,
+          "peak_rss_mib": 397.906,
+          "first_ms": 1510.879,
+          "max_ms": 1647.218
+        },
+        "p50_ms_delta": 15.922000000000025,
+        "p50_ms_percent": 1.108928820169952,
+        "p95_ms_delta": 89.86699999999996,
+        "p95_ms_percent": 5.836811917444051,
+        "first_ms_delta": 76.9219999999998,
+        "first_ms_percent": 5.364317061111312,
+        "max_ms_delta": 20.863000000000056,
+        "max_ms_percent": 1.2828072591777318,
+        "peak_rss_mib_baseline": 432.438,
+        "peak_rss_mib_candidate": 397.906,
+        "peak_rss_mib_delta": -34.53199999999998,
+        "peak_rss_percent": -7.985422187689329
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI repair preview",
+        "baseline": {
+          "samples": 3,
+          "p50_ms": 3265.239,
+          "p95_ms": 3551.994,
+          "peak_rss_mib": 753.641,
+          "first_ms": 3241.481,
+          "max_ms": 3551.994
+        },
+        "candidate": {
+          "samples": 3,
+          "p50_ms": 3314.241,
+          "p95_ms": 3412.714,
+          "peak_rss_mib": 756.781,
+          "first_ms": 3412.714,
+          "max_ms": 3412.714
+        },
+        "p50_ms_delta": 49.00199999999995,
+        "p50_ms_percent": 1.500717099115878,
+        "p95_ms_delta": -139.2800000000002,
+        "p95_ms_percent": -3.9211777947823157,
+        "first_ms_delta": 171.23299999999972,
+        "first_ms_percent": 5.282554486668278,
+        "max_ms_delta": -139.2800000000002,
+        "max_ms_percent": -3.9211777947823157,
+        "peak_rss_mib_baseline": 753.641,
+        "peak_rss_mib_candidate": 756.781,
+        "peak_rss_mib_delta": 3.1399999999999864,
+        "peak_rss_percent": 0.41664399893317494
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI committed repair",
+        "baseline": {
+          "samples": 3,
+          "p50_ms": 6416.207,
+          "p95_ms": 8134.439,
+          "peak_rss_mib": 820.016,
+          "first_ms": 8134.439,
+          "max_ms": 8134.439
+        },
+        "candidate": {
+          "samples": 3,
+          "p50_ms": 6137.676,
+          "p95_ms": 8027.445,
+          "peak_rss_mib": 840.359,
+          "first_ms": 8027.445,
+          "max_ms": 8027.445
+        },
+        "p50_ms_delta": -278.53099999999995,
+        "p50_ms_percent": -4.3410538344539,
+        "p95_ms_delta": -106.9940000000006,
+        "p95_ms_percent": -1.3153211917871777,
+        "first_ms_delta": -106.9940000000006,
+        "first_ms_percent": -1.3153211917871777,
+        "max_ms_delta": -106.9940000000006,
+        "max_ms_percent": -1.3153211917871777,
+        "peak_rss_mib_baseline": 820.016,
+        "peak_rss_mib_candidate": 840.359,
+        "peak_rss_mib_delta": 20.343000000000075,
+        "peak_rss_percent": 2.4808052525804536
+      },
+      {
+        "notes": 50000,
+        "operation": "Warm MCP search",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 1081.141,
+          "p95_ms": 1210.356,
+          "first_ms": 2200.671,
+          "max_ms": 1307.456,
+          "first_duration_ms": 2200.671208,
+          "all_requests_max_ms": 2200.671,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 1083.772,
+          "p95_ms": 1180.672,
+          "first_ms": 1955.238,
+          "max_ms": 1257.454,
+          "first_duration_ms": 1955.238167,
+          "all_requests_max_ms": 1955.238,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "p50_ms_delta": 2.630999999999858,
+        "p50_ms_percent": 0.2433540121038691,
+        "p95_ms_delta": -29.68399999999997,
+        "p95_ms_percent": -2.452501578048105,
+        "first_ms_delta": -245.43299999999977,
+        "first_ms_percent": -11.152643898156512,
+        "max_ms_delta": -50.00199999999995,
+        "max_ms_percent": -3.824373439718043,
+        "peak_rss_mib_baseline": 570.562,
+        "peak_rss_mib_candidate": 554.094,
+        "peak_rss_mib_delta": -16.46799999999996,
+        "peak_rss_percent": -2.8862770391298365
+      },
+      {
+        "notes": 50000,
+        "operation": "Warm MCP read",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 1078.506,
+          "p95_ms": 1163.501,
+          "first_ms": 1077.717,
+          "max_ms": 1347.352,
+          "first_duration_ms": 1077.716958,
+          "all_requests_max_ms": 1347.352,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 1078.52,
+          "p95_ms": 1237.632,
+          "first_ms": 1190.291,
+          "max_ms": 1258.712,
+          "first_duration_ms": 1190.291458,
+          "all_requests_max_ms": 1258.712,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "p50_ms_delta": 0.013999999999896318,
+        "p50_ms_percent": 0.0012980919902094712,
+        "p95_ms_delta": 74.13100000000009,
+        "p95_ms_percent": 6.371373982489059,
+        "first_ms_delta": 112.57399999999984,
+        "first_ms_percent": 10.445599354932678,
+        "max_ms_delta": -88.6400000000001,
+        "max_ms_percent": -6.578830179492822,
+        "peak_rss_mib_baseline": 570.562,
+        "peak_rss_mib_candidate": 554.094,
+        "peak_rss_mib_delta": -16.46799999999996,
+        "peak_rss_percent": -2.8862770391298365
+      },
+      {
+        "notes": 50000,
+        "operation": "Warm MCP validate",
+        "baseline": {
+          "samples": 20,
+          "p50_ms": 1078.324,
+          "p95_ms": 1087.307,
+          "first_ms": 1082.132,
+          "max_ms": 1310.645,
+          "first_duration_ms": 1082.131959,
+          "all_requests_max_ms": 1310.645,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "candidate": {
+          "samples": 20,
+          "p50_ms": 1078.171,
+          "p95_ms": 1085.958,
+          "first_ms": 1083.968,
+          "max_ms": 1198.777,
+          "first_duration_ms": 1083.967667,
+          "all_requests_max_ms": 1198.777,
+          "rss_scope": "Session-wide peak only; per-request RSS is not measured"
+        },
+        "p50_ms_delta": -0.15300000000002,
+        "p50_ms_percent": -0.014188685404392665,
+        "p95_ms_delta": -1.3489999999999327,
+        "p95_ms_percent": -0.12406799551551995,
+        "first_ms_delta": 1.8360000000000127,
+        "first_ms_percent": 0.16966506858682173,
+        "max_ms_delta": -111.86799999999994,
+        "max_ms_percent": -8.535339470260816,
+        "peak_rss_mib_baseline": 570.562,
+        "peak_rss_mib_candidate": 554.094,
+        "peak_rss_mib_delta": -16.46799999999996,
+        "peak_rss_percent": -2.8862770391298365
+      }
+    ],
+    "rebuild_drift": [
+      {
+        "notes": 10000,
+        "operation": "CLI index rebuild",
+        "baseline": {
+          "samples": 5,
+          "p50_ms": 177.358,
+          "p95_ms": 180.69,
+          "peak_rss_mib": 98.906,
+          "first_ms": 180.69,
+          "max_ms": 180.69
+        },
+        "candidate": {
+          "samples": 5,
+          "p50_ms": 291.63,
+          "p95_ms": 344.639,
+          "peak_rss_mib": 99.281,
+          "first_ms": 176.76,
+          "max_ms": 344.639
+        },
+        "p50_ms_delta": 114.27199999999999,
+        "p50_ms_percent": 64.43013565782204,
+        "p95_ms_delta": 163.949,
+        "p95_ms_percent": 90.73496042946483,
+        "first_ms_delta": -3.930000000000007,
+        "first_ms_percent": -2.1749958492445653,
+        "max_ms_delta": 163.949,
+        "max_ms_percent": 90.73496042946483,
+        "peak_rss_mib_baseline": 98.906,
+        "peak_rss_mib_candidate": 99.281,
+        "peak_rss_mib_delta": 0.375,
+        "peak_rss_percent": 0.37914787778294823
+      },
+      {
+        "notes": 50000,
+        "operation": "CLI index rebuild",
+        "baseline": {
+          "samples": 5,
+          "p50_ms": 1430.599,
+          "p95_ms": 1529.078,
+          "peak_rss_mib": 429.562,
+          "first_ms": 1529.078,
+          "max_ms": 1529.078
+        },
+        "candidate": {
+          "samples": 5,
+          "p50_ms": 1726.059,
+          "p95_ms": 1761.878,
+          "peak_rss_mib": 396.438,
+          "first_ms": 1761.878,
+          "max_ms": 1761.878
+        },
+        "p50_ms_delta": 295.46000000000004,
+        "p50_ms_percent": 20.652887356974258,
+        "p95_ms_delta": 232.79999999999995,
+        "p95_ms_percent": 15.224860994664757,
+        "first_ms_delta": 232.79999999999995,
+        "first_ms_percent": 15.224860994664757,
+        "max_ms_delta": 232.79999999999995,
+        "max_ms_percent": 15.224860994664757,
+        "peak_rss_mib_baseline": 429.562,
+        "peak_rss_mib_candidate": 396.438,
+        "peak_rss_mib_delta": -33.124000000000024,
+        "peak_rss_percent": -7.711110386859177
+      }
+    ],
+    "core": {
+      "samples": 20,
+      "warm_p95_ms": 116.0,
+      "peak_rss_mib": 131.0,
+      "cold_ms": 292.1,
+      "max_ms": null,
+      "recording_limit": "Unchanged core benchmark emits 20-sample warm p95, cold time and process RSS only, not raw warm samples/max/per-query RSS. Core RSS includes fixture/calibration.",
+      "rebuild_scope": "Fresh CLI rebuild includes startup plus core work; the 10k 10-second target is checked. Both 50k rebuild pairs are reported without an invented 50k ceiling."
+    },
+    "core_checks": [
+      {
+        "metric": "warm_p95_ms",
+        "observed": 116.0,
+        "ceiling": 150,
+        "pass": true
+      },
+      {
+        "metric": "peak_rss_mib",
+        "observed": 131.0,
+        "ceiling": 150,
+        "pass": true
+      },
+      {
+        "metric": "cli_rebuild_10k_p95_ms",
+        "observed": 344.639,
+        "ceiling": 10000,
+        "pass": true
+      }
+    ],
+    "core_binary_sha256": "253a8f81c6db864293adc308ec354a78a64be5e1253116d09cc7ba70f579407f",
+    "retained_artifact_sha256": {
+      "cold2-quiet-baseline.json": "3dbc0fe929f90f76ae506640d22f75446dbde7d6d6e07c64f98a14f2c67fd2bf",
+      "cold2-quiet-baseline.log": "acc779a9c8f62a78d3353fbb55cc93a2ae4c23cf754b43eb1ef03c304aea72f6",
+      "cold2-quiet-baseline.raw.json": "8f02873559e950daebc62ef66d4c2f07ef5b0b5088b06e918802c4ee413697cf",
+      "cold2-quiet-baseline-rebuild.json": "e58b15e66133bc27903a479c9fca5202d3876d458a89ba4265c5182bb24c3730",
+      "cold2-quiet-baseline-rebuild.log": "56bf888ba7f49334638a7a4224572e7f3a818738ac485846fed4df4d773e1fda",
+      "cold2-quiet-baseline-rebuild.raw.json": "5c9c6deb276bfb22261c87e30f7198c239ee4eea1f4a7708e881ab68e6fe7bdf",
+      "cold2-quiet-candidate.json": "3ced96a8fa44a28f00a3f7be3aff2faaf2652d36b5c6646f0fb534e52d6b125c",
+      "cold2-quiet-candidate.log": "1bc8aa79b457182afb74ffe6407f0ac779a1d6dd7e40157dee752b07f589f290",
+      "cold2-quiet-candidate.raw.json": "e5e68bbb003444fc3bfb89b9f93b79a936762529b2b39891daf978f2f309ebf8",
+      "cold2-quiet-candidate-rebuild.json": "c616a9d3ce15454c433ad2535442c1493d336861c7e209c7d88a488afdcfbbfc",
+      "cold2-quiet-candidate-rebuild.log": "0c5f21998cdf7d09d1d9f78b44dea6164cac70d2ddcb6a254c31d5d759035e81",
+      "cold2-quiet-candidate-rebuild.raw.json": "8492402d1df3d725d038b1c6ca989b84861840ebecbabb0b5f0b679828989992",
+      "cold2-quiet-core.log": "650b5782befafe24b62fcd9b7f9fa962f0acac9b70560598aff58e1e93323ad0",
+      "cold2-quiet-core-bench": "253a8f81c6db864293adc308ec354a78a64be5e1253116d09cc7ba70f579407f",
+      "cold2-quiet-run.json": "4cf1e718b8cf899fac0746421780bbcd23e6bba8d30c0386fc122c590136baa1"
+    }
+  },
+  "source_b71_CGO1_candidate_identity": {
+    "version": "v1.0.0-candidate.2",
+    "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1"
+  },
+  "source_b71_CGO1_candidate_sha256": "66b08d25e0fa939057602d9bd185fb13e01c0be290db55c70a2f1f52f940dd4e",
+  "legacy_projection_sha256": "sha256:de6a20cc5f2631b84ba07a9f947ab427113ab746fd2ef3d85b59324f24b5b731",
+  "CGO_causality_claim": false,
+  "disposition": "All four complete failed matrices remain failures. The build-protocol correction is not a controlled CGO causal experiment; no best-cell aggregation or ceiling change.",
+  "legacy_long_pass_scope": "The completed7ceed1800-second run remains historical only; it does not qualify candidate.3.",
+  "original_pre_fix_endurance": {
+    "report": {
+      "schema_version": "kb.soak.v1",
+      "ok": false,
+      "platform": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "machine": "arm64",
+        "python": "3.14.4"
+      },
+      "binary_revision": "sha256:a2f10ffff3d704c2ea29ce0139d48f505c1b238b9f5ec70362e807ecbe48f6ad",
+      "writers": 4,
+      "seeds": [
+        1729,
+        2718,
+        31415
+      ],
+      "requested_seconds": 1800.0,
+      "minimum_work": 10000,
+      "backup_interval_seconds": 60.0,
+      "command_timeout_seconds": 30,
+      "profile": {
+        "maintain_indexes": true,
+        "maintain_log": false,
+        "notes": 5
+      },
+      "runs": [
+        {
+          "seed": 1729,
+          "ok": false,
+          "rounds": 477,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 2385,
+            "replays": 2385,
+            "conflicts": 1431,
+            "reads": 4770,
+            "searches": 477,
+            "backup_checks": 2,
+            "restored_mutations": 2,
+            "restored_replays": 4
+          },
+          "backup_checks": [
+            {
+              "round": 143,
+              "seconds": 12.963239834061824,
+              "files": 729,
+              "bytes": 745166,
+              "manifest_revision": "sha256:3f086cb112df1673e2d2e6356182c9138f2be3dfde9098b51f46a7bf79bdd187",
+              "storage": {
+                "receipt_files": 720,
+                "receipt_bytes": 741679,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 315,
+              "seconds": 32.511525959009305,
+              "files": 1589,
+              "bytes": 1631844,
+              "manifest_revision": "sha256:81ee8d1670c8829ad687caefac13b17833359b1a67de3342c07213847c8d599d",
+              "storage": {
+                "receipt_files": 1580,
+                "receipt_bytes": 1628355,
+                "log_bytes": 23
+              }
+            }
+          ],
+          "failures": [
+            {
+              "error_type": "TimeoutExpired",
+              "category": "timeout",
+              "check": "cli-command-timeout",
+              "operation": "backup"
+            }
+          ],
+          "initial_storage": {
+            "receipt_files": 5,
+            "receipt_bytes": 6431,
+            "log_bytes": 23
+          },
+          "commands": {
+            "success": 10041,
+            "conflict": 1431,
+            "error": 1
+          },
+          "all_root_acknowledgements": {
+            "mutations": 2392,
+            "replays": 2389
+          },
+          "timings": {
+            "init": {
+              "calls": 1,
+              "total_seconds": 0.008464875048957765,
+              "max_seconds": 0.008464875048957765
+            },
+            "create": {
+              "calls": 5,
+              "total_seconds": 0.48673704196698964,
+              "max_seconds": 0.10820550005882978
+            },
+            "read": {
+              "calls": 4776,
+              "total_seconds": 66.64910223905463,
+              "max_seconds": 0.20728741597849876
+            },
+            "patch": {
+              "calls": 6207,
+              "total_seconds": 549.0654564702418,
+              "max_seconds": 0.3830404169857502
+            },
+            "search": {
+              "calls": 477,
+              "total_seconds": 3.053291750489734,
+              "max_seconds": 0.010412166942842305
+            },
+            "backup": {
+              "calls": 3,
+              "total_seconds": 50.249145542038605,
+              "max_seconds": 30.004353999975137
+            },
+            "restore": {
+              "calls": 2,
+              "total_seconds": 24.617499583866447,
+              "max_seconds": 16.66655537497718
+            },
+            "index": {
+              "calls": 2,
+              "total_seconds": 0.012267209007404745,
+              "max_seconds": 0.0062036250019446015
+            }
+          },
+          "confirmed_receipts": 2390,
+          "elapsed_seconds": 257.01510670792777
+        }
+      ],
+      "failures": [
+        {
+          "error_type": "CheckFailure",
+          "category": "invariant",
+          "check": "missing or reordered seed run"
+        }
+      ],
+      "scope": "finite synthetic local-process correctness; not power-loss proof",
+      "acknowledged_work": 4770,
+      "totals": {
+        "setup_mutations": 5,
+        "mutations": 2385,
+        "replays": 2385,
+        "conflicts": 1431,
+        "reads": 4770,
+        "searches": 477,
+        "backup_checks": 2,
+        "restored_mutations": 2,
+        "restored_replays": 4
+      },
+      "elapsed_seconds": 257.0160363749601
+    },
+    "disposition": {
+      "qualification_passed": false,
+      "lost_confirmed_state_demonstrated": false,
+      "cause": "Repeated directory enumeration for each receipt amplified backup/restore validation work.",
+      "worker_fix_commit": "cf3860a82ac45fe2d1d1dacc29adc6d6e1dcb0da",
+      "integrated_fix_commit": "d638af2f247301f1c8636b933b680a224e8ce238",
+      "bounded_paired_report": "docs/qa/backup-performance-v1.md",
+      "timeout_raised": false,
+      "restart_required": true
+    }
+  },
+  "shipping_CGO0_endurance_attempt1": {
+    "status": "failed-not-qualified",
+    "report_sha256": "sha256:943e3a519b5a83c0b60849071025378abd4bcda42f729c5fcfae9594f97f2b45",
+    "summary": {
+      "ok": false,
+      "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+      "binary_revision": "sha256:8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+      "input_report_sha256": "sha256:943e3a519b5a83c0b60849071025378abd4bcda42f729c5fcfae9594f97f2b45",
+      "status": "failed-not-qualified",
+      "acknowledged_work": 33680,
+      "totals": {
+        "setup_mutations": 15,
+        "mutations": 16840,
+        "replays": 16840,
+        "conflicts": 10104,
+        "reads": 33680,
+        "searches": 3368,
+        "backup_checks": 24,
+        "restored_mutations": 24,
+        "restored_replays": 48
+      },
+      "actual_work_seconds": [
+        626.9155622500693,
+        600.1190743329935,
+        600.1653707079822
+      ],
+      "overall_elapsed_seconds": 1923.206963542034,
+      "failed_seed": 31415,
+      "failed_operation": "restore",
+      "failure": {
+        "error_type": "TimeoutExpired",
+        "category": "timeout",
+        "check": "cli-command-timeout",
+        "operation": "restore"
+      },
+      "failed_restore_max_seconds": 30.00442033400759,
+      "completed_backup_restore_checks": 24,
+      "final_failed_checkpoint_fidelity_completed": false,
+      "lost_confirmed_state_demonstrated": false,
+      "independent_report_validator": "rejected-profile-not-complete-pass",
+      "limits": [
+        "Counts and clocks do not offset a real timeout or incomplete final restore.",
+        "No post-timeout final storage inventory was recorded for the failed seed.",
+        "No timeout, acceptance ceiling or production runtime changed by evidence editor."
+      ],
+      "max_completed_checkpoint_files": 5824,
+      "max_completed_checkpoint_bytes": 6000506,
+      "max_combined_successful_checkpoint_seconds": 31.628004916012287,
+      "max_single_backup_seconds": 1.540135124931112,
+      "max_single_successful_seed_restore_seconds": 27.981605499982834,
+      "reported_main_root_ACK_per_active_second": 18.43257435727193
+    },
+    "actual_report": {
+      "schema_version": "kb.soak.v1",
+      "ok": false,
+      "platform": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "machine": "arm64",
+        "python": "3.14.4"
+      },
+      "binary_revision": "sha256:8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+      "writers": 4,
+      "seeds": [
+        1729,
+        2718,
+        31415
+      ],
+      "requested_seconds": 1800.0,
+      "minimum_work": 10000,
+      "backup_interval_seconds": 60.0,
+      "command_timeout_seconds": 30.0,
+      "profile": {
+        "maintain_indexes": true,
+        "maintain_log": false,
+        "notes": 5
+      },
+      "runs": [
+        {
+          "seed": 1729,
+          "ok": true,
+          "rounds": 1117,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5585,
+            "replays": 5585,
+            "conflicts": 3351,
+            "reads": 11170,
+            "searches": 1117,
+            "backup_checks": 9,
+            "restored_mutations": 9,
+            "restored_replays": 18
+          },
+          "backup_checks": [
+            {
+              "round": 142,
+              "seconds": 6.247885665972717,
+              "files": 724,
+              "bytes": 740020,
+              "manifest_revision": "sha256:b6bc8170de75047a1f43fb44ceb073b82d68a0ec65f6b70a265a007397ff6c92",
+              "storage": {
+                "receipt_files": 715,
+                "receipt_bytes": 736531,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 312,
+              "seconds": 8.434389624977484,
+              "files": 1574,
+              "bytes": 1616310,
+              "manifest_revision": "sha256:b7adfb6ea6ca5cb14fc7a247879c99e9a30a558102bbace1fdeb4d7c8f44e448",
+              "storage": {
+                "receipt_files": 1565,
+                "receipt_bytes": 1612821,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 472,
+              "seconds": 13.119274999946356,
+              "files": 2374,
+              "bytes": 2441092,
+              "manifest_revision": "sha256:81050642d3ca7538de4d91b47960bb83da72c6f9439f00e0933cc69648e5385c",
+              "storage": {
+                "receipt_files": 2365,
+                "receipt_bytes": 2437604,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 600,
+              "seconds": 16.14880850003101,
+              "files": 3014,
+              "bytes": 3100902,
+              "manifest_revision": "sha256:df93c98855a5a67d5386d892e1fba8719b97842384ecbdf0e1ac941541aba3ea",
+              "storage": {
+                "receipt_files": 3005,
+                "receipt_bytes": 3097413,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 737,
+              "seconds": 20.063003499992192,
+              "files": 3699,
+              "bytes": 3807094,
+              "manifest_revision": "sha256:9ba4ed4710f712e89e21f5c0d6b200fc91e0bf07ba5218ec10273b9cf7441aa7",
+              "storage": {
+                "receipt_files": 3690,
+                "receipt_bytes": 3803605,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 871,
+              "seconds": 23.05172491702251,
+              "files": 4369,
+              "bytes": 4497830,
+              "manifest_revision": "sha256:c021511fbc102fd60af7f445e86cec035de221e92f2027eb2c6d747ac15bbdf7",
+              "storage": {
+                "receipt_files": 4360,
+                "receipt_bytes": 4494344,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 996,
+              "seconds": 27.40661854192149,
+              "files": 4994,
+              "bytes": 5142212,
+              "manifest_revision": "sha256:ea0207e3525d59435b5c5fe000903986ea7be3201254581fc967f2db0fae48a0",
+              "storage": {
+                "receipt_files": 4985,
+                "receipt_bytes": 5138724,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1117,
+              "seconds": 30.450634540989995,
+              "files": 5599,
+              "bytes": 5767703,
+              "manifest_revision": "sha256:383d8a7cdea143dd3383e3514a80991ca572f15b0ab0fb9ce91ab56c0c237d19",
+              "storage": {
+                "receipt_files": 5590,
+                "receipt_bytes": 5764210,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1117,
+              "seconds": 29.984236874966882,
+              "files": 5599,
+              "bytes": 5767703,
+              "manifest_revision": "sha256:383d8a7cdea143dd3383e3514a80991ca572f15b0ab0fb9ce91ab56c0c237d19",
+              "storage": {
+                "receipt_files": 5590,
+                "receipt_bytes": 5764210,
+                "log_bytes": 23
+              }
+            }
+          ],
+          "failures": [],
+          "initial_storage": {
+            "receipt_files": 5,
+            "receipt_bytes": 6427,
+            "log_bytes": 23
+          },
+          "work_seconds": 626.9155622500693,
+          "final_storage": {
+            "receipt_files": 5590,
+            "receipt_bytes": 5764210,
+            "log_bytes": 23
+          },
+          "acknowledged_per_work_second": 17.817391483965775,
+          "commands": {
+            "success": 23544,
+            "conflict": 3351,
+            "error": 0
+          },
+          "all_root_acknowledgements": {
+            "mutations": 5599,
+            "replays": 5603
+          },
+          "timings": {
+            "init": {
+              "calls": 1,
+              "total_seconds": 0.008622749941423535,
+              "max_seconds": 0.008622749941423535
+            },
+            "create": {
+              "calls": 5,
+              "total_seconds": 0.46879279206041247,
+              "max_seconds": 0.11513108399230987
+            },
+            "read": {
+              "calls": 11197,
+              "total_seconds": 190.32414251193404,
+              "max_seconds": 0.24058245797641575
+            },
+            "patch": {
+              "calls": 14548,
+              "total_seconds": 1484.3829468886834,
+              "max_seconds": 0.552623291965574
+            },
+            "search": {
+              "calls": 1117,
+              "total_seconds": 7.188342726789415,
+              "max_seconds": 0.02447974996175617
+            },
+            "backup": {
+              "calls": 9,
+              "total_seconds": 7.791551166912541,
+              "max_seconds": 1.540135124931112
+            },
+            "restore": {
+              "calls": 9,
+              "total_seconds": 155.15097491489723,
+              "max_seconds": 27.031513249967247
+            },
+            "index": {
+              "calls": 9,
+              "total_seconds": 0.0629284578608349,
+              "max_seconds": 0.009045667015016079
+            }
+          },
+          "confirmed_receipts": 5590,
+          "elapsed_seconds": 657.6329013330396
+        },
+        {
+          "seed": 2718,
+          "ok": true,
+          "rounds": 1162,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5810,
+            "replays": 5810,
+            "conflicts": 3486,
+            "reads": 11620,
+            "searches": 1162,
+            "backup_checks": 8,
+            "restored_mutations": 8,
+            "restored_replays": 16
+          },
+          "backup_checks": [
+            {
+              "round": 190,
+              "seconds": 5.22494804195594,
+              "files": 964,
+              "bytes": 987456,
+              "manifest_revision": "sha256:90c06ce148ed3c31169052d13d450d920ecdc201cf5e2b87d34a132fa24eb481",
+              "storage": {
+                "receipt_files": 955,
+                "receipt_bytes": 983969,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 358,
+              "seconds": 9.639294250053354,
+              "files": 1804,
+              "bytes": 1853490,
+              "manifest_revision": "sha256:827099fbb55c173a2fbc876bd5317d919154aa1385c0c0255e03427c173805b7",
+              "storage": {
+                "receipt_files": 1795,
+                "receipt_bytes": 1850001,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 514,
+              "seconds": 13.898906624992378,
+              "files": 2584,
+              "bytes": 2657642,
+              "manifest_revision": "sha256:f997ba1d1c6bb58b43febe9bfafca07bca937787fb66b739deb9bfc25c1dca46",
+              "storage": {
+                "receipt_files": 2575,
+                "receipt_bytes": 2654153,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 661,
+              "seconds": 18.318945624982007,
+              "files": 3319,
+              "bytes": 3415424,
+              "manifest_revision": "sha256:8a89417f68270d8b005ce7885f56259cc3ee5f2910ef1c8bec2947948be31b53",
+              "storage": {
+                "receipt_files": 3310,
+                "receipt_bytes": 3411935,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 798,
+              "seconds": 22.06422137503978,
+              "files": 4004,
+              "bytes": 4121650,
+              "manifest_revision": "sha256:09a736adf2609b1e5b4a8a1341c736263ded70c25e7322600002b88c5370e6e9",
+              "storage": {
+                "receipt_files": 3995,
+                "receipt_bytes": 4118161,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 929,
+              "seconds": 25.339412458008155,
+              "files": 4659,
+              "bytes": 4796952,
+              "manifest_revision": "sha256:7066c5cf4cdca6d3733c297588fd397391805bc82c49e7f1e47bea2a11b8ad9f",
+              "storage": {
+                "receipt_files": 4650,
+                "receipt_bytes": 4793463,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1052,
+              "seconds": 28.607796208001673,
+              "files": 5274,
+              "bytes": 5431822,
+              "manifest_revision": "sha256:7e15f6a1d15d5bb42774d0641e44f019b63e749d390a9fdd4fe9c2071db26685",
+              "storage": {
+                "receipt_files": 5265,
+                "receipt_bytes": 5428330,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1162,
+              "seconds": 31.628004916012287,
+              "files": 5824,
+              "bytes": 6000506,
+              "manifest_revision": "sha256:0dac9a2b6294064b67ee0b58e6f1b1190b03b585c6db93b4fa6c7b47af52ccfc",
+              "storage": {
+                "receipt_files": 5815,
+                "receipt_bytes": 5997012,
+                "log_bytes": 23
+              }
+            }
+          ],
+          "failures": [],
+          "initial_storage": {
+            "receipt_files": 5,
+            "receipt_bytes": 6430,
+            "log_bytes": 23
+          },
+          "work_seconds": 600.1190743329935,
+          "final_storage": {
+            "receipt_files": 5815,
+            "receipt_bytes": 5997012,
+            "log_bytes": 23
+          },
+          "acknowledged_per_work_second": 19.362823974417292,
+          "commands": {
+            "success": 24480,
+            "conflict": 3486,
+            "error": 0
+          },
+          "all_root_acknowledgements": {
+            "mutations": 5823,
+            "replays": 5826
+          },
+          "timings": {
+            "init": {
+              "calls": 1,
+              "total_seconds": 0.0077700839610770345,
+              "max_seconds": 0.0077700839610770345
+            },
+            "create": {
+              "calls": 5,
+              "total_seconds": 0.33879391686059535,
+              "max_seconds": 0.10807941691018641
+            },
+            "read": {
+              "calls": 11644,
+              "total_seconds": 191.53240396955516,
+              "max_seconds": 0.23708445904776454
+            },
+            "patch": {
+              "calls": 15130,
+              "total_seconds": 1455.6131345625035,
+              "max_seconds": 0.40620854089502245
+            },
+            "search": {
+              "calls": 1162,
+              "total_seconds": 7.499744806205854,
+              "max_seconds": 0.01864770893007517
+            },
+            "backup": {
+              "calls": 8,
+              "total_seconds": 6.3653234171215445,
+              "max_seconds": 1.301730833016336
+            },
+            "restore": {
+              "calls": 8,
+              "total_seconds": 136.85555787407793,
+              "max_seconds": 27.981605499982834
+            },
+            "index": {
+              "calls": 8,
+              "total_seconds": 0.05458708491642028,
+              "max_seconds": 0.007356832968071103
+            }
+          },
+          "confirmed_receipts": 5815,
+          "elapsed_seconds": 632.3830639169319
+        },
+        {
+          "seed": 31415,
+          "ok": false,
+          "rounds": 1089,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5445,
+            "replays": 5445,
+            "conflicts": 3267,
+            "reads": 10890,
+            "searches": 1089,
+            "backup_checks": 7,
+            "restored_mutations": 7,
+            "restored_replays": 14
+          },
+          "backup_checks": [
+            {
+              "round": 186,
+              "seconds": 5.0183390830643475,
+              "files": 944,
+              "bytes": 969599,
+              "manifest_revision": "sha256:b7e957160814709f1e671f9578d6bac117e5497424ad63cac17db3100a0df1eb",
+              "storage": {
+                "receipt_files": 935,
+                "receipt_bytes": 966105,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 353,
+              "seconds": 9.622324500000104,
+              "files": 1779,
+              "bytes": 1832994,
+              "manifest_revision": "sha256:e58fcd63cf15a31ca5887d634b6528e69d9fa9ce3e6ce6ad78c40455882de460",
+              "storage": {
+                "receipt_files": 1770,
+                "receipt_bytes": 1829500,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 497,
+              "seconds": 15.379404874984175,
+              "files": 2499,
+              "bytes": 2577424,
+              "manifest_revision": "sha256:d3f931dd8273a61effab3332c1dc47718db348c851a272498b1fd0f2201a3a52",
+              "storage": {
+                "receipt_files": 2490,
+                "receipt_bytes": 2573932,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 636,
+              "seconds": 19.104898708988912,
+              "files": 3194,
+              "bytes": 3296051,
+              "manifest_revision": "sha256:7b69fba6877b5acf9ebdf844cf4cd4884e63bc8d749ac7bb9ce43fffc48fb7e2",
+              "storage": {
+                "receipt_files": 3185,
+                "receipt_bytes": 3292558,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 767,
+              "seconds": 24.263830916024745,
+              "files": 3849,
+              "bytes": 3973282,
+              "manifest_revision": "sha256:4e9b880ed58c2dbdeb22049a598a171734b20d825728d1d812230df7462913d4",
+              "storage": {
+                "receipt_files": 3840,
+                "receipt_bytes": 3969790,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 892,
+              "seconds": 30.711364999995567,
+              "files": 4474,
+              "bytes": 4619505,
+              "manifest_revision": "sha256:843280a050754af19993e15c8a76ea3ec7c3a39bcc72828f711bf38277eb7dd7",
+              "storage": {
+                "receipt_files": 4465,
+                "receipt_bytes": 4616012,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1007,
+              "seconds": 30.676083959056996,
+              "files": 5049,
+              "bytes": 5214155,
+              "manifest_revision": "sha256:652521d7a6d9cd7853187778fc28fe81a130acd9ba1bb95cd4f9b10f6f108e25",
+              "storage": {
+                "receipt_files": 5040,
+                "receipt_bytes": 5210657,
+                "log_bytes": 23
+              }
+            }
+          ],
+          "failures": [
+            {
+              "error_type": "TimeoutExpired",
+              "category": "timeout",
+              "check": "cli-command-timeout",
+              "operation": "restore"
+            }
+          ],
+          "initial_storage": {
+            "receipt_files": 5,
+            "receipt_bytes": 6435,
+            "log_bytes": 23
+          },
+          "work_seconds": 600.1653707079822,
+          "commands": {
+            "success": 22939,
+            "conflict": 3267,
+            "error": 1
+          },
+          "all_root_acknowledgements": {
+            "mutations": 5457,
+            "replays": 5459
+          },
+          "timings": {
+            "init": {
+              "calls": 1,
+              "total_seconds": 0.008019208093173802,
+              "max_seconds": 0.008019208093173802
+            },
+            "create": {
+              "calls": 5,
+              "total_seconds": 0.34625354316085577,
+              "max_seconds": 0.1062529580667615
+            },
+            "read": {
+              "calls": 10911,
+              "total_seconds": 186.8152605514042,
+              "max_seconds": 0.2615374169545248
+            },
+            "patch": {
+              "calls": 14178,
+              "total_seconds": 1432.1855659511639,
+              "max_seconds": 0.44919308403041214
+            },
+            "search": {
+              "calls": 1089,
+              "total_seconds": 7.155146160861477,
+              "max_seconds": 0.01985341589897871
+            },
+            "backup": {
+              "calls": 8,
+              "total_seconds": 6.164440457941964,
+              "max_seconds": 1.2160569169791415
+            },
+            "restore": {
+              "calls": 8,
+              "total_seconds": 149.89858462603297,
+              "max_seconds": 30.00442033400759
+            },
+            "index": {
+              "calls": 7,
+              "total_seconds": 0.04740595805924386,
+              "max_seconds": 0.0072695830604061484
+            }
+          },
+          "confirmed_receipts": 5450,
+          "elapsed_seconds": 633.1844849589979
+        }
+      ],
+      "failures": [
+        {
+          "error_type": "CheckFailure",
+          "category": "invariant",
+          "check": "one or more seed runs failed"
+        }
+      ],
+      "scope": "finite synthetic local-process correctness; not power-loss proof",
+      "acknowledged_work": 33680,
+      "totals": {
+        "setup_mutations": 15,
+        "mutations": 16840,
+        "replays": 16840,
+        "conflicts": 10104,
+        "reads": 33680,
+        "searches": 3368,
+        "backup_checks": 24,
+        "restored_mutations": 24,
+        "restored_replays": 48
+      },
+      "elapsed_seconds": 1923.206963542034
+    }
+  },
+  "historical_7ceed_long_observation": {
+    "qualified_only_for_its_own_runtime": true,
+    "qualifies_shipping_candidate": false,
+    "input_summary_sha256": "sha256:5607638bcb5ccbd722ae57b7f734fcddb22a098a2e6129c46e4546c0d337cbaa",
+    "observation": {
+      "binary_revision": "sha256:83327b6237fa822e68c3ca3182db92fca06f4385c9ee108d63f36c2f0c861c24",
+      "runtime_source": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+      "ok": true,
+      "work_seconds": [
+        600.1819532089867,
+        600.3098028750392,
+        600.267561833025
+      ],
+      "elapsed_seconds": 1899.3591512079583,
+      "combined_acknowledgements": 32850,
+      "unique_mutations": 16425,
+      "exact_replays": 16425,
+      "expected_conflicts": 9855,
+      "backup_checks": 24,
+      "maximum_backup_restore_checkpoint_seconds": 32.35026162490249,
+      "maximum_files_in_checkpoint": 5739,
+      "default_log_companion": {
+        "combined_acknowledgements": 1090,
+        "work_seconds": [
+          20.44638124993071,
+          20.283671249984764,
+          20.46801429206971
+        ],
+        "backup_checks": 6
+      },
+      "maximum_command_seconds": {
+        "patch": 0.7013583331136033,
+        "read": 0.49175912502687424,
+        "backup": 2.203329708077945,
+        "restore": 29.036809082957916
+      },
+      "checkpoint_scope": "Checkpoint seconds combine receipt validation, backup, restore, exact byte/replay/continued-write and cleanup checks; the30second timeout applies separately to each CLI command, not the combined checkpoint."
+    }
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "schema_version": "kb.v1-shipping-compatibility.v1",
+  "publication_state": "reviewable-candidate-evidence; not stable publication or installed-v1 proof",
+  "actual_prior_producer_upgrade": {
+    "backup": {
+      "bytes": 14268,
+      "files": 14,
+      "manifest_revision": "sha256:988c089f865082d9982a4fbe77a88afe3603e703c68d196944088403c7da54fc",
+      "private_source_rejection": "CLI/MCP ACCESS_DENIED; exact path/mode/byte purity"
+    },
+    "checks": [
+      "baseline-cli-contract",
+      "baseline-independent-mcp",
+      "prior-produced-archive",
+      "upgrade-cli-and-receipts",
+      "candidate-independent-mcp",
+      "operational-backup-restore",
+      "rollback-boundary",
+      "old-pending-recovery-then-upgrade",
+      "binary-immutability"
+    ],
+    "identities": {
+      "baseline": {
+        "binary_path": "$BASELINE/kb",
+        "commit": "74f0d196408c1354899802e18ce569b0eab33adf",
+        "sha256": "bc61edae093dea6896b3f842ca2ab7441341e25f078495f1a6230cd25aa00443",
+        "source": "https://github.com/matheus3301/kb/tree/74f0d196408c1354899802e18ce569b0eab33adf",
+        "version": "v0.4.0"
+      },
+      "candidate": {
+        "binary_path": "$CANDIDATE/kb",
+        "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+        "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+        "source": "https://github.com/matheus3301/kb/tree/b71c0763c87313666b3dd79da08da12b7b3512c1",
+        "version": "v1.0.0-candidate.3"
+      }
+    },
+    "limits": [
+      "Synthetic local process evidence, not universal crash or power-loss durability.",
+      "No installed-candidate qualification unless the supplied executable is that installation.",
+      "No automatic downgrade of newer operational state; recover pending state with the old binary before upgrade.",
+      "Physical executable paths are redacted as $BASELINE/kb and $CANDIDATE/kb; SHA-256 identifies exact bytes."
+    ],
+    "mcp_tools": {
+      "baseline": 12,
+      "candidate": 12
+    },
+    "ok": true,
+    "pending": {
+      "attempts": 1,
+      "observed_state": "prepared",
+      "operations": 50,
+      "recovery_binary": "v0.4.0",
+      "signal": "SIGKILL",
+      "upgrade_after_old_recovery": true
+    },
+    "platform": {
+      "machine": "arm64",
+      "system": "Darwin"
+    },
+    "prior_archive": {
+      "archive_path": ".kb/backups/prior.tar",
+      "archive_sha256": "f19025d3ce702647b93ae7db77699acbd5ffa0a982d937a122319c49205127cf",
+      "authoritative_bytes_exact": true,
+      "bytes": 9003,
+      "consumer": {
+        "binary_path": "$CANDIDATE/kb",
+        "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+        "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+        "source": "https://github.com/matheus3301/kb/tree/b71c0763c87313666b3dd79da08da12b7b3512c1",
+        "version": "v1.0.0-candidate.3"
+      },
+      "continued_writes": [
+        "patch",
+        "create"
+      ],
+      "files": 11,
+      "manifest_revision": "sha256:d91be78706ae101c7593217c60450bc4948ddb41f520a937967b82373a3daabf",
+      "producer": {
+        "binary_path": "$BASELINE/kb",
+        "commit": "74f0d196408c1354899802e18ce569b0eab33adf",
+        "sha256": "bc61edae093dea6896b3f842ca2ab7441341e25f078495f1a6230cd25aa00443",
+        "source": "https://github.com/matheus3301/kb/tree/74f0d196408c1354899802e18ce569b0eab33adf",
+        "version": "v0.4.0"
+      },
+      "replayed_requests": 3,
+      "restore_destination": ".kb/restores/prior",
+      "restored_manifest_revision": "sha256:d91be78706ae101c7593217c60450bc4948ddb41f520a937967b82373a3daabf",
+      "source_unchanged": true,
+      "status": "passed"
+    },
+    "report_version": 1,
+    "rollback": {
+      "automatic_state_downgrade": "not supported or inferred",
+      "old_backup_restore": "advertised by declared baseline; no state downgrade attempted"
+    }
+  },
+  "final_v1_installed_proof": null,
+  "actual_preserved_v031_upgrade": {
+    "backup": {
+      "bytes": 14270,
+      "files": 14,
+      "manifest_revision": "sha256:aaa346a14853b6cf5cbcfacc5bb1cd46a14a8fbac693eb103e13f3aff052b6dd",
+      "private_source_rejection": "CLI/MCP ACCESS_DENIED; exact path/mode/byte purity"
+    },
+    "checks": [
+      "baseline-cli-contract",
+      "baseline-independent-mcp",
+      "upgrade-cli-and-receipts",
+      "candidate-independent-mcp",
+      "operational-backup-restore",
+      "rollback-boundary",
+      "old-pending-recovery-then-upgrade",
+      "binary-immutability"
+    ],
+    "identities": {
+      "baseline": {
+        "binary_path": "$BASELINE/kb",
+        "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+        "sha256": "0f6267b05e3eb80ae053cd113aecdb61b3d6e29bd74451b9dc658578b9643238",
+        "source": "https://github.com/matheus3301/kb/tree/2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+        "version": "v0.3.1"
+      },
+      "candidate": {
+        "binary_path": "$CANDIDATE/kb",
+        "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+        "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+        "source": "https://github.com/matheus3301/kb/tree/b71c0763c87313666b3dd79da08da12b7b3512c1",
+        "version": "v1.0.0-candidate.3"
+      }
+    },
+    "limits": [
+      "Synthetic local process evidence, not universal crash or power-loss durability.",
+      "No installed-candidate qualification unless the supplied executable is that installation.",
+      "No automatic downgrade of newer operational state; recover pending state with the old binary before upgrade.",
+      "Physical executable paths are redacted as $BASELINE/kb and $CANDIDATE/kb; SHA-256 identifies exact bytes."
+    ],
+    "mcp_tools": {
+      "baseline": 10,
+      "candidate": 12
+    },
+    "ok": true,
+    "pending": {
+      "attempts": 1,
+      "observed_state": "prepared",
+      "operations": 50,
+      "recovery_binary": "v0.3.1",
+      "signal": "SIGKILL",
+      "upgrade_after_old_recovery": true
+    },
+    "platform": {
+      "machine": "arm64",
+      "system": "Darwin"
+    },
+    "prior_archive": {
+      "consumer": {
+        "binary_path": "$CANDIDATE/kb",
+        "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+        "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+        "source": "https://github.com/matheus3301/kb/tree/b71c0763c87313666b3dd79da08da12b7b3512c1",
+        "version": "v1.0.0-candidate.3"
+      },
+      "producer": {
+        "binary_path": "$BASELINE/kb",
+        "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+        "sha256": "0f6267b05e3eb80ae053cd113aecdb61b3d6e29bd74451b9dc658578b9643238",
+        "source": "https://github.com/matheus3301/kb/tree/2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+        "version": "v0.3.1"
+      },
+      "reason": "baseline has no operational archive tools",
+      "status": "not_applicable"
+    },
+    "report_version": 1,
+    "rollback": {
+      "automatic_state_downgrade": "not supported or inferred",
+      "old_backup_restore": "unsupported (INVALID_INPUT, exit 2)"
+    }
+  },
+  "V07_postpublication_scope": "Actual published-v1 archives, Homebrew upgrade and independent installed consumers remain separate unobserved gates.",
+  "independent_V08_review": null,
+  "human_approval_claimed": false
+}
