@@ -63,7 +63,8 @@ The result reports `archive`, optional `destination`, `manifest_revision`, `file
 and `bytes`. Restart explicitly against the restored root to use it. Review the
 [format, exclusions, interruption behavior and limits](backups.md); knowledge
 export remains a different operation. Tool discovery is paginated: follow its
-`nextCursor` until all twelve tools have been received.
+`nextCursor` until it is absent. A write-enabled server exposes twelve tools;
+a read-only server exposes six.
 
 ## Agent workflow
 

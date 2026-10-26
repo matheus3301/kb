@@ -2,8 +2,9 @@
 
 Published and installed production is experimental
 **[v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0)** at
-`74f0d196408c1354899802e18ce569b0eab33adf`. Current source is being qualified
-for stable v1.0.0; readiness and publication remain pending.
+`74f0d196408c1354899802e18ce569b0eab33adf`. Candidate.5 has completed bounded local
+source/artifact qualification; final independent review, latest exact-head
+protected CI, publication and installed verification remain pending.
 Product version, wire version, knowledge format, configuration, operational
 state and backup format are separate axes. `kb.v1` is not product v1.0.
 
@@ -16,26 +17,52 @@ for shipped behavior; `main` may contain unreleased corrections. The
 
 ## Current qualification status
 
-**Stable v1 is not ready.** The predeclared 20-read quiet matrix failed V05 only
-on 10k CLI search: **384.470 ms > 380 ms**, despite improving on its 487.272 ms
-baseline. The other 15 rows and core targets passed. Preserve that failure and
-the two earlier failed attempts; do not waive the ceiling, combine passing rows
-or repeat until green. Causal cold-CLI profiling/optimization is pending.
+**Local candidate qualification is complete; V08 approval is not claimed.**
+The measured executable is **`v1.0.0-candidate.5`**, source
+`cb66fd77a120d8c8531f9077a32d2bf51ef7921c`, SHA-256
+`59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46`,
+built with `CGO_ENABLED=0`. Its 72 Go/module source-file identities remained
+unchanged through qualification. Documentation commits and future release builds
+must retain their own source/executable identities; unchanged Go bytes do not
+imply identical release binaries.
 
-The receipt-scale-fixed `7ceed676bed3c1218563f9534a1c095dd3ce4cec` binary completed
-the 1,800-second log-disabled/index-enabled profile with 32,850 acknowledged
-mutations/replays. It remains passing **historical evidence for that binary**,
-separate from the shorter default-log profile. A subsequent Go runtime change
-requires full qualification again. The original v0.4.0 backup-timeout failure
-and bounded paired repair measurements remain in the
-[scaling report](qa/backup-performance-v1.md); no deadline or threshold was raised.
+- Source gates and the local **macOS arm64 native/archive-source release snapshot**
+  passed. The complete local D03 matrix passed **all 16 rows and three core
+  targets**; retrieval/category, v0.3.1/v0.4.0 compatibility workflows,
+  actual v0.4.0-produced archive restoration and observed-boundary interruption
+  checks also passed for this candidate.
+- The **1,800-second log-disabled/index-enabled D02 profile passed** across three
+  seeds/four writers: **17,420 unique mutations + 17,420 exact replays = 34,840
+  main-root acknowledgments**, 10,452 expected conflicts and **27 completed
+  backup/restore checkpoints**, with no unexpected errors or failed seeds.
+  Active seed windows were **608.568, 616.662 and 615.944 seconds**. Maximum
+  observed restore time was **24.227 seconds** under the unchanged **30-second
+  per-command deadline**; the largest checkpoint contained **5,889 included files**.
+  Setup and restored-root operations are not counted toward that acknowledgment
+  total. Both supervised profile processes exited zero.
+- The separate **shorter default-log companion passed** with **600 mutations +
+  600 replays = 1,200 main-root acknowledgments** and six backup/restore
+  checkpoints. It is not a 30-minute default-log observation.
 
-Current source includes the receipt-history repair, bounded compatibility-report
-publication guardrails and the configured read-only published-asset verification
-matrix. The matrix's **first actual release execution is pending**; configured
-jobs, snapshots and previous installed releases are not final artifact evidence.
-The [exit checklist](stability.md) owns candidate outcomes and the final decision.
-Readiness, authorized publication and installed qualification remain separate.
+These local results do not establish portable latency, arbitrary history sizes,
+whole-machine isolation or hardware power-loss safety. The unchanged wire and
+persisted formats, receipt retention and log-growth limits below still apply.
+
+**Final independent V08 review and the latest exact-head protected CI remain
+pending**, followed by separately authorized publication and actual package/
+installed-channel verification. The real published native/archive-source matrix
+must pass before the tap updates; Homebrew/formula, installed CLI/documentation
+and independent CLI + skill/MCP consumers need their own observed results.
+A local snapshot or earlier installed release does not establish those outcomes.
+The [exit checklist](stability.md) owns the final decision; production remains
+v0.4.0 and the v1.x commitments below remain conditional.
+
+The [earlier qualification snapshot](qa/v1-qualification.md) retains candidate.3's
+failed shipping restore and all earlier failed resource matrices. The original
+v0.4.0 backup-timeout failure and bounded repair evidence remain in the
+[scaling report](qa/backup-performance-v1.md). The `7ceed676` endurance pass is
+historical evidence for that binary only. No failed attempt was relabeled, no
+earlier pass was transferred and no deadline, ceiling or work minimum was raised.
 
 ## Current source contract and version axes
 

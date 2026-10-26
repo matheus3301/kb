@@ -1,22 +1,34 @@
 # v1.0 exit criteria
 
-**Candidate qualification; stable-v1 readiness remains pending.** All four
-initial [roadmap](roadmap.md) increments are integrated. Experimental
-[v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0), source
-`74f0d19`, is published and installed through Homebrew on macOS arm64 as of
-**2026-10-26 UTC**. The receipt-scale correction is merged through
-[PR #21](https://github.com/matheus3301/kb/pull/21); further cold-CLI performance
-work and final qualification remain pending. This checklist extends A01–A26 in the
-[acceptance inventory](acceptance.json); no item alone authorizes publication.
+**Candidate.5 evidence is reviewable; stable readiness/publication remain pending.**
+Experimental [v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0),
+source `74f0d19`, remains the observed published/Homebrew-installed release.
+The current executable is `v1.0.0-candidate.5`, Go/module source
+`cb66fd77a120d8c8531f9077a32d2bf51ef7921c`, SHA-256
+`59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46`,
+CGO=0. All **72 Go/module files**, including tests, match the documentation base.
+The final docs/release commit and rebuilt executable identity remain separate.
 
-The frozen `7ceed676bed3c1218563f9534a1c095dd3ce4cec` runtime completed three
-600-second, four-writer seeds with 16,425 mutations, 16,425 identical-request
-replays and 24 exact backup/restore checks. Its separate default-log companion
-also passed. These are bounded observations for that runtime, not qualification
-of a later implementation. Its three complete D03 performance attempts remain
-failed; the 20-read-sample attempt exceeded the 10k CLI-search ceiling at
-384.470 ms versus 380 ms. Other passing rows do not offset that failure. Keep
-the ceilings unchanged and qualify any changed runtime afresh before V08.
+The [current qualification report](qa/v1-qualification.md) and
+[source/build manifest](evidence/v1-qualification.json) record actual local full
+gates/snapshot, fresh 47-pair retrieval, pinned prior-version upgrades, 105
+observed test-child kills, a passing 1,200-ACK default-log companion and one
+complete passing local 16-row/three-core-target resource matrix.
+**The completed extended D02 observation passed: 34,840 ACK, 27 backup/restores,
+zero errors and three seeds each over 600 active seconds.** PR24's initial-head
+CI passed all 11 jobs; latest integrated-head CI, V08 publication-authorization
+review and actual published-v1/Homebrew/installed consumers remain pending.
+Factual documentation is available for that review; V08 is not a prerequisite
+for making completed evidence inspectable.
+
+[Failure history](evidence/v1-qualification-history.json) retains all three failed
+7ceed matrices, the failed source-b71 CGO=1 matrix, the original backup-timeout
+endurance and candidate.3's failed 33,680-ACK restore-timeout attempt. The older
+7ceed long pass remains historical only. No counts, clocks, old passing cells or
+test-only source equivalence erase a failure or qualify another executable.
+The committed restore correction and actual candidate.4 6k-receipt scale evidence
+have [separate source/artifact attribution](evidence/v1-restore-production.json);
+the old prototype's error-path overclaim is not retroactively fixed.
 
 ## Evidence and status rules
 
@@ -60,68 +72,78 @@ not proofs of relevance, isolation, durability or readiness.
   four cross-builds, scans and release snapshot. Original counts of 88.4%,
   102 tests, 314 pass events and seven fuzz targets remain dated observations.
 
-## Candidate acceptance — all pending
+## Candidate acceptance — observed evidence and remaining gates
 
-- [ ] **V01 — Exact integrated candidate.** Run `make check` and
-  `make release-snapshot`; link exact-commit CI gate, application acceptance and
-  A01–A26 regressions. Record every failure, skip and limitation; no weakened gates
-  or historical counts as current results. All later evidence must identify the
-  same candidate or explain which affected checks were rerun after a change.
-- [ ] **V02 — Retrieval usefulness and parity.** Implemented:
-  [corpus, metric definitions and evaluator](qa/retrieval-quality.md) plus
-  [focused evidence](evidence/retrieval-quality.json). Rerun `make retrieval-eval`
-  on the candidate; retain per-case/category results and exact corpus hash.
-  Apply D01 to all deterministic membership/order/no-match, citation/revision,
-  budget/truncation, purity and CLI/MCP assertions. Existing macro metrics are
-  baseline evidence, not candidate sign-off or semantic-understanding proof.
-- [ ] **V03 — Operational reliability.** Existing
-  [mixed-workload and observed-boundary SIGKILL tests](../internal/write/operational_resilience_test.go)
-  exercise 24 iterations and 11 interruption scenarios; they are not an extended
-  soak. Supply D02's multi-seed concurrent workload and repeated interruption
-  results, including recovery interruption, CAS conflicts and identical-key
-  retries. No partial acknowledged transaction, duplicate logical effect, lost
-  confirmed receipt or changed immutable source is allowed.
-- [ ] **V04 — Operational backup/restore.** Implemented:
-  [version-1 contract](backups.md), [CLI/MCP parity tests](../cmd/kb/backup_test.go),
-  [archive/failure/replay tests](../internal/write/backup_test.go) and parser/path
-  fuzz targets. Record candidate synthetic restoration with exact revisions,
-  configuration, assets and receipts, idempotent replay and continued writes.
-  Exercise pending-state refusal, new-only destinations, unsafe/corrupt archives,
-  read-only enforcement, publication faults and interrupted restore retries.
-  Pending journals are refused, not preserved in archives. Same-disk staging is
-  not disaster recovery; export and disposable cache have different contracts.
-- [ ] **V05 — Local resource envelope.** Implemented:
-  [quiet paired 10k/50k report](performance-large-corpus.md) and
-  [raw measurements](evidence/performance-large-corpus.json). Rerun installed
-  v0.3.1 versus the exact candidate in a reserved quiet window under D03, with
-  **both 10k and 50k fresh-process index rebuild measured separately for each
-  binary**. Report p50/p95, first request/apply and peak RSS
-  for fresh CLI, reused MCP, preview/apply and rebuild, with all drift disclosed.
-  Link freshness/ranking/confinement/durability regressions. Do not claim uniform
-  improvements: existing 10k non-improvements, preview RSS and 50k repair-median
-  regression remain visible.
-- [ ] **V06 — Compatibility and upgrades.** Apply D04 and the
-  [v1.x policy](compatibility.md#conditional-v1x-commitments). Exercise supported
-  prior CLI/JSON requests and MCP discovery/workflows against the candidate:
-  flags, exits, errors, schemas, read-only and fixed-root behavior. On synthetic
-  v0.3.1 fixtures, verify exact content/config/receipt preservation, settled-state
-  upgrade, pending recovery with the prior binary, restored replay and subsequent
-  writes. Qualify the v0.4.0-to-v1.0.0 path before stable release. Disclose
-  downgrade limits and any migration; builds alone do not prove compatibility.
-- [ ] **V07 — Packages and consumers.** Under D04, record actual macOS arm64
-  Homebrew install/upgrade and formula test, extracted native archive execution,
-  and Linux amd64 native archive plus archived-source workflows. Record exact
-  version/commit/checksums and CLI acceptance. Exercise CLI + separately installed
-  skill, and independently initialized/discovered stdio MCP without skill files.
-  Identify client versions and activation limits. Cross-builds and snapshot
-  execution are not a substitute for installed Homebrew qualification.
-- [ ] **V08 — Independent readiness decision.** Review V01–V07 and all public
-  docs/catalogs/skill against one candidate, list findings/remaining risks and
-  explicitly decide whether experimental status can be removed. Record a review
-  distinct from implementation authorship; do not label automated review as human
-  approval. Human approval, when obtained, must be explicit. Green CI or an
-  author's self-check cannot satisfy this item. Publication and installed-upgrade
-  verification remain separate under [release operations](releases.md).
+- [ ] **V01 — Exact integrated candidate.**
+  [The source/build manifest](evidence/v1-qualification.json) binds 72 matching
+  Go/module files, harness hashes and the actual candidate.5 executable.
+  Local full gates passed **93 Python tests, 88.8% Go coverage, race/scans,
+  12 fuzz targets, four cross-builds and 43 documentation requests**; actual
+  native/archive-source snapshots passed. [PR24 CI](https://github.com/matheus3301/kb/actions/runs/40285002580)
+  passed **all 11 jobs** on initial head `c372b33`; the latest integrated head
+  must pass separately. Local V01 evidence is complete; hosted integration and
+  actual published hashes require separate binding.
+- [x] **V02 — Retrieval usefulness and parity.**
+  [Fresh candidate.5 evidence](evidence/v1-retrieval.json) passed 47 CLI/MCP pairs
+  and 17 category validations on unchanged corpus
+  `562af0124822b42e72125ae9307e5bc5a5fe9fb0f1164be13a8811aa6d49cc4c`.
+  All 31 searches, eight context cases, eight read pairs and authored category
+  membership remain inspectable. The 24 positive/seven negative judgments retain
+  Recall@5 **0.9930555555555555** and MRR@5 **1.0**; negative-only means are null.
+  D01 floors, labels, membership/order/no-match and parity were not changed.
+- [x] **V03 — Operational reliability.**
+  [Current completed observations](evidence/v1-reliability.json) include the
+  default-log/index-enabled companion: **600 mutations + 600 replays = 1,200 ACK**,
+  360 safe conflicts, six backup/restores, six restored writes and twelve restored
+  replays, zero unexpected errors. Three repetitions passed **105 observed
+  test-child SIGKILL cases** in 22.336 package seconds, with zero failures/skips.
+  The completed candidate.5 extended profile passed **17,420 mutations + 17,420
+  replays = 34,840 ACK**, 10,452 expected conflicts and 27 backup/restores.
+  Seeds 1729/2718/31415 performed **608.568/616.662/615.944 active seconds**.
+  No historical pass, setup/restored work, conflict or failed attempt counts
+  toward the ACK gate. These test children do not prove arbitrary public-CLI
+  interruption or hardware power-loss safety.
+- [x] **V04 — Operational backup/restore.**
+  Fresh candidate.5 companion and [prior-produced archive](evidence/v1-compatibility.json)
+  observations passed exact authority/config/receipt/source fidelity, replay and
+  continued writes. The [committed production review and native 6k scale](evidence/v1-restore-production.json)
+  separately identify source equivalence and the actual candidate.4 artifact.
+  The original worker-cleanup defect is closed for reviewed production scope,
+  not retroactively for its prototype. Candidate.5 completed **27** extended
+  fidelity checkpoints, 27 restored writes and 54 restored replays; maximum
+  observed restore was **24.227 seconds**, with at most **5,889 checkpoint files**.
+  Pending journals are refused, not archived; finite local observations and
+  same-disk staging are not universal disaster-recovery guarantees.
+- [x] **V05 — Local resource envelope.**
+  [One complete fresh candidate.5 matrix](evidence/v1-resources.json) passed all
+  16 unchanged latency/RSS rows and three core targets: 20 read, three repair,
+  five rebuild and 20 core samples, eight fresh four-worker quiet proofs.
+  Core warm p95 **130.2 ms / 130.4 MiB** and fresh 10k CLI rebuild p95
+  **177.464 ms** met the original targets. Independent actual-result audit
+  accepted bounded D03, not V08. All ordered samples, first/max and drift remain,
+  including **10k search p95 +12.34%, 50k CLI-read p95 +19.33% and 50k MCP-read
+  p95 +11.07%**. No uniform improvement, whole-machine idleness, cache eviction
+  or portable SLA follows.
+- [x] **V06 — Compatibility and upgrades.**
+  [Fresh pinned executable evidence](evidence/v1-compatibility.json) passed eight
+  actual v0.3.1-to-candidate.5 checks and nine v0.4.0-to-candidate.5 checks,
+  including an archive actually produced by v0.4.0. Exact authority/receipts,
+  replay, continued writes and prior-binary pending recovery passed.
+  Prior-produced archives are not applicable to v0.3.1, which lacks those tools.
+  Test-only source equivalence never relabels the candidate.4 scale executable.
+  No automatic downgrade or blanket older-version guarantee is promised.
+- [ ] **V07 — Published packages and installed consumers.**
+  Historical installed v0.4.0 and local candidate snapshots are not installed-v1
+  proof. Under D04 and [release operations](releases.md), verify actual published
+  macOS arm64 Homebrew/native artifacts, Linux amd64 native/archive-source
+  workflows, formula test, separately installed CLI skill and independent stdio
+  MCP consumers, retaining exact release identity/checksums and client limits.
+- [ ] **V08 — Independent publication-authorization review.**
+  Review final current evidence, docs/catalogs/skill, retained failures and bounded
+  D01–D04 scope. Focused independent R1/source and D03 reviews are **not V08**;
+  the final publication-authorization decision remains pending. Automated review
+  is not human approval. Actual tag/publication, Homebrew and installed verification
+  remain separately authorized and separately evidenced.
 
 ## Qualification policy — D01–D04
 
@@ -166,7 +188,9 @@ across three seeds, four writers per seed and at least 250 acknowledged successf
 mutations and identical-request replays combined**, retaining index maintenance.
 Exercise backup/restore and restored replay/continued writes in that profile too.
 Report unique committed effects, replays and elapsed time separately for both
-profiles; neither has passing candidate evidence here.
+profiles. [Both actual candidate.5 profiles](evidence/v1-reliability.json) passed
+without changing the 30-second per-command timeout. Candidate.3's completed
+failed restore-timeout attempt remains in history, not a passing observation.
 
 Use setup creates to establish a fixed corpus, then sustain **patches, conflicting
 CAS, identical-key replay, reads/search and periodic backup/restore**. Reads/search
@@ -176,9 +200,11 @@ writes after restoration. Timed move/preview loops are not claimed. Deterministi
 acceptance/crash regressions separately cover create, move, archive, apply,
 preview and coordinated multi-file publication.
 
-Repeat the existing 11 real observed-boundary SIGKILL scenarios **at least three
-times each**, in addition to injected publication/recovery faults and concurrency
-tests. Report timeouts/unobserved boundaries as failures, not successful kills.
+Repeat all **35 current deterministic cases at least three times each**
+(105 observed kills), retaining the original 11 scenarios, multi-file publication/
+recovery positions, committed roll-forward, restore positions and receipt-batch
+interruption. Retain injected faults, cancellation and concurrency regressions.
+Report timeouts, skips or unobserved boundaries as failures, not successful kills.
 
 Rationale: receipt count has no automatic expiry, retention or rotation.
 Receipts store before/after full-file diff text while it fits a **256 KiB aggregate
@@ -223,15 +249,17 @@ operation improved. MCP RSS is the whole-session peak, not per-request memory.
 | Warm MCP validate | 110 | 150 | 1690 | 640 |
 
 Report every operation's baseline/candidate p50/p95, RSS, first request/apply and
-absolute/percentage drift, even inside budget. Disclose the existing 10k
-search/read non-improvements, 50k repair median +4.9% and preview RSS increase.
+absolute/percentage drift, even inside budget. Preserve the historical report's
+10k search/read non-improvements, 50k repair median +4.9% and preview RSS increase;
+also disclose all fresh candidate drift rather than transfer those old numbers.
 An exceedance blocks V05 until a quiet repeat and explicit evidence-backed
 review; do not silently change ceilings. Results on different hardware are
 informational, not pass/fail against these machine-specific numbers.
 The original **core-only 10k 150 ms warm p95 / 150 MiB / 10 s rebuild targets
-remain unchanged** and need separately identified measurements. The paired
-report did not measure a new rebuild improvement. No Linux timing, broader SLA
-or unmeasured retained-memory improvement is claimed.
+remain unchanged** and need separately identified measurements. The original
+paired report did not measure rebuild improvement; current evidence separately
+records both binaries' 10k/50k rebuilds without an invented 50k ceiling.
+No Linux timing, broader SLA or unmeasured retained-memory improvement is claimed.
 
 ### D04 — Conditional v1.x compatibility and support
 
@@ -251,12 +279,15 @@ interfaces and channels that can be exercised, not infer support from packaging.
 
 ## Finalization checklist
 
-Update this section in a later docs-only change when exact evidence exists:
+The [public snapshot](qa/v1-qualification.md) is available for independent review.
+Do not wait for V08 to make factual documentation reviewable; do not infer stable
+publication from that documentation.
 
-- [ ] Identify the integrated candidate commit, actual v0.4.0 release and binary
-  hashes; link exact-commit CI/full-check/snapshot results without private paths.
-- [ ] Attach V02 retrieval, V03 reliability, V04 restoration, V05 quiet paired
-  matrix/rebuild and V06 upgrade results with counts, seeds and disclosed drift.
+- [x] Identify frozen candidate.5 source/build/executable and current local source/
+  snapshot receipts, keeping actual v0.4.0 publication and old CI historical.
+- [ ] Attach exact-current-head hosted CI and final docs/release binding.
+- [ ] Independently validate the actual completed candidate.5 extended D02 report;
+  retain all failed attempts and distinct source/artifact identities.
 - [ ] Attach V07 installed Homebrew/native Linux and independent consumer evidence;
   state channel/client limits and distinguish source/snapshot/installed checks.
 - [ ] Record V08 reviewer identity/role, scope, findings, disposition and explicit

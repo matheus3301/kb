@@ -1,0 +1,792 @@
+{
+  "schema_version": "kb.restore-performance-diagnostic.v1",
+  "status": "Historical candidate3 failed diagnostics plus distinct corrected production/candidate4 scale and completed local candidate5 qualification; remoteCI/V08/publication/install pending",
+  "environment": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "fixture_generation_GOMAXPROCS": "2",
+    "diagnostic_restore_GOMAXPROCS": 8,
+    "shipping_soak_GOMAXPROCS": 2,
+    "diagnostic_build_environment": {
+      "CGO_ENABLED": "0",
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local"
+    }
+  },
+  "shipping_failure": {
+    "version": "v1.0.0-candidate.3",
+    "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+    "binary_sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+    "CGO_ENABLED": "0",
+    "ok": false,
+    "report_sha256": "943e3a519b5a83c0b60849071025378abd4bcda42f729c5fcfae9594f97f2b45",
+    "failed_seed": 31415,
+    "operation": "restore",
+    "timeout_seconds": 30,
+    "observed_restore_max_seconds": 30.00442033400759,
+    "confirmed_receipts_before_failed_restore": 5450,
+    "main_root_mutations": 16840,
+    "main_root_replays": 16840,
+    "main_root_acknowledgements": 33680,
+    "expected_conflicts": 10104,
+    "completed_checkpoints": 24,
+    "backup_attempts": 25,
+    "restore_attempts": 25,
+    "failed_final_checkpoint_fidelity_verified": false,
+    "confirmed_data_loss_demonstrated": false
+  },
+  "immutable_shipping_diagnostics": {
+    "samples_per_size": 1,
+    "extra_sampled_5450_run": true,
+    "observations": [
+      {
+        "receipts": 250,
+        "kind": "normal",
+        "seconds": 1.434491042,
+        "peak_rss_mib": 19.875,
+        "files": 259,
+        "content_bytes": 220502,
+        "manifest_revision": "sha256:48047046c9f0f5b5460769b203879d003ca5ae615c1f6425b9ede956215094d0",
+        "exact_inventory_config_receipts": true,
+        "config_published": true,
+        "receipt_files_present": 250
+      },
+      {
+        "receipts": 2000,
+        "kind": "normal",
+        "seconds": 10.701633041,
+        "peak_rss_mib": 22.8125,
+        "files": 2009,
+        "content_bytes": 1745396,
+        "manifest_revision": "sha256:6c5b6caaae6ec65890407ce7819d896a220f6742cc1b057d0b34ecffc86541b5",
+        "exact_inventory_config_receipts": true,
+        "config_published": true,
+        "receipt_files_present": 2000
+      },
+      {
+        "receipts": 5450,
+        "kind": "normal",
+        "seconds": 27.634440416,
+        "peak_rss_mib": 32.234375,
+        "files": 5459,
+        "content_bytes": 4753038,
+        "manifest_revision": "sha256:96c4a5b3227947b9021f628c2714afdfd8e74365d65bfed31b63f74b3e2cdc16",
+        "exact_inventory_config_receipts": true,
+        "config_published": true,
+        "receipt_files_present": 5450
+      },
+      {
+        "receipts": 5450,
+        "kind": "sampled",
+        "seconds": 29.811201459,
+        "peak_rss_mib": 30.671875,
+        "files": 5459,
+        "content_bytes": 4753038,
+        "manifest_revision": "sha256:96c4a5b3227947b9021f628c2714afdfd8e74365d65bfed31b63f74b3e2cdc16",
+        "exact_inventory_config_receipts": true,
+        "config_published": true,
+        "receipt_files_present": 5450
+      }
+    ],
+    "method": "Service-produced receipts through MCP create/patch, fresh synthetic copies; setup, backup and verification outside restore timing. No OS cache eviction; not D02/D03 qualification."
+  },
+  "timer_diagnostics": {
+    "reference_binary_sha256": "5c164e338dff495d223fc5e65b58ee0744acbc843a7ab8024f789eaf12079594",
+    "observations": [
+      {
+        "receipts": 2000,
+        "child_elapsed_seconds": 9.889574042,
+        "inclusive_or_nested_timers": {
+          "Restore.total": {
+            "calls": 1,
+            "seconds": 9.15853625
+          },
+          "restoreFile.file_sync": {
+            "calls": 2009,
+            "seconds": 7.149691358
+          },
+          "restoreFile.parent_sync": {
+            "calls": 2009,
+            "seconds": 0.737864856
+          },
+          "backupParent": {
+            "calls": 10046,
+            "seconds": 0.561478618
+          },
+          "backupInventory": {
+            "calls": 1,
+            "seconds": 0.160336958
+          }
+        },
+        "exact_inventory_config_receipts_source_checks": true
+      },
+      {
+        "receipts": 5450,
+        "child_elapsed_seconds": 27.437049833,
+        "inclusive_or_nested_timers": {
+          "Restore.total": {
+            "calls": 1,
+            "seconds": 27.2405905
+          },
+          "restoreFile.file_sync": {
+            "calls": 5459,
+            "seconds": 19.952687167
+          },
+          "restoreFile.parent_sync": {
+            "calls": 5459,
+            "seconds": 1.775535735
+          },
+          "backupParent": {
+            "calls": 27296,
+            "seconds": 2.672262592
+          },
+          "backupInventory": {
+            "calls": 1,
+            "seconds": 0.541609917
+          }
+        },
+        "exact_inventory_config_receipts_source_checks": true
+      }
+    ],
+    "diagnostic_process_guard_seconds": 120,
+    "qualification_timeout_seconds_unchanged": 30,
+    "method": "CGO0/trimpath Go overlays retain original operations plus timers/CPU/allocation profiling; nested inclusive timers are not additive."
+  },
+  "rejected_ordinary_fsync_attribution": {
+    "status": "mismatched primitive; rejected as attribution for Darwin Go File.Sync",
+    "samples_per_mode": 200,
+    "bytes_per_file": 1024,
+    "aggregate_observations": [
+      {
+        "mode": "per-file-and-directory",
+        "elapsed_ms": 16.871958,
+        "file_fsync_total_ms": 3.330091,
+        "directory_fsync_total_ms": 0.070087,
+        "file_fsync_median_ms": 0.0162085,
+        "directory_fsync_median_ms": 0.0003125
+      },
+      {
+        "mode": "per-file-then-final-directory",
+        "elapsed_ms": 16.528542,
+        "file_fsync_total_ms": 3.165835,
+        "directory_fsync_total_ms": 0.000959,
+        "file_fsync_median_ms": 0.0156455,
+        "directory_fsync_median_ms": 0.000959
+      }
+    ],
+    "method": "Python os.fsync differs from Darwin Go F_FULLFSYNC; directory-omitting control is not an approved product change."
+  },
+  "matched_fullsync_control": {
+    "samples": 200,
+    "bytes_per_file": 1024,
+    "fcntl_command": 51,
+    "fallbacks": 0,
+    "elapsed_ms": 967.774542,
+    "file_fullsync_total_ms": 805.616542,
+    "file_fullsync_median_ms": 3.697729,
+    "directory_fullsync_total_ms": 95.720257,
+    "directory_fullsync_median_ms": 0.0056875
+  },
+  "matched_scheduling_control": {
+    "files_per_mode": 200,
+    "bytes_per_file": 1024,
+    "batch_limit": 4,
+    "observations": [
+      {
+        "mode": "immediate",
+        "elapsed_ms": 840.039292,
+        "file_fullsync_calls": 200,
+        "directory_fullsync_calls": 200,
+        "file_fullsync_total_ms": 695.366453,
+        "directory_fullsync_total_ms": 88.72605
+      },
+      {
+        "mode": "prepare4-serial-flush",
+        "elapsed_ms": 777.412583,
+        "file_fullsync_calls": 200,
+        "directory_fullsync_calls": 200,
+        "file_fullsync_total_ms": 698.1035889999999,
+        "directory_fullsync_total_ms": 33.040494
+      },
+      {
+        "mode": "prepare4-parallel-flush",
+        "elapsed_ms": 447.511834,
+        "file_fullsync_calls": 200,
+        "directory_fullsync_calls": 200,
+        "file_fullsync_total_ms": 1193.712082,
+        "directory_fullsync_total_ms": 354.209169
+      }
+    ],
+    "scope": "Synthetic Python syscall scheduling, not product restore or durability/qualification evidence. Aggregate overlapping call durations are not additive wall time."
+  },
+  "profiled_Go_prototype": {
+    "samples_per_variant_per_size": 1,
+    "batch_limit": 4,
+    "pending_payload_buffers_recorded": 0,
+    "binaries": {
+      "reference": {
+        "sha256": "5c164e338dff495d223fc5e65b58ee0744acbc843a7ab8024f789eaf12079594",
+        "version": {
+          "commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
+          "version": "diagnostic-restore-profile"
+        }
+      },
+      "batch4": {
+        "sha256": "204f8a35a0cfec44ea6b1822681fece56b5d187c867a0b8c6f23ae9ae35d8ada",
+        "version": {
+          "commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
+          "version": "diagnostic-restore-batch4"
+        }
+      }
+    },
+    "observed_build_info": {
+      "reference": {
+        "go_version": "go1.27.3",
+        "observed_build_fields": {
+          "-buildmode": "exe",
+          "-compiler": "gc",
+          "-trimpath": "true",
+          "CGO_ENABLED": "0",
+          "GOARCH": "arm64",
+          "GOOS": "darwin",
+          "GOARM64": "v8.0",
+          "vcs.revision": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
+          "vcs.modified": "false"
+        }
+      },
+      "batch4": {
+        "go_version": "go1.27.3",
+        "observed_build_fields": {
+          "-buildmode": "exe",
+          "-compiler": "gc",
+          "-trimpath": "true",
+          "CGO_ENABLED": "0",
+          "GOARCH": "arm64",
+          "GOOS": "darwin",
+          "GOARM64": "v8.0",
+          "vcs.revision": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
+          "vcs.modified": "false"
+        }
+      }
+    },
+    "observations": [
+      {
+        "variant": "reference",
+        "receipts": 2000,
+        "child_elapsed_seconds": 12.001334292,
+        "restore_total_seconds": 11.844027666,
+        "peak_rss_mib": 25.6875,
+        "file_sync_calls": 2009,
+        "parent_sync_calls": 2009,
+        "aggregate_file_sync_seconds": 7.608111771,
+        "aggregate_parent_sync_seconds": 2.201376333,
+        "matching_manifest_file_and_byte_counts": true,
+        "exact_restored_inventory_config_receipts": true,
+        "source_unchanged": true
+      },
+      {
+        "variant": "batch4",
+        "receipts": 2000,
+        "child_elapsed_seconds": 5.502124332999999,
+        "restore_total_seconds": 5.313673041,
+        "peak_rss_mib": 26.0625,
+        "file_sync_calls": 2009,
+        "parent_sync_calls": 2009,
+        "aggregate_file_sync_seconds": 12.21342003,
+        "aggregate_parent_sync_seconds": 3.555387805,
+        "matching_manifest_file_and_byte_counts": true,
+        "exact_restored_inventory_config_receipts": true,
+        "source_unchanged": true
+      },
+      {
+        "variant": "reference",
+        "receipts": 5450,
+        "child_elapsed_seconds": 28.147378666,
+        "restore_total_seconds": 28.016700167,
+        "peak_rss_mib": 33.734375,
+        "file_sync_calls": 5459,
+        "parent_sync_calls": 5459,
+        "aggregate_file_sync_seconds": 20.404965788,
+        "aggregate_parent_sync_seconds": 2.490287697,
+        "matching_manifest_file_and_byte_counts": true,
+        "exact_restored_inventory_config_receipts": true,
+        "source_unchanged": true
+      },
+      {
+        "variant": "batch4",
+        "receipts": 5450,
+        "child_elapsed_seconds": 15.023788167000001,
+        "restore_total_seconds": 14.833154834,
+        "peak_rss_mib": 35.546875,
+        "file_sync_calls": 5459,
+        "parent_sync_calls": 5459,
+        "aggregate_file_sync_seconds": 34.160448612,
+        "aggregate_parent_sync_seconds": 9.698177131,
+        "matching_manifest_file_and_byte_counts": true,
+        "exact_restored_inventory_config_receipts": true,
+        "source_unchanged": true
+      }
+    ],
+    "drift": [
+      {
+        "receipts": 2000,
+        "elapsed_delta_seconds": -6.499209959,
+        "elapsed_change_percent": -54.15406154740915,
+        "rss_delta_mib": 0.375,
+        "rss_change_percent": 1.4598540145985384
+      },
+      {
+        "receipts": 5450,
+        "elapsed_delta_seconds": -13.123590499,
+        "elapsed_change_percent": -46.62455660516747,
+        "rss_delta_mib": 1.8125,
+        "rss_change_percent": 5.372857804539133
+      }
+    ],
+    "version_metadata_commit_is_production_fix_revision": false,
+    "method": "Copied same transaction-produced fixtures; reference first then batch4 at each size, caches uncontrolled, CGO0/trimpath, timers and CPU/allocation profiles. Child elapsed includes startup/finalization; Restore.total is separate. No exported post-restore replay/continued-write assertion is inferred from byte equality.",
+    "error_path_review": {
+      "old_join_before_hooks_and_cleanup_claim_accepted": false,
+      "producer_recorded_value": true,
+      "error_path_invariant_established": false,
+      "finding": "Independent review found removeOwnedRestoreLeaf reachable inside a worker before all workers joined. These observations establish successful-path evidence only.",
+      "required_correction": "Coordinator-only hooks and cleanup after all joins, retaining every created-file ownership record and parent handle; future production evidence pending."
+    }
+  },
+  "setup_attempt": {
+    "status": "diagnostic metadata setup failure, not product defect or qualification failure",
+    "restore_samples_executed": 0,
+    "build_succeeded": true,
+    "production_finding": false,
+    "reason": "Profiling metadata invocation lacked its output configuration; no restore sample executed."
+  },
+  "overlay_inputs": {
+    "timed-overlay.json": [
+      {
+        "base_source_label": "internal/write/backup.go",
+        "overlay_filename": "timed-backup.go",
+        "sha256": "9f6a061a375accbd6d822fd9abe27ebb0932d0c5367486048ed88f715cb85259"
+      },
+      {
+        "base_source_label": "internal/write/backup_paths.go",
+        "overlay_filename": "timed-backup_paths.go",
+        "sha256": "3f9a52556ba9a5a6eda35683e5e6987a9907c9c8ef5767b58709472ddd39ae57"
+      },
+      {
+        "base_source_label": "internal/write/backup_inventory.go",
+        "overlay_filename": "timed-backup_inventory.go",
+        "sha256": "df89380304cd35bde312eeb191d8a2608db179910638c9057ec6f00b48c67bec"
+      },
+      {
+        "base_source_label": "cmd/kb/main.go",
+        "overlay_filename": "profile-main.go",
+        "sha256": "990f4c91bb4f1d3b95377c89110499c87e8d93e28814eec7bd81faeb6835c1b7"
+      },
+      {
+        "base_source_label": "internal/write/restore_diagnostic_profile.go",
+        "overlay_filename": "restore_diagnostic_profile.go",
+        "sha256": "7e625f4050bf7dfb6983b36299c1cb944ed98c8ba7853f9cf9c1312310c4e94c"
+      }
+    ],
+    "prototype-overlay.json": [
+      {
+        "base_source_label": "internal/write/backup.go",
+        "overlay_filename": "prototype-backup.go",
+        "sha256": "9a54ea9dec831284d3935b1dcfd21993018e4552c548cc2398afdb1302ec0a97"
+      },
+      {
+        "base_source_label": "internal/write/backup_paths.go",
+        "overlay_filename": "timed-backup_paths.go",
+        "sha256": "3f9a52556ba9a5a6eda35683e5e6987a9907c9c8ef5767b58709472ddd39ae57"
+      },
+      {
+        "base_source_label": "internal/write/backup_inventory.go",
+        "overlay_filename": "timed-backup_inventory.go",
+        "sha256": "df89380304cd35bde312eeb191d8a2608db179910638c9057ec6f00b48c67bec"
+      },
+      {
+        "base_source_label": "cmd/kb/main.go",
+        "overlay_filename": "profile-main.go",
+        "sha256": "990f4c91bb4f1d3b95377c89110499c87e8d93e28814eec7bd81faeb6835c1b7"
+      },
+      {
+        "base_source_label": "internal/write/restore_diagnostic_profile.go",
+        "overlay_filename": "restore_diagnostic_profile.go",
+        "sha256": "7e625f4050bf7dfb6983b36299c1cb944ed98c8ba7853f9cf9c1312310c4e94c"
+      },
+      {
+        "base_source_label": "internal/write/restore_batch_prototype.go",
+        "overlay_filename": "prototype-helper.go",
+        "sha256": "4d73a92ba9b1dce284925e5988b046e19c107152dc20c68fe677c83a038512a2"
+      }
+    ]
+  },
+  "artifact_sha256_and_sizes": {
+    "native-profile.json": {
+      "sha256": "4d39d4c37939d2d74fe0191b1b4df31994d92dfa7ba96dff8611a1818d75f130",
+      "bytes": 7136
+    },
+    "timed-profile.json": {
+      "sha256": "fcc5fc30840e22c083bbf6274dd6dce166efbd7c6ec1206256bcb315c9a4249b",
+      "bytes": 5019
+    },
+    "prototype-paired.json": {
+      "sha256": "c976f67078039d669b0cbfde4b8d033d20891b8fb2e359f28711f5b6d544b392",
+      "bytes": 9716
+    },
+    "fullsync-control.json": {
+      "sha256": "40d7ef2478d973f5cb217c19aeed1267581856a44ab554087364992ec4fd8eac",
+      "bytes": 6030
+    },
+    "fullsync-batch-control.json": {
+      "sha256": "eed491b2199c80b3ca185338564cbf46e43838573bde364df27b0878d9a1fc33",
+      "bytes": 36823
+    },
+    "fsync-control.json": {
+      "sha256": "2e321423ec608369794343ae27a382515d101ff35ef2a1e8cc5be0d33495f289",
+      "bytes": 11580
+    },
+    "prototype-attempt1-setup-error.json": {
+      "sha256": "7a7b91dccc6d724733795032d53e732d86466ba6b752286fd7a315331e835aca",
+      "bytes": 588
+    },
+    "evidence-fingerprints.json": {
+      "sha256": "1cbb1fed55c3613dee41171cbde2bb003d1add87dc2244b598a6348788ea1055",
+      "bytes": 2577
+    },
+    "shipping-attempt1-failed-report": {
+      "sha256": "943e3a519b5a83c0b60849071025378abd4bcda42f729c5fcfae9594f97f2b45",
+      "bytes": 16866
+    },
+    "timed-build-info.txt": {
+      "sha256": "725405ae5845f4d7eed228ac1524cf8d503e7a1e529d0e7ffd4f0d68fcc3fe36",
+      "bytes": 1696
+    },
+    "prototype-build-info.txt": {
+      "sha256": "458b7e03db15d4d6a4f7f6f4fb3bb10d60abddc52b4a2e6d085f13a023c4ab01",
+      "bytes": 1700
+    },
+    "timed-restore-kb": {
+      "sha256": "5c164e338dff495d223fc5e65b58ee0744acbc843a7ab8024f789eaf12079594",
+      "bytes": 14618418
+    },
+    "prototype-restore-kb": {
+      "sha256": "204f8a35a0cfec44ea6b1822681fece56b5d187c867a0b8c6f23ae9ae35d8ada",
+      "bytes": 14636130
+    },
+    "timed-overlay.json": {
+      "sha256": "8f18fa4d6d6b07cc0da5db686c5b0b228f78dc2a91cf8226ffa0dcc2b3da5a1b",
+      "bytes": 1088
+    },
+    "timed-backup.go": {
+      "sha256": "9f6a061a375accbd6d822fd9abe27ebb0932d0c5367486048ed88f715cb85259",
+      "bytes": 15710
+    },
+    "timed-backup_paths.go": {
+      "sha256": "3f9a52556ba9a5a6eda35683e5e6987a9907c9c8ef5767b58709472ddd39ae57",
+      "bytes": 3671
+    },
+    "timed-backup_inventory.go": {
+      "sha256": "df89380304cd35bde312eeb191d8a2608db179910638c9057ec6f00b48c67bec",
+      "bytes": 2226
+    },
+    "profile-main.go": {
+      "sha256": "990f4c91bb4f1d3b95377c89110499c87e8d93e28814eec7bd81faeb6835c1b7",
+      "bytes": 1768
+    },
+    "restore_diagnostic_profile.go": {
+      "sha256": "7e625f4050bf7dfb6983b36299c1cb944ed98c8ba7853f9cf9c1312310c4e94c",
+      "bytes": 1325
+    },
+    "prototype-overlay.json": {
+      "sha256": "c7668902b17195c28c1aaf898f9f9d72c53206c8d621372b70d06c5f5691424d",
+      "bytes": 1316
+    },
+    "prototype-backup.go": {
+      "sha256": "9a54ea9dec831284d3935b1dcfd21993018e4552c548cc2398afdb1302ec0a97",
+      "bytes": 15619
+    },
+    "prototype-helper.go": {
+      "sha256": "4d73a92ba9b1dce284925e5988b046e19c107152dc20c68fe677c83a038512a2",
+      "bytes": 2366
+    },
+    "profile_restore.py": {
+      "sha256": "b2e5efa32fef1b9944504422f55c4d5d0cef32a0553d59d780a3a8635b6f1aa9",
+      "bytes": 6676
+    },
+    "profile_timers.py": {
+      "sha256": "247cccbd2bf9dc6e3c7cfd87907939fded8d96bfa9b083f4332d7cefdc0eb683",
+      "bytes": 4877
+    },
+    "profile_prototype.py": {
+      "sha256": "a92b6110e2871448f4c06be1681baf207f9968d82f15722d933549a1d5023d78",
+      "bytes": 5379
+    },
+    "fsync_control.py": {
+      "sha256": "c5f709224c845aee2870ab9d575a4e7fe650781b57fc0a7d651e9c2d0843d2b7",
+      "bytes": 2470
+    },
+    "fullsync_control.py": {
+      "sha256": "c080c35a03f37289153d7e7a9cb37187c0ea69436283a32830b2436cda524614",
+      "bytes": 2328
+    },
+    "fullsync_batch_control.py": {
+      "sha256": "ea81813d87d5d82b48e33ab53d0742241fe35a06203c1ebeee012972c1b3cdf3",
+      "bytes": 3163
+    },
+    "scale-native-paired-6000.json": {
+      "sha256": "24e1bdbddf335d48e050fcc80d32b34ab2926ff8a73d907e07659c6abd1708b6",
+      "bytes": 8987
+    }
+  },
+  "scope_limits": [
+    "One diagnostic sample per variant/size, not medians/p95/confidence intervals or portable SLA.",
+    "Successful manifest/byte and sync-count checks do not establish cancellation/error cleanup, join order or universal power-loss safety.",
+    "The120-second diagnostic guard does not replace the30-second shipping command timeout.",
+    "Diagnostic helpers/overlays are not shipped tools or an approved production implementation.",
+    "Raw per-call arrays, profiles, provider responses, local paths and orchestration transcripts are intentionally not published."
+  ],
+  "snapshot_date_utc": "2026-10-26",
+  "diagnostic_checkpoint_pending": {
+    "frozen_production_fix_commit": null,
+    "production_failure_race_contract_tests": "pending new committed implementation",
+    "actual_shipping_restore_at_least_6000_receipts": null,
+    "fresh_complete_D03": null,
+    "fresh_1800_second_and_default_log_qualification": null,
+    "fresh_compatibility_retrieval_crash_checks": null,
+    "protected_CI": null,
+    "V08": "pending publication-authorization review",
+    "stable_publication_and_Homebrew": "pending separately authorized actual execution"
+  },
+  "production_correction_and_native_scale": {
+    "schema_version": "kb.v1-restore-production-attribution.v1",
+    "owner_runtime_commit": "38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6",
+    "root_integration_commit": "5477946be88ef574499a07a7eabe7aa8b6bcc084",
+    "final_candidate5_source": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "test_only_delta": [
+      "internal/write/backup_restore_batch_test.go",
+      "internal/write/backup_restore_contracts_test.go"
+    ],
+    "all_other_Go_module_blobs_equal": true,
+    "focused_independent_review": {
+      "decision": {
+        "runtime": "BOUNDED ACCEPTANCE of committed production and regression scope; no concrete additional blocker found",
+        "R1_worker_cleanup": "CLOSED for reviewed committed source and targeted regression design, with passing execution owner-reported rather than independently rerun",
+        "Go_source": "Frozen; no Go change requested or made",
+        "V08": "NOT APPROVED by this focused review",
+        "stable_release_installation": "NOT ESTABLISHED"
+      },
+      "source_review": {
+        "backup_restore.go": "Fixed four pending descriptor/identity records, sequential preparation/write, no payload queue. All file Sync/close attempts finish before workers.Wait returns. Workers never remove leaves or close retained parents. Coordinator first registers every successful file identity, then finish runs for every pending record without short-circuiting errors; failed partial leaves are identity-guardedly removed and all retained parents closed there. Parent Sync and fresh anchoring remain for every successfully completed file.",
+        "error_ownership": "Write errors stay in prepared records. File Sync/close are evaluated even when writeErr is set. Successful file records are marked before parent Sync/identity, preserving them for outer cleanup on those later failures. Every prepared record survives through join and finish. Failed removal errors are retained; external/replaced/unremovable state may conservatively remain rather than be silently declared cleaned.",
+        "backup.go": "Explicit residual flush joins readBackup errors without hooks; deferred drain precedes outer cleanup, destination close and archive close. Count reset and deferred clear prevent double finishing after callback failure. Service.locked unlocks and closes source root only after closure defers finish. Archive-ordered callbacks execute on coordinator after join/finish. Final inventory and synchronous last config publication remain.",
+        "cancellation": "Post-prepare cancellation preserves newly enqueued record. Canceled and single-item drains may run inline but still complete all Sync/close/finish work and join launched peers. Context checks before callbacks and final return catch first and final callback cancellation; post-read check catches zero-pending cancellation. No config is published after an observed prepublication batch error/cancellation.",
+        "contracts": "No observed parser/checksum/limits/DTO/archive/retention/timeout change. Successful file/parent Syncs, directory-creation Syncs, config Syncs and final .kb/restores Sync remain. Four is a bound on pending file/parent pairs, not total process descriptors; temporary Sync/anchoring descriptors remain bounded.",
+        "inherited_limits": "Preparation Stat-error removal behavior and malicious same-user filesystem race limits are inherited from baseline, not newly certified. Post-config failures or restore-published-hook errors can leave a complete initialized output under the existing contract."
+      },
+      "test_execution_provenance": {
+        "provenance": "Targeted executions owner-reported and inspected by independent focused reviewer, not independently rerun.",
+        "reported_passes": [
+          {
+            "seconds": 83.898,
+            "scope": "Batch/root-contract race plus shuffle count3; before later success-order/cancel-first/preparation additions"
+          },
+          {
+            "seconds": 6.756,
+            "scope": "Successful archive order and first/final-residual cancellation race/shuffle count3"
+          },
+          {
+            "seconds": 2.8,
+            "scope": "Preparation collision with prior pending records and foreign/source/archive preservation count3"
+          }
+        ],
+        "current_full_gate_scope": "Later actual cb66 source full make check/snapshot receipts are recorded separately; earlier focused-review pending-gate prose is not current status."
+      },
+      "final_source_pin_decision": "FINAL SOURCE-PIN ACCEPTANCE for focused restore review; no production delta or new concrete blocker; not binary/method/V08/release acceptance",
+      "scope": "Focused R1/source/test acceptance, not final V08. Targeted execution owner-reported; actual final full source gates separately receipted."
+    },
+    "native_scale": {
+      "receipts": 6000,
+      "receipt_bytes": 5234713,
+      "samples_per_binary": 3,
+      "command_timeout_seconds": 30,
+      "GOMAXPROCS": 2,
+      "binaries": {
+        "baseline": {
+          "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+          "version": {
+            "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+            "version": "v1.0.0-candidate.3"
+          },
+          "cgo_enabled": 0,
+          "trimpath": true
+        },
+        "candidate": {
+          "sha256": "78dc608ad6810188b695c4af796a0811e713f6fce03db5a218739a9ac9d22b93",
+          "version": {
+            "commit": "38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6",
+            "version": "v1.0.0-candidate.4"
+          },
+          "cgo_enabled": 0,
+          "trimpath": true
+        }
+      },
+      "observations": [
+        {
+          "label": "baseline",
+          "sample": 0,
+          "elapsed_ms": 29400.285084,
+          "peak_rss_mib": 32.515625,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "candidate",
+          "sample": 0,
+          "elapsed_ms": 24701.219709,
+          "peak_rss_mib": 31.78125,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "baseline",
+          "sample": 1,
+          "elapsed_ms": 29043.362125,
+          "peak_rss_mib": 32.5,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "candidate",
+          "sample": 1,
+          "elapsed_ms": 24588.338542,
+          "peak_rss_mib": 32.484375,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "baseline",
+          "sample": 2,
+          "elapsed_ms": 28990.590417,
+          "peak_rss_mib": 31.796875,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "candidate",
+          "sample": 2,
+          "elapsed_ms": 24834.842,
+          "peak_rss_mib": 32.8125,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        }
+      ],
+      "artifact_identity_limit": "Actual candidate.4/38ab executable, not candidate.5. Production-source equivalence through two test-only changes is attribution, never binary relabeling.",
+      "performance_limit": "Three paired GOMAXPROCS2 native samples, baseline first/cache uncontrolled; not the GOMAXPROCS8 profiled prototype and not a uniform performance or endurance guarantee.",
+      "summary": {
+        "baseline": {
+          "ordered_elapsed_seconds": [
+            29.400285084,
+            29.043362124999998,
+            28.990590417
+          ],
+          "median_seconds": 29.043362124999998,
+          "sample_max_seconds": 29.400285084,
+          "peak_rss_mib": 32.515625
+        },
+        "candidate": {
+          "ordered_elapsed_seconds": [
+            24.701219709,
+            24.588338542000002,
+            24.834842000000002
+          ],
+          "median_seconds": 24.701219709,
+          "sample_max_seconds": 24.834842000000002,
+          "peak_rss_mib": 32.8125
+        }
+      }
+    },
+    "old_prototype_error_invariant_retroactively_fixed": false,
+    "V08": "pending publication-authorization review"
+  },
+  "current_candidate5_qualification": {
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "binary_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+    "Go_module_files": 72,
+    "source_map_sha256": "567d8104823d1f31b0ab22ab94cf2c761fdb2db78438d1afa9cb75434864af25",
+    "D03": "PASS complete16+3 bounded local window",
+    "functional": "PASS47parity/17categories;8v031/9v040upgrades;105test-childkills",
+    "default_log": "PASS600mutations+600replays=1200ACK/6checks",
+    "extended_D02": "PASS actual34840ACK/27checkpoints; source and artifact bound separately from candidate4 scale",
+    "extended_started_utc": "2026-10-26T06:42:32Z",
+    "current_head_CI": "PR24 initialheadc372b33 PASS all11jobs; latest integratedhead CI remains pending",
+    "V08": "pending publication-authorization review",
+    "actual_published_v1_Homebrew_installed": "pending",
+    "completed_report_sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1",
+    "completed_endurance_summary": {
+      "ok": true,
+      "method": "Independent completed-report configuration/clock/accounting/receipt/checkpoint algebra, hashes and immutable72-source recheck; not a second product execution or postmortem read of disposed roots.",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+      "binary_revision": "sha256:59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+      "report_sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1",
+      "actual_work_seconds": [
+        608.5681901669595,
+        616.6623812079197,
+        615.9444065419957
+      ],
+      "total_active_seconds": 1841.174977916875,
+      "elapsed_seconds": 1923.4088054159656,
+      "main_root_mutations": 17420,
+      "main_root_replays": 17420,
+      "expected_conflicts": 10452,
+      "completed_checkpoints": 27,
+      "restored_mutations": 27,
+      "restored_replays": 54,
+      "max_restore_seconds": 24.227167541976087,
+      "max_backup_seconds": 1.3711788749787956,
+      "max_checkpoint_files": 5889,
+      "max_checkpoint_content_bytes": 6085377,
+      "max_combined_checkpoint_seconds": 27.953329332987778,
+      "ACK_per_active_second": 18.922699047006574,
+      "supervisor_child_returncodes": {
+        "restore-endurance": 0,
+        "restore-default-log": 0
+      }
+    }
+  }
+}

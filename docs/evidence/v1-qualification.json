@@ -1,0 +1,449 @@
+{
+  "schema_version": "kb.v1-candidate5-qualification.v1",
+  "publication_state": "reviewable completed factual snapshot; not stable readiness/publication",
+  "runtime_source": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+  "documentation_base": "c372b33bf3a41fd90cd1ee939c1e7c96e19ea37a",
+  "candidate_identity": {
+    "binary": {
+      "commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+      "version": "v1.0.0-candidate.5"
+    },
+    "sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46"
+  },
+  "observed_build_fields": {
+    "-buildmode": "exe",
+    "-compiler": "gc",
+    "-trimpath": "true",
+    "CGO_ENABLED": "0",
+    "GOARCH": "arm64",
+    "GOOS": "darwin",
+    "GOARM64": "v8.0",
+    "vcs": "git",
+    "vcs.revision": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "vcs.time": "2026-10-26T06:00:42Z",
+    "vcs.modified": "false"
+  },
+  "declared_build_environment": {
+    "CGO_ENABLED": "0",
+    "GOWORK": "off",
+    "GOTOOLCHAIN": "local"
+  },
+  "all_go_module_files": {
+    "cmd/kb/asset_health_test.go": "62660049a02722f51efc10149549c612112f9625",
+    "cmd/kb/backup_test.go": "649724d48b4636037f20dc9b0d034f06491ad404",
+    "cmd/kb/integration_test.go": "2530d908a8184d5ebc165f7f9d8ad29796321153",
+    "cmd/kb/main.go": "a1b60db32dbc784c91f3873ff79573bb63cc9e2d",
+    "cmd/kb/main_test.go": "b5d7d69eec4f1a8fddb34ad7397e089c2ee37f79",
+    "cmd/kb/move_fidelity_test.go": "7a9be99887f6c7de4894a61005ac9dcbd87d8519",
+    "cmd/kb/repair_test.go": "61d08d5bbae7a6364b780837b24f2f2d2a29651b",
+    "go.mod": "040a747598174b23ba8d957a7bc43406ef460ff9",
+    "go.sum": "d75a40ec8df5dc9395ea764b50b6f0c5fd4fe9cf",
+    "internal/api/backup.go": "8215add9bc63c57079d11c115d2e8bf596f11432",
+    "internal/api/generation_test.go": "fda52c64a4eb9b44339af2105c3be135c715e5ec",
+    "internal/api/revision.go": "09091b64f93e52ff9b0c41552b2eb158b5e96803",
+    "internal/api/revision_test.go": "fa7764636ce64d9a3a3f97041e979826f8edf6ba",
+    "internal/api/types.go": "16d4a59a3da8cde4be0907709195392656a297ae",
+    "internal/api/types_test.go": "eed07d6117b85ad3a0f8a502bede908fe3b69952",
+    "internal/cli/cli.go": "bbc45a40f5a61a47e30e02e5c690f189671c5b74",
+    "internal/cli/cli_test.go": "7470c77be55f7cde8b84c81ce1c77c704609aebe",
+    "internal/core/codec.go": "2a978c7b200d87aa085f3e88cdecd00e0a0d6448",
+    "internal/core/codec_test.go": "cb594bd671b8f581935ab605f9fd775cb6e606b6",
+    "internal/core/diagnostics.go": "eaea1e266038cea9ee6c8121ef78e46271544409",
+    "internal/core/graph.go": "c2a153d2dd5112e988d9f23f4a1041c3defd8032",
+    "internal/core/inventory.go": "b17c95cdff4b0b239f1c00d78514914f1150e0b6",
+    "internal/core/inventory_test.go": "99af29aa2ac2587d147323a138883fa72ebce8c1",
+    "internal/core/maintenance.go": "b530bebcf303b4457a2ed4ef5f661865ebbda955",
+    "internal/core/markdown.go": "2535e110f6c634d129f5c0ab742a6e77316020fa",
+    "internal/core/metadata.go": "08cd1664f9f6fa55d36c11a917a1d374e4df1d59",
+    "internal/core/metadata_test.go": "5d419febb93cd36dada18b5b4b6ce1639ec604d1",
+    "internal/core/performance_semantics_test.go": "d3ee669d6b9dcc55231024a82a30224700e7c1a8",
+    "internal/core/performance_test.go": "c7dab2217bb21015cb2c32b352dbbb6c34ca87c3",
+    "internal/core/read.go": "cd24f18ffb3e11fc50498acacd6bc0493db336fe",
+    "internal/core/regions.go": "d93ea5da2b62525dfd640029d04bdd23394c4562",
+    "internal/core/search.go": "7637685b09c10bbc7c31b45374f02965fb4f62cd",
+    "internal/core/store.go": "454ed66c604c7b933aea3808c7d466486ae0df63",
+    "internal/core/store_test.go": "68491722f11332f9d898d5cdc3c281f4b8f5aced",
+    "internal/filelock/lock.go": "aca873ff5f715ffcf792a8a4cc89419bf346f3cd",
+    "internal/filelock/lock_test.go": "4df8566556bbfbf2bce9f0e8c3ca95820c4f781e",
+    "internal/mcpserver/adapter.go": "0b35dbaf6f63057632be72c3c35b80b103a21b8a",
+    "internal/mcpserver/adapter_test.go": "c6129fe79ec33e1ae419f90b3a64088e6d205c54",
+    "internal/mcpserver/catalog_test.go": "71569326a02a8510ab94e0c33aa4b7c342ca5397",
+    "internal/mcpserver/guidance.go": "d3d66a11c7f7a3e460cf6b83a85066871764de1d",
+    "internal/mcpserver/server.go": "aa372421e9733fc167725cbae0a98183aa4a22d4",
+    "internal/mcpserver/server_test.go": "efce1f040d4674dbe2f1369911d3b2cfcfa0c59f",
+    "internal/mcpserver/workflow_test.go": "947d76486683464fdf3b1bbfa77debb54bd66f2d",
+    "internal/write/backup.go": "30cd6da87d157047986c5781ebd531f54801fea0",
+    "internal/write/backup_archive.go": "39d062802fc86ae72db906ad77a7476d816207f7",
+    "internal/write/backup_inventory.go": "68f49d09ffe46cfe6d96ce6c88b66c4ebff45111",
+    "internal/write/backup_manifest_test.go": "c20961fabeb74ba51b6cc389dfa62fcc4a7141c4",
+    "internal/write/backup_output_test.go": "5c5b4b5a41eb68b2697e65f29af034be31ea3797",
+    "internal/write/backup_parent_test.go": "97987ead46f10df3c559ec1f497a5749993b5482",
+    "internal/write/backup_paths.go": "3adfaf450b48d5c649bd0fda10c07786b648e8f2",
+    "internal/write/backup_restore.go": "caa7fcba270b020d34e6027f077a8d6b8cf7d725",
+    "internal/write/backup_restore_batch_test.go": "136fe1674a6fafac141467ac684b14b39e141cc2",
+    "internal/write/backup_restore_contracts_test.go": "9c847c8df21b897611e9310dfc544627c250b88a",
+    "internal/write/backup_scaling_test.go": "68aff158d1c2879978226339779bb6eb8196b841",
+    "internal/write/backup_test.go": "f7dc2c96042923384157d7d7dfc109b1a0d75c0f",
+    "internal/write/files.go": "f24710110a62c1219f5c3d763598130c8f68fe47",
+    "internal/write/files_test.go": "135713b14a79a268fc959e351c932cef3774cac6",
+    "internal/write/incremental.go": "de7d33e4aca8c5497545f4d031b2cf418ee98918",
+    "internal/write/incremental_test.go": "9daeee70084840bb90619ed1b322b34a53319ffa",
+    "internal/write/inspection.go": "23e62af3dbe90e1b8153a87473eaacb0b63aeda7",
+    "internal/write/inspection_test.go": "719fa0d85928197720da3b6362f48976124b7388",
+    "internal/write/integration_review_test.go": "64a7b525266d15a556627d8e554be302de4c5803",
+    "internal/write/links.go": "8e039809cab38517b7800bff47953a1c1048e624",
+    "internal/write/markdown.go": "4c42d5ca89cb1b7b7562f4adb3a942be7d52a2c7",
+    "internal/write/markdown_test.go": "f0386319742976ca40c52589ee77acf205fbf175",
+    "internal/write/navigation.go": "135dcacf45865f10a5d3f72d043d1b39ee962a5e",
+    "internal/write/operational_resilience_test.go": "e9528fcc7783ae92aed6dfc064dcc0a48742df98",
+    "internal/write/plan.go": "b038539dced7bc5ab9a9f181ecc2669732f1cb34",
+    "internal/write/policy_test.go": "35c24c52beb94fcdee5c53d67f292c47edab9f24",
+    "internal/write/reserved_test.go": "6f1cd47a9174971eff02fbd0f13b2d26106df3f0",
+    "internal/write/service.go": "c87d122ad6b6c50c24bd079a879535b82d76a445",
+    "internal/write/service_test.go": "9b75e7ca377c4093732d9fb00b52d312e4995bba"
+  },
+  "source_file_sha256": {
+    "cmd/kb/asset_health_test.go": "0911cfa0f0a4a7c7f2c7f2b046b256ca609abb8cfb532dc4cf4bd6df686a47d7",
+    "cmd/kb/backup_test.go": "a50c80c9896d61f920e25110f2b3e61a476d49cdbb39109e0699ec7a024c80b1",
+    "cmd/kb/integration_test.go": "412a09d170316573237a1f98946f4ce610a87b0eb63cac009defad2d812e5203",
+    "cmd/kb/main.go": "5289730498d181841c04db4c404596132613291e685e10b97e94ccde4051baca",
+    "cmd/kb/main_test.go": "b8b9dafe7994174c046be21ef2a29dbdb21ad34c7552f7c0c6d3934264e6570d",
+    "cmd/kb/move_fidelity_test.go": "e2f6d038a9de6322ec746ad8c4cdb4e999b6d6ad599fc97dc35dc640cf0e0845",
+    "cmd/kb/repair_test.go": "a8e9b2a14bdcb97f4854f67aff2da296c92dedd323616c79f9a7a91f77904dcc",
+    "go.mod": "a2113cbde3cc5d3be0d0b6b17ca7964cb2a9d65b3117ecd08c69da89b8d79b39",
+    "go.sum": "df303a94ab7e57afa131f73afe975adfb199770e81b8efcc89fec9d7c128e862",
+    "internal/api/backup.go": "49f33d7f069f701a5ef114c61ec6b87d7011a007bb8cd41f576505c9c495355c",
+    "internal/api/generation_test.go": "0a5c27dd5234047cdf8e8a5eac3941fd247597335a236a96238714731773b2c7",
+    "internal/api/revision.go": "8df3953cb8f71cf485b3e9f2491d7be201bad1f5652797e78028f0e4be310ae0",
+    "internal/api/revision_test.go": "88ce3059da859ab6f332d62af57be1cb0b9ee5456d68f589c89f2909e8e3e78d",
+    "internal/api/types.go": "470b416284d4da6362049b2228fcdf5fb3ae41f91e6b3b54a496afbc0227b353",
+    "internal/api/types_test.go": "f108263899493742a44150e903dfe0858b76cda9425047d048ee8db37abaa2b9",
+    "internal/cli/cli.go": "cb3a4ad1cdd84a52c89b63ff5513c88f34011523d84600e8dc01b503010c4398",
+    "internal/cli/cli_test.go": "f0a54411096b76bb82084cd10834df6e6dc4d72f0f581a5df1c112cc2014aa30",
+    "internal/core/codec.go": "4aae4a9241c06d8f5c1190b2688aa60ea3badc1065cd2c73dc9fe0f81daa130f",
+    "internal/core/codec_test.go": "f6aadfe58d7e01647f75b267f046283610005cba4328c60e1bddd2ec4a69be25",
+    "internal/core/diagnostics.go": "5a3787590365b1ecd2e79d7bf8da589f5445a33dee7aa0c23d4e3642f8a5b4b3",
+    "internal/core/graph.go": "2c76f481b60ff55776297182a56bcde1b57741d59f7d7540f8e3498be66c6f7f",
+    "internal/core/inventory.go": "92dbcce688ffafabdf0541e83f44e6ed823760282095d39736b674b0f3e69649",
+    "internal/core/inventory_test.go": "70b64039ee6f1fab15b4a05ddc26df980cefc4f2fdc4e3d85a4db89b6683945b",
+    "internal/core/maintenance.go": "af4357978dbf290174017b368a30d010286dcbd1215bef9817a74e44ffcc61c8",
+    "internal/core/markdown.go": "d37f005db7d496dd6687a7e066d7200bc13ecbc8006bf034b7536b80c48064b7",
+    "internal/core/metadata.go": "8449ab176a146743dbd974adc52e8267818de7f76c114f76d9d38e3295e28a31",
+    "internal/core/metadata_test.go": "3095ef8f177329efe72bb7e2474223ae9a585df0a70fdb58744b497411a25fce",
+    "internal/core/performance_semantics_test.go": "4d5acb58a0511f5aa3b97d730ccf3a87d84051bc4b051bddccf4811a5752f32d",
+    "internal/core/performance_test.go": "63a93b7c89184886007e8e3aa9fbca918308e7c6217b847f1d3a99d5fa0aa49c",
+    "internal/core/read.go": "70d3186eb3f13546aee8b9d0bdaf2825afd6fc0d5f20b8a1265c25ead11609fd",
+    "internal/core/regions.go": "c41055c555414ce6490ca37f82c4990424456dfa2ab4bda33028e3f964acf038",
+    "internal/core/search.go": "346bd753b3b6f58ae42528f5c4fb46dd1a949a5a3d28d32d7510a4365145704a",
+    "internal/core/store.go": "eb3d329de205555e9c15bfb165a63ee7e0090081b7f70dd9757e86af88f95b6d",
+    "internal/core/store_test.go": "3882d5bfb6e12ddc8088277f545bd02f7839d680fbdaa9622131b3e49fdff50d",
+    "internal/filelock/lock.go": "d08ef7ba288eb2be738b47e3b980f861b3cefe56af8bdc832c9ba6a10b6763ae",
+    "internal/filelock/lock_test.go": "b23d0876dcf05d03563493043e8979d06647a8195e113675732c5f5092cbc013",
+    "internal/mcpserver/adapter.go": "55197a596c515fae285711cc60418b573fbb7c199aae9af5cf0bc4301e457729",
+    "internal/mcpserver/adapter_test.go": "fe56123f51373fca6803d000866f0e53a11bdea5f532102b71af01e344f0e3cf",
+    "internal/mcpserver/catalog_test.go": "c7eaf0574944a35da3ee85a791f0ca289eb4b2632b4c7013766ee36b6c12f43e",
+    "internal/mcpserver/guidance.go": "b31e4361acf8a4ce9ecfa4b22e768dc9578b2466c6649f667533486fc60d7e55",
+    "internal/mcpserver/server.go": "6c07d2b0043bc80c1b77eb0aa90cc1dc8bb184b233a366bfe6f33f521bc58988",
+    "internal/mcpserver/server_test.go": "a53d71f58d7ef30969f61c85305c0bfc3b739166d702e4720b3472d0eec9702a",
+    "internal/mcpserver/workflow_test.go": "fec3b63fd052adb5385ea2cdf3482c72ee2fc7babc34cd881da81763edfdc40a",
+    "internal/write/backup.go": "803b84764339ed90c16cb35ff58471b5d1685b90a5daebc7bbda4187e6b37821",
+    "internal/write/backup_archive.go": "101fb96600fc1d98ec71a68e0af1b9dd4a215a470c9360a46dd0277236b72d01",
+    "internal/write/backup_inventory.go": "385a2239266892be978e4aedbf434408e6427ed36361966db5ec2611328220a3",
+    "internal/write/backup_manifest_test.go": "49124b3636c1d49192a7d5f57d2bda2ddbf4906a73f6c5b10a486e09b7bbf57f",
+    "internal/write/backup_output_test.go": "00884bed4673ef2424378975adc0a278de409d275e5530867d81f95986c1a205",
+    "internal/write/backup_parent_test.go": "7f3caaa55e5c17e716f23df1c1fe800a6e210b277fa39fa598f3641f5be1dae8",
+    "internal/write/backup_paths.go": "e11f17d837834fd6986135a2b06d86ca317a7707b17b5b6c5bbf7aa97eee7b44",
+    "internal/write/backup_restore.go": "889010fa365fd7700c95e853e7ab5351e2e0e21983ac24ec49f42f4f22b193d3",
+    "internal/write/backup_restore_batch_test.go": "b2af82af22e1b22fa92d0cd6355540c14b38a850eacc48fbac5092aa607d0473",
+    "internal/write/backup_restore_contracts_test.go": "166c6703e541c774e76d129ecd1a4fd7389bc9f8636a392c123c00553e52b285",
+    "internal/write/backup_scaling_test.go": "f87c41232a4cd113713adf77ade17bab819298113ae4495f308af3a31f992471",
+    "internal/write/backup_test.go": "2e1aceac0676c3f7c8370188b06551c7eaf28a35f15d52f56d17a8ea10bebcf4",
+    "internal/write/files.go": "7e3d0c693941d344047694f1e794e0bd3c301720ad6c2df934b76e3e3fc929e2",
+    "internal/write/files_test.go": "2cb67286aad85b8b814b36dc991ec1b5ff09cdd14b993739a614558cf7e5d7d4",
+    "internal/write/incremental.go": "b6e59b5c2566c0ff6f7e2e0cc550e613079f113f40d2043910158618ceac0482",
+    "internal/write/incremental_test.go": "728497a9433064421895e7f7a90f121f73a987a1c30e845c984fe2e67435fc38",
+    "internal/write/inspection.go": "f35abe2b78f142f73073971d45f0099d2ba2561e1bad6155133720e592ab24ba",
+    "internal/write/inspection_test.go": "738ed8b6d10838416c0e2ff0fbab6c224270c3f624a1d12502e34973d824d517",
+    "internal/write/integration_review_test.go": "c6dea23c1a6a4afee30a472b08f0b0da2331a7ec54c2d59eecba548830333aa4",
+    "internal/write/links.go": "4e506598dbc7e7adf184cbf1b1523d5da9abd9eb388e8ec59fa6f5e64e8cb640",
+    "internal/write/markdown.go": "e10c17f5bb17984642bf0a49e5159eff969ee18e5fa589858505b384442b5cb9",
+    "internal/write/markdown_test.go": "16fb291cf0c06c4373093141f6b6a8d99f52e74ed01267181946f86fa3929579",
+    "internal/write/navigation.go": "4d94c41d9ef8a2ad138228bd96c7da0193947d5a2438c9ec2fb910d008d9325e",
+    "internal/write/operational_resilience_test.go": "dc199577a9e23bcd799772588998ca53be7f05422cfc539b552b9122ea65e619",
+    "internal/write/plan.go": "09f50b6238a4154645a89e35e3c95d161cbe4ac429fe2a80e13772e71e66f636",
+    "internal/write/policy_test.go": "710c8bc35e24960dc3bd63534b7f26c1daffb505852aa0a078c03532371aaf97",
+    "internal/write/reserved_test.go": "3c8b01bc57e49d1a8de11e3485c4bdeefcdee289a72adea2b2ccc53576388a5b",
+    "internal/write/service.go": "27037fd2c0c77b31268ef34d1526f4c6a87ac9e55b5179811d74f85db62fbb63",
+    "internal/write/service_test.go": "b0d10b6f27a48d1492dc88cff8e754950d7e51d2eefeb1b28147afa927e67da8"
+  },
+  "all_go_module_map_sha256": "567d8104823d1f31b0ab22ab94cf2c761fdb2db78438d1afa9cb75434864af25",
+  "source_map_definition": "All tracked *.go plus go.mod/go.sum, including tests; sorted compact path-to-Git-blob-OID JSON.",
+  "production_source_equivalence": {
+    "owner": "38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6",
+    "root_integration": "5477946be88ef574499a07a7eabe7aa8b6bcc084",
+    "candidate5": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "only_changed_paths": [
+      "internal/write/backup_restore_batch_test.go",
+      "internal/write/backup_restore_contracts_test.go"
+    ]
+  },
+  "operational_harnesses": {
+    "scripts/soak.py": {
+      "sha256": "277d9bad9f63a369c5791f222fdf3709d3c74a84fd169db02363684d740d05d0",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    },
+    "scripts/compatibility.py": {
+      "sha256": "b1fe0c1d65c2c2e78e379b787be2a15fab5f6426a0aa01f96b39624bb9b08c49",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    },
+    "scripts/retrieval_eval.py": {
+      "sha256": "ae329dcafafc89868136eecaaa49b6a6d7d7fba1934fb17c0e74eae52df64dd5",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    },
+    "scripts/benchmark.py": {
+      "sha256": "5ca637bb4b5805622d3de7f6c5c9bb5d544e91723c842545c6e8c1f0a972ff73",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    },
+    "scripts/acceptance.py": {
+      "sha256": "41e5f3efe8247a2bd7863e5d290903e87bc13171b4a99a7c5a0264a16179cb26",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    }
+  },
+  "source_gates": {
+    "ok": true,
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "command": "GOMAXPROCS=2 make check under shared lock",
+    "log_sha256": "0cdf24246f4e891eba75d4f0cb8a3b1a3a51826ae058e84e26750dbec76b6324",
+    "tooling_tests": 93,
+    "go_coverage_percent": 88.8,
+    "fuzz_targets": 12,
+    "cross_builds": 4,
+    "retrieval_passed": true,
+    "soak_smoke_ack": 80,
+    "limits": "Source qualification; not actual published v1 or a substitute for the separate completed D02/D03 observations.",
+    "documentation_requests": 43
+  },
+  "source_snapshot": {
+    "ok": true,
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "go_module_files": 72,
+    "command": "make release-snapshot under shared lock",
+    "candidate_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+    "limits": "Four archives inspected; native Darwin arm64 and archived-source workflows executed locally. Not actual published v1, native Linux or Homebrew proof."
+  },
+  "remote_CI": {
+    "previous_main_CI": {
+      "source_commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
+      "url": "https://github.com/matheus3301/kb/actions/runs/40264275136",
+      "status": "historical PASS, not candidate5 sign-off"
+    },
+    "documented_PR_url": "https://github.com/matheus3301/kb/pull/24",
+    "documented_head": "c372b33bf3a41fd90cd1ee939c1e7c96e19ea37a",
+    "latest_post_evidence_integration_head": "pending; requires exact-head passing CI after evidence integration",
+    "documented_head_status": "PASS all11Linux/macOS jobs includinggate",
+    "documented_head_CI_url": "https://github.com/matheus3301/kb/actions/runs/40285002580",
+    "latest_known_integrated_head_prefix": "503d758"
+  },
+  "observed_components": {
+    "D01": "PASS fresh47parity pairs/17category validations; original judgments retained",
+    "D02": "PASS actual candidate5 extended34840ACK/27checkpoints/three>=600second seeds plus separate default-log1200ACK;105test-child cases passed",
+    "D03": "PASS whole16resource rows/three core targets independently accepted; all raw ordering/drift retained",
+    "D04": "PASS actual pinnedv0.3.1eight-check/v0.4.0nine-check prior upgrades including real prior-v0.4.0archive; postpublication package/install proof pending"
+  },
+  "V08": "pending independent publication-authorization review; focused R1/D03 reviews do not satisfy it",
+  "published_installed": "v0.4.0",
+  "published_v1_installed_proof": null,
+  "release_binding": "Actual final docs/release commit and rebuilt executable bytes must be recorded separately; source/test equivalence never implies identical artifacts.",
+  "input_registry": {
+    "candidate5-identity.json": {
+      "sha256": "a50c15cc4d9ebab03348627078b347aad4de379aba2a030e5705a9c703803a7c",
+      "bytes": 1019
+    },
+    "candidate5-build-info.txt": {
+      "sha256": "edd255493f5bfc6dae3a2d6b51821a1d93d25535599c0252662c86e254bf4caa",
+      "bytes": 1641
+    },
+    "restore-source-freeze.json": {
+      "sha256": "883f427a736dc405a5de978b93479e274acc9046e500b441827d457aa945621a",
+      "bytes": 7946
+    },
+    "restore-full-check-receipt.json": {
+      "sha256": "2d89806169989b42901ec6c4f02beb8ae4e1977a77f031f698725e247587c13f",
+      "bytes": 452
+    },
+    "restore-final-snapshot-receipt.json": {
+      "sha256": "a24ea61ca752b27dd6473262c3087c613b14e6e0691ba0afbc06ff76751465fc",
+      "bytes": 382
+    },
+    "restore-final-full-check.log": {
+      "sha256": "0cdf24246f4e891eba75d4f0cb8a3b1a3a51826ae058e84e26750dbec76b6324",
+      "bytes": 602032
+    },
+    "restore-final-snapshot.log": {
+      "sha256": "3758b1ff5302a6f0204e22b6c97a84e9d5e39018a2e4a369d8da771dd2f910a6",
+      "bytes": 3097
+    },
+    "restore-verified-budget-results.json": {
+      "sha256": "88c5e515e99d31f8502f850d2ce15cad2a681263fd5f730f297952a3e9efe20e",
+      "bytes": 64090
+    },
+    "restore-verified-plan.json": {
+      "sha256": "fca11ab0023a99eb7dcc9f4f53d176b584639f0eac5f96b11597157079322092",
+      "bytes": 20451
+    },
+    "restore_review/candidate5-d03-audit.json": {
+      "sha256": "e14d971fc5ed39f14aba68cae55639bdd36165a7b09af39179f8093542b3861a",
+      "bytes": 22518
+    },
+    "restore-verified-baseline.json": {
+      "sha256": "0a3660255b8f1fbdb6b2756f30b97a7a15b71a25e5debfb7bcf3ade38b3ae8f7",
+      "bytes": 18950
+    },
+    "restore-verified-baseline.log": {
+      "sha256": "d781db560f7744650361ee883f2127f59ecebc95d4d760ca9f6359cee6fe572d",
+      "bytes": 9979
+    },
+    "restore-verified-baseline.raw.json": {
+      "sha256": "8e887551c540fc2b63e59fccac274a09ff545fa0bcd2444d8f09494af8478974",
+      "bytes": 64313
+    },
+    "restore-verified-baseline-rebuild.json": {
+      "sha256": "4756bac3a9763d636190bd438f3050155b66b90f57058f8e1651712768450e15",
+      "bytes": 1873
+    },
+    "restore-verified-baseline-rebuild.log": {
+      "sha256": "8e292042fa4eec356453d59cfd4fa4dabbe05109c148b4a56ba01818a3419d7a",
+      "bytes": 719
+    },
+    "restore-verified-baseline-rebuild.raw.json": {
+      "sha256": "8af586c40b3533858a5699dafdae31c57d858dfda9ce51416b2ab3c2adfbf357",
+      "bytes": 4196
+    },
+    "restore-verified-candidate.json": {
+      "sha256": "4c9018204f1d0e0e60829ec95d4cc95249038eee499a1b2d9c88fa31175e0a91",
+      "bytes": 18974
+    },
+    "restore-verified-candidate.log": {
+      "sha256": "7cf674a4570528f0017728c7bd315b201c7813911e4c3340678aca76ff85ac4a",
+      "bytes": 9991
+    },
+    "restore-verified-candidate.raw.json": {
+      "sha256": "c73006253d8f37c7bbd0c0a223b2d385d1e6e7cededbcfaa526c8b636aeed48b",
+      "bytes": 64325
+    },
+    "restore-verified-candidate-rebuild.json": {
+      "sha256": "0fdcdc1bbf55c603e279091136734262e4ec16b4ffe06e211e9a50e39f1b25d0",
+      "bytes": 1876
+    },
+    "restore-verified-candidate-rebuild.log": {
+      "sha256": "62b161a9e1d6dfa3b9d38d03ab86313ad7187355223315aac6a57d5be1e98892",
+      "bytes": 710
+    },
+    "restore-verified-candidate-rebuild.raw.json": {
+      "sha256": "d315e98c357d5d574cb812c566d840bc4b6b39feace3156435a5024ce5648750",
+      "bytes": 4179
+    },
+    "restore-verified-core.log": {
+      "sha256": "dbc0a2671a23b3567c692e45000ab2df0f0ad81e949e51e4f13e635e9b2e93f0",
+      "bytes": 471
+    },
+    "restore-verified-core-bench": {
+      "sha256": "83787d975dd2462b24179db3547144f25a42edbe4138cf1845b5a71c7a58a735",
+      "bytes": 8406642
+    },
+    "restore-verified-run.json": {
+      "sha256": "5fe413f35b326daf983978aaded106af211fdf01fe5ecb0f35f18063f5a4fd57",
+      "bytes": 5139
+    },
+    "restore-retrieval.json": {
+      "sha256": "84dae44b79581765751e58fa19ad1a47d11a930afa0a579cd854f9dc586c0a8a",
+      "bytes": 9379
+    },
+    "restore-retrieval-categories.json": {
+      "sha256": "e40180f64dce39112d81a4618c626272df78a2f41c065b9e7aed45e8de7bd060",
+      "bytes": 32359
+    },
+    "restore-v031-compatibility.json": {
+      "sha256": "13294590c71b48fe4c98fcfbf60c2a8f043b19a4fedfbbf4eadffc05cf565921",
+      "bytes": 2941
+    },
+    "restore-v040-compatibility.json": {
+      "sha256": "07e59d35fe722429030ec7ed4da1c9f094cff8e0a39dc409c9450a8e392fca9c",
+      "bytes": 3519
+    },
+    "restore-interruptions-summary.json": {
+      "sha256": "f3c58d62aafd061bc92ecc0f11674e8305c6144e0fc38cc22c1538f96d0cbad5",
+      "bytes": 617
+    },
+    "restore-interruptions.jsonl": {
+      "sha256": "97e239fb44bf565954b6781a2dad8ea079c4b023374ddece5d20acc9804802f4",
+      "bytes": 116410
+    },
+    "restore-default-log.json": {
+      "sha256": "ca6d607ce1dc6ac669fe26bb892657f0792e9810dfe5464300bf9fede86f1d1a",
+      "bytes": 9838
+    },
+    "scale-native-paired-6000.json": {
+      "sha256": "24e1bdbddf335d48e050fcc80d32b34ab2926ff8a73d907e07659c6abd1708b6",
+      "bytes": 8987
+    },
+    "restore_review/committed-production-review.json": {
+      "sha256": "643d37d9afb3f16d9ddd20246184ce1024df61e0baf0130a2742b1ce48428381",
+      "bytes": 14275
+    },
+    "restore_review/final-source-pin-review.json": {
+      "sha256": "d0c38c8d0c996d34440dffca54acd6c09b1734856b3c0fd2d0dc86812ce47b73",
+      "bytes": 4999
+    },
+    "candidate5-functional-receipt.json": {
+      "sha256": "a753b11c3c1a78d9b560084315043d7fc8128f44c723b50cdb1c433775c87494",
+      "bytes": 1031
+    },
+    "restore-endurance.json": {
+      "sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1",
+      "bytes": 17872
+    },
+    "restore-endurance-verified-summary.json": {
+      "sha256": "63c2c7c703dabb1c80ae8039ee59504cf0945d96cd537797497339e1e321bc8f",
+      "bytes": 2247
+    },
+    "coordinator-facts-completed-snapshot": {
+      "sha256": "8d16e700e0521a66d65e60a88df8d96f946a041dc58ad31210d530c4ee52b20d",
+      "bytes": 7888
+    },
+    "coordinator-facts-running-snapshot": {
+      "sha256": "96e2dd97dff29f8981410ebeaefa06d0f8b9c12b3df3f35e8b01b9001eeb4783",
+      "bytes": 5366
+    }
+  },
+  "editor_actions": "Read-only Git/source/artifact hashes and independent Python arithmetic only; no builds/tests/benchmarks/profiles/product commands.",
+  "remaining": [
+    "Local D01-D03/V01-V06 evidence is complete; latest exact integrated-head hosted CI remains required.",
+    "Independent V08 publication-authorization review of completed evidence.",
+    "Separately authorized publication, package/tap/Homebrew and installed consumers."
+  ],
+  "functional_receipt_attribution": {
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "binary_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+    "ok": true,
+    "scope": "Completed CLI/MCP retrieval, actual preserved prior-version upgrade/archive and deterministic interruption driver receipt; no new execution by evidence editor."
+  },
+  "public_evidence": {
+    "v1-resources.json": "docs/evidence/v1-resources.json",
+    "v1-retrieval.json": "docs/evidence/v1-retrieval.json",
+    "v1-reliability.json": "docs/evidence/v1-reliability.json",
+    "v1-compatibility.json": "docs/evidence/v1-compatibility.json",
+    "v1-restore-production.json": "docs/evidence/v1-restore-production.json",
+    "v1-qualification-history.json": "docs/evidence/v1-qualification-history.json"
+  },
+  "qualification_report": "docs/qa/v1-qualification.md",
+  "public_projection_sha256": {
+    "v1-resources.json": "4395fa20edc88e5d1cfbd27aceb2e0edbc279915ab360895795e3e2891fd1cb7",
+    "v1-retrieval.json": "5826158448dad28f12a76de8afe9df3f5485e058270af439bcfbefa544049cc0",
+    "v1-reliability.json": "a40b0d2a65bc3765f0505683fd932f7eb8b74d8a8d15b21579c00f4c6763cfb8",
+    "v1-compatibility.json": "3d5ec09defd177b9307e94093e027e84ef9fe6a72efefef57199e680c4d9981c",
+    "v1-restore-production.json": "ef843aba1c96e7d9fb85b1a16cb8171cfe0ae916ef37b39591fa4349e5ea9d55",
+    "v1-qualification-history.json": "e98fb6fb5218b263cd1208f259c5de63f00260a38e942116066d37b5d8c3fec8"
+  },
+  "input_registry_snapshot_scope": "Coordinator-facts-running-snapshot and coordinator-facts-completed-snapshot are distinct captured hashes of the coordinator facts input before and after completion; the later snapshot supersedes only current status, not history."
+}

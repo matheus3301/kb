@@ -1,0 +1,2497 @@
+{
+  "schema_version": "cold-cli-performance-evidence.v1",
+  "status": "passed-local-resource-budgets-not-stable-release-readiness",
+  "observation_window_utc": {
+    "started": "2026-10-26T03:47:53Z",
+    "finished": "2026-10-26T03:56:38Z"
+  },
+  "source": {
+    "ascii_integrated_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+    "release_recipe_integration_commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
+    "code_url": "https://github.com/matheus3301/kb/blob/b71c0763c87313666b3dd79da08da12b7b3512c1/internal/core/search.go",
+    "release_recipe_url": "https://github.com/matheus3301/kb/blob/5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7/Makefile"
+  },
+  "artifacts": {
+    "baseline": {
+      "version": "v0.3.1",
+      "source_commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+      "sha256": "0f6267b05e3eb80ae053cd113aecdb61b3d6e29bd74451b9dc658578b9643238",
+      "observed_build_info": {
+        "go_version": "go1.27.3",
+        "CGO_ENABLED": "0",
+        "GOOS": "darwin",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "-trimpath": "true",
+        "-compiler": "gc",
+        "-buildmode": "exe"
+      }
+    },
+    "candidate": {
+      "version": "v1.0.0-candidate.3",
+      "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+      "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+      "observed_build_info": {
+        "go_version": "go1.27.3",
+        "CGO_ENABLED": "0",
+        "GOOS": "darwin",
+        "GOARCH": "arm64",
+        "GOARM64": "v8.0",
+        "-trimpath": "true",
+        "-compiler": "gc",
+        "-buildmode": "exe"
+      }
+    }
+  },
+  "artifact_scope": "Baseline is preserved actual Homebrew v0.3.1; candidate is release-shaped development v1.0.0-candidate.3, not published/installed stablev1.",
+  "environment": {
+    "cpu": "Apple M4",
+    "logical_cpus": 10,
+    "system": "Darwin",
+    "darwin_release": "25.6.0",
+    "macos_version": "26.6.2",
+    "architecture": "arm64",
+    "go": "go1.27.3",
+    "python": "3.14.4",
+    "GOMAXPROCS": 8
+  },
+  "build_environment": {
+    "CGO_ENABLED": "0",
+    "GOWORK": "off",
+    "GOTOOLCHAIN": "local"
+  },
+  "candidate_declared_link_flags": "-s -w -X main.version=v1.0.0-candidate.3 -X main.commit=b71c0763c87313666b3dd79da08da12b7b3512c1",
+  "build_provenance_limit": "CLI CGO/toolchain/target/trimpath were inspected and version/source asserted by actual execution. Not all environment/linker flags are encoded in Go build-info; stripping/environment provenance is separately declared, not inferred from CGO0.",
+  "method": {
+    "notes": [
+      10000,
+      50000
+    ],
+    "note_bytes": 2048,
+    "synthetic_group_size": 500,
+    "query": "quartzbeam recovery",
+    "read_samples": 20,
+    "repair_samples": 3,
+    "rebuild_samples": 5,
+    "core_warm_iterations": 20,
+    "order": [
+      "baseline normal",
+      "candidate normal",
+      "baseline both-size rebuild",
+      "candidate both-size rebuild",
+      "candidate core20"
+    ],
+    "cold_definition": "Fresh CLI process without in-process note/index cache; OS cache not evicted, not cold-disk IO.",
+    "cli_rss": "wait4 peak of each fresh child; excludes Python/fixture creation",
+    "mcp_rss": "one reused-process whole-session peak per corpus, shared by three operations; not per-request memory",
+    "first_and_max": "CLI first is included in samples; MCP first request per operation is separate from20warm samples; max_ms covers sampled/warm values and all_requests_max_ms additionally includes MCPfirst.",
+    "quantile": "Original nearest-rank CLI/MCP p95: rank19of20; repair3/rebuild5 p95 equals maximum. Core20 uses original integer-index selection, also rank19.",
+    "recorder": "Original accepted recording adapter, original measured functions, no CPU/wait4 diagnostic hook or new timed bookkeeping",
+    "recorder_sha256": "1de6bc70e6fbf3199f886f62c045ebf7ccb2ac9a3261a3eba6c247a8b3b00ac0",
+    "public_benchmark_sha256": "5ca637bb4b5805622d3de7f6c5c9bb5d544e91723c842545c6e8c1f0a972ff73",
+    "native_quiet_proofs": [
+      {
+        "checked_utc": "2026-10-26T03:47:52Z",
+        "worker_count": 4,
+        "settled_count": 4,
+        "streaming_count": 0,
+        "compacting_count": 0,
+        "pending_async_count": 0,
+        "queued_message_count": 0
+      },
+      {
+        "checked_utc": "2026-10-26T03:47:53Z",
+        "worker_count": 4,
+        "settled_count": 4,
+        "streaming_count": 0,
+        "compacting_count": 0,
+        "pending_async_count": 0,
+        "queued_message_count": 0
+      },
+      {
+        "checked_utc": "2026-10-26T03:47:54Z",
+        "worker_count": 4,
+        "settled_count": 4,
+        "streaming_count": 0,
+        "compacting_count": 0,
+        "pending_async_count": 0,
+        "queued_message_count": 0
+      },
+      {
+        "checked_utc": "2026-10-26T03:52:10Z",
+        "worker_count": 4,
+        "settled_count": 4,
+        "streaming_count": 0,
+        "compacting_count": 0,
+        "pending_async_count": 0,
+        "queued_message_count": 0
+      },
+      {
+        "checked_utc": "2026-10-26T03:56:00Z",
+        "worker_count": 4,
+        "settled_count": 4,
+        "streaming_count": 0,
+        "compacting_count": 0,
+        "pending_async_count": 0,
+        "queued_message_count": 0
+      },
+      {
+        "checked_utc": "2026-10-26T03:56:16Z",
+        "worker_count": 4,
+        "settled_count": 4,
+        "streaming_count": 0,
+        "compacting_count": 0,
+        "pending_async_count": 0,
+        "queued_message_count": 0
+      },
+      {
+        "checked_utc": "2026-10-26T03:56:31Z",
+        "worker_count": 4,
+        "settled_count": 4,
+        "streaming_count": 0,
+        "compacting_count": 0,
+        "pending_async_count": 0,
+        "queued_message_count": 0
+      },
+      {
+        "checked_utc": "2026-10-26T03:56:38Z",
+        "worker_count": 4,
+        "settled_count": 4,
+        "streaming_count": 0,
+        "compacting_count": 0,
+        "pending_async_count": 0,
+        "queued_message_count": 0
+      }
+    ],
+    "isolation_limit": "Fresh four-worker native-state proofs at eight boundaries plus reserved execution slot/coordinator isolation, not continuous whole-OS monitoring. Earlier mirror-idle records alone were not native proof; no actual past overlap is inferred.",
+    "exclusions_or_selected_cells": false,
+    "cpu_diagnostics_used": false
+  },
+  "candidate_budget_result": {
+    "operation_size_rows": 16,
+    "all_operation_rows_pass": true,
+    "core_targets": 3,
+    "all_core_targets_pass": true,
+    "portable_sla": false
+  },
+  "operations": [
+    {
+      "notes": 10000,
+      "operation": "CLI search",
+      "transport": "cli",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 320.038,
+        "p95_ms": 489.321,
+        "first_ms": 332.378,
+        "max_ms": 494.835,
+        "sample_durations_ms": [
+          332.37775,
+          320.009166,
+          318.336167,
+          317.545792,
+          323.348791,
+          494.835167,
+          320.06625,
+          319.654208,
+          316.415084,
+          319.827792,
+          318.604042,
+          323.05475,
+          326.516208,
+          318.352541,
+          489.320709,
+          320.123791,
+          320.930666,
+          321.002125,
+          318.689333,
+          319.703458
+        ],
+        "peak_rss_mib": 115.984,
+        "sample_peak_rss_mib": [
+          109.015625,
+          106.765625,
+          108.21875,
+          109.984375,
+          113.90625,
+          106.296875,
+          106.5625,
+          110.59375,
+          110.5,
+          110.21875,
+          108.46875,
+          111.0625,
+          110.59375,
+          109.03125,
+          115.984375,
+          106.953125,
+          109.15625,
+          108.140625,
+          106.921875,
+          107.28125
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 284.181,
+        "p95_ms": 291.584,
+        "first_ms": 290.57,
+        "max_ms": 348.033,
+        "sample_durations_ms": [
+          290.569917,
+          285.584625,
+          283.547458,
+          284.968666,
+          284.397833,
+          283.154209,
+          283.363375,
+          284.997333,
+          283.965042,
+          283.949875,
+          283.67425,
+          282.248708,
+          283.641083,
+          286.101042,
+          286.391667,
+          348.032625,
+          291.584375,
+          283.597292,
+          285.673542,
+          281.876708
+        ],
+        "peak_rss_mib": 115.75,
+        "sample_peak_rss_mib": [
+          111.78125,
+          114.796875,
+          113.890625,
+          114.828125,
+          115.578125,
+          114.546875,
+          114.703125,
+          115.75,
+          114.203125,
+          114.515625,
+          115.734375,
+          115.640625,
+          114.75,
+          113.984375,
+          115.75,
+          114.859375,
+          112.359375,
+          113.21875,
+          114.1875,
+          114.703125
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -35.857,
+          "percent": -11.203982
+        },
+        "p95_ms": {
+          "absolute": -197.737,
+          "percent": -40.410487
+        },
+        "first_ms": {
+          "absolute": -41.808,
+          "percent": -12.57845
+        },
+        "max_ms": {
+          "absolute": -146.802,
+          "percent": -29.666859
+        },
+        "peak_rss_mib": {
+          "absolute": -0.234,
+          "percent": -0.201752
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 380,
+        "rss_ceiling_mib": 130,
+        "pass": true
+      }
+    },
+    {
+      "notes": 10000,
+      "operation": "CLI read",
+      "transport": "cli",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 174.392,
+        "p95_ms": 177.557,
+        "first_ms": 173.637,
+        "max_ms": 177.58,
+        "sample_durations_ms": [
+          173.636875,
+          171.642209,
+          173.954792,
+          175.015583,
+          172.2545,
+          176.66675,
+          176.638541,
+          176.013292,
+          177.579625,
+          175.213,
+          172.379167,
+          173.345666,
+          175.077084,
+          171.433084,
+          172.388417,
+          174.059333,
+          174.888541,
+          173.893875,
+          174.724958,
+          177.557125
+        ],
+        "peak_rss_mib": 100.719,
+        "sample_peak_rss_mib": [
+          100.5625,
+          95.28125,
+          98.953125,
+          97.453125,
+          98.109375,
+          100.71875,
+          95.15625,
+          98.90625,
+          99.859375,
+          94.578125,
+          95.828125,
+          94.328125,
+          94.859375,
+          93.953125,
+          95.125,
+          99.390625,
+          100.296875,
+          98.921875,
+          97.96875,
+          100.65625
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 176.592,
+        "p95_ms": 177.75,
+        "first_ms": 175.218,
+        "max_ms": 179.629,
+        "sample_durations_ms": [
+          175.218417,
+          175.986792,
+          175.935208,
+          176.723542,
+          177.345875,
+          174.23975,
+          175.83325,
+          176.144542,
+          175.839875,
+          176.670417,
+          177.380084,
+          177.443208,
+          179.62925,
+          176.512917,
+          177.678208,
+          177.727667,
+          177.750417,
+          175.625292,
+          175.604375,
+          177.41275
+        ],
+        "peak_rss_mib": 98.984,
+        "sample_peak_rss_mib": [
+          98.625,
+          97.71875,
+          97.25,
+          96.25,
+          98.984375,
+          97.90625,
+          97.40625,
+          95.34375,
+          97.59375,
+          98.03125,
+          97.703125,
+          96.609375,
+          97.5,
+          96.4375,
+          95.953125,
+          97.484375,
+          97.015625,
+          97.578125,
+          97.0625,
+          97.421875
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": 2.2,
+          "percent": 1.261526
+        },
+        "p95_ms": {
+          "absolute": 0.193,
+          "percent": 0.108697
+        },
+        "first_ms": {
+          "absolute": 1.581,
+          "percent": 0.91052
+        },
+        "max_ms": {
+          "absolute": 2.049,
+          "percent": 1.153846
+        },
+        "peak_rss_mib": {
+          "absolute": -1.735,
+          "percent": -1.722614
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 200,
+        "rss_ceiling_mib": 110,
+        "pass": true
+      }
+    },
+    {
+      "notes": 10000,
+      "operation": "CLI validate",
+      "transport": "cli",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 173.376,
+        "p95_ms": 178.538,
+        "first_ms": 173.428,
+        "max_ms": 179.788,
+        "sample_durations_ms": [
+          173.427833,
+          173.170708,
+          173.422584,
+          171.887042,
+          172.885541,
+          172.305083,
+          172.498,
+          171.03025,
+          176.501833,
+          174.210458,
+          178.537583,
+          179.787583,
+          174.521042,
+          172.850791,
+          172.761667,
+          172.253083,
+          173.382875,
+          173.370084,
+          173.961042,
+          174.505291
+        ],
+        "peak_rss_mib": 100.641,
+        "sample_peak_rss_mib": [
+          94.71875,
+          95.921875,
+          97.34375,
+          94.453125,
+          94.34375,
+          98.328125,
+          94.96875,
+          94.8125,
+          99.625,
+          95.78125,
+          98.046875,
+          93.9375,
+          99.890625,
+          98.1875,
+          94.40625,
+          95.0625,
+          97.71875,
+          95.265625,
+          96.1875,
+          100.640625
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 175.992,
+        "p95_ms": 177.666,
+        "first_ms": 175.64,
+        "max_ms": 177.718,
+        "sample_durations_ms": [
+          175.639666,
+          176.202041,
+          176.94425,
+          175.426417,
+          174.794333,
+          174.445167,
+          175.273667,
+          176.176666,
+          177.665667,
+          174.751417,
+          175.306125,
+          176.33725,
+          176.167167,
+          173.790625,
+          176.532625,
+          176.495458,
+          177.718042,
+          175.816083,
+          175.389,
+          177.265292
+        ],
+        "peak_rss_mib": 99.719,
+        "sample_peak_rss_mib": [
+          98.53125,
+          97.09375,
+          95.953125,
+          95.203125,
+          96.0,
+          95.5,
+          97.359375,
+          96.234375,
+          96.671875,
+          95.65625,
+          97.390625,
+          95.796875,
+          94.90625,
+          97.5625,
+          97.6875,
+          94.21875,
+          97.28125,
+          99.71875,
+          97.53125,
+          98.40625
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": 2.616,
+          "percent": 1.508859
+        },
+        "p95_ms": {
+          "absolute": -0.872,
+          "percent": -0.488411
+        },
+        "first_ms": {
+          "absolute": 2.212,
+          "percent": 1.275457
+        },
+        "max_ms": {
+          "absolute": -2.07,
+          "percent": -1.151356
+        },
+        "peak_rss_mib": {
+          "absolute": -0.922,
+          "percent": -0.916128
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 190,
+        "rss_ceiling_mib": 120,
+        "pass": true
+      }
+    },
+    {
+      "notes": 10000,
+      "operation": "CLI repair preview",
+      "transport": "cli",
+      "baseline": {
+        "samples": 3,
+        "p50_ms": 505.558,
+        "p95_ms": 520.282,
+        "first_ms": 520.282,
+        "max_ms": 520.282,
+        "sample_durations_ms": [
+          520.282458,
+          505.55775,
+          501.567083
+        ],
+        "peak_rss_mib": 174.156,
+        "sample_peak_rss_mib": [
+          173.984375,
+          173.90625,
+          174.15625
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 3,
+        "p50_ms": 522.604,
+        "p95_ms": 524.845,
+        "first_ms": 522.604,
+        "max_ms": 524.845,
+        "sample_durations_ms": [
+          522.604042,
+          524.845041,
+          520.187166
+        ],
+        "peak_rss_mib": 178.594,
+        "sample_peak_rss_mib": [
+          158.453125,
+          176.109375,
+          178.59375
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": 17.046,
+          "percent": 3.37172
+        },
+        "p95_ms": {
+          "absolute": 4.563,
+          "percent": 0.877024
+        },
+        "first_ms": {
+          "absolute": 2.322,
+          "percent": 0.446296
+        },
+        "max_ms": {
+          "absolute": 4.563,
+          "percent": 0.877024
+        },
+        "peak_rss_mib": {
+          "absolute": 4.438,
+          "percent": 2.54829
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 730,
+        "rss_ceiling_mib": 200,
+        "pass": true
+      }
+    },
+    {
+      "notes": 10000,
+      "operation": "CLI committed repair",
+      "transport": "cli",
+      "baseline": {
+        "samples": 3,
+        "p50_ms": 892.665,
+        "p95_ms": 1187.333,
+        "first_ms": 1187.333,
+        "max_ms": 1187.333,
+        "sample_durations_ms": [
+          1187.333333,
+          878.422208,
+          892.665334
+        ],
+        "peak_rss_mib": 206.516,
+        "sample_peak_rss_mib": [
+          206.515625,
+          188.4375,
+          181.796875
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 3,
+        "p50_ms": 896.412,
+        "p95_ms": 1207.517,
+        "first_ms": 1207.517,
+        "max_ms": 1207.517,
+        "sample_durations_ms": [
+          1207.517333,
+          896.412417,
+          894.276208
+        ],
+        "peak_rss_mib": 212.906,
+        "sample_peak_rss_mib": [
+          212.90625,
+          180.078125,
+          172.46875
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": 3.747,
+          "percent": 0.419754
+        },
+        "p95_ms": {
+          "absolute": 20.184,
+          "percent": 1.699944
+        },
+        "first_ms": {
+          "absolute": 20.184,
+          "percent": 1.699944
+        },
+        "max_ms": {
+          "absolute": 20.184,
+          "percent": 1.699944
+        },
+        "peak_rss_mib": {
+          "absolute": 6.39,
+          "percent": 3.094191
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 1460,
+        "rss_ceiling_mib": 230,
+        "pass": true
+      }
+    },
+    {
+      "notes": 10000,
+      "operation": "Warm MCP search",
+      "transport": "mcp",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 100.914,
+        "p95_ms": 102.682,
+        "first_ms": 330.103,
+        "max_ms": 116.868,
+        "sample_durations_ms": [
+          101.94725,
+          102.682459,
+          98.545417,
+          101.131042,
+          101.598708,
+          102.104417,
+          100.703042,
+          100.245042,
+          101.811,
+          100.969542,
+          100.085333,
+          100.09975,
+          100.486958,
+          100.857916,
+          101.127458,
+          100.2065,
+          116.868167,
+          99.945792,
+          100.379125,
+          101.705834
+        ],
+        "peak_rss_mib": 131.984,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 330.103208,
+        "all_request_durations_ms": [
+          330.103208,
+          101.94725,
+          102.682459,
+          98.545417,
+          101.131042,
+          101.598708,
+          102.104417,
+          100.703042,
+          100.245042,
+          101.811,
+          100.969542,
+          100.085333,
+          100.09975,
+          100.486958,
+          100.857916,
+          101.127458,
+          100.2065,
+          116.868167,
+          99.945792,
+          100.379125,
+          101.705834
+        ],
+        "all_requests_max_ms": 330.103
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 100.892,
+        "p95_ms": 101.835,
+        "first_ms": 274.41,
+        "max_ms": 102.62,
+        "sample_durations_ms": [
+          101.71125,
+          99.454167,
+          100.16775,
+          100.790708,
+          100.555834,
+          100.094542,
+          100.324584,
+          101.222792,
+          100.763583,
+          102.62,
+          100.83025,
+          101.031375,
+          101.303458,
+          100.596541,
+          101.454084,
+          101.835041,
+          101.086958,
+          100.724625,
+          101.297125,
+          100.953958
+        ],
+        "peak_rss_mib": 135.531,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 274.410333,
+        "all_request_durations_ms": [
+          274.410333,
+          101.71125,
+          99.454167,
+          100.16775,
+          100.790708,
+          100.555834,
+          100.094542,
+          100.324584,
+          101.222792,
+          100.763583,
+          102.62,
+          100.83025,
+          101.031375,
+          101.303458,
+          100.596541,
+          101.454084,
+          101.835041,
+          101.086958,
+          100.724625,
+          101.297125,
+          100.953958
+        ],
+        "all_requests_max_ms": 274.41
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -0.022,
+          "percent": -0.021801
+        },
+        "p95_ms": {
+          "absolute": -0.847,
+          "percent": -0.824877
+        },
+        "first_ms": {
+          "absolute": -55.693,
+          "percent": -16.871401
+        },
+        "max_ms": {
+          "absolute": -14.248,
+          "percent": -12.191532
+        },
+        "peak_rss_mib": {
+          "absolute": 3.547,
+          "percent": 2.687447
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 300,
+        "rss_ceiling_mib": 150,
+        "pass": true
+      }
+    },
+    {
+      "notes": 10000,
+      "operation": "Warm MCP read",
+      "transport": "mcp",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 100.164,
+        "p95_ms": 100.81,
+        "first_ms": 101.135,
+        "max_ms": 101.303,
+        "sample_durations_ms": [
+          101.303041,
+          100.138958,
+          100.483084,
+          100.189583,
+          100.021084,
+          100.810083,
+          100.402666,
+          100.389958,
+          99.118,
+          99.950125,
+          99.496125,
+          99.251292,
+          99.791458,
+          100.20375,
+          100.041875,
+          100.515,
+          100.22125,
+          99.561,
+          99.763167,
+          100.744375
+        ],
+        "peak_rss_mib": 131.984,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 101.135084,
+        "all_request_durations_ms": [
+          101.135084,
+          101.303041,
+          100.138958,
+          100.483084,
+          100.189583,
+          100.021084,
+          100.810083,
+          100.402666,
+          100.389958,
+          99.118,
+          99.950125,
+          99.496125,
+          99.251292,
+          99.791458,
+          100.20375,
+          100.041875,
+          100.515,
+          100.22125,
+          99.561,
+          99.763167,
+          100.744375
+        ],
+        "all_requests_max_ms": 101.303
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 100.568,
+        "p95_ms": 101.452,
+        "first_ms": 99.658,
+        "max_ms": 101.957,
+        "sample_durations_ms": [
+          100.457041,
+          101.033916,
+          100.379042,
+          100.953959,
+          101.452125,
+          100.734791,
+          100.204083,
+          100.17425,
+          101.406,
+          100.507125,
+          100.984333,
+          101.957083,
+          100.14725,
+          99.955666,
+          100.713416,
+          100.628125,
+          99.841375,
+          99.530792,
+          100.823042,
+          100.117667
+        ],
+        "peak_rss_mib": 135.531,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 99.658333,
+        "all_request_durations_ms": [
+          99.658333,
+          100.457041,
+          101.033916,
+          100.379042,
+          100.953959,
+          101.452125,
+          100.734791,
+          100.204083,
+          100.17425,
+          101.406,
+          100.507125,
+          100.984333,
+          101.957083,
+          100.14725,
+          99.955666,
+          100.713416,
+          100.628125,
+          99.841375,
+          99.530792,
+          100.823042,
+          100.117667
+        ],
+        "all_requests_max_ms": 101.957
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": 0.404,
+          "percent": 0.403339
+        },
+        "p95_ms": {
+          "absolute": 0.642,
+          "percent": 0.636842
+        },
+        "first_ms": {
+          "absolute": -1.477,
+          "percent": -1.460424
+        },
+        "max_ms": {
+          "absolute": 0.654,
+          "percent": 0.645588
+        },
+        "peak_rss_mib": {
+          "absolute": 3.547,
+          "percent": 2.687447
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 110,
+        "rss_ceiling_mib": 150,
+        "pass": true
+      }
+    },
+    {
+      "notes": 10000,
+      "operation": "Warm MCP validate",
+      "transport": "mcp",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 99.899,
+        "p95_ms": 102.972,
+        "first_ms": 99.936,
+        "max_ms": 112.569,
+        "sample_durations_ms": [
+          99.132625,
+          100.523833,
+          99.755334,
+          99.28725,
+          99.006625,
+          99.894625,
+          100.022791,
+          99.791959,
+          99.661875,
+          99.671875,
+          100.011416,
+          102.97175,
+          100.508625,
+          99.101417,
+          112.569041,
+          100.004417,
+          99.903584,
+          101.529583,
+          99.267166,
+          99.941667
+        ],
+        "peak_rss_mib": 131.984,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 99.936333,
+        "all_request_durations_ms": [
+          99.936333,
+          99.132625,
+          100.523833,
+          99.755334,
+          99.28725,
+          99.006625,
+          99.894625,
+          100.022791,
+          99.791959,
+          99.661875,
+          99.671875,
+          100.011416,
+          102.97175,
+          100.508625,
+          99.101417,
+          112.569041,
+          100.004417,
+          99.903584,
+          101.529583,
+          99.267166,
+          99.941667
+        ],
+        "all_requests_max_ms": 112.569
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 100.427,
+        "p95_ms": 101.176,
+        "first_ms": 101.621,
+        "max_ms": 101.438,
+        "sample_durations_ms": [
+          100.725333,
+          100.586666,
+          100.792292,
+          100.206959,
+          100.313334,
+          101.438375,
+          100.547208,
+          99.987292,
+          100.358708,
+          100.183042,
+          99.08525,
+          99.887542,
+          99.718042,
+          101.022792,
+          99.848958,
+          101.176459,
+          100.363292,
+          101.021584,
+          100.490333,
+          101.101291
+        ],
+        "peak_rss_mib": 135.531,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 101.620875,
+        "all_request_durations_ms": [
+          101.620875,
+          100.725333,
+          100.586666,
+          100.792292,
+          100.206959,
+          100.313334,
+          101.438375,
+          100.547208,
+          99.987292,
+          100.358708,
+          100.183042,
+          99.08525,
+          99.887542,
+          99.718042,
+          101.022792,
+          99.848958,
+          101.176459,
+          100.363292,
+          101.021584,
+          100.490333,
+          101.101291
+        ],
+        "all_requests_max_ms": 101.621
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": 0.528,
+          "percent": 0.528534
+        },
+        "p95_ms": {
+          "absolute": -1.796,
+          "percent": -1.744163
+        },
+        "first_ms": {
+          "absolute": 1.685,
+          "percent": 1.686079
+        },
+        "max_ms": {
+          "absolute": -11.131,
+          "percent": -9.888157
+        },
+        "peak_rss_mib": {
+          "absolute": 3.547,
+          "percent": 2.687447
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 110,
+        "rss_ceiling_mib": 150,
+        "pass": true
+      }
+    },
+    {
+      "notes": 50000,
+      "operation": "CLI search",
+      "transport": "cli",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 2334.302,
+        "p95_ms": 2526.158,
+        "first_ms": 2314.563,
+        "max_ms": 2535.562,
+        "sample_durations_ms": [
+          2314.563416,
+          2324.087459,
+          2304.701208,
+          2526.158209,
+          2318.425667,
+          2295.967083,
+          2335.542791,
+          2301.962084,
+          2507.941083,
+          2451.126292,
+          2312.509709,
+          2317.796916,
+          2381.143584,
+          2338.583791,
+          2535.561541,
+          2326.515125,
+          2337.447666,
+          2333.912666,
+          2334.690666,
+          2338.685708
+        ],
+        "peak_rss_mib": 512.75,
+        "sample_peak_rss_mib": [
+          469.453125,
+          493.6875,
+          475.765625,
+          471.328125,
+          512.75,
+          477.296875,
+          478.9375,
+          496.125,
+          470.609375,
+          474.203125,
+          481.890625,
+          481.25,
+          471.859375,
+          491.96875,
+          475.125,
+          489.21875,
+          470.484375,
+          493.859375,
+          480.71875,
+          494.875
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 1973.854,
+        "p95_ms": 2227.16,
+        "first_ms": 1975.493,
+        "max_ms": 2233.037,
+        "sample_durations_ms": [
+          1975.493083,
+          1973.613875,
+          1972.411375,
+          1974.839542,
+          1983.752833,
+          2233.037042,
+          1965.823125,
+          1965.198625,
+          1962.552667,
+          2227.159833,
+          1986.509416,
+          1974.09475,
+          1955.115375,
+          1949.757792,
+          1965.936958,
+          1958.177834,
+          1996.505333,
+          2195.380833,
+          1991.466292,
+          1968.383167
+        ],
+        "peak_rss_mib": 491.406,
+        "sample_peak_rss_mib": [
+          483.953125,
+          486.203125,
+          486.015625,
+          485.75,
+          486.5,
+          481.359375,
+          490.390625,
+          477.9375,
+          483.4375,
+          487.328125,
+          489.3125,
+          487.515625,
+          479.890625,
+          486.484375,
+          487.359375,
+          487.578125,
+          481.796875,
+          485.453125,
+          491.40625,
+          487.640625
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -360.448,
+          "percent": -15.441361
+        },
+        "p95_ms": {
+          "absolute": -298.998,
+          "percent": -11.836077
+        },
+        "first_ms": {
+          "absolute": -339.07,
+          "percent": -14.649418
+        },
+        "max_ms": {
+          "absolute": -302.525,
+          "percent": -11.93128
+        },
+        "peak_rss_mib": {
+          "absolute": -21.344,
+          "percent": -4.162652
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 2870,
+        "rss_ceiling_mib": 550,
+        "pass": true
+      }
+    },
+    {
+      "notes": 50000,
+      "operation": "CLI read",
+      "transport": "cli",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 1570.203,
+        "p95_ms": 1734.623,
+        "first_ms": 1622.724,
+        "max_ms": 1737.509,
+        "sample_durations_ms": [
+          1622.723542,
+          1737.508583,
+          1580.889625,
+          1734.623209,
+          1581.894708,
+          1571.661709,
+          1560.502917,
+          1592.822375,
+          1580.731458,
+          1561.88,
+          1573.969542,
+          1583.266542,
+          1567.963125,
+          1565.542292,
+          1560.173,
+          1554.151666,
+          1568.744334,
+          1567.11175,
+          1560.725333,
+          1552.066084
+        ],
+        "peak_rss_mib": 432.797,
+        "sample_peak_rss_mib": [
+          432.796875,
+          403.546875,
+          405.03125,
+          422.1875,
+          410.390625,
+          426.96875,
+          420.296875,
+          403.078125,
+          404.078125,
+          419.5625,
+          403.96875,
+          420.40625,
+          398.796875,
+          403.9375,
+          406.578125,
+          432.75,
+          414.703125,
+          404.53125,
+          424.515625,
+          401.328125
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 1431.846,
+        "p95_ms": 1444.015,
+        "first_ms": 1417.009,
+        "max_ms": 1448.302,
+        "sample_durations_ms": [
+          1417.008625,
+          1432.425375,
+          1439.832458,
+          1423.423334,
+          1428.509708,
+          1444.014625,
+          1437.083667,
+          1430.041291,
+          1434.293875,
+          1431.266,
+          1430.102834,
+          1425.877708,
+          1428.58875,
+          1437.085334,
+          1418.43925,
+          1439.679917,
+          1438.124708,
+          1430.9085,
+          1437.480917,
+          1448.302417
+        ],
+        "peak_rss_mib": 400.891,
+        "sample_peak_rss_mib": [
+          392.28125,
+          396.640625,
+          383.609375,
+          393.609375,
+          384.515625,
+          395.15625,
+          397.1875,
+          382.96875,
+          396.46875,
+          398.1875,
+          391.828125,
+          400.890625,
+          391.765625,
+          395.015625,
+          386.875,
+          382.3125,
+          397.078125,
+          387.421875,
+          385.984375,
+          388.53125
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -138.357,
+          "percent": -8.811408
+        },
+        "p95_ms": {
+          "absolute": -290.608,
+          "percent": -16.753381
+        },
+        "first_ms": {
+          "absolute": -205.715,
+          "percent": -12.67714
+        },
+        "max_ms": {
+          "absolute": -289.207,
+          "percent": -16.644921
+        },
+        "peak_rss_mib": {
+          "absolute": -31.906,
+          "percent": -7.372047
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 2070,
+        "rss_ceiling_mib": 470,
+        "pass": true
+      }
+    },
+    {
+      "notes": 50000,
+      "operation": "CLI validate",
+      "transport": "cli",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 1558.623,
+        "p95_ms": 1777.229,
+        "first_ms": 1584.293,
+        "max_ms": 1863.801,
+        "sample_durations_ms": [
+          1584.293334,
+          1762.409334,
+          1558.09875,
+          1546.4705,
+          1555.161334,
+          1549.89575,
+          1545.801833,
+          1565.561417,
+          1557.414292,
+          1777.229208,
+          1557.076292,
+          1863.801458,
+          1718.756291,
+          1540.315,
+          1556.19025,
+          1565.929584,
+          1560.886583,
+          1572.35675,
+          1559.146375,
+          1544.737417
+        ],
+        "peak_rss_mib": 433.078,
+        "sample_peak_rss_mib": [
+          409.578125,
+          433.078125,
+          402.765625,
+          412.890625,
+          431.5625,
+          404.875,
+          404.046875,
+          425.03125,
+          418.65625,
+          431.90625,
+          401.953125,
+          425.0625,
+          398.9375,
+          429.4375,
+          403.125,
+          408.046875,
+          400.90625,
+          426.59375,
+          419.84375,
+          398.5
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 1431.33,
+        "p95_ms": 1607.952,
+        "first_ms": 1484.984,
+        "max_ms": 1656.095,
+        "sample_durations_ms": [
+          1484.98425,
+          1656.09475,
+          1432.85725,
+          1424.809959,
+          1428.326125,
+          1422.128625,
+          1607.952125,
+          1537.436125,
+          1599.878708,
+          1509.164875,
+          1425.384291,
+          1430.5675,
+          1418.201709,
+          1421.955209,
+          1422.059708,
+          1432.093125,
+          1429.519542,
+          1437.488875,
+          1433.273084,
+          1421.89025
+        ],
+        "peak_rss_mib": 399.406,
+        "sample_peak_rss_mib": [
+          393.21875,
+          387.046875,
+          393.453125,
+          383.28125,
+          383.5,
+          383.421875,
+          398.984375,
+          386.828125,
+          385.296875,
+          388.53125,
+          384.125,
+          384.140625,
+          394.921875,
+          394.390625,
+          395.328125,
+          391.96875,
+          392.140625,
+          396.578125,
+          399.40625,
+          384.96875
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -127.293,
+          "percent": -8.167017
+        },
+        "p95_ms": {
+          "absolute": -169.277,
+          "percent": -9.524771
+        },
+        "first_ms": {
+          "absolute": -99.309,
+          "percent": -6.268348
+        },
+        "max_ms": {
+          "absolute": -207.706,
+          "percent": -11.144216
+        },
+        "peak_rss_mib": {
+          "absolute": -33.672,
+          "percent": -7.775043
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 1910,
+        "rss_ceiling_mib": 470,
+        "pass": true
+      }
+    },
+    {
+      "notes": 50000,
+      "operation": "CLI repair preview",
+      "transport": "cli",
+      "baseline": {
+        "samples": 3,
+        "p50_ms": 3604.185,
+        "p95_ms": 4054.806,
+        "first_ms": 3398.35,
+        "max_ms": 4054.806,
+        "sample_durations_ms": [
+          3398.350166,
+          3604.185375,
+          4054.806333
+        ],
+        "peak_rss_mib": 753.297,
+        "sample_peak_rss_mib": [
+          753.296875,
+          741.421875,
+          713.96875
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 3,
+        "p50_ms": 3282.41,
+        "p95_ms": 3605.977,
+        "first_ms": 3282.41,
+        "max_ms": 3605.977,
+        "sample_durations_ms": [
+          3282.410417,
+          3605.976708,
+          3278.331708
+        ],
+        "peak_rss_mib": 743.125,
+        "sample_peak_rss_mib": [
+          743.125,
+          712.234375,
+          731.734375
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -321.775,
+          "percent": -8.927816
+        },
+        "p95_ms": {
+          "absolute": -448.829,
+          "percent": -11.069062
+        },
+        "first_ms": {
+          "absolute": -115.94,
+          "percent": -3.411656
+        },
+        "max_ms": {
+          "absolute": -448.829,
+          "percent": -11.069062
+        },
+        "peak_rss_mib": {
+          "absolute": -10.172,
+          "percent": -1.350331
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 3770,
+        "rss_ceiling_mib": 830,
+        "pass": true
+      }
+    },
+    {
+      "notes": 50000,
+      "operation": "CLI committed repair",
+      "transport": "cli",
+      "baseline": {
+        "samples": 3,
+        "p50_ms": 6542.525,
+        "p95_ms": 8538.917,
+        "first_ms": 8538.917,
+        "max_ms": 8538.917,
+        "sample_durations_ms": [
+          8538.916625,
+          6542.525458,
+          6449.206042
+        ],
+        "peak_rss_mib": 944.875,
+        "sample_peak_rss_mib": [
+          944.875,
+          832.03125,
+          830.59375
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 3,
+        "p50_ms": 6406.868,
+        "p95_ms": 7747.954,
+        "first_ms": 7747.954,
+        "max_ms": 7747.954,
+        "sample_durations_ms": [
+          7747.954416,
+          6406.868375,
+          6230.45275
+        ],
+        "peak_rss_mib": 817.938,
+        "sample_peak_rss_mib": [
+          775.40625,
+          804.25,
+          817.9375
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -135.657,
+          "percent": -2.073466
+        },
+        "p95_ms": {
+          "absolute": -790.963,
+          "percent": -9.263037
+        },
+        "first_ms": {
+          "absolute": -790.963,
+          "percent": -9.263037
+        },
+        "max_ms": {
+          "absolute": -790.963,
+          "percent": -9.263037
+        },
+        "peak_rss_mib": {
+          "absolute": -126.937,
+          "percent": -13.434264
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 8940,
+        "rss_ceiling_mib": 1050,
+        "pass": true
+      }
+    },
+    {
+      "notes": 50000,
+      "operation": "Warm MCP search",
+      "transport": "mcp",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 1196.092,
+        "p95_ms": 1398.657,
+        "first_ms": 2320.601,
+        "max_ms": 1430.948,
+        "sample_durations_ms": [
+          1202.788416,
+          1198.48375,
+          1195.522083,
+          1201.517417,
+          1206.455583,
+          1214.356792,
+          1190.0065,
+          1201.89925,
+          1189.473125,
+          1203.442333,
+          1189.147833,
+          1187.12975,
+          1190.498125,
+          1196.302,
+          1192.388,
+          1193.557708,
+          1195.88125,
+          1193.765166,
+          1430.947625,
+          1398.656542
+        ],
+        "peak_rss_mib": 570.438,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 2320.600916,
+        "all_request_durations_ms": [
+          2320.600916,
+          1202.788416,
+          1198.48375,
+          1195.522083,
+          1201.517417,
+          1206.455583,
+          1214.356792,
+          1190.0065,
+          1201.89925,
+          1189.473125,
+          1203.442333,
+          1189.147833,
+          1187.12975,
+          1190.498125,
+          1196.302,
+          1192.388,
+          1193.557708,
+          1195.88125,
+          1193.765166,
+          1430.947625,
+          1398.656542
+        ],
+        "all_requests_max_ms": 2320.601
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 1082.393,
+        "p95_ms": 1089.205,
+        "first_ms": 1962.579,
+        "max_ms": 1104.833,
+        "sample_durations_ms": [
+          1070.495333,
+          1104.832792,
+          1088.116958,
+          1081.4045,
+          1085.876084,
+          1084.095958,
+          1082.168084,
+          1075.246125,
+          1078.526583,
+          1084.590542,
+          1084.218791,
+          1072.990875,
+          1080.567958,
+          1082.617125,
+          1084.392292,
+          1070.834917,
+          1089.204625,
+          1081.712459,
+          1083.403458,
+          1077.310291
+        ],
+        "peak_rss_mib": 547.109,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 1962.578542,
+        "all_request_durations_ms": [
+          1962.578542,
+          1070.495333,
+          1104.832792,
+          1088.116958,
+          1081.4045,
+          1085.876084,
+          1084.095958,
+          1082.168084,
+          1075.246125,
+          1078.526583,
+          1084.590542,
+          1084.218791,
+          1072.990875,
+          1080.567958,
+          1082.617125,
+          1084.392292,
+          1070.834917,
+          1089.204625,
+          1081.712459,
+          1083.403458,
+          1077.310291
+        ],
+        "all_requests_max_ms": 1962.579
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -113.699,
+          "percent": -9.505874
+        },
+        "p95_ms": {
+          "absolute": -309.452,
+          "percent": -22.124938
+        },
+        "first_ms": {
+          "absolute": -358.022,
+          "percent": -15.427986
+        },
+        "max_ms": {
+          "absolute": -326.115,
+          "percent": -22.790136
+        },
+        "peak_rss_mib": {
+          "absolute": -23.329,
+          "percent": -4.089664
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 1530,
+        "rss_ceiling_mib": 640,
+        "pass": true
+      }
+    },
+    {
+      "notes": 50000,
+      "operation": "Warm MCP read",
+      "transport": "mcp",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 1285.851,
+        "p95_ms": 1407.264,
+        "first_ms": 1393.795,
+        "max_ms": 1455.142,
+        "sample_durations_ms": [
+          1326.270792,
+          1403.86175,
+          1401.997083,
+          1199.13275,
+          1194.9715,
+          1184.873292,
+          1298.430875,
+          1273.270875,
+          1349.532667,
+          1237.65325,
+          1198.551542,
+          1355.1935,
+          1195.22275,
+          1392.382375,
+          1235.072875,
+          1368.872625,
+          1204.897208,
+          1243.577666,
+          1407.26425,
+          1455.142375
+        ],
+        "peak_rss_mib": 570.438,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 1393.794708,
+        "all_request_durations_ms": [
+          1393.794708,
+          1326.270792,
+          1403.86175,
+          1401.997083,
+          1199.13275,
+          1194.9715,
+          1184.873292,
+          1298.430875,
+          1273.270875,
+          1349.532667,
+          1237.65325,
+          1198.551542,
+          1355.1935,
+          1195.22275,
+          1392.382375,
+          1235.072875,
+          1368.872625,
+          1204.897208,
+          1243.577666,
+          1407.26425,
+          1455.142375
+        ],
+        "all_requests_max_ms": 1455.142
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 1082.499,
+        "p95_ms": 1300.823,
+        "first_ms": 1078.479,
+        "max_ms": 1302.947,
+        "sample_durations_ms": [
+          1083.65275,
+          1080.741875,
+          1076.008666,
+          1083.393917,
+          1081.604459,
+          1073.051584,
+          1154.006834,
+          1277.37275,
+          1077.714625,
+          1077.980958,
+          1083.570583,
+          1083.737459,
+          1065.234458,
+          1123.885959,
+          1300.822667,
+          1074.265542,
+          1068.875417,
+          1134.996458,
+          1302.946709,
+          1074.881583
+        ],
+        "peak_rss_mib": 547.109,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 1078.478709,
+        "all_request_durations_ms": [
+          1078.478709,
+          1083.65275,
+          1080.741875,
+          1076.008666,
+          1083.393917,
+          1081.604459,
+          1073.051584,
+          1154.006834,
+          1277.37275,
+          1077.714625,
+          1077.980958,
+          1083.570583,
+          1083.737459,
+          1065.234458,
+          1123.885959,
+          1300.822667,
+          1074.265542,
+          1068.875417,
+          1134.996458,
+          1302.946709,
+          1074.881583
+        ],
+        "all_requests_max_ms": 1302.947
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -203.352,
+          "percent": -15.814585
+        },
+        "p95_ms": {
+          "absolute": -106.441,
+          "percent": -7.563684
+        },
+        "first_ms": {
+          "absolute": -315.316,
+          "percent": -22.622839
+        },
+        "max_ms": {
+          "absolute": -152.195,
+          "percent": -10.459117
+        },
+        "peak_rss_mib": {
+          "absolute": -23.329,
+          "percent": -4.089664
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 1540,
+        "rss_ceiling_mib": 640,
+        "pass": true
+      }
+    },
+    {
+      "notes": 50000,
+      "operation": "Warm MCP validate",
+      "transport": "mcp",
+      "baseline": {
+        "samples": 20,
+        "p50_ms": 1192.451,
+        "p95_ms": 1403.166,
+        "first_ms": 1438.273,
+        "max_ms": 1403.912,
+        "sample_durations_ms": [
+          1309.525209,
+          1195.519833,
+          1188.253166,
+          1403.165666,
+          1403.912375,
+          1374.142875,
+          1199.97125,
+          1191.559292,
+          1193.293916,
+          1190.955542,
+          1198.336667,
+          1177.867375,
+          1321.68325,
+          1275.257,
+          1189.947125,
+          1191.608875,
+          1188.668166,
+          1189.382708,
+          1185.890625,
+          1189.812959
+        ],
+        "peak_rss_mib": 570.438,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 1438.272709,
+        "all_request_durations_ms": [
+          1438.272709,
+          1309.525209,
+          1195.519833,
+          1188.253166,
+          1403.165666,
+          1403.912375,
+          1374.142875,
+          1199.97125,
+          1191.559292,
+          1193.293916,
+          1190.955542,
+          1198.336667,
+          1177.867375,
+          1321.68325,
+          1275.257,
+          1189.947125,
+          1191.608875,
+          1188.668166,
+          1189.382708,
+          1185.890625,
+          1189.812959
+        ],
+        "all_requests_max_ms": 1438.273
+      },
+      "candidate": {
+        "samples": 20,
+        "p50_ms": 1081.831,
+        "p95_ms": 1280.394,
+        "first_ms": 1076.878,
+        "max_ms": 1322.017,
+        "sample_durations_ms": [
+          1085.674334,
+          1079.945291,
+          1094.30175,
+          1085.093959,
+          1075.287875,
+          1154.346334,
+          1280.393791,
+          1083.029333,
+          1078.023084,
+          1063.217083,
+          1083.603333,
+          1080.6325,
+          1078.36375,
+          1072.330958,
+          1089.740834,
+          1078.346042,
+          1076.729167,
+          1075.491166,
+          1108.395208,
+          1322.017125
+        ],
+        "peak_rss_mib": 547.109,
+        "sample_peak_rss_mib": null,
+        "rss_scope": "one whole reused MCP session peak shared by its three operations; not per request",
+        "first_duration_ms": 1076.878167,
+        "all_request_durations_ms": [
+          1076.878167,
+          1085.674334,
+          1079.945291,
+          1094.30175,
+          1085.093959,
+          1075.287875,
+          1154.346334,
+          1280.393791,
+          1083.029333,
+          1078.023084,
+          1063.217083,
+          1083.603333,
+          1080.6325,
+          1078.36375,
+          1072.330958,
+          1089.740834,
+          1078.346042,
+          1076.729167,
+          1075.491166,
+          1108.395208,
+          1322.017125
+        ],
+        "all_requests_max_ms": 1322.017
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -110.62,
+          "percent": -9.276691
+        },
+        "p95_ms": {
+          "absolute": -122.772,
+          "percent": -8.749642
+        },
+        "first_ms": {
+          "absolute": -361.395,
+          "percent": -25.12701
+        },
+        "max_ms": {
+          "absolute": -81.895,
+          "percent": -5.833343
+        },
+        "peak_rss_mib": {
+          "absolute": -23.329,
+          "percent": -4.089664
+        }
+      },
+      "candidate_budget": {
+        "p95_ceiling_ms": 1690,
+        "rss_ceiling_mib": 640,
+        "pass": true
+      }
+    }
+  ],
+  "paired_rebuilds": [
+    {
+      "notes": 10000,
+      "operation": "CLI index rebuild",
+      "baseline": {
+        "samples": 5,
+        "p50_ms": 176.17,
+        "p95_ms": 177.666,
+        "first_ms": 177.482,
+        "max_ms": 177.666,
+        "sample_durations_ms": [
+          177.481875,
+          175.483416,
+          175.232125,
+          176.169542,
+          177.666042
+        ],
+        "peak_rss_mib": 100.266,
+        "sample_peak_rss_mib": [
+          97.703125,
+          95.0,
+          97.34375,
+          100.265625,
+          97.875
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 5,
+        "p50_ms": 177.421,
+        "p95_ms": 179.69,
+        "first_ms": 179.69,
+        "max_ms": 179.69,
+        "sample_durations_ms": [
+          179.689833,
+          177.421084,
+          176.303792,
+          176.358083,
+          178.591
+        ],
+        "peak_rss_mib": 97.031,
+        "sample_peak_rss_mib": [
+          95.65625,
+          95.125,
+          97.03125,
+          95.703125,
+          95.015625
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": 1.251,
+          "percent": 0.71011
+        },
+        "p95_ms": {
+          "absolute": 2.024,
+          "percent": 1.139216
+        },
+        "first_ms": {
+          "absolute": 2.208,
+          "percent": 1.24407
+        },
+        "max_ms": {
+          "absolute": 2.024,
+          "percent": 1.139216
+        },
+        "peak_rss_mib": {
+          "absolute": -3.235,
+          "percent": -3.226418
+        }
+      },
+      "candidate_p95_ceiling_ms": 10000,
+      "scope": "Fresh CLI startup plus core rebuild; not a separately measured pure-core latency. No invented50k ceiling."
+    },
+    {
+      "notes": 50000,
+      "operation": "CLI index rebuild",
+      "baseline": {
+        "samples": 5,
+        "p50_ms": 1441.045,
+        "p95_ms": 1446.556,
+        "first_ms": 1432.446,
+        "max_ms": 1446.556,
+        "sample_durations_ms": [
+          1432.446417,
+          1446.55625,
+          1441.045125,
+          1431.214,
+          1442.059
+        ],
+        "peak_rss_mib": 428.188,
+        "sample_peak_rss_mib": [
+          409.21875,
+          428.1875,
+          423.1875,
+          419.765625,
+          409.703125
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "candidate": {
+        "samples": 5,
+        "p50_ms": 1427.882,
+        "p95_ms": 1691.151,
+        "first_ms": 1691.151,
+        "max_ms": 1691.151,
+        "sample_durations_ms": [
+          1691.150916,
+          1425.724041,
+          1426.884709,
+          1427.882084,
+          1430.205459
+        ],
+        "peak_rss_mib": 399.859,
+        "sample_peak_rss_mib": [
+          394.109375,
+          382.84375,
+          394.96875,
+          395.875,
+          399.859375
+        ],
+        "rss_scope": "fresh CLI child peak; fixture generation and Python excluded"
+      },
+      "drift": {
+        "p50_ms": {
+          "absolute": -13.163,
+          "percent": -0.913434
+        },
+        "p95_ms": {
+          "absolute": 244.595,
+          "percent": 16.908782
+        },
+        "first_ms": {
+          "absolute": 258.705,
+          "percent": 18.060367
+        },
+        "max_ms": {
+          "absolute": 244.595,
+          "percent": 16.908782
+        },
+        "peak_rss_mib": {
+          "absolute": -28.329,
+          "percent": -6.616019
+        }
+      },
+      "candidate_p95_ceiling_ms": null,
+      "scope": "Fresh CLI startup plus core rebuild; not a separately measured pure-core latency. No invented50k ceiling."
+    }
+  ],
+  "core": {
+    "warm_iterations": 20,
+    "warm_p95_ms": 113.4,
+    "cold_ms": 287.3,
+    "process_peak_rss_mib": 131.4,
+    "raw_warm_durations_ms": null,
+    "scope": "Core process RSS includes fixture generation/calibration. Original benchmark emits cold/p95/RSS only, not raw warm arrays/max. Rebuild gate separately uses startup-inclusive freshCLI timing.",
+    "build_command": "go test -c -o CORE_BINARY ./internal/core",
+    "observed_build_info": {
+      "go_version": "go1.27.3",
+      "CGO_ENABLED": "0",
+      "GOOS": "darwin",
+      "GOARCH": "arm64",
+      "GOARM64": "v8.0",
+      "-trimpath": null,
+      "-compiler": "gc",
+      "-buildmode": "exe"
+    },
+    "binary_sha256": "83787d975dd2462b24179db3547144f25a42edbe4138cf1845b5a71c7a58a735",
+    "targets": [
+      {
+        "metric": "warm_p95_ms",
+        "observed": 113.4,
+        "ceiling": 150,
+        "pass": true
+      },
+      {
+        "metric": "peak_rss_mib",
+        "observed": 131.4,
+        "ceiling": 150,
+        "pass": true
+      },
+      {
+        "metric": "cli_rebuild_10k_p95_ms",
+        "observed": 179.69,
+        "ceiling": 10000,
+        "pass": true
+      }
+    ]
+  },
+  "development_cpu_profiles": {
+    "requests_per_variant": 12,
+    "notes": 10000,
+    "note_bytes": 2048,
+    "CGO_ENABLED": "1",
+    "GOMAXPROCS": 8,
+    "method": "Private development-only profiling entrypoint brackets unchanged actual CLI mainCode; fixture generation in a separate earlier process. Allocation samples include startup/profiler overhead; forcedGC/allocation serialization follow CPU stop. Not the shipping artifact or normal latency measurement.",
+    "sampled_cpu_seconds": {
+      "lexical": {
+        "before": 1.29,
+        "after": 0.89
+      },
+      "token_stream": {
+        "before": 1.02,
+        "after": 0.79
+      },
+      "parser": {
+        "before": 0.31,
+        "after": 0.45
+      },
+      "all_threads_total": {
+        "before": 10.24,
+        "after": 12.03
+      },
+      "syscall_attribution": {
+        "before": 7.36,
+        "after": 9.46
+      }
+    },
+    "sampled_total_allocations_pprof_GB": {
+      "before": 2.25,
+      "after": 2.31
+    },
+    "claim_limit": "Targeted sampled lexical reduction only. Whole-thread CPU and sampled allocations increased; no overallCPU, retained-memory, RSS, latency or portable improvement inferred from profiles."
+  },
+  "historical_failed_development_matrices": [
+    {
+      "development_matrix": 1,
+      "source_commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+      "candidate_version": "v1.0.0-candidate",
+      "candidate_sha256": "83327b6237fa822e68c3ca3182db92fca06f4385c9ee108d63f36c2f0c861c24",
+      "pass": false,
+      "failed_rows": [
+        {
+          "notes": 50000,
+          "operation": "CLI search",
+          "p95_ms": 4191.294,
+          "p95_ceiling_ms": 2870,
+          "peak_rss_mib": 488.453,
+          "rss_ceiling_mib": 550
+        },
+        {
+          "notes": 50000,
+          "operation": "CLI repair preview",
+          "p95_ms": 3827.358,
+          "p95_ceiling_ms": 3770,
+          "peak_rss_mib": 756.766,
+          "rss_ceiling_mib": 830
+        }
+      ],
+      "summary_sha256": "87e2d04ce23ab4339c7398ef2aee37124bbc31afbea8113e19cc7eb56f18e804",
+      "cgo_enabled_observed": null,
+      "build_scope": "Development artifact; older CGO metadata not independently asserted by this projection"
+    },
+    {
+      "development_matrix": 2,
+      "source_commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+      "candidate_version": "v1.0.0-candidate",
+      "candidate_sha256": "83327b6237fa822e68c3ca3182db92fca06f4385c9ee108d63f36c2f0c861c24",
+      "pass": false,
+      "failed_rows": [
+        {
+          "notes": 10000,
+          "operation": "Warm MCP validate",
+          "p95_ms": 117.925,
+          "p95_ceiling_ms": 110,
+          "peak_rss_mib": 133.438,
+          "rss_ceiling_mib": 150
+        }
+      ],
+      "summary_sha256": "38e7f6ce300096df84efa1b532f8e960e792871aa9f6388322a04f344b933f06",
+      "cgo_enabled_observed": null,
+      "build_scope": "Development artifact; older CGO metadata not independently asserted by this projection"
+    },
+    {
+      "development_matrix": 3,
+      "source_commit": "7ceed676bed3c1218563f9534a1c095dd3ce4cec",
+      "candidate_version": "v1.0.0-candidate",
+      "candidate_sha256": "83327b6237fa822e68c3ca3182db92fca06f4385c9ee108d63f36c2f0c861c24",
+      "pass": false,
+      "failed_rows": [
+        {
+          "notes": 10000,
+          "operation": "CLI search",
+          "p95_ms": 384.47,
+          "p95_ceiling_ms": 380,
+          "peak_rss_mib": 115.828,
+          "rss_ceiling_mib": 130
+        }
+      ],
+      "summary_sha256": "bef996b27668e4a727d6154bf7060c53adb55e66c47f8b924df1776c204fb52a",
+      "cgo_enabled_observed": null,
+      "build_scope": "Development artifact; older CGO metadata not independently asserted by this projection"
+    },
+    {
+      "development_matrix": 4,
+      "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+      "candidate_version": "v1.0.0-candidate.2",
+      "candidate_sha256": "66b08d25e0fa939057602d9bd185fb13e01c0be290db55c70a2f1f52f940dd4e",
+      "pass": false,
+      "failed_rows": [
+        {
+          "notes": 10000,
+          "operation": "CLI validate",
+          "p95_ms": 234.312,
+          "p95_ceiling_ms": 190,
+          "peak_rss_mib": 98.516,
+          "rss_ceiling_mib": 120
+        }
+      ],
+      "summary_sha256": "a9608bc7de9a7fce823248130f7589e169d19647294fc5bb0161c1341e8ca6e7",
+      "cgo_enabled_observed": "1",
+      "build_scope": "CGO1 recorded by build-info audit"
+    }
+  ],
+  "history_interpretation": "All four remain failed. Audited candidate2 CGO1 differed from baseline/shippingCGO0; procedure correction is not proof CGO or any external process caused spikes. No waiver/relabeling/exclusion or best-cell merge.",
+  "reliability_checkpoint": {
+    "as_of_utc": "2026-10-26T03:58:31Z",
+    "shipping_specific_extended_observation": "started-not-yet-passed-at-this-checkpoint",
+    "qualified": false,
+    "scope": "Resource pass does not replace new1800-second/companion/interruption/artifact/installed qualification and independent readiness. Historical7ceed endurance belongs to other bytes."
+  },
+  "source_artifact_sha256": {
+    "measurement_plan": "517821e4081833563c2ce2e8f1bf71cf127d20107601b102ca60f967c54a5834",
+    "budget_summary": "2bfd81fe4044ae1b8fb67559458e814fd31939d7aaa749b160a13b128fde4103",
+    "baseline_matrix": "1c60749b4ff4cd8cf00b02673b9e19c7d893b19dc7e4758241346ec3723989d9",
+    "candidate_matrix": "9eb55e7c81b4f2336d28b4c1d11ac9ac95aa77bb49475a95aac0704d9532e53e",
+    "baseline_rebuild": "f3de944db8abd6c5b19c874e821a14ab8fd58784595059596d99a943456274f9",
+    "candidate_rebuild": "122e2b959b314f17c831a76ef2dac8021c9a57400e05c9c8642bac3c6b0269da",
+    "baseline_matrix_raw": "76471acecfa8cd5039c1c6e884853b2fca6db2d48a9eb579a0356b97c919eda2",
+    "candidate_matrix_raw": "ac8f133b8c1ef6d7d72ab38817d4753be3bac037eed8ee05a96c164cbe6e10f0",
+    "baseline_rebuild_raw": "e47751797eda5bb584f8d9a4fcbcaf84044d2afe2693a4e4caa066aee606c0e3",
+    "candidate_rebuild_raw": "2b0071f2de280fca68b7273123f6cc65326d1aa1ec130c032f511185b64fd156"
+  }
+}

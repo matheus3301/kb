@@ -286,6 +286,138 @@ sys.exit(status)
             self.assertEqual(result['failures'][0]['category'], 'os-error')
             self.assertNotIn(directory, stdout.getvalue())
 
+    def _workspace_failure_report(self, root, factory):
+        binary = root / 'private-executable'
+        binary.write_bytes(b'Synthetic preflight bytes; no process is executed')
+        output = root / 'private-report.json'
+        stdout, stderr = io.StringIO(), io.StringIO()
+        args = ['soak', '--binary', str(binary), '--output', str(output),
+                '--duration', '0.1', '--seeds', '1729', '--minimum-work', '1']
+        with mock.patch.object(soak.tempfile, 'TemporaryDirectory', factory), \
+                mock.patch.object(sys, 'argv', args), \
+                mock.patch.object(sys, 'stdout', stdout), mock.patch.object(sys, 'stderr', stderr):
+            status = soak.main()
+        text = output.read_text()
+        report = json.loads(text)
+        self.assertEqual(status, 1)
+        self.assertIs(report['ok'], False)
+        self.assertIs(json.loads(stdout.getvalue())['ok'], False)
+        self.assertEqual(stderr.getvalue(), '')
+        self.assertLess(len(text), 8192)
+        for private in (str(root), str(binary), str(output), str(Path.home()), 'Traceback'):
+            for surface in (text, stdout.getvalue(), stderr.getvalue()):
+                self.assertNotIn(private, surface)
+        return report
+
+    def test_workspace_creation_and_entry_errors_publish_bounded_failures(self):
+        for phase in ('creation', 'entry'):
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                failure = PermissionError(13, 'private workspace access denied', str(root / 'private-source'))
+                factory = mock.Mock()
+                if phase == 'creation':
+                    factory.side_effect = failure
+                else:
+                    factory.return_value = mock.MagicMock()
+                    factory.return_value.__enter__.side_effect = failure
+                report = self._workspace_failure_report(root, factory)
+                self.assertEqual(report['acknowledged_work'], 0)
+                self.assertEqual(report['totals'], {})
+                self.assertEqual(report['runs'][0]['counts'], {})
+                self.assertEqual(report['runs'][0]['failures'], [{
+                    'error_type': 'PermissionError', 'category': 'os-error', 'errno': 13,
+                    'operation': 'workspace', 'check': 'workspace-create-or-enter'}])
+
+    def test_workspace_cleanup_keeps_progress_and_prior_timeout(self):
+        for prior_timeout in (False, True):
+            with self.subTest(prior_timeout=prior_timeout), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                workspace = root / 'workspace'
+                workspace.mkdir()
+                manager = mock.MagicMock()
+                manager.__enter__.return_value = str(workspace)
+                manager.__exit__.side_effect = OSError(5, 'private cleanup failed', str(root / 'private-source'))
+                clock = [0.0]
+                progress = mock.Mock(spec=soak.Workload)
+                progress.counts, progress.receipts = Counter(), {}
+
+                # Unit progress fixture; the observed behavior is failure reporting,
+                # not an application/soak pass manufactured from mocked operations.
+                def construct(cli, *_):
+                    def setup():
+                        progress.counts['setup_mutations'] = 5
+                        progress.receipts.update({str(i): {} for i in range(5)})
+                        cli.acknowledgements['mutations'] = 5
+                        cli.counts['success'] = 6
+                        cli.timings.update(init={'calls': 1, 'total_seconds': .01, 'max_seconds': .01},
+                                           create={'calls': 5, 'total_seconds': .25, 'max_seconds': .05})
+
+                    def round_work(*_):
+                        progress.counts.update(mutations=5, replays=5, conflicts=3, reads=10, searches=1)
+                        progress.receipts.update({str(i): {} for i in range(5, 10)})
+                        cli.acknowledgements.update(mutations=5, replays=5)
+                        cli.counts.update(success=21, conflict=3)
+                        cli.timings.update(patch={'calls': 13, 'total_seconds': .65, 'max_seconds': .05},
+                                           read={'calls': 10, 'total_seconds': .2, 'max_seconds': .02},
+                                           search={'calls': 1, 'total_seconds': .01, 'max_seconds': .01})
+                        clock[0] = 1.0
+
+                    def backup(number):
+                        cli.counts['success'] += 1
+                        cli.timings['backup'] = {'calls': 1, 'total_seconds': .01, 'max_seconds': .01}
+                        if prior_timeout:
+                            return cli.call('restore')
+                        progress.counts.update(backup_checks=1, restored_mutations=1, restored_replays=2)
+                        cli.acknowledgements.update(mutations=1, replays=2)
+                        cli.counts['success'] += 8
+                        cli.timings.update(restore={'calls': 1, 'total_seconds': .1, 'max_seconds': .1},
+                                           index={'calls': 1, 'total_seconds': .01, 'max_seconds': .01})
+                        cli.timings['patch']['calls'] += 3
+                        cli.timings['patch']['total_seconds'] += .15
+                        cli.timings['read']['calls'] += 3
+                        cli.timings['read']['total_seconds'] += .06
+                        return {'round': number, 'files': 19, 'bytes': 4096}
+
+                    progress.setup.side_effect = setup
+                    progress.round.side_effect = round_work
+                    progress.backup.side_effect = backup
+                    return progress
+
+                def stored(_):
+                    return {'receipt_files': len(progress.receipts), 'receipt_bytes': 4096, 'log_bytes': 23}
+
+                timeout = subprocess.TimeoutExpired([str(root / 'private-executable')], 30,
+                                                    output=str(root / 'private-stdout'),
+                                                    stderr=str(root / 'private-stderr'))
+                with mock.patch.object(soak, 'Workload', side_effect=construct), \
+                        mock.patch.object(soak, 'storage', side_effect=stored), \
+                        mock.patch.object(soak.time, 'monotonic', side_effect=lambda: clock[0]), \
+                        mock.patch.object(soak.subprocess, 'run', side_effect=timeout):
+                    report = self._workspace_failure_report(root, mock.Mock(return_value=manager))
+                run = report['runs'][0]
+                self.assertIs(run['ok'], False)
+                self.assertEqual(report['acknowledged_work'], 10)
+                self.assertEqual((report['totals']['mutations'], report['totals']['replays']), (5, 5))
+                self.assertEqual(run['confirmed_receipts'], 10)
+                self.assertEqual(run['rounds'], 1)
+                self.assertEqual(run['work_seconds'], 1.0)
+                self.assertEqual(run['timings']['create'], {'calls': 5, 'total_seconds': .25, 'max_seconds': .05})
+                self.assertEqual(run['commands']['error'], int(prior_timeout))
+                self.assertEqual(run['counts'].get('backup_checks', 0), 0 if prior_timeout else 1)
+                self.assertEqual(len(run['backup_checks']), 0 if prior_timeout else 1)
+                self.assertEqual(run['all_root_acknowledgements'],
+                                 {'mutations': 10 if prior_timeout else 11, 'replays': 5 if prior_timeout else 7})
+                if prior_timeout:
+                    self.assertEqual(run['failures'][0], {
+                        'error_type': 'TimeoutExpired', 'category': 'timeout',
+                        'check': 'cli-command-timeout', 'operation': 'restore'})
+                    self.assertEqual(run['timings']['restore']['calls'], 1)
+                    self.assertNotIn('final_storage', run)
+                self.assertEqual(len(run['failures']), 2 if prior_timeout else 1)
+                self.assertEqual(run['failures'][-1], {
+                    'error_type': 'OSError', 'category': 'os-error', 'errno': 5,
+                    'operation': 'workspace', 'check': 'workspace-cleanup'})
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,2042 @@
+{
+  "schema_version": "kb.v1-candidate5-retrieval.v1",
+  "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+  "coordinator_bound_binary_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+  "identity_limit": "Raw evaluator omits executable identity; completed functional receipt and coordinator bind this fresh invocation to candidate.5.",
+  "corpus_sha256": "562af0124822b42e72125ae9307e5bc5a5fe9fb0f1164be13a8811aa6d49cc4c",
+  "authored_search_judgments": [
+    {
+      "id": "portuguese-accented",
+      "query": "memória ação",
+      "relevant": [
+        "03_Resources/memória.md"
+      ],
+      "matches": [
+        "03_Resources/memória.md"
+      ]
+    },
+    {
+      "id": "portuguese-folded",
+      "query": "MEMORIA ACAO",
+      "relevant": [
+        "03_Resources/memória.md"
+      ],
+      "matches": [
+        "03_Resources/memória.md"
+      ]
+    },
+    {
+      "id": "portuguese-decomposed",
+      "query": "memória ação",
+      "relevant": [
+        "03_Resources/memória.md"
+      ],
+      "matches": [
+        "03_Resources/memória.md"
+      ]
+    },
+    {
+      "id": "cafe-ambiguity",
+      "query": "café",
+      "relevant": [
+        "03_Resources/memória.md",
+        "03_Resources/distractor.md"
+      ],
+      "matches": [
+        "03_Resources/memória.md",
+        "03_Resources/distractor.md"
+      ]
+    },
+    {
+      "id": "cjk-whole-token",
+      "query": "東京",
+      "relevant": [
+        "03_Resources/memória.md"
+      ],
+      "matches": [
+        "03_Resources/memória.md"
+      ]
+    },
+    {
+      "id": "cyrillic-case",
+      "query": "ПРИВЕТ",
+      "relevant": [
+        "03_Resources/memória.md"
+      ],
+      "matches": [
+        "03_Resources/memória.md"
+      ]
+    },
+    {
+      "id": "identifier-intersection",
+      "query": "s3 k8s crossplane",
+      "relevant": [
+        "03_Resources/identifiers.md"
+      ],
+      "matches": [
+        "03_Resources/identifiers.md"
+      ]
+    },
+    {
+      "id": "english-disambiguation",
+      "query": "river bank stream",
+      "relevant": [
+        "03_Resources/river.md"
+      ],
+      "matches": [
+        "03_Resources/river.md"
+      ]
+    },
+    {
+      "id": "ambiguous-filter",
+      "query": "bank",
+      "filters": {
+        "tags": [
+          "finance"
+        ]
+      },
+      "relevant": [
+        "03_Resources/finance.md"
+      ],
+      "matches": [
+        "03_Resources/finance.md"
+      ]
+    },
+    {
+      "id": "literal-phrase",
+      "query": "amber lantern",
+      "literal": true,
+      "relevant": [
+        "03_Resources/phrase.md"
+      ],
+      "matches": [
+        "03_Resources/phrase.md"
+      ]
+    },
+    {
+      "id": "unordered-terms",
+      "query": "amber lantern",
+      "relevant": [
+        "03_Resources/phrase.md",
+        "03_Resources/reversed.md"
+      ],
+      "matches": [
+        "03_Resources/phrase.md",
+        "03_Resources/reversed.md"
+      ]
+    },
+    {
+      "id": "title-weight",
+      "query": "quartzcrest",
+      "relevant": [
+        "03_Resources/title-a.md"
+      ],
+      "matches": [
+        "03_Resources/title-a.md",
+        "03_Resources/title-b.md"
+      ],
+      "before": [
+        [
+          "03_Resources/title-a.md",
+          "03_Resources/title-b.md"
+        ]
+      ]
+    },
+    {
+      "id": "tag-weight",
+      "query": "zirconcrest",
+      "relevant": [
+        "03_Resources/tag-a.md"
+      ],
+      "matches": [
+        "03_Resources/tag-a.md",
+        "03_Resources/tag-b.md"
+      ],
+      "before": [
+        [
+          "03_Resources/tag-a.md",
+          "03_Resources/tag-b.md"
+        ]
+      ]
+    },
+    {
+      "id": "description-weight",
+      "query": "opalcrest",
+      "relevant": [
+        "03_Resources/description-a.md"
+      ],
+      "matches": [
+        "03_Resources/description-a.md",
+        "03_Resources/description-b.md"
+      ],
+      "before": [
+        [
+          "03_Resources/description-a.md",
+          "03_Resources/description-b.md"
+        ]
+      ]
+    },
+    {
+      "id": "path-weight",
+      "query": "pathcrest",
+      "relevant": [
+        "03_Resources/pathcrest.md"
+      ],
+      "matches": [
+        "03_Resources/pathcrest.md",
+        "03_Resources/otherpath.md"
+      ],
+      "before": [
+        [
+          "03_Resources/pathcrest.md",
+          "03_Resources/otherpath.md"
+        ]
+      ]
+    },
+    {
+      "id": "default-eligibility",
+      "query": "beacon",
+      "relevant": [
+        "01_Projects/active.md",
+        "03_Resources/current.md",
+        "03_Resources/stale.md"
+      ],
+      "matches": [
+        "01_Projects/active.md",
+        "03_Resources/current.md",
+        "03_Resources/stale.md"
+      ]
+    },
+    {
+      "id": "include-ineligible",
+      "query": "beacon",
+      "filters": {
+        "include_archives": true,
+        "include_deprecated": true
+      },
+      "relevant": [
+        "01_Projects/active.md",
+        "03_Resources/current.md",
+        "03_Resources/stale.md",
+        "03_Resources/deprecated.md",
+        "04_Archive/archived.md"
+      ],
+      "matches": [
+        "01_Projects/active.md",
+        "03_Resources/current.md",
+        "03_Resources/stale.md",
+        "03_Resources/deprecated.md",
+        "04_Archive/archived.md"
+      ]
+    },
+    {
+      "id": "deterministic-tie",
+      "query": "tiecrest",
+      "relevant": [
+        "03_Resources/tie-a.md",
+        "03_Resources/tie-b.md"
+      ],
+      "matches": [
+        "03_Resources/tie-a.md",
+        "03_Resources/tie-b.md"
+      ],
+      "before": [
+        [
+          "03_Resources/tie-a.md",
+          "03_Resources/tie-b.md"
+        ]
+      ]
+    },
+    {
+      "id": "stale-only",
+      "query": "beacon",
+      "filters": {
+        "stale": true
+      },
+      "relevant": [
+        "03_Resources/stale.md"
+      ],
+      "matches": [
+        "03_Resources/stale.md"
+      ],
+      "stale": true
+    },
+    {
+      "id": "fresh-reference",
+      "query": "beacon",
+      "filters": {
+        "stale": false,
+        "type": [
+          "Reference"
+        ]
+      },
+      "relevant": [
+        "03_Resources/current.md"
+      ],
+      "matches": [
+        "03_Resources/current.md"
+      ],
+      "stale": false
+    },
+    {
+      "id": "sources-required",
+      "query": "beacon",
+      "filters": {
+        "has_sources": true
+      },
+      "relevant": [
+        "03_Resources/current.md"
+      ],
+      "matches": [
+        "03_Resources/current.md"
+      ]
+    },
+    {
+      "id": "sources-absent",
+      "query": "beacon",
+      "filters": {
+        "has_sources": false,
+        "para": [
+          "projects"
+        ]
+      },
+      "relevant": [
+        "01_Projects/active.md"
+      ],
+      "matches": [
+        "01_Projects/active.md"
+      ]
+    },
+    {
+      "id": "or-within-and-across",
+      "query": "beacon",
+      "filters": {
+        "tags": [
+          "operations",
+          "missing"
+        ],
+        "type": [
+          "Reference"
+        ],
+        "status": [
+          "stable"
+        ],
+        "para": [
+          "resources"
+        ],
+        "prefix": "03_Resources",
+        "trust": [
+          "unverified"
+        ]
+      },
+      "relevant": [
+        "03_Resources/current.md"
+      ],
+      "matches": [
+        "03_Resources/current.md"
+      ]
+    },
+    {
+      "id": "filter-no-match",
+      "query": "beacon",
+      "filters": {
+        "tags": [
+          "finance"
+        ]
+      },
+      "relevant": [],
+      "matches": []
+    },
+    {
+      "id": "six-relevant-top-five",
+      "query": "recoveryvault",
+      "filters": {
+        "type": [
+          "Reference"
+        ]
+      },
+      "relevant": [
+        "03_Resources/recovery-1.md",
+        "03_Resources/recovery-2.md",
+        "03_Resources/recovery-3.md",
+        "03_Resources/recovery-4.md",
+        "03_Resources/recovery-5.md",
+        "03_Resources/recovery-6.md"
+      ],
+      "matches": [
+        "03_Resources/recovery-1.md",
+        "03_Resources/recovery-2.md",
+        "03_Resources/recovery-3.md",
+        "03_Resources/recovery-4.md",
+        "03_Resources/recovery-5.md",
+        "03_Resources/recovery-6.md"
+      ]
+    },
+    {
+      "id": "exact-no-match",
+      "query": "absentquartzmarker",
+      "relevant": [],
+      "matches": []
+    },
+    {
+      "id": "literal-not-substring",
+      "query": "cross",
+      "literal": true,
+      "relevant": [],
+      "matches": []
+    },
+    {
+      "id": "unsupported-or-syntax",
+      "query": "s3 OR bank",
+      "relevant": [],
+      "matches": []
+    },
+    {
+      "id": "unsupported-field-syntax",
+      "query": "title:orchid",
+      "relevant": [],
+      "matches": []
+    },
+    {
+      "id": "unsupported-emoji-only",
+      "query": "🧪",
+      "relevant": [],
+      "matches": []
+    },
+    {
+      "id": "unsupported-cjk-substring",
+      "query": "京",
+      "literal": true,
+      "relevant": [],
+      "matches": []
+    }
+  ],
+  "authored_context_judgments": [
+    {
+      "id": "byte-truncation",
+      "query": "citationcrest",
+      "filters": {
+        "type": [
+          "Reference"
+        ]
+      },
+      "max_tokens": 1000,
+      "max_bytes": 180,
+      "paths": [
+        "03_Resources/context.md"
+      ],
+      "truncated": true,
+      "omitted": 0
+    },
+    {
+      "id": "token-truncation",
+      "query": "citationcrest",
+      "filters": {
+        "type": [
+          "Reference"
+        ]
+      },
+      "max_tokens": 45,
+      "max_bytes": 4000,
+      "paths": [
+        "03_Resources/context.md"
+      ],
+      "truncated": true,
+      "omitted": 0
+    },
+    {
+      "id": "full-unicode-citations",
+      "query": "citationcrest",
+      "max_tokens": 1000,
+      "max_bytes": 4000,
+      "paths": [
+        "03_Resources/context.md"
+      ],
+      "truncated": false,
+      "omitted": 0
+    },
+    {
+      "id": "no-citation-fits",
+      "query": "citationcrest",
+      "max_tokens": 1,
+      "max_bytes": 4,
+      "paths": [],
+      "truncated": true,
+      "omitted": 1,
+      "filters": {
+        "type": [
+          "Reference"
+        ]
+      }
+    },
+    {
+      "id": "multiple-sources",
+      "query": "recoveryvault",
+      "max_tokens": 2000,
+      "max_bytes": 8000,
+      "paths": [
+        "03_Resources/recovery-1.md",
+        "03_Resources/recovery-2.md",
+        "03_Resources/recovery-3.md",
+        "03_Resources/recovery-4.md",
+        "03_Resources/recovery-5.md",
+        "03_Resources/recovery-6.md"
+      ],
+      "truncated": false,
+      "omitted": 0
+    },
+    {
+      "id": "omitted-sources",
+      "query": "recoveryvault",
+      "max_tokens": 45,
+      "max_bytes": 180,
+      "paths": [
+        "03_Resources/recovery-1.md"
+      ],
+      "truncated": true,
+      "omitted": 5
+    },
+    {
+      "id": "empty-context",
+      "query": "absentquartzmarker",
+      "max_tokens": 100,
+      "max_bytes": 400,
+      "paths": [],
+      "truncated": false,
+      "omitted": 0
+    },
+    {
+      "id": "stale-context",
+      "query": "beacon",
+      "filters": {
+        "stale": true
+      },
+      "max_tokens": 1000,
+      "max_bytes": 4000,
+      "paths": [
+        "03_Resources/stale.md"
+      ],
+      "truncated": false,
+      "omitted": 0
+    }
+  ],
+  "observation": {
+    "corpus_sha256": "sha256:562af0124822b42e72125ae9307e5bc5a5fe9fb0f1164be13a8811aa6d49cc4c",
+    "as_of": "2026-01-01T00:00:00Z",
+    "notes": 30,
+    "fixture_files": 32,
+    "search_cases": [
+      {
+        "id": "portuguese-accented",
+        "ranked": [
+          "03_Resources/memória.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "portuguese-folded",
+        "ranked": [
+          "03_Resources/memória.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "portuguese-decomposed",
+        "ranked": [
+          "03_Resources/memória.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "cafe-ambiguity",
+        "ranked": [
+          "03_Resources/distractor.md",
+          "03_Resources/memória.md"
+        ],
+        "total": 2,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "cjk-whole-token",
+        "ranked": [
+          "03_Resources/memória.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "cyrillic-case",
+        "ranked": [
+          "03_Resources/memória.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "identifier-intersection",
+        "ranked": [
+          "03_Resources/identifiers.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "english-disambiguation",
+        "ranked": [
+          "03_Resources/river.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "ambiguous-filter",
+        "ranked": [
+          "03_Resources/finance.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "literal-phrase",
+        "ranked": [
+          "03_Resources/phrase.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "unordered-terms",
+        "ranked": [
+          "03_Resources/phrase.md",
+          "03_Resources/reversed.md"
+        ],
+        "total": 2,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "title-weight",
+        "ranked": [
+          "03_Resources/title-a.md",
+          "03_Resources/title-b.md"
+        ],
+        "total": 2,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "tag-weight",
+        "ranked": [
+          "03_Resources/tag-a.md",
+          "03_Resources/tag-b.md"
+        ],
+        "total": 2,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "description-weight",
+        "ranked": [
+          "03_Resources/description-a.md",
+          "03_Resources/description-b.md"
+        ],
+        "total": 2,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "path-weight",
+        "ranked": [
+          "03_Resources/pathcrest.md",
+          "03_Resources/otherpath.md"
+        ],
+        "total": 2,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "default-eligibility",
+        "ranked": [
+          "03_Resources/current.md",
+          "01_Projects/active.md",
+          "03_Resources/stale.md"
+        ],
+        "total": 3,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "include-ineligible",
+        "ranked": [
+          "04_Archive/archived.md",
+          "03_Resources/deprecated.md",
+          "03_Resources/current.md",
+          "01_Projects/active.md",
+          "03_Resources/stale.md"
+        ],
+        "total": 5,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "deterministic-tie",
+        "ranked": [
+          "03_Resources/tie-a.md",
+          "03_Resources/tie-b.md"
+        ],
+        "total": 2,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "stale-only",
+        "ranked": [
+          "03_Resources/stale.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "fresh-reference",
+        "ranked": [
+          "03_Resources/current.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "sources-required",
+        "ranked": [
+          "03_Resources/current.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "sources-absent",
+        "ranked": [
+          "01_Projects/active.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "or-within-and-across",
+        "ranked": [
+          "03_Resources/current.md"
+        ],
+        "total": 1,
+        "recall_at5": 1.0,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "filter-no-match",
+        "ranked": [],
+        "total": 0,
+        "recall_at5": null,
+        "reciprocal_rank_at5": null,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "six-relevant-top-five",
+        "ranked": [
+          "03_Resources/recovery-1.md",
+          "03_Resources/recovery-2.md",
+          "03_Resources/recovery-3.md",
+          "03_Resources/recovery-4.md",
+          "03_Resources/recovery-5.md"
+        ],
+        "total": 6,
+        "recall_at5": 0.8333333333333334,
+        "reciprocal_rank_at5": 1.0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "exact-no-match",
+        "ranked": [],
+        "total": 0,
+        "recall_at5": null,
+        "reciprocal_rank_at5": null,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "literal-not-substring",
+        "ranked": [],
+        "total": 0,
+        "recall_at5": null,
+        "reciprocal_rank_at5": null,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "unsupported-or-syntax",
+        "ranked": [],
+        "total": 0,
+        "recall_at5": null,
+        "reciprocal_rank_at5": null,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "unsupported-field-syntax",
+        "ranked": [],
+        "total": 0,
+        "recall_at5": null,
+        "reciprocal_rank_at5": null,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "unsupported-emoji-only",
+        "ranked": [],
+        "total": 0,
+        "recall_at5": null,
+        "reciprocal_rank_at5": null,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "unsupported-cjk-substring",
+        "ranked": [],
+        "total": 0,
+        "recall_at5": null,
+        "reciprocal_rank_at5": null,
+        "cli_mcp_parity": true
+      }
+    ],
+    "context_cases": [
+      {
+        "id": "byte-truncation",
+        "paths": [
+          "03_Resources/context.md"
+        ],
+        "bytes": 179,
+        "estimated_tokens": 45,
+        "truncated": true,
+        "omitted": 0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "token-truncation",
+        "paths": [
+          "03_Resources/context.md"
+        ],
+        "bytes": 179,
+        "estimated_tokens": 45,
+        "truncated": true,
+        "omitted": 0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "full-unicode-citations",
+        "paths": [
+          "03_Resources/context.md"
+        ],
+        "bytes": 506,
+        "estimated_tokens": 127,
+        "truncated": false,
+        "omitted": 0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "no-citation-fits",
+        "paths": [],
+        "bytes": 0,
+        "estimated_tokens": 0,
+        "truncated": true,
+        "omitted": 1,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "multiple-sources",
+        "paths": [
+          "03_Resources/recovery-1.md",
+          "03_Resources/recovery-2.md",
+          "03_Resources/recovery-3.md",
+          "03_Resources/recovery-4.md",
+          "03_Resources/recovery-5.md",
+          "03_Resources/recovery-6.md"
+        ],
+        "bytes": 814,
+        "estimated_tokens": 204,
+        "truncated": false,
+        "omitted": 0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "omitted-sources",
+        "paths": [
+          "03_Resources/recovery-1.md"
+        ],
+        "bytes": 135,
+        "estimated_tokens": 34,
+        "truncated": true,
+        "omitted": 5,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "empty-context",
+        "paths": [],
+        "bytes": 0,
+        "estimated_tokens": 0,
+        "truncated": false,
+        "omitted": 0,
+        "cli_mcp_parity": true
+      },
+      {
+        "id": "stale-context",
+        "paths": [
+          "03_Resources/stale.md"
+        ],
+        "bytes": 150,
+        "estimated_tokens": 38,
+        "truncated": false,
+        "omitted": 0,
+        "cli_mcp_parity": true
+      }
+    ],
+    "failures": [],
+    "source_reads": 8,
+    "query_purity": true,
+    "isolated_home_unchanged": true,
+    "metrics": {
+      "positive_cases": 24,
+      "negative_cases": 7,
+      "macro_recall_at5": 0.9930555555555555,
+      "mrr_at5": 1.0
+    },
+    "passed": true
+  },
+  "categories": {
+    "search_categories": [
+      {
+        "id": "unicode-normalization-and-whole-tokens",
+        "description": "Portuguese accents, case and canonical decomposition; complete CJK and Cyrillic lexical tokens.",
+        "case_ids": [
+          "portuguese-accented",
+          "portuguese-folded",
+          "portuguese-decomposed",
+          "cjk-whole-token",
+          "cyrillic-case"
+        ],
+        "metrics": {
+          "cases": 5,
+          "positive_cases": 5,
+          "negative_cases": 0,
+          "macro_recall_at5": 1.0,
+          "mrr_at5": 1.0,
+          "macro_recall_at5_floor": 1.0,
+          "mrr_at5_floor": 1.0,
+          "negative_zero_hit_cases_passed": 0,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "portuguese-accented",
+            "query": "memória ação",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/memória.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "portuguese-folded",
+            "query": "MEMORIA ACAO",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/memória.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "portuguese-decomposed",
+            "query": "memória ação",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/memória.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "cjk-whole-token",
+            "query": "東京",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/memória.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "cyrillic-case",
+            "query": "ПРИВЕТ",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/memória.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "lexical-ambiguity-and-identifier-intersection",
+        "description": "Unfiltered lexical ambiguity, disambiguation by additional English terms, and exact identifier intersection.",
+        "case_ids": [
+          "cafe-ambiguity",
+          "identifier-intersection",
+          "english-disambiguation"
+        ],
+        "metrics": {
+          "cases": 3,
+          "positive_cases": 3,
+          "negative_cases": 0,
+          "macro_recall_at5": 1.0,
+          "mrr_at5": 1.0,
+          "macro_recall_at5_floor": 1.0,
+          "mrr_at5_floor": 1.0,
+          "negative_zero_hit_cases_passed": 0,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "cafe-ambiguity",
+            "query": "café",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 2,
+            "eligible_documents": 2,
+            "ranked": [
+              "03_Resources/distractor.md",
+              "03_Resources/memória.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "identifier-intersection",
+            "query": "s3 k8s crossplane",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/identifiers.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "english-disambiguation",
+            "query": "river bank stream",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/river.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "phrase-versus-unordered-term-semantics",
+        "description": "Literal phrase eligibility contrasted with the same unordered lexical terms.",
+        "case_ids": [
+          "literal-phrase",
+          "unordered-terms"
+        ],
+        "metrics": {
+          "cases": 2,
+          "positive_cases": 2,
+          "negative_cases": 0,
+          "macro_recall_at5": 1.0,
+          "mrr_at5": 1.0,
+          "macro_recall_at5_floor": 1.0,
+          "mrr_at5_floor": 1.0,
+          "negative_zero_hit_cases_passed": 0,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "literal-phrase",
+            "query": "amber lantern",
+            "filters": {},
+            "literal": true,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/phrase.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "unordered-terms",
+            "query": "amber lantern",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 2,
+            "eligible_documents": 2,
+            "ranked": [
+              "03_Resources/phrase.md",
+              "03_Resources/reversed.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "weighted-fields",
+        "description": "Controlled title, tag, description and path preference over body-only occurrences.",
+        "case_ids": [
+          "title-weight",
+          "tag-weight",
+          "description-weight",
+          "path-weight"
+        ],
+        "metrics": {
+          "cases": 4,
+          "positive_cases": 4,
+          "negative_cases": 0,
+          "macro_recall_at5": 1.0,
+          "mrr_at5": 1.0,
+          "macro_recall_at5_floor": 1.0,
+          "mrr_at5_floor": 1.0,
+          "negative_zero_hit_cases_passed": 0,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "title-weight",
+            "query": "quartzcrest",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 2,
+            "ranked": [
+              "03_Resources/title-a.md",
+              "03_Resources/title-b.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "tag-weight",
+            "query": "zirconcrest",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 2,
+            "ranked": [
+              "03_Resources/tag-a.md",
+              "03_Resources/tag-b.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "description-weight",
+            "query": "opalcrest",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 2,
+            "ranked": [
+              "03_Resources/description-a.md",
+              "03_Resources/description-b.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "path-weight",
+            "query": "pathcrest",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 2,
+            "ranked": [
+              "03_Resources/pathcrest.md",
+              "03_Resources/otherpath.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "eligibility-and-filter-composition",
+        "description": "Tag disambiguation, default/archive/deprecated eligibility, freshness, source presence, and within-field OR plus across-field AND.",
+        "case_ids": [
+          "ambiguous-filter",
+          "default-eligibility",
+          "include-ineligible",
+          "stale-only",
+          "fresh-reference",
+          "sources-required",
+          "sources-absent",
+          "or-within-and-across"
+        ],
+        "metrics": {
+          "cases": 8,
+          "positive_cases": 8,
+          "negative_cases": 0,
+          "macro_recall_at5": 1.0,
+          "mrr_at5": 1.0,
+          "macro_recall_at5_floor": 1.0,
+          "mrr_at5_floor": 1.0,
+          "negative_zero_hit_cases_passed": 0,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "ambiguous-filter",
+            "query": "bank",
+            "filters": {
+              "tags": [
+                "finance"
+              ]
+            },
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/finance.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "default-eligibility",
+            "query": "beacon",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 3,
+            "eligible_documents": 3,
+            "ranked": [
+              "03_Resources/current.md",
+              "01_Projects/active.md",
+              "03_Resources/stale.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "include-ineligible",
+            "query": "beacon",
+            "filters": {
+              "include_archives": true,
+              "include_deprecated": true
+            },
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 5,
+            "eligible_documents": 5,
+            "ranked": [
+              "04_Archive/archived.md",
+              "03_Resources/deprecated.md",
+              "03_Resources/current.md",
+              "01_Projects/active.md",
+              "03_Resources/stale.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "stale-only",
+            "query": "beacon",
+            "filters": {
+              "stale": true
+            },
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/stale.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "fresh-reference",
+            "query": "beacon",
+            "filters": {
+              "stale": false,
+              "type": [
+                "Reference"
+              ]
+            },
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/current.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "sources-required",
+            "query": "beacon",
+            "filters": {
+              "has_sources": true
+            },
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/current.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "sources-absent",
+            "query": "beacon",
+            "filters": {
+              "has_sources": false,
+              "para": [
+                "projects"
+              ]
+            },
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "01_Projects/active.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "or-within-and-across",
+            "query": "beacon",
+            "filters": {
+              "tags": [
+                "operations",
+                "missing"
+              ],
+              "type": [
+                "Reference"
+              ],
+              "status": [
+                "stable"
+              ],
+              "para": [
+                "resources"
+              ],
+              "prefix": "03_Resources",
+              "trust": [
+                "unverified"
+              ]
+            },
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 1,
+            "eligible_documents": 1,
+            "ranked": [
+              "03_Resources/current.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "deterministic-equal-score-ordering",
+        "description": "Path ordering of equal-content/equal-score eligible notes.",
+        "case_ids": [
+          "deterministic-tie"
+        ],
+        "metrics": {
+          "cases": 1,
+          "positive_cases": 1,
+          "negative_cases": 0,
+          "macro_recall_at5": 1.0,
+          "mrr_at5": 1.0,
+          "macro_recall_at5_floor": 1.0,
+          "mrr_at5_floor": 1.0,
+          "negative_zero_hit_cases_passed": 0,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "deterministic-tie",
+            "query": "tiecrest",
+            "filters": {},
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 2,
+            "eligible_documents": 2,
+            "ranked": [
+              "03_Resources/tie-a.md",
+              "03_Resources/tie-b.md"
+            ],
+            "recall_at5": 1.0,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 1.0,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "top-five-recall-cutoff",
+        "description": "Six eligible relevant notes with a five-result cutoff; attainable Recall@5 is 5/6.",
+        "case_ids": [
+          "six-relevant-top-five"
+        ],
+        "metrics": {
+          "cases": 1,
+          "positive_cases": 1,
+          "negative_cases": 0,
+          "macro_recall_at5": 0.8333333333333334,
+          "mrr_at5": 1.0,
+          "macro_recall_at5_floor": 0.8333333333333334,
+          "mrr_at5_floor": 1.0,
+          "negative_zero_hit_cases_passed": 0,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "six-relevant-top-five",
+            "query": "recoveryvault",
+            "filters": {
+              "type": [
+                "Reference"
+              ]
+            },
+            "literal": false,
+            "positive": true,
+            "relevant_documents": 6,
+            "eligible_documents": 6,
+            "ranked": [
+              "03_Resources/recovery-1.md",
+              "03_Resources/recovery-2.md",
+              "03_Resources/recovery-3.md",
+              "03_Resources/recovery-4.md",
+              "03_Resources/recovery-5.md"
+            ],
+            "recall_at5": 0.8333333333333334,
+            "reciprocal_rank_at5": 1.0,
+            "recall_at5_floor": 0.8333333333333334,
+            "rr_at5_floor": 1.0,
+            "negative_zero_hit_pass": null,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "exact-and-filtered-no-match",
+        "description": "An absent lexical token and an otherwise matching token excluded by a tag filter.",
+        "case_ids": [
+          "filter-no-match",
+          "exact-no-match"
+        ],
+        "metrics": {
+          "cases": 2,
+          "positive_cases": 0,
+          "negative_cases": 2,
+          "macro_recall_at5": null,
+          "mrr_at5": null,
+          "macro_recall_at5_floor": null,
+          "mrr_at5_floor": null,
+          "negative_zero_hit_cases_passed": 2,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "filter-no-match",
+            "query": "beacon",
+            "filters": {
+              "tags": [
+                "finance"
+              ]
+            },
+            "literal": false,
+            "positive": false,
+            "relevant_documents": 0,
+            "eligible_documents": 0,
+            "ranked": [],
+            "recall_at5": null,
+            "reciprocal_rank_at5": null,
+            "recall_at5_floor": null,
+            "rr_at5_floor": null,
+            "negative_zero_hit_pass": true,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "exact-no-match",
+            "query": "absentquartzmarker",
+            "filters": {},
+            "literal": false,
+            "positive": false,
+            "relevant_documents": 0,
+            "eligible_documents": 0,
+            "ranked": [],
+            "recall_at5": null,
+            "reciprocal_rank_at5": null,
+            "recall_at5_floor": null,
+            "rr_at5_floor": null,
+            "negative_zero_hit_pass": true,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      },
+      {
+        "id": "unsupported-query-and-substring-boundaries",
+        "description": "Declared nonfeatures: unrestricted literal substrings, Boolean/field syntax, emoji-only retrieval and partial CJK substrings.",
+        "case_ids": [
+          "literal-not-substring",
+          "unsupported-or-syntax",
+          "unsupported-field-syntax",
+          "unsupported-emoji-only",
+          "unsupported-cjk-substring"
+        ],
+        "metrics": {
+          "cases": 5,
+          "positive_cases": 0,
+          "negative_cases": 5,
+          "macro_recall_at5": null,
+          "mrr_at5": null,
+          "macro_recall_at5_floor": null,
+          "mrr_at5_floor": null,
+          "negative_zero_hit_cases_passed": 5,
+          "all_cases_passed": true
+        },
+        "cases": [
+          {
+            "id": "literal-not-substring",
+            "query": "cross",
+            "filters": {},
+            "literal": true,
+            "positive": false,
+            "relevant_documents": 0,
+            "eligible_documents": 0,
+            "ranked": [],
+            "recall_at5": null,
+            "reciprocal_rank_at5": null,
+            "recall_at5_floor": null,
+            "rr_at5_floor": null,
+            "negative_zero_hit_pass": true,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "unsupported-or-syntax",
+            "query": "s3 OR bank",
+            "filters": {},
+            "literal": false,
+            "positive": false,
+            "relevant_documents": 0,
+            "eligible_documents": 0,
+            "ranked": [],
+            "recall_at5": null,
+            "reciprocal_rank_at5": null,
+            "recall_at5_floor": null,
+            "rr_at5_floor": null,
+            "negative_zero_hit_pass": true,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "unsupported-field-syntax",
+            "query": "title:orchid",
+            "filters": {},
+            "literal": false,
+            "positive": false,
+            "relevant_documents": 0,
+            "eligible_documents": 0,
+            "ranked": [],
+            "recall_at5": null,
+            "reciprocal_rank_at5": null,
+            "recall_at5_floor": null,
+            "rr_at5_floor": null,
+            "negative_zero_hit_pass": true,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "unsupported-emoji-only",
+            "query": "🧪",
+            "filters": {},
+            "literal": false,
+            "positive": false,
+            "relevant_documents": 0,
+            "eligible_documents": 0,
+            "ranked": [],
+            "recall_at5": null,
+            "reciprocal_rank_at5": null,
+            "recall_at5_floor": null,
+            "rr_at5_floor": null,
+            "negative_zero_hit_pass": true,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "unsupported-cjk-substring",
+            "query": "京",
+            "filters": {},
+            "literal": true,
+            "positive": false,
+            "relevant_documents": 0,
+            "eligible_documents": 0,
+            "ranked": [],
+            "recall_at5": null,
+            "reciprocal_rank_at5": null,
+            "recall_at5_floor": null,
+            "rr_at5_floor": null,
+            "negative_zero_hit_pass": true,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ]
+      }
+    ],
+    "overall_search_metrics": {
+      "cases": 31,
+      "positive_cases": 24,
+      "negative_cases": 7,
+      "macro_recall_at5": 0.9930555555555555,
+      "mrr_at5": 1.0,
+      "macro_recall_at5_floor": 0.9930555555555555,
+      "mrr_at5_floor": 1.0,
+      "negative_zero_hit_cases_passed": 7,
+      "all_cases_passed": true
+    },
+    "context_groups": [
+      {
+        "id": "independent-budgets-and-citation-fit",
+        "description": "Byte/token truncation and a budget too small for one citation.",
+        "case_ids": [
+          "byte-truncation",
+          "token-truncation",
+          "no-citation-fits"
+        ],
+        "cases": [
+          {
+            "id": "byte-truncation",
+            "paths": [
+              "03_Resources/context.md"
+            ],
+            "bytes": 179,
+            "estimated_tokens": 45,
+            "truncated": true,
+            "omitted": 0,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "token-truncation",
+            "paths": [
+              "03_Resources/context.md"
+            ],
+            "bytes": 179,
+            "estimated_tokens": 45,
+            "truncated": true,
+            "omitted": 0,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "no-citation-fits",
+            "paths": [],
+            "bytes": 0,
+            "estimated_tokens": 0,
+            "truncated": true,
+            "omitted": 1,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ],
+        "case_count": 3,
+        "all_cases_passed": true
+      },
+      {
+        "id": "complete-unicode-citation",
+        "description": "Complete Unicode source excerpt and exact citation behavior.",
+        "case_ids": [
+          "full-unicode-citations"
+        ],
+        "cases": [
+          {
+            "id": "full-unicode-citations",
+            "paths": [
+              "03_Resources/context.md"
+            ],
+            "bytes": 506,
+            "estimated_tokens": 127,
+            "truncated": false,
+            "omitted": 0,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ],
+        "case_count": 1,
+        "all_cases_passed": true
+      },
+      {
+        "id": "multiple-sources-and-omission-accounting",
+        "description": "Complete multi-source coverage contrasted with bounded omission.",
+        "case_ids": [
+          "multiple-sources",
+          "omitted-sources"
+        ],
+        "cases": [
+          {
+            "id": "multiple-sources",
+            "paths": [
+              "03_Resources/recovery-1.md",
+              "03_Resources/recovery-2.md",
+              "03_Resources/recovery-3.md",
+              "03_Resources/recovery-4.md",
+              "03_Resources/recovery-5.md",
+              "03_Resources/recovery-6.md"
+            ],
+            "bytes": 814,
+            "estimated_tokens": 204,
+            "truncated": false,
+            "omitted": 0,
+            "cli_mcp_parity": true,
+            "passed": true
+          },
+          {
+            "id": "omitted-sources",
+            "paths": [
+              "03_Resources/recovery-1.md"
+            ],
+            "bytes": 135,
+            "estimated_tokens": 34,
+            "truncated": true,
+            "omitted": 5,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ],
+        "case_count": 2,
+        "all_cases_passed": true
+      },
+      {
+        "id": "no-result-context",
+        "description": "An absent token produces no sources without fabricated context.",
+        "case_ids": [
+          "empty-context"
+        ],
+        "cases": [
+          {
+            "id": "empty-context",
+            "paths": [],
+            "bytes": 0,
+            "estimated_tokens": 0,
+            "truncated": false,
+            "omitted": 0,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ],
+        "case_count": 1,
+        "all_cases_passed": true
+      },
+      {
+        "id": "stale-filtered-context",
+        "description": "Explicit stale eligibility retains original evidence.",
+        "case_ids": [
+          "stale-context"
+        ],
+        "cases": [
+          {
+            "id": "stale-context",
+            "paths": [
+              "03_Resources/stale.md"
+            ],
+            "bytes": 150,
+            "estimated_tokens": 38,
+            "truncated": false,
+            "omitted": 0,
+            "cli_mcp_parity": true,
+            "passed": true
+          }
+        ],
+        "case_count": 1,
+        "all_cases_passed": true
+      }
+    ],
+    "source_read_groups": {
+      "groups": [
+        {
+          "id": "unicode-context-source",
+          "description": "Original source for Unicode/citation/budget cases.",
+          "paths": [
+            "03_Resources/context.md"
+          ]
+        },
+        {
+          "id": "recovery-source-neighborhood",
+          "description": "All six distinct sources in the complete recovery context case.",
+          "paths": [
+            "03_Resources/recovery-1.md",
+            "03_Resources/recovery-2.md",
+            "03_Resources/recovery-3.md",
+            "03_Resources/recovery-4.md",
+            "03_Resources/recovery-5.md",
+            "03_Resources/recovery-6.md"
+          ]
+        },
+        {
+          "id": "stale-context-source",
+          "description": "Original source selected by the stale context filter.",
+          "paths": [
+            "03_Resources/stale.md"
+          ]
+        }
+      ],
+      "expected_unique_paths": 8,
+      "observed_exact_read_pairs": 8,
+      "reporting_limit": "The runtime evaluator emits one aggregate read count, not per-path read records. Groups identify its expected source set; no new reads or per-path observations are invented."
+    },
+    "coverage": {
+      "search_cases": 31,
+      "context_cases": 8,
+      "source_read_pairs": 8,
+      "cli_mcp_pairs": 47,
+      "duplicate_or_unknown_ids": false
+    },
+    "passed": true,
+    "schema_version": "kb.retrieval-categories.v1",
+    "corpus_sha256": "sha256:562af0124822b42e72125ae9307e5bc5a5fe9fb0f1164be13a8811aa6d49cc4c",
+    "input_report_sha256": "sha256:84dae44b79581765751e58fa19ad1a47d11a930afa0a579cd854f9dc586c0a8a",
+    "as_of": "2026-01-01T00:00:00Z",
+    "grouping_basis": "Fixed English category-to-case mapping selected from original query/filter semantics, not observed relevance outcomes. No corpus or relevance judgments changed.",
+    "metric_definitions": {
+      "recall_at5": "Unique relevant hits in the first five divided by all annotated relevant documents.",
+      "reciprocal_rank_at5": "Reciprocal of the first relevant rank within five, otherwise zero.",
+      "macro": "Arithmetic mean over positive queries only; overall is per-query weighted, not an unweighted mean of category means.",
+      "negative_cases": "Both metrics are null and excluded from macro means; require exactly zero ranked hits and total.",
+      "floors": "Per positive query min(5, relevant_count)/relevant_count and the original first-relevant-rank-one constraint. Six relevant notes require 5/6, not 1."
+    },
+    "source_attribution": {
+      "commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+      "basis": "Caller-supplied attribution; raw evaluator report has no executable identity. Parent must bind fresh final evidence independently."
+    },
+    "limits": [
+      "Grouping existing observed output only; no new product, context-citation or source-read execution.",
+      "Compact synthetic lexical corpus; no semantic or representative multilingual-quality guarantee.",
+      "Final released baseline/candidate reports and installed qualification remain separate."
+    ],
+    "validation_checks": [
+      "complete original actual-report coverage and recomputed metrics",
+      "duplicate category membership rejected",
+      "missing category membership rejected",
+      "unknown category membership rejected",
+      "duplicate actual case rejected",
+      "missing actual case rejected",
+      "unknown actual case rejected",
+      "negative zero metric rejected instead of null",
+      "negative nonzero result rejected",
+      "invented cutoff perfect recall rejected",
+      "insufficient top-five coverage rejected",
+      "search parity failure rejected",
+      "missing context rejected",
+      "fabricated source-read count rejected",
+      "inflated global metric rejected",
+      "underlying failed evaluator rejected",
+      "six-relevant 5/6 floor, 24/7 accounting and negative-only null means preserved"
+    ]
+  },
+  "editor_recomputed_search_cases": 31,
+  "editor_recomputed_context_cases": 8
+}
