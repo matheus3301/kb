@@ -14,7 +14,7 @@ apply only to the executable hashes, source identities and host in the report.
 Run `scripts/compatibility.py` with two actual executables. It creates fresh
 synthetic roots and an isolated empty home; it does not open a production base,
 install skills, register MCP, contact providers, or use model obedience as proof.
-It exits zero only when all of these checks complete:
+It exits zero only when all applicable checks complete:
 
 - Baseline and candidate identify their exact version and 40-hex source commit;
   the default baseline must be v0.3.1 at the pinned source above. An additional
@@ -41,6 +41,14 @@ It exits zero only when all of these checks complete:
   twelve tools on the write-enabled candidate and exactly six on either
   read-only server. Follow discovery pagination. Direct calls to hidden
   mutations must fail. Stdout remains JSON-RPC with matching response IDs.
+- When the prior baseline advertises backup/restore, invoke that **prior
+  executable** to produce a settled archive before any candidate invocation
+  touches the fixture. Transfer its exact bytes into a separate initialized
+  candidate staging root and restore with the candidate. Verify exact notes,
+  binary source assets, configuration and durable receipts; replay old create
+  and patch requests; continue both patch and create operations. Check the
+  original producer root's paths, modes and bytes remain unchanged after backup,
+  candidate restore, replay and continued writes.
 - Use CLI and MCP backup/restore on the upgraded root. Verify exact content,
   configuration, receipt bytes and revisions in both restored roots; compare
   manifest identities; replay old requests and continue ordinary writes. Restarts
@@ -144,6 +152,46 @@ Do not substitute a development build labeled v0.4.0 for the actual intermediate
 release qualification. The second edge remains unobserved until run against
 the real preserved v0.4.0 executable. The pinned v0.3.1 CI origin remains the
 default when both override flags are absent.
+
+### Prior-produced archive evidence
+
+The second edge must exercise an archive actually produced by its selected
+baseline. Candidate-produced round trips alone cannot establish this
+cross-version archive contract. The `prior-produced-archive` stage runs between
+the baseline's settled writes and the first candidate operation on the original
+fixture. Its candidate restore and continued writes use a separate staging root,
+not the original root or a candidate-created replacement archive.
+
+The bounded `prior_archive` report records:
+
+- `producer` and `consumer`: actual version, full source commit, executable
+  SHA-256 and logical binary path, using the same verified identities as the
+  overall qualification.
+- `archive_path`, `archive_sha256`, `manifest_revision`, `files` and `bytes`:
+  the prior-produced archive's identity and producer result.
+- `restored_manifest_revision`, `authoritative_bytes_exact`,
+  `replayed_requests`, `continued_writes`, `source_unchanged` and
+  `restore_destination`: observations required before `status: "passed"`.
+
+A corrupt archive, changed outer bytes, wrong manifest identity, mismatched
+note/asset/config/receipt/file set, lost replay, failed continued write or source
+mutation fails qualification. A matching outer checksum alone does not establish
+archive validity. Real-process regressions also reject an otherwise byte-exact
+archive missing old receipts: successful extraction is insufficient if the old
+stale-revision request cannot replay without effects.
+
+For v0.3.1, `prior_archive.status` is explicitly `not_applicable`, with a reason
+that the baseline has no operational archive tools. That edge does not add a
+fictional passing archive stage; candidate-produced round trips still run under
+their separate existing stage. For an archive-capable baseline, a failed
+production/restore attempt records `status: "failed"` and cannot be reported as
+not applicable.
+
+A same-source development-baseline smoke can exercise the archive-capable
+branch using its real development version/commit and executable hash. Label it
+development evidence; it does not substitute for the actual preserved
+Homebrew/checksum-verified v0.4.0 producer and v1.0.0 consumer required by D04.
+
 
 
 ## Native archive and Homebrew consumer recipe
