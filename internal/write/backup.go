@@ -344,6 +344,8 @@ func (s *Service) Restore(ctx context.Context, request api.RestoreInput) (result
 				err = errors.Join(err, cleanupRestore(root, dest, request.Destination, created, files, directories))
 			}
 		}()
+		batch := restoreBatch{ctx: ctx, dest: dest, directories: &directories, files: &files, boundary: s.boundary}
+		defer func() { err = errors.Join(err, batch.flush(false)) }()
 		identity := func() (err error) {
 			parent, err := backupParent(root, request.Destination, nil)
 			if err != nil {
@@ -379,12 +381,10 @@ func (s *Service) Restore(ctx context.Context, request api.RestoreInput) (result
 				config = data
 				return nil
 			}
-			if err := restoreFile(dest, entry, data, &directories, &files); err != nil {
-				return err
-			}
-			return s.boundary("restore-file", entry.Path)
+			return batch.add(entry, data)
 		}
 		m, revision, err := readBackup(ctx, archive, consume)
+		err = errors.Join(err, batch.flush(err == nil))
 		if err != nil {
 			return receipt, err
 		}
@@ -440,26 +440,15 @@ func (s *Service) Restore(ctx context.Context, request api.RestoreInput) (result
 }
 
 func restoreFile(dest *os.Root, entry backupEntry, data []byte, directories *[]string, files *[]restoredFile) (err error) {
-	parent, err := backupParent(dest, entry.Path, directories)
+	pending, err := prepareRestoreFile(dest, entry, data, directories)
 	if err != nil {
 		return err
 	}
-	defer func() { err = errors.Join(err, parent.Close()) }()
-	name := path.Base(entry.Path)
-	f, err := parent.OpenFile(name, os.O_CREATE|os.O_EXCL|os.O_WRONLY|syscall.O_NOFOLLOW, 0600)
-	if err != nil {
-		return err
+	pending.flush(dest)
+	if pending.record {
+		*files = append(*files, restoredFile{entry: pending.entry, identity: pending.identity})
 	}
-	created, err := f.Stat()
-	if err != nil {
-		return errors.Join(err, f.Close(), parent.Remove(name))
-	}
-	_, writeErr := f.Write(data)
-	if err := errors.Join(writeErr, f.Sync(), f.Close()); err != nil {
-		return errors.Join(err, removeOwnedRestoreLeaf(parent, name, created))
-	}
-	*files = append(*files, restoredFile{entry: entry, identity: created})
-	return errors.Join(syncDirectory(parent, "."), backupParentIdentity(dest, entry.Path, parent))
+	return pending.finish()
 }
 
 func cleanupRestore(parent, dest *os.Root, name string, created os.FileInfo, files []restoredFile, directories []string) error {
