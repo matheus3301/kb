@@ -139,8 +139,9 @@ it does **not** isolate the ASCII change from every other post-v0.3.1 improvemen
 | 10k CLI index rebuild | 176.170 → 177.421 (+1.251; +0.710%) | 177.666 → 179.690 (+2.024; +1.139%) | 177.482 → 179.690 (+2.208; +1.244%) | 177.666 → 179.690 (+2.024; +1.139%) | 100.266 → 97.031 (-3.235; -3.226%) |
 | 50k CLI index rebuild | 1441.045 → 1427.882 (-13.163; -0.913%) | 1446.556 → 1691.151 (+244.595; +16.909%) | 1432.446 → 1691.151 (+258.705; +18.060%) | 1446.556 → 1691.151 (+244.595; +16.909%) | 428.188 → 399.859 (-28.329; -6.616%) |
 
-The 50k rebuild median fell slightly, but its **p95/first/max increased
-244.595 ms (16.909%)**. That slow first observation is retained. No new 50k rebuild
+The 50k rebuild median fell slightly, but its **p95/max increased
+244.595 ms (16.909%)** and its **first increased 258.705 ms (18.060%)**.
+That slow first observation is retained. No new 50k rebuild
 ceiling or unmeasured rebuild improvement is invented. Fresh CLI rebuild includes
 startup plus the core call; these values are not separately measured pure-core
 rebuild latencies.
