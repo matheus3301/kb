@@ -1,8 +1,12 @@
 # Operational backup and restore
 
-Implemented in integrated source preparing **v0.4.0 qualification**, not in
-published production **v0.3.1**. Candidate restoration/reliability evidence and
-stable-v1 review remain pending under [V03/V04](stability.md).
+This guide describes the checked-out operational archive contract, introduced in
+v0.4.0; v0.3.1 has no archive commands. Receipt-history performance corrections
+do not change archive, state, configuration or wire formats. Use the installed
+version's tag and [compatibility policy](compatibility.md) for release differences.
+The [scaling report](qa/backup-performance-v1.md) preserves the original v0.4.0
+timeout failure and bounded correction evidence; current qualification belongs
+in the [exit checklist](stability.md).
 
 Operational archives are distinct from `kb export`: export produces a validated
 knowledge bundle and excludes operational state. Backup preserves exact bytes
@@ -34,6 +38,10 @@ a **new** destination; even an existing empty directory is refused. No overwrite
 root override or implicit server-root switch is available. These restrictions
 keep MCP's fixed-root authority intact. To use the restored base, explicitly
 select that root in a new CLI invocation or restart the MCP server against it.
+
+Restore validates existing source backup storage without creating a missing
+source directory or silently changing permissions. Group/other access is rejected
+with `ACCESS_DENIED` before opening the archive or creating destination storage.
 
 Same-disk storage is a staging/verification mechanism, **not disaster recovery**.
 Copy the archive to separate protected storage with an independently selected
@@ -127,6 +135,16 @@ Existing log/note/archive bounds can reject operations with explicit errors.
 Monitor/protect growing state and archive capacity; never delete receipts to fit
 a backup. No automatic compaction or receipt-format change is part of this contract.
 
+The v0.4.0 extended observation failed at the unchanged 30-second qualification
+command deadline after receipt history grew. That deadline belongs to the
+qualification harness, not a product timeout guarantee. The candidate's batched,
+fresh anchored inventory checks address the repeated-scan cause, without
+weakening byte verification or expiry/replay policy. Three samples at 2,000
+receipts measured backup median 24.45 s to 0.47 s and restore 23.88 s to 9.93 s
+on one macOS arm64 host; see the [full report](qa/backup-performance-v1.md).
+Restore sync cost and retained-history growth remain material. These observations
+do not qualify arbitrary receipt counts or replace extended/resource acceptance.
+
 ## Verification scope
 
 Synthetic regressions cover CLI/MCP parity, exact content/config/receipt bytes,
@@ -149,5 +167,6 @@ creates followed by sustained patch/CAS/replay/read/search and periodic archives
 reads/search do not count toward the minima. Deterministic regressions separately
 cover create/move/archive/apply/preview and multi-file publication. Both profiles
 verify receipt replay and continued writes after synthetic restoration.
-These extended observations and their independent review remain pending here;
-the long profile must not be presented as default-log-enabled evidence.
+Report each profile against its exact source and executable identity under the
+[exit checklist](stability.md); a later runtime change requires requalification.
+The long profile must not be presented as default-log-enabled evidence.

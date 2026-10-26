@@ -2,9 +2,9 @@
 
 Status: adopted for the repository foundation on 2026-10-24. Historical
 bootstrap context below; runtime dependencies were subsequently selected in
-[0002](0002-v0.1.md). Published production remains experimental v0.3.1;
-integrated source is preparing v0.4.0 qualification after all four roadmap
-increments. See the [roadmap](../roadmap.md) and [exit checklist](../stability.md).
+[0002](0002-v0.1.md). The [compatibility policy](../compatibility.md) and
+[exit checklist](../stability.md) track current release and qualification facts
+separately from the unchanged historical foundation decision below.
 
 The product needs one local binary, a CLI and MCP over one core, deterministic
 file operations, and straightforward distribution. Use Go as the implementation

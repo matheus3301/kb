@@ -7,9 +7,10 @@ measurements; the release records subsequent macOS arm64 installed verification.
 The original local core targets were met. The subsequent integrated
 [allocation-reduction increment](../performance-large-corpus.md) preserves these
 freshness/publication decisions and discloses both gains and regressions.
-Current source is preparing v0.4.0 qualification; production remains experimental
-v0.3.1 and [stable-v1 exit evidence](../stability.md) remains pending. No portable
-SLA follows from these local observations. The historical decision below is unchanged.
+The [receipt-history scaling repair](../qa/backup-performance-v1.md) preserves
+freshness, formats and durability. The [compatibility policy](../compatibility.md)
+and [exit checklist](../stability.md) track current release and qualification
+facts. No portable SLA follows; the historical decision below is unchanged.
 
 Profiling v0.3.0 found filesystem calls dominating warm inventory checks, a
 second full scan for response metadata, eager graph construction for operations

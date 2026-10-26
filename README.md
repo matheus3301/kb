@@ -81,17 +81,19 @@ npx skills add matheus3301/kb --skill knowledge-base
 The skill teaches agents how to use the CLI to consult the Knowledge Base, record
 reusable learning, and handle revisions, retries, and recovery. Its
 references travel with the installed skill. Configure `KB_ROOT` for CLI access
-and add a deliberate workdir instruction to use the skill. Installation alone
-does not guarantee consultation on every question.
+and add a deliberate workdir instruction to use the skill. Start a new agent
+turn/session after setup and verify consultation of the intended root.
+Installation alone does not guarantee consultation on every question.
 
 See [setup and upgrading the renamed skill](docs/agent-setup.md). Earlier
 releases used the installation name `knowledge-memory`.
 
 ## MCP
 
-MCP is the alternative agent interface and needs no skill. The server supplies
-operating instructions during initialization and describes tool inputs, results,
-previews, revision conflicts, retries, and access boundaries through discovery.
+MCP is the alternative agent interface and needs neither the CLI skill nor
+shell commands for agent operations. The server supplies initialization guidance
+and describes inputs, results, previews, revision conflicts, retries and access
+boundaries through discovery.
 
 Register a stdio server in your MCP client. Start with read-only access:
 
@@ -123,28 +125,42 @@ kb
 ├── apply                          Preview or execute a coordinated plan
 ├── maintain / index rebuild       Maintain navigation or rebuild derived search state
 ├── recover / export               Recover a pending transaction or export knowledge
-├── backup / restore               Stage exact operational archives (current source)
+├── backup / restore               Stage and verify exact operational archives
 └── mcp / version                  Serve MCP or inspect the installed build
 ```
 
-This map describes current source; backup/restore are not in published v0.3.1.
-Use `kb COMMAND --help` for installed flags. The [CLI guide](docs/cli.md)
-contains syntax, JSON requests, errors, and operating limits.
+This map is available in v0.4.0, including backup/restore. Use
+`kb COMMAND --help` for installed flags. The [CLI guide](docs/cli.md) contains
+syntax, JSON requests, errors, and operating limits.
 
 ## Project status
 
-**Experimental; preparing v0.4.0 qualification.** All four initial
-[roadmap](docs/roadmap.md) increments are integrated: retrieval evaluation,
-[operational backup/restore](docs/backups.md), large-corpus allocation reduction,
-and stability policy. **Published production remains
-[v0.3.1](https://github.com/matheus3301/kb/releases/tag/v0.3.1)**, with installed
-verification on macOS arm64 only. Source capability is not package qualification.
+**Published and installed: experimental
+[v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0). Stable v1.0.0
+qualification remains pending.** The released source is
+`74f0d196408c1354899802e18ce569b0eab33adf`. It includes lexical retrieval,
+revision-checked writes, self-contained MCP and [operational backup/restore](docs/backups.md).
+Actual Homebrew/formula and CLI/MCP consumer verification covers macOS arm64;
+Linux amd64 native archive and archived-source execution is the other required
+qualification channel. Linux arm64 and macOS amd64 remain package/cross-build-only.
 
-Stable v1.0.0 is pending the [candidate exit checklist](docs/stability.md) and
-independent review. See [compatibility/support](docs/compatibility.md) for version
-and platform limits, and the [paired scale report](docs/performance-large-corpus.md)
-for measured improvements **and regressions**; no portable latency SLA is claimed.
-Advisory locks cannot isolate arbitrary editors; health checks do not prove truth.
+Current source includes the
+[receipt-history scaling repair](docs/qa/backup-performance-v1.md),
+compatibility-report and published-asset verification guardrails without changing
+persisted or wire formats.
+**V05 is blocked:** the predeclared 20-read quiet matrix measured 10k CLI search
+at **384.470 ms against a 380 ms ceiling** (baseline 487.272 ms); the other 15
+rows and core targets passed. There is no waiver or repeat-until-green policy.
+Cold-CLI profiling/optimization is pending; a Go runtime change restarts full
+qualification. The completed 1,800-second run on `7ceed676` with 32,850
+acknowledged mutations/replays remains historical evidence, not proof for new code.
+The original v0.4.0 backup-timeout failure also remains recorded.
+
+The read-only published-archive verification matrix is configured; its first
+actual release execution is still pending. The [exit checklist](docs/stability.md),
+[compatibility/support](docs/compatibility.md) and independent readiness decision
+remain required before stable publication. No portable SLA, arbitrary-editor
+isolation, universal power-loss guarantee or factual-truth certification is claimed.
 
 ## Documentation
 

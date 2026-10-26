@@ -2,10 +2,10 @@
 
 Status: adopted for v0.3.0.
 
-Current status: this behavior remains implemented in the integrated source
-preparing v0.4.0 qualification; published production remains experimental v0.3.1.
-The [roadmap](../roadmap.md) and [exit checklist](../stability.md) distinguish
-merged additions from candidate evidence. The decision below is unchanged.
+The repair policy below remains the checked-out contract. The
+[compatibility policy](../compatibility.md) and [exit checklist](../stability.md)
+track current release and qualification facts separately from this historical
+decision.
 
 An existing Markdown collection can contain more invalid notes than a bounded
 transaction can repair. Requiring whole-base final conformance for every repair

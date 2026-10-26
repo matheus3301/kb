@@ -1,20 +1,12 @@
 # Installation
 
-`kb` remains experimental. Published production currently provides **v0.3.1**;
-integrated source is preparing **v0.4.0 qualification** with all four roadmap
-increments, including backup/restore absent from v0.3.1. No v0.4.0 publication or
-stable-v1 result is claimed here. Use the
-[releases page](https://github.com/matheus3301/kb/releases), Homebrew, or a source
-checkout; binary, skill, MCP setup and workdir activation are separate steps.
-
-[v0.3.1 installed-package verification](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
-covers real Homebrew source installation/formula testing, extracted binary and
-installed CLI/MCP workflows on **macOS arm64 only**. All four Linux/macOS
-amd64/arm64 archives are built; this is not installed runtime proof for the
-other three targets. The selected stable-v1 qualification channels are macOS
-arm64 Homebrew and Linux amd64 native archive/archived source; those candidate
-results remain pending. Linux arm64/macOS amd64 remain cross-build/package-only.
-See [compatibility/support](compatibility.md) and [v1.0 exit criteria](stability.md).
+Use this guide with the selected release's tag or checked-out revision, not as
+proof that `main` is installed. The [compatibility policy](compatibility.md),
+[README project status](../README.md#project-status) and public
+[release records](https://github.com/matheus3301/kb/releases) centralize current
+versions, qualification outcomes and native versus cross-build-only scope.
+Binary installation, skill installation, MCP registration and workdir activation
+are separate actions.
 
 ## Source checkout
 
@@ -33,13 +25,13 @@ Put Go's binary installation directory on your `PATH`. Source installations use
 source commit. Start with the [getting started example](../README.md#getting-started)
 or the [full quickstart](quickstart.md).
 
-Current source includes merged additions that the installed release may lack.
-Use source help and the [backup contract](backups.md) only with a binary exposing
-those commands; source `dev`/`unknown` is not exact released-artifact proof.
+Source checkouts may contain unreleased fixes. Compare installed version/help
+with the selected release documentation; source `dev`/`unknown` defaults are
+not exact released-artifact proof.
 
 ## Homebrew
 
-The stable release workflow publishes a source formula to
+The non-prerelease publication workflow maintains a source formula in
 [matheus3301/homebrew-tap](https://github.com/matheus3301/homebrew-tap):
 
 ```sh
@@ -48,10 +40,18 @@ kb version --json
 ```
 
 Homebrew compiles the checksummed release source with Go as a build dependency.
-The formula targets macOS and Linux without a cask or Gatekeeper changes; actual
-installed-package evidence above is macOS arm64 only. The installed binary needs
-neither Go nor Homebrew at runtime. A non-prerelease publication is not itself a
-stable-v1 support guarantee.
+The formula targets macOS and Linux without a cask or Gatekeeper changes. The
+installed binary needs neither Go nor Homebrew at runtime. Platform claims need
+actual installed evidence under the [compatibility policy](compatibility.md);
+non-prerelease publication alone is not a support guarantee.
+
+The configured release workflow first publishes assets, then runs read-only
+published-archive verification on ubuntu-24.04 and macos-15. Both matrix arms
+must succeed before the tap updates. Each executes its native package from a
+temporary prefix and builds/exercises archived source with independent tag/source
+expectations. This is not `brew install` or `brew test`; those remain separate
+installed-channel checks. Configuration is not evidence of a completed release
+job. See the [release flow and failure handling](releases.md#publish-a-new-version).
 
 Upgrade and uninstall using the normal Homebrew commands:
 
@@ -73,13 +73,20 @@ does not restore metadata already changed by an earlier operation; use original
 files or backups to reconcile those changes.
 
 Before upgrading, settle pending recovery with the prior binary and preserve
-content, configuration and `.kb/state/` together. v0.3.1 has no backup command:
-use a reviewed operator backup procedure, not `export` alone. For qualified newer
-source use the [operational archive workflow](backups.md), verify a fresh restore
-and copy retained archives off disk. Never overwrite a live newer base with old
-content/receipts or assume reverting a binary proves safe state downgrade.
-The intended v0.3.1 → v0.4.0 → v1.0.0 path still needs exact synthetic upgrade,
-Homebrew/formula and CLI/MCP evidence under V06/V07 before being marked qualified.
+content, configuration and `.kb/state/` together. **v0.3.1 has no backup command**:
+that origin needs an operator-reviewed backup procedure, not `export` alone.
+With v0.4.0 or a compatible newer binary, use the [operational archive workflow](backups.md),
+verify a fresh restore and retain archives on separate protected storage.
+v0.4.0 has a reproduced [receipt-history scaling limitation](qa/backup-performance-v1.md);
+the v1 candidate correction does not change persisted formats or expire receipts.
+Never overlay old content on live newer journals/receipts or assume reverting
+the executable proves safe state downgrade.
+
+The selected qualification path is **v0.3.1 → v0.4.0 → v1.0.0**; retain each
+actual prior executable and qualify each edge against the intended consumer.
+The [upgrade recipe](qa/compatibility-v1.md) verifies exact content/config/receipt
+fidelity and restores an archive actually produced by a capable prior version.
+Earlier installed checks do not qualify a later package automatically.
 
 To remove the executable:
 
@@ -91,10 +98,11 @@ Uninstalling the executable does not delete your knowledge directory.
 
 ## Prebuilt binaries
 
-The [releases page](https://github.com/matheus3301/kb/releases) contains
-CGO-free Linux/macOS archives for amd64 and arm64, a source archive, and
-`checksums.txt`. Binary archives include documentation, skill, MIT license, and
-third-party notices.
+The public [releases index](https://github.com/matheus3301/kb/releases) provides
+tagged CGO-free Linux/macOS archives for amd64 and arm64, a source archive and
+`checksums.txt`. Select the actual release linked by the
+[compatibility policy](compatibility.md); do not guess a future release URL.
+Binary archives include documentation, skill, MIT license and dependency notices.
 
 Download the archive matching your operating system and architecture and the
 checksum file from the same release. Verify the checksum before extracting:

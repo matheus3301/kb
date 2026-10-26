@@ -3,11 +3,14 @@
 This is an executable qualification procedure, not a declaration that v1.0 is
 released or universally compatible. The default upgrade origin is **v0.3.1**,
 source `2ca104f48cc4a6551f4bbc4fae12d51432e42dff`. D04 qualification covers the
-two release edges **v0.3.1 → v0.4.0 → v1.0.0**, with a separately declared and
-verified v0.4.0 baseline for the second edge. No v0.4.0 commit or successful
-installed qualification is presumed before that release exists. The baseline's
-`kb.v1` wire version is independent of its product version. Candidate results
-apply only to the executable hashes, source identities and host in the report.
+two release edges **v0.3.1 → v0.4.0 → v1.0.0**. The immutable
+**[v0.4.0 release](https://github.com/matheus3301/kb/releases/tag/v0.4.0)**
+is source `74f0d196408c1354899802e18ce569b0eab33adf`; retain its actual executable
+for the second edge. The [compatibility policy](../compatibility.md) and
+[exit checklist](../stability.md) track current qualification/publication facts.
+The baseline's `kb.v1` wire version is independent of its product version.
+Candidate results apply only to the executable hashes, source identities and host
+in the report.
 
 ## Executable scope
 
@@ -126,11 +129,12 @@ Homebrew symlink.
 ## Both D04 upgrade origins
 
 Retain each actual installed/checksum-verified executable before changing the
-package-manager installation. Select `V040_COMMIT` and `V100_COMMIT` independently
-from their immutable release sources and expected CI/build provenance. These
-variables are operator-supplied real commits, not invented hashes:
+package-manager installation. Independently confirm `V040_COMMIT` against its
+published immutable release source and select `V100_COMMIT` from the intended
+final candidate's real provenance. The v1 commit is operator-supplied, not guessed:
 
 ```sh
+V040_COMMIT=74f0d196408c1354899802e18ce569b0eab33adf
 python3 scripts/compatibility.py \
   --baseline "$BASELINE_V031" --candidate "$CANDIDATE_V040" \
   --candidate-version v0.4.0 --candidate-commit "$V040_COMMIT" \
@@ -149,9 +153,10 @@ additional origin, never disable identity verification or relabel a binary.
 Each run creates its own synthetic fixtures and qualifies that release edge;
 it does not claim a single persistent production base was upgraded twice.
 Do not substitute a development build labeled v0.4.0 for the actual intermediate
-release qualification. The second edge remains unobserved until run against
-the real preserved v0.4.0 executable. The pinned v0.3.1 CI origin remains the
-default when both override flags are absent.
+release. Qualify the second edge against its real preserved v0.4.0 executable and
+the intended consumer's exact identity. A development-candidate run is not final
+published-artifact evidence. The pinned v0.3.1 CI origin remains the default when
+both override flags are absent; required CI also checks the pinned v0.4.0 origin.
 
 ### Prior-produced archive evidence
 
@@ -217,20 +222,23 @@ For an independently obtained native release archive:
    and run `prefix/bin/kb version --json`. Check the exact release version/commit,
    not merely a successful exit or the presence of `kb.v1`.
 3. Pass that exact temporary-prefix executable to `scripts/compatibility.py`
-   with the preserved v0.3.1 baseline and expected candidate version/commit.
-   Retain the bounded report and artifact checksum. Do not substitute the
-   source-build report for this package execution.
+   with both pinned origins and expected candidate version/commit. For v0.4.0,
+   supply the paired baseline version/commit flags shown above. Retain separate
+   bounded reports and the artifact checksum. Do not substitute source-build
+   reports for this package execution.
 
 For a separately authorized Homebrew release qualification:
 
-1. Preserve and identify the v0.3.1 executable **before** the package upgrade.
+1. Retain the preserved v0.3.1 executable and preserve the actual installed
+   v0.4.0 executable **before** the final package upgrade. Verify both identities.
 2. Perform the explicit Homebrew install/upgrade and formula test in the selected
    release workflow; installation/global changes are separate authority from
    this harness. Confirm the installed executable's `version --json` against the
    intended tag source and formula archive checksum.
-3. Run the same harness with that installed executable as `--candidate` and the
+3. Run the same harness with that installed executable as `--candidate` and each
    preserved old executable as `--baseline`. Supply expected candidate version
-   and commit. All mutation fixtures still live in temporary synthetic roots.
+   and commit and the paired v0.4.0 baseline flags where applicable. All mutation
+   fixtures still live in temporary synthetic roots.
 4. Run the installed acceptance and executable documentation consumers:
 
    ```sh
@@ -246,7 +254,7 @@ For a separately authorized Homebrew release qualification:
 
 | Target/channel | Evidence boundary | Support interpretation |
 | --- | --- | --- |
-| macOS arm64, Homebrew | v0.3.1 production installation/formula and native CLI/MCP verification are recorded in the [release record](https://github.com/matheus3301/kb/releases/tag/v0.3.1); this procedure qualifies the preserved baseline against a selected native candidate. | Primary installed channel; every new release needs its own installed exact-identity report. |
+| macOS arm64, Homebrew | Published v0.4.0 installation/formula, CLI/documentation and independent CLI + skill/MCP consumer verification are recorded in its [release record](https://github.com/matheus3301/kb/releases/tag/v0.4.0). Retain actual prior binaries for this procedure. | Primary installed channel; every new release needs its own installed exact-identity report. |
 | Linux amd64, native archive and archived-source execution in CI | Existing [release snapshot validation](../../scripts/check_release.py) executes the host-native artifact/source on Ubuntu; the compatibility job must run the pinned baseline/candidate workflow there. | Primary CI runtime channel; not evidence of a Linux Homebrew production installation or this macOS run. |
 | macOS amd64 | Cross-build and archive inspection only until a native run is recorded. | No installed/runtime compatibility claim. |
 | Linux arm64 | Cross-build and archive inspection only until a native run is recorded. | No installed/runtime compatibility claim. |
@@ -271,9 +279,9 @@ operational versions. No automatic downgrade, state conversion or rollback of a
 new operational format is implemented or promised. Restore to a fresh destination
 with a binary supporting that archive; validate and explicitly select that root.
 
-Final readiness documentation must reconcile the baseline-only statements in
-[compatibility policy](../compatibility.md), [CLI](../cli.md),
-[specification](../spec.md), and the [stability checklist](../stability.md) with
-candidate tool inventory, operational backup availability and actual per-platform
-reports. This lane does not change release policy, CI configuration or readiness
-decisions. The parent coordinator owns integration and publication evidence.
+Final readiness remains conditional on the [stability checklist](../stability.md),
+both prior origins, the actual prior-produced archive edge and exact per-platform
+candidate evidence. Passing v0.4.0 installation or development-candidate checks
+does not establish final v1 package identity, readiness or publication authority.
+Release policy and the distinction between source, archive and Homebrew execution
+remain unchanged.

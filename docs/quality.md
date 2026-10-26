@@ -29,12 +29,12 @@ the [tag-only workflow](releases.md).
 
 ## Implemented validation and its limits
 
-Published production remains experimental v0.3.1; integrated source is preparing
-v0.4.0 qualification with all four roadmap increments implemented. `make check`
-runs required application gates, executable documentation examples, the real CLI
-acceptance workflow (`make acceptance`), bounded CLI/MCP benchmark smoke and
-deterministic retrieval evaluation (`make retrieval-eval`). All product workflows
-use disposable synthetic roots, never an operator's live collection.
+These gates validate the checked-out source; the [compatibility policy](compatibility.md)
+and [exit checklist](stability.md) track current release and qualification facts.
+`make check` runs required application gates, executable documentation, real CLI
+acceptance, bounded benchmark smoke, retrieval evaluation and concurrent CLI
+smoke. Product workflows use disposable synthetic roots, never an operator's
+live collection. Green CI alone is not stable readiness.
 [Original validation](evidence/validation.json), dated **2026-10-24**, reports
 a successful v0.1-era run with 88.4% statement coverage, 102 top-level test
 functions, 314 named pass events including subtests and fuzz seeds, seven fuzz
@@ -73,15 +73,18 @@ These are not fresh CLI/MCP measurements or portable SLAs. That historical
 candidate rather than substituting this earlier result. No gate was reduced.
 
 Source tests run on **ubuntu-24.04** and **macos-15**; four-target cross-builds
-are not four-target runtime tests. The Ubuntu release snapshot executes its
-native archive and archived-source build. The
-[v0.3.1 release record](https://github.com/matheus3301/kb/releases/tag/v0.3.1)
-separately documents actual Homebrew installation/formula and installed CLI/MCP
-verification on **macOS arm64 only**. See [compatibility/support](compatibility.md)
-for platform boundaries and the [exit checklist](stability.md) for pending
-exact-candidate qualification. Implemented retrieval, backup and scale evidence
-does not itself satisfy V01–V08. Stable status requires the recorded readiness
-decision, not merely a green workflow.
+are not four-target runtime tests. The Ubuntu snapshot executes its native
+archive and archived-source build. The configured tag-release flow also runs a
+read-only **verify-published** matrix on both runner labels: it downloads actual
+published assets, derives expected identity independently from the selected tag
+and checkout HEAD, prepares a local formula expectation and reuses
+`scripts/check_release.py` for CLI/docs/MCP and native/archive-source workflows.
+Tap publication requires successful asset publication and the **entire** matrix.
+Foreign archives are inspected, not executed, and temporary-prefix execution is
+not a Homebrew installation. A real release run and separate installed evidence
+must establish outcomes; configuration or snapshots cannot stand in for them.
+See [release operations](releases.md), [compatibility/support](compatibility.md)
+and the [exit checklist](stability.md) for evidence boundaries and current status.
 
 ## GitHub settings
 
@@ -139,7 +142,7 @@ deterministic assertions, ceiling-aware per-query recall, no unexplained categor
 regression and exact citation/budget/parity/purity behavior.
 
 The [backup contract](backups.md) and synthetic CLI/MCP/archive/fault/concurrency
-regressions are implemented. Short mixed workloads and 11 observed-boundary
+regressions are implemented. Short mixed workloads and finite observed-boundary
 SIGKILL scenarios are not D02's extended observation: at least 30 minutes across
 three seeds, four writers and 10,000 acknowledged mutation/replay outcomes, with
 **log maintenance disabled and index maintenance retained**. The harness must
@@ -152,8 +155,12 @@ then sustained patch/CAS/replay/read/search and periodic backup/restore; reads a
 search do not count toward mutation/replay minima. Deterministic acceptance/crash
 regressions separately cover create/move/archive/apply/preview and coordinated
 multi-file publication; timed move/preview loops are not claimed. Repeat each
-interruption scenario three times. Neither profile nor its independent review
-is claimed passed here; default-log boundaries retain deterministic tests.
+interruption scenario three times and record observed cases and source identity.
+Distinguish Go test child processes from public-CLI injections; named process
+boundaries do not cover arbitrary system-call interruption or hardware power loss.
+Record each reliability profile separately in the [exit checklist](stability.md).
+A later Go runtime change requires full qualification again, not inheritance of
+an earlier binary's passing long observation or shorter default-log profile.
 
 Receipt count has no automatic expiry, retention or rotation. Aggregate raw diff
 text is capped at **256 KiB per receipt**; growing full-file log diffs can
@@ -163,12 +170,27 @@ fields remain outside the diff budget. Log/note/archive limits still constrain
 operations and rejections must report explicit errors. Monitor/protect that state;
 no automatic compaction, format change or altered replay guarantee is implied.
 
+The first extended v0.4.0 attempt **failed** when backup exceeded the unchanged
+qualification command deadline. The [causal scaling report](qa/backup-performance-v1.md)
+records repeated directory enumeration, a fresh anchored path/inventory repair
+and three-sample 250/2,000-receipt comparisons. The candidate preserved exact
+content/config/receipt hashes, replay and continued writes, but restore still
+cost about 9.93 s at 2,000 receipts on that host. This does not qualify larger
+histories or replace a candidate-specific 1,800-second observation.
+
 The [large-corpus report](performance-large-corpus.md) retains the paired matrix,
 including 10k non-improvements, preview RSS increase and 50k committed-repair
 median regression. D03 selects explicit local p95/RSS ceilings with 10% headroom
 over the worse paired observation, plus per-operation drift reporting and a
 reserved quiet candidate rerun. These are not shared-runner timing gates or a
 portable SLA; original core targets and every existing correctness gate remain.
+
+D03 acceptance requires one complete observed matrix using predeclared samples
+and unchanged ceilings. A result faster than its baseline still fails if it
+exceeds the absolute budget. Do not select successful rows across failed
+attempts, repeat until green, average failures away or raise ceilings.
+Run controlled timing only after concurrent soak/build/test work ends and review
+drift independently. Current outcomes belong in the [exit checklist](stability.md).
 
 D04 selects conditional v1.x compatibility, synthetic upgrade checks, macOS
 arm64 Homebrew and Linux amd64 native archive/source qualification. Cross-built
@@ -177,14 +199,20 @@ candidate and independently reviewed evidence; D01–D04 are delegated policy
 choices, not fabricated human approval. Final evidence and status changes belong
 in the [finalization checklist](stability.md#finalization-checklist).
 
-Candidate integration additionally requires a **required native v0.3.1-to-candidate
-compatibility CI job** using the actual v0.3.1 executable pinned to source commit
-`2ca104f48cc4a6551f4bbc4fae12d51432e42dff`, and asserting that candidate build
-metadata identifies the checked-out candidate HEAD. Use disposable synthetic
-fixtures, not duplicated current implementations or cross-build proof. Exercise
-the documented upgrade/client contract and retain evidence without leaking local
-workstation paths, including failure reports.
-This is an integration requirement, not a claim that the inherited workflow in
-the original `a320dea` baseline already ran that job; V01/V06 need the resulting
-workflow and exact-candidate passing evidence before finalization.
+Candidate integration requires the **dual-baseline native compatibility CI
+matrix**, pinned to **v0.3.1 / `2ca104f48cc4a6551f4bbc4fae12d51432e42dff`** and
+**v0.4.0 / `74f0d196408c1354899802e18ce569b0eab33adf`**.
+Each tag must resolve to its explicit archived source commit; prior builds use
+explicit version/commit identities without inheriting checkout VCS metadata.
+Candidate HEAD must match the CI source identity. Both matrix arms execute real
+CLI/MCP workflows and retain distinct bounded, public-safe reports. A failure,
+cancellation, skip or missing required aggregate result cannot pass CI gate.
+
+Where the prior version supports operational tools, **that prior executable
+must produce the archive** before the candidate touches its fixture. Candidate
+restore checks exact content/config/receipts, manifest identity, old receipt
+replay, continued writes and source-root purity. v0.3.1's unsupported archive
+edge is explicitly not applicable. Source-built CI baselines, preserved actual
+Homebrew executables and final release-artifact qualification are distinct;
+the [recipe](qa/compatibility-v1.md) records those boundaries.
 
