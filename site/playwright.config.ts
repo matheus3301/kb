@@ -28,7 +28,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm exec -- astro preview --host 127.0.0.1 --port 4321 --ignore-lock',
+    command: 'pnpm exec astro preview --host 127.0.0.1 --port 4321 --ignore-lock',
     url: previewURL,
     env: { KB_SITE_BASE: '/kb/', ASTRO_TELEMETRY_DISABLED: '1' },
     reuseExistingServer: false,
