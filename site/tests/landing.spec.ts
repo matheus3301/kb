@@ -192,6 +192,131 @@ test('header navigation and same-document anchors resolve at the deployed subpat
   expect(broken, 'Only local page fragments are checked; remote URLs are not fetched').toEqual([]);
 });
 
+test('foundations explain the open format and evolving wiki with primary sources and clear limits', async ({ page }) => {
+  await openLanding(page);
+  const foundations = page.locator('section#foundations');
+  await expect(foundations).toHaveAttribute('aria-labelledby', 'foundations-title');
+  await expect(foundations.getByRole('heading', { level: 2 }))
+    .toHaveText(/Open format\.\s*Evolving knowledge\./);
+  const okf = foundations.getByRole('article').filter({
+    has: page.getByRole('heading', { name: /Open Knowledge Format(?: \(OKF\))?$/ }),
+  });
+  const wiki = foundations.getByRole('article').filter({
+    has: page.getByRole('heading', { name: /Karpathy[’']s LLM Wiki/ }),
+  });
+  await expect(foundations.getByRole('article')).toHaveCount(2);
+  await expect(okf).toBeVisible();
+  await expect(wiki).toBeVisible();
+  for (const concept of [/Markdown/i, /YAML/i, /sources/i, /trust|review metadata/i, /v0\.2/i]) {
+    await expect(okf).toContainText(concept);
+  }
+  await expect(okf).not.toContainText(/fully (?:supports|implements|compliant)|all (?:upstream )?features/i);
+  await expect(okf).toContainText(/PARA/i);
+  await expect(okf).toContainText(/optional/i);
+  await expect(okf).toContainText(/folders/i);
+  await expect(okf).toContainText(/not.{0,60}OKF|separate.{0,60}OKF|OKF.{0,60}(?:not|separate)/i);
+  for (const concept of [/agent/i, /synthes[ie]s/i, /sessions/i, /safe local/i, /search/i, /read/i, /preview/i, /revision/i]) {
+    await expect(wiki).toContainText(concept);
+  }
+  await expect(wiki).toContainText(/no embedded LLM|does not embed.{0,20}(?:LLM|model)/i);
+  await expect(wiki).toContainText(/no automatic knowledge generation|does not.{0,30}(?:automatically generate|generate knowledge automatically)/i);
+  for (const href of [
+    'https://github.com/GoogleCloudPlatform/open-knowledge-format',
+    'https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md',
+  ]) {
+    await expect(okf.locator(`a[href="${href}"]`)).toBeVisible();
+  }
+  await expect(wiki.locator('a[href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f"]'))
+    .toBeVisible();
+  const placement = await foundations.evaluate(section => ({
+    afterBenefits: section.previousElementSibling?.getAttribute('aria-labelledby') === 'benefits-title',
+    beforeDocs: section.nextElementSibling?.id === 'docs',
+  }));
+  expect(placement).toEqual({ afterBenefits: true, beforeDocs: true });
+  await foundations.scrollIntoViewIfNeeded();
+  await expectNoPageOverflow(page);
+});
+
+test('brand images decode as self-hosted WebP and compact PNG favicons preserve explicit sizes', async ({ page }) => {
+  await openLanding(page);
+  for (const [selector, width, height] of [
+    ['header .brand img', 40, 40],
+    ['footer .brand img', 30, 30],
+  ] as const) {
+    const logo = page.locator(selector);
+    await expect(logo).toHaveAttribute('alt', '');
+    await expect(logo).toHaveAttribute('width', String(width));
+    await expect(logo).toHaveAttribute('height', String(height));
+    await expect(logo.locator('..')).toContainText('Knowledge Base');
+    await logo.scrollIntoViewIfNeeded();
+    const image = await logo.evaluate(async element => {
+      const image = element as HTMLImageElement;
+      await image.decode();
+      const candidates = [image.src, ...image.srcset.split(',').filter(Boolean)
+        .map(candidate => new URL(candidate.trim().split(/\s+/)[0], location.href).href)];
+      const response = await fetch(image.currentSrc);
+      const rect = image.getBoundingClientRect();
+      return {
+        decoded: image.complete && image.naturalWidth > 0 && image.naturalHeight > 0,
+        localWebP: candidates.every(candidate => {
+          const url = new URL(candidate);
+          return url.origin === location.origin && url.pathname.endsWith('.webp');
+        }),
+        hasSrcset: image.srcset.length > 0,
+        mime: response.headers.get('content-type')?.split(';')[0],
+        width: rect.width,
+        height: rect.height,
+      };
+    });
+    expect(image.decoded).toBe(true);
+    expect(image.localWebP).toBe(true);
+    expect(image.hasSrcset).toBe(true);
+    expect(image.mime).toBe('image/webp');
+    const mobileHeader = selector.startsWith('header') && (page.viewportSize()?.width ?? 1440) <= 760;
+    expect(image.width).toBeCloseTo(mobileHeader ? 30 : width, 1);
+    expect(image.height).toBeCloseTo(mobileHeader ? 30 : height, 1);
+  }
+  const icons = page.locator('link[rel="icon"]');
+  await expect(icons).toHaveCount(2);
+  for (const size of [32, 64]) {
+    const icon = page.locator(`link[rel="icon"][sizes="${size}x${size}"]`);
+    await expect(icon).toHaveAttribute('type', 'image/png');
+    const metadata = await icon.evaluate(async element => {
+      const url = new URL((element as HTMLLinkElement).href);
+      const response = await fetch(url);
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      const image = new Image();
+      image.src = url.href;
+      await image.decode();
+      return {
+        local: url.origin === location.origin,
+        mime: response.headers.get('content-type')?.split(';')[0],
+        bytes: bytes.length,
+        signature: [...bytes.slice(0, 8)],
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+      };
+    });
+    expect(metadata.local).toBe(true);
+    expect(metadata.mime).toBe('image/png');
+    expect(metadata.bytes).toBeGreaterThan(0);
+    expect(metadata.bytes).toBeLessThan(32 * 1024);
+    expect(metadata.signature).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
+    expect(metadata.width).toBe(size);
+    expect(metadata.height).toBe(size);
+  }
+  const largeOriginal = await page.evaluate(() => {
+    const icons = new Set([...document.querySelectorAll<HTMLLinkElement>('link[rel="icon"]')]
+      .map(icon => icon.href));
+    return performance.getEntriesByType('resource')
+      .map(entry => new URL(entry.name))
+      .filter(url => /\.png$/i.test(url.pathname) && !icons.has(url.href))
+      .map(url => url.pathname);
+  });
+  expect(largeOriginal, 'The original logo PNG must not be loaded by the page').toEqual([]);
+  await expectNoPageOverflow(page);
+});
+
 test('both setup views fit, pass serious/critical axe checks, and produce public screenshots', async ({ page }, testInfo) => {
   await openLanding(page);
   await expectNoPageOverflow(page);
