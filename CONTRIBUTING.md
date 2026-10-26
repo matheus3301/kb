@@ -27,6 +27,49 @@ go build -o .build/kb ./cmd/kb
 make acceptance
 ```
 
+## Static marketing site
+
+The `site/` package (`@kb/site`) is separate from the Go runtime. It presents the
+product and links to canonical Markdown documentation; it is not a browser UI
+for a Knowledge Base. Site development requires Node.js 22.22.3 and npm. Use
+the committed lockfile, not an ad hoc dependency upgrade.
+
+From the repository root:
+
+```sh
+cd site
+npm ci
+npm run dev -- --host 127.0.0.1
+```
+
+Open `http://127.0.0.1:4321/kb/`. The default static base is `/kb/`; set
+`KB_SITE_BASE` deliberately when checking another hosting base. This local URL
+is not a claim of a deployed homepage. Installation fetches dependencies; the
+page itself uses local/self-hosted assets and must not need a runtime network.
+Import the existing root SVG brand assets rather than creating divergent copies.
+
+Run the site checks from `site/`:
+
+```sh
+npm run check
+npm run build
+npm exec playwright install chromium
+npm test
+```
+
+The scripts are `dev`, `build`, `check`, and `test`; `test` invokes
+`playwright test`. Browser installation is a separate local prerequisite.
+Exercise the actual page, keyboard focus, responsive layout, and reduced motion.
+Capture full-page review screenshots at desktop 1440×1000 and mobile 390×844;
+keep generated browser reports and screenshot artifacts untracked. Do not use
+synthetic popularity, users, or performance claims in site copy.
+
+Site checks supplement rather than replace `make check`. Run the integrated
+repository gates before opening a PR; do not weaken a runtime gate for a
+documentation or marketing change.
+
+## Repository contributions
+
 Use only synthetic fixtures and public sources. Keep Markdown, comments,
 examples, and descriptions in English; label deliberate multilingual search
 fixtures as synthetic. Do not add private knowledge, credentials, or workstation
