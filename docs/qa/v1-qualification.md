@@ -256,11 +256,12 @@ and linked separately. No CGO-causality, discarded-failure or best-cell claim.
 
 The fixed retrieval corpus/floors, 1,800-second/10,000-ACK and 60-second/250-ACK
 profile gates, 30-second timeout, original core targets and all D03 ceilings are
-unchanged. Final evidence still needs the actual completed candidate.5 extended
-report, exact-current-head remote CI, independent V08 publication authorization,
-then separately authorized published artifacts, native channels, Homebrew and
-independent installed CLI+skill/MCP consumers. Local snapshots and source equality
-cannot substitute for actual published/installed hashes or Linux execution.
+unchanged. Final evidence retains the actual completed candidate.5 extended
+report. Remaining gates are exact-current-head remote CI, independent V08
+publication authorization, then separately authorized published artifacts, native
+channels, Homebrew and independent installed CLI+skill/MCP consumers. Local
+snapshots and source equality cannot substitute for actual published/installed
+hashes or Linux execution.
 
 The [stability checklist](../stability.md) centralizes current status. This
 reviewable documentation is not gated on V08 approval; it exists for that review.
