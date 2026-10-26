@@ -21,7 +21,7 @@ The pinned Midnight blue palette keeps code and prose in the same tonal family. 
 
 Instrument Sans Variable is an agent design choice, not a human-selected font. Its compact counters and restrained 500-weight display keep the exact three-part headline readable at desktop and mobile sizes. The mechanical detector flagged it as frequently used; it is retained for the observed readable composition, not treated as a user-approved exception. IBM Plex Mono is self-hosted only for commands, Markdown, paths and workflow numbering, rather than using monospace as a general technical costume.
 
-Desktop display: fluid 42–62px with 1.13 line height and `-.04em` tracking. Section headings: 32–43px, 1.15 line height. Body: 16px, 1.6 line height; hero description: 19px. Mobile headings remain 34px and body 16px. Small monospace text belongs to the illustrative artifact and compact commands, not prose explanations. Overflowing commands scroll inside their own focusable blocks.
+Desktop display: fluid 42–62px with 1.13 line height and `-.04em` tracking. Section headings: 32–43px, 1.15 line height. Body: 16px, 1.6 line height; hero description: 19px. Mobile headings remain 34px and body 16px. Actionable commands remain 13px across widths; essential source captions and copy feedback remain at least 12px. Overflowing commands scroll inside their own focusable blocks instead of shrinking or wrapping shell syntax.
 
 Only the Latin font subsets needed for this English page are imported. Font licenses and attribution are shipped in `public/licenses/` and linked in the footer. Root MIT attribution is unchanged.
 
@@ -37,7 +37,7 @@ Only the Latin font subsets needed for this English page are imported. Font lice
 
 ## Accessibility and interaction
 
-Use semantic landmarks, one h1, ordered headings, descriptive links and decorative SVGs hidden from assistive technology. Every interactive control has a visible 2px accent focus outline with 5px offset. Keep primary actions at least 48px tall. Copy controls retain focus and announce results with an atomic polite live region.
+Use semantic landmarks, one h1, ordered headings, descriptive links and decorative SVGs hidden from assistive technology. Every interactive control has a visible 2px accent focus outline with 5px offset. Keep primary actions at least 48px tall and mobile copy controls at least 44px tall. Copy controls retain focus and announce results with an atomic polite live region.
 
 Smooth anchor scrolling is the only page motion. Reduced-motion preference disables it and transitions. No entrance animations, typewriter effects or fake live-terminal playback. Selection and scrollbars use the same palette. Assets are bundled locally; no analytics, external fonts or runtime fetches.
 

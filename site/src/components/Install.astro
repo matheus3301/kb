@@ -21,7 +21,7 @@ Verify kb version, the installed skill and an actual search/read against the int
       <button type="button" id="tab-agent" data-tab="agent">For Your Agent</button>
     </div>
     <div id="panel-you" class="install-panel" data-panel="you" aria-labelledby="tab-you">
-      <p class="panel-intro">On macOS or Linux with Homebrew. Run the skill installer from your intended agent workdir.</p>
+      <p class="panel-intro">On macOS or Linux, have Homebrew and Node.js 22.20+ with npm/npx ready. Node is needed only for skill installation, not the Go CLI runtime. Run the skill installer from your intended agent workdir.</p>
       <CopyBlock id="install-commands" label="Install CLI + skill" text={install} />
       <h3>Choose your base. Activate deliberately.</h3>
       <p>For a new base, choose a directory before running:</p>
