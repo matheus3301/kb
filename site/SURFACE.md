@@ -8,12 +8,12 @@ Mode: Persuade. Audience: humans and agent operators evaluating a local Markdown
 
 **OWN-WORLD:** Midnight blue ground, pale-blue action surfaces, readable white typography and quiet blue dividers. Instrument Sans carries the promise; IBM Plex Mono is reserved for actual code and paths.
 
-**STORY:** Understand ownership, see a Markdown note become cited context, choose human or agent setup, then follow the existing docs.
+**STORY:** Understand ownership, see a Markdown note become cited context, choose human or agent setup, learn how OKF and the LLM Wiki pattern inform KB, then follow the existing docs.
 
 **FIRST VIEWPORT:** Large three-line thesis on the left, installation action directly below, and a taller Markdown-to-terminal composition on the right. The terminal overlaps the source margin slightly, visually connecting source and retrieval. On mobile, reading order is promise, action, example.
 
-**FORM:** A source-and-result diptych, followed by two-column install instructions, a sequential CLI workflow, then open typographic benefit rows and a useful documentation index. The signature is source lines visibly retained in the terminal's illustrative context excerpt.
+**FORM:** A source-and-result diptych, followed by two-column install instructions, a sequential CLI workflow, open typographic benefit rows, a concise two-column foundations section with primary-source links, and a useful documentation index. The signature is source lines visibly retained in the terminal's illustrative context excerpt.
 
 **REACH:** Shared spacing, colors, type, command blocks and copy feedback apply through the page. No decorative motion or runtime network. All examples are labeled illustrative. Risk: code density on phones; contain command overflow without shrinking text.
 
-Seed: none (user-pinned direction). Code-led implementation from the explicit worker brief; no image generation or paid rendering.
+Seed: none (user-pinned direction). The page remains code-led; the shared blue-bird identity was generated under human authorization. No paid page rendering.

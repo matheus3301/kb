@@ -249,6 +249,11 @@ test('brand images decode as self-hosted WebP and compact PNG favicons preserve 
     await expect(logo).toHaveAttribute('height', String(height));
     await expect(logo.locator('..')).toContainText('Knowledge Base');
     await logo.scrollIntoViewIfNeeded();
+    // A newly visible lazy image must start loading before decode() can succeed.
+    await expect.poll(() => logo.evaluate(element => {
+      const image = element as HTMLImageElement;
+      return image.complete && image.naturalWidth > 0;
+    })).toBe(true);
     const image = await logo.evaluate(async element => {
       const image = element as HTMLImageElement;
       await image.decode();
@@ -264,6 +269,7 @@ test('brand images decode as self-hosted WebP and compact PNG favicons preserve 
         }),
         hasSrcset: image.srcset.length > 0,
         mime: response.headers.get('content-type')?.split(';')[0],
+        bytes: (await response.arrayBuffer()).byteLength,
         width: rect.width,
         height: rect.height,
       };
@@ -272,6 +278,7 @@ test('brand images decode as self-hosted WebP and compact PNG favicons preserve 
     expect(image.localWebP).toBe(true);
     expect(image.hasSrcset).toBe(true);
     expect(image.mime).toBe('image/webp');
+    expect(image.bytes).toBeLessThan(32 * 1024);
     const mobileHeader = selector.startsWith('header') && (page.viewportSize()?.width ?? 1440) <= 760;
     expect(image.width).toBeCloseTo(mobileHeader ? 30 : width, 1);
     expect(image.height).toBeCloseTo(mobileHeader ? 30 : height, 1);

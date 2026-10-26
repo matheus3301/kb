@@ -1,7 +1,8 @@
 ---
 import '@fontsource/ibm-plex-mono/latin-400.css';
 import '@fontsource/ibm-plex-mono/latin-500.css';
-import logo from '../../../assets/logo.svg?url';
+import { Image, getImage } from 'astro:assets';
+import logo from '../../../assets/logo.png';
 import Install from '../components/Install.astro';
 import SourceDemo from '../components/SourceDemo.astro';
 import '../styles/global.css';
@@ -13,6 +14,7 @@ const docLinks = [
   { title: 'Agent setup', detail: 'Install the skill and activate a workdir policy.', href: `${docs}/agent-setup.md` },
   { title: 'Contribute', detail: 'Build locally and understand the quality gates.', href: `${repo}/blob/main/CONTRIBUTING.md` },
 ];
+const favicons = await Promise.all([32, 64].map(size => getImage({ src: logo, width: size, height: size, format: 'png' })));
 ---
 <!doctype html>
 <html lang="en">
@@ -21,13 +23,13 @@ const docLinks = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="A local Knowledge Base for humans and AI agents. Search, read and update Markdown with the kb CLI and knowledge-base skill." />
     <meta name="theme-color" content="#071724" />
-    <link rel="icon" type="image/svg+xml" href={logo} />
+    {favicons.map((icon, index) => <link rel="icon" type="image/png" sizes={`${[32, 64][index]}x${[32, 64][index]}`} href={icon.src} />)}
     <title>KB — Your Knowledge Base. In Markdown. In your terminal.</title>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header container">
-      <a class="brand" href={import.meta.env.BASE_URL} aria-label="KB — Knowledge Base home"><img src={logo} alt="" width="40" height="40" /><span>Knowledge Base</span></a>
+      <a class="brand" href={import.meta.env.BASE_URL} aria-label="KB — Knowledge Base home"><Image src={logo} alt="" width={40} height={40} widths={[30, 40, 60, 80]} sizes="(max-width: 760px) 30px, 40px" format="webp" loading="eager" /><span>Knowledge Base</span></a>
       <nav aria-label="Main navigation"><a href="#get-started">Get started</a><a href="#docs">Docs</a><a class="github-link" href={repo}>GitHub <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></nav>
     </header>
     <main id="main">
@@ -60,12 +62,27 @@ const docLinks = [
           <article><h3>Changes you can review</h3><p>Preview edits before applying them. Revision checks reject stale writes; coordinated plans let you update related notes together.</p><span class="benefit-detail">Preview → review → apply</span></article>
         </div>
       </section>
+      <section id="foundations" class="foundations-section section container" aria-labelledby="foundations-title">
+        <div class="foundations-heading"><h2 id="foundations-title">Open format.<br />Evolving knowledge.</h2><p>The format records the evidence.<br />Your agent maintains the synthesis.</p></div>
+        <div class="foundation-columns">
+          <article aria-labelledby="okf-title">
+            <h3 id="okf-title">Open Knowledge Format</h3>
+            <p>OKF gives Markdown notes a shared structure: YAML frontmatter, explicit links, and fields for sources and review. KB builds on OKF v0.2 to keep knowledge readable and portable. PARA is optional folder organization for people, not an OKF requirement.</p>
+            <div class="foundation-sources"><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format">OKF overview <span aria-hidden="true">↗</span></a><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md">OKF v0.2 specification <span aria-hidden="true">↗</span></a></div>
+          </article>
+          <article aria-labelledby="llm-wiki-title">
+            <h3 id="llm-wiki-title">Karpathy’s LLM Wiki</h3>
+            <p>The LLM Wiki pattern has an agent maintain an evolving synthesis from source material across sessions, rather than start over with each question. KB provides safe local operations for that work: search, read, preview and revision-checked edits. Your agent supplies the reasoning; KB has no embedded LLM and does not generate knowledge automatically.</p>
+            <div class="foundation-sources"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Read Karpathy’s LLM Wiki <span aria-hidden="true">↗</span></a></div>
+          </article>
+        </div>
+      </section>
       <section id="docs" class="docs-section section container" aria-labelledby="docs-title">
         <div class="docs-heading"><h2 id="docs-title">Less guessing.<br />More reference.</h2><p>The documentation lives with the source.<br />Start small, then go as deep as you need.</p></div>
         <div class="docs-links">{docLinks.map((link) => <a href={link.href}><div><h3>{link.title}</h3><p>{link.detail}</p></div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>)}</div>
         <div class="optional-mcp"><p>Prefer a protocol connection? <a href={`${docs}/mcp.md`}>Use the optional stdio MCP interface</a> with its own tool guidance; no CLI skill required.</p><a href={`${repo}/blob/main/llms.txt`}>llms.txt <span aria-hidden="true">↗</span></a></div>
       </section>
     </main>
-    <footer class="site-footer container"><a class="brand" href={import.meta.env.BASE_URL}><img src={logo} alt="" width="30" height="30" /><span>Knowledge Base</span></a><p>Local knowledge. Open format.</p><nav aria-label="Footer navigation"><a href={`${repo}/blob/main/LICENSE`}>MIT license</a><a href={`${import.meta.env.BASE_URL}licenses/instrument-sans.txt`}>Instrument Sans license</a><a href={`${import.meta.env.BASE_URL}licenses/ibm-plex-mono.txt`}>IBM Plex Mono license</a><a href={repo}>GitHub</a></nav></footer>
+    <footer class="site-footer container"><a class="brand" href={import.meta.env.BASE_URL}><Image src={logo} alt="" width={30} height={30} widths={[30, 60]} sizes="30px" format="webp" /><span>Knowledge Base</span></a><p>Local knowledge. Open format.</p><nav aria-label="Footer navigation"><a href={`${repo}/blob/main/LICENSE`}>MIT license</a><a href={`${import.meta.env.BASE_URL}licenses/instrument-sans.txt`}>Instrument Sans license</a><a href={`${import.meta.env.BASE_URL}licenses/ibm-plex-mono.txt`}>IBM Plex Mono license</a><a href={repo}>GitHub</a></nav></footer>
   </body>
 </html>

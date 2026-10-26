@@ -34,6 +34,7 @@ Only the Latin font subsets needed for this English page are imported. Font lice
 - `CopyBlock`: a label, explicit copy action, selectable code and live success/error feedback. Clipboard denial instructs manual copying; never report success before the browser promise resolves.
 - Installation tabs: automatic activation with Left/Right/Home/End, roving tab stop, linked tabpanels. Without JavaScript both setup paths remain visible and text can be copied manually.
 - Sequential workflow: numbers encode the actual search/read/context order. Benefits use open rows. Documentation links pair task titles with practical descriptions.
+- Foundations: two open columns after benefits, stacking at 760px. Cite OKF's overview and pinned v0.2 specification alongside Karpathy's original LLM Wiki. Separate portable format, optional PARA folders and agent-led synthesis from the CLI's local operations; avoid implied endorsement.
 
 ## Accessibility and interaction
 

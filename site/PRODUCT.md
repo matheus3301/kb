@@ -24,7 +24,7 @@ CLI plus skill is the primary path. Installation does not establish an agent con
 
 ## Brand Commitments
 
-Preserve the existing kb logo. Use the approved Midnight blue palette, restrained typography and real CLI/Markdown presentation. Public prose is English.
+Use the human-authorized blue-bird mascot from the shared brand source, the approved Midnight blue palette, restrained typography and real CLI/Markdown presentation. Public prose is English.
 
 ## Evidence on Hand
 
