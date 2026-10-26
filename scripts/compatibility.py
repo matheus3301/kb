@@ -595,6 +595,21 @@ def qualify(baseline, candidate, candidate_version, candidate_commit, report,
     report["checks"].append("binary-immutability")
 
 
+def publish_report(report, output):
+    try:
+        encoded = json.dumps(report, indent=2, sort_keys=True) + "\n"
+        require(len(encoded.encode()) <= 32 * 1024, "bounded report")
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(encoded)
+    except (CompatibilityFailure, OSError, ValueError, TypeError) as error:
+        # Publication can fail before a report file exists; stdout must stay bounded and path-free.
+        report = {"report_version": 1, "ok": False, "checks": [],
+                  "failure": {"check": "report-output-write", "type": type(error).__name__}}
+        encoded = json.dumps(report, indent=2, sort_keys=True) + "\n"
+    print(encoded, end="")
+    return 0 if report["ok"] else 1
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--baseline", required=True, type=Path, help="Preserved prior executable, not a moving package-manager symlink")
@@ -627,12 +642,7 @@ def main():
             report["prior_archive"]["status"] = "failed"
         if isinstance(error, CompatibilityFailure):
             report["failure"]["invariant"] = str(error)
-    encoded = json.dumps(report, indent=2, sort_keys=True) + "\n"
-    require(len(encoded.encode()) <= 32 * 1024, "bounded report")
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(encoded)
-    print(encoded, end="")
-    return 0 if report["ok"] else 1
+    return publish_report(report, args.output)
 
 
 if __name__ == "__main__":
