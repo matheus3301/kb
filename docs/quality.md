@@ -27,6 +27,44 @@ updates to development tools are separate explicit changes. No automatic merge
 is configured. Release publication requires an explicit version tag and follows
 the [tag-only workflow](releases.md).
 
+## Static website
+
+The marketing site is separate from the Go runtime. **Website** is an unconditional,
+read-only CI job required by **CI gate** on every workflow event. It uses Node
+22.22.3 and the pinned `site/package-lock.json` dependency tree. The job runs
+`npm ci`, `npm audit --audit-level=high`, `npm run check`, `npm run build`, installs
+Chromium with its system dependencies, and runs `npm test`. Audit includes
+development dependencies: the build and browser tooling are part of the site's
+supply chain. High or critical advisories fail the job; there are no audit
+exclusions. Registry availability and newly published advisories can affect this
+check, independently of the checked-out source.
+
+Run `make site-check` locally with the site Node toolchain and npm available.
+It installs the locked dependencies and Chromium, then runs the same audit,
+source, build, and browser checks. Linux hosts may need
+`cd site && npx playwright install --with-deps chromium` for system libraries.
+Node is only needed for site development/CI, not for the CLI or MCP runtime.
+`make check` retains the Go/runtime gates; the separately required website job
+must also pass before integration.
+
+Playwright starts the **built static preview** at `http://127.0.0.1:4321/kb/`,
+never the development server or an existing listener. Desktop (1440 × 1000) and
+mobile (390 × 844) projects exercise audience tabs, Arrow/Home/End keyboard
+navigation, visible keyboard focus, actual clipboard commands and setup prompt,
+and denied-clipboard manual-copy feedback. Both setup views are checked for
+horizontal page overflow and serious/critical axe findings. Browser exceptions,
+console errors, HTTP errors, and external runtime resource requests fail tests.
+These checks do not establish complete accessibility or universal browser support.
+Only local page fragments are checked; canonical GitHub documentation links are
+not fetched as an external-availability gate.
+
+Full-page human and agent setup screenshots, failure traces, and the HTML report
+are generated under `.build/site/`, outside public source. CI uploads that folder
+as **website-evidence** for seven days, even after a browser failure; missing
+evidence fails upload. Screenshots contain the public site only. Artifact upload
+does not attach images inline to a PR and requires no comment or write token.
+Real screenshot review remains necessary alongside automated checks.
+
 ## Implemented validation and its limits
 
 These gates validate the checked-out source; the [compatibility policy](compatibility.md)

@@ -11,14 +11,19 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED = {".git", ".tools", ".build", "__pycache__"}
+SITE_GENERATED = {Path("site/node_modules"), Path("site/dist"), Path("site/.astro")}
 MINIMUM_COVERAGE = 80.0
 
 
 def tracked_content(root):
-    return sorted(
-        p for p in root.rglob("*")
-        if p.is_file() and not any(part in IGNORED for part in p.relative_to(root).parts)
-    )
+    paths = []
+    for directory, children, files in os.walk(root):
+        parent = Path(directory)
+        children[:] = [name for name in children if name not in IGNORED
+                       and (parent / name).relative_to(root) not in SITE_GENERATED]
+        paths.extend(parent / name for name in files
+                     if name not in IGNORED and (parent / name).is_file())
+    return sorted(paths)
 
 
 def run(*args, env=None):
@@ -77,6 +82,33 @@ def published_release_findings(text):
     return findings
 
 
+def website_workflow_findings(text):
+    jobs = dict(re.findall(r"^  ([\w-]+):\s*\n(.*?)(?=^  [\w-]+:|\Z)", text, re.M | re.S))
+    website = jobs.get("website", "")
+    requirements = {
+        "website must use the locked dependency tree": "      - run: npm ci\n",
+        "website must reject high and critical dependency vulnerabilities": "      - run: npm audit --audit-level=high\n",
+        "website must check Astro and TypeScript": "      - run: npm run check\n",
+        "website must build production output": "      - run: npm run build\n",
+        "website must install Chromium and its system dependencies": "      - run: npx playwright install --with-deps chromium\n",
+        "website must exercise the production preview": "      - run: npm test\n",
+        "website must test the deployed subpath": "      KB_SITE_BASE: /kb/\n",
+        "website must use its package directory": "        working-directory: site\n",
+        "website must pin its Node toolchain": '          node-version: "22.22.3"\n',
+        "website must retain screenshot evidence": "          path: .build/site/\n",
+        "website must reject missing evidence": "          if-no-files-found: error\n",
+    }
+    findings = [message for message, required in requirements.items() if required not in website]
+    # Only evidence upload may run conditionally; validation must never skip.
+    validation = website.split("      - uses: actions/upload-artifact@", 1)[0]
+    if re.search(r"^\s+if:", validation, re.M):
+        findings.append("website validation must not conditionally skip jobs or steps")
+    gate_needs = re.search(r"^    needs: \[([^\]]+)\]$", jobs.get("gate", ""), re.M)
+    if not gate_needs or "website" not in {job.strip() for job in gate_needs[1].split(",")}:
+        findings.append("CI gate must depend on website")
+    return findings
+
+
 def workflow_findings(text, name=""):
     findings = []
     for target in re.findall(r"^\s*-?\s*uses:\s*([^\s#]+)", text, re.M):
@@ -96,6 +128,8 @@ def workflow_findings(text, name=""):
         findings.append("checkout must not persist credentials")
     if name == "release.yml":
         findings.extend(published_release_findings(text))
+    if name == "ci.yml":
+        findings.extend(website_workflow_findings(text))
     return findings
 
 
@@ -171,7 +205,7 @@ def acceptance_findings(root, spec, criteria):
 
 def gate_findings(needs, event):
     findings = []
-    for job in ("repository", "static", "tests", "security", "build", "release-config", "compatibility"):
+    for job in ("repository", "website", "static", "tests", "security", "build", "release-config", "compatibility"):
         if needs.get(job, {}).get("result") != "success":
             findings.append(f"required job did not succeed: {job}")
     expected = "success" if event == "pull_request" else "skipped"
@@ -188,7 +222,7 @@ def require_clean(findings):
 def repository():
     findings = []
     for path in tracked_content(ROOT):
-        if path.suffix in {".md", ".json", ".yaml", ".yml", ".go", ".py", ".toml", ".svg"} or path.name == "llms.txt":
+        if path.suffix in {".md", ".json", ".yaml", ".yml", ".go", ".py", ".toml", ".svg", ".astro", ".ts", ".js", ".css", ".html"} or path.name == "llms.txt":
             findings.extend(public_content_findings(path.relative_to(ROOT), path.read_text()))
         if path.suffix == ".md" or path.name == "llms.txt":
             findings.extend(local_link_findings(ROOT, path))
