@@ -86,9 +86,20 @@ jobs:
           retention-days: 7
 
   compatibility:
-    name: Prior-version compatibility
+    name: Prior-version compatibility (${{ matrix.baseline.version }})
+    strategy:
+      fail-fast: false
+      matrix:
+        baseline:
+          - version: v0.3.1
+            commit: 2ca104f48cc4a6551f4bbc4fae12d51432e42dff
+          - version: v0.4.0
+            commit: 74f0d196408c1354899802e18ce569b0eab33adf
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    env:
+      KB_BASELINE_VERSION: ${{ matrix.baseline.version }}
+      KB_BASELINE_COMMIT: ${{ matrix.baseline.commit }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -104,21 +115,20 @@ jobs:
       - name: Build the immutable previous release and current candidate
         run: |
           mkdir -p .build/compatibility-baseline
-          kb_baseline_commit=2ca104f48cc4a6551f4bbc4fae12d51432e42dff
-          test "$(git rev-parse 'v0.3.1^{commit}')" = "$kb_baseline_commit"
-          git archive "$kb_baseline_commit" | tar -x -C .build/compatibility-baseline
+          test "$(git rev-parse "${KB_BASELINE_VERSION}^{commit}")" = "$KB_BASELINE_COMMIT"
+          git archive "$KB_BASELINE_COMMIT" | tar -x -C .build/compatibility-baseline
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           (
             cd .build/compatibility-baseline
-            go build -trimpath -ldflags "-X main.version=v0.3.1 -X main.commit=$kb_baseline_commit" -o ../previous-kb ./cmd/kb
+            go build -trimpath -buildvcs=false -ldflags "-X main.version=$KB_BASELINE_VERSION -X main.commit=$KB_BASELINE_COMMIT" -o ../previous-kb ./cmd/kb
           )
           go build -trimpath -ldflags "-X main.version=qualification -X main.commit=$GITHUB_SHA" -o .build/candidate-kb ./cmd/kb
       - name: Exercise actual prior-version CLI and MCP upgrade workflows
-        run: python3 scripts/compatibility.py --baseline .build/previous-kb --candidate .build/candidate-kb --candidate-version qualification --candidate-commit "$GITHUB_SHA" --output .build/compatibility.json
+        run: python3 scripts/compatibility.py --baseline .build/previous-kb --baseline-version "$KB_BASELINE_VERSION" --baseline-commit "$KB_BASELINE_COMMIT" --candidate .build/candidate-kb --candidate-version qualification --candidate-commit "$GITHUB_SHA" --output .build/compatibility.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
-          name: compatibility-evidence
+          name: compatibility-evidence-${{ matrix.baseline.version }}
           path: .build/compatibility.json
           if-no-files-found: error
           retention-days: 30
