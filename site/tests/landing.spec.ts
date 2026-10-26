@@ -103,9 +103,11 @@ test('copy controls write real install commands, base setup, and the public agen
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await openLanding(page);
   const you = page.getByRole('tabpanel', { name: 'For You', exact: true });
-  await you.getByRole('button', { name: 'Copy install cli + skill', exact: true }).click();
+  const installCopy = you.getByRole('button', { name: 'Copy install cli + skill', exact: true });
+  await installCopy.press('Enter');
   await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(installCommands);
   await expect(you.getByRole('status').filter({ hasText: 'Copied to clipboard.' })).toHaveCount(1);
+  await expectVisibleFocus(installCopy);
   await you.getByRole('button', { name: 'Copy create a new example base', exact: true }).click();
   await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(baseCommands);
   await page.getByRole('tab', { name: 'For Your Agent', exact: true }).click();
@@ -124,6 +126,33 @@ test('copy controls write real install commands, base setup, and the public agen
   expect(prompt).toMatch(/actual search\/read/i);
 });
 
+test('pending copy preserves keyboard focus, guards repeat activation, and respects later focus movement', async ({ page }) => {
+  await page.addInitScript(() => {
+    let attempts = 0;
+    let finish: (() => void) | undefined;
+    Object.defineProperty(navigator.clipboard, 'writeText', {
+      value: () => {
+        document.documentElement.dataset.copyAttempts = String(++attempts);
+        return new Promise<void>(resolve => { finish = resolve; });
+      },
+    });
+    window.addEventListener('kb-test-finish-copy', () => finish?.());
+  });
+  await openLanding(page);
+  const copy = page.getByRole('button', { name: 'Copy install cli + skill', exact: true });
+  await copy.press('Enter');
+  await expect(page.locator('html')).toHaveAttribute('data-copy-attempts', '1');
+  await expectVisibleFocus(copy);
+  await page.keyboard.press('Enter');
+  await expect(page.locator('html')).toHaveAttribute('data-copy-attempts', '1');
+  await page.keyboard.press('Tab');
+  const commands = page.getByLabel('Install CLI + skill', { exact: true });
+  await expect(commands).toBeFocused();
+  await page.evaluate(() => { window.dispatchEvent(new Event('kb-test-finish-copy')); });
+  await expect(page.getByRole('status').filter({ hasText: 'Copied to clipboard.' })).toHaveCount(1);
+  await expect(commands).toBeFocused();
+});
+
 test('denied clipboard access provides live manual-copy feedback without false success', async ({ page }) => {
   // Deterministically exercise the browser rejection, independent of host permissions.
   await page.addInitScript(() => {
@@ -139,11 +168,12 @@ test('denied clipboard access provides live manual-copy feedback without false s
     await page.getByRole('tab', { name: tab, exact: true }).click();
     const panel = page.getByRole('tabpanel', { name: tab, exact: true });
     const copy = panel.getByRole('button', { name: button, exact: true });
-    await copy.click();
+    await copy.press('Enter');
     await expect(panel.getByRole('status').filter({ hasText: 'Clipboard unavailable.' }))
       .toHaveText('Clipboard unavailable. Select and copy the text manually.');
     await expect(panel.getByRole('status').filter({ hasText: 'Copied to clipboard.' })).toHaveCount(0);
     await expect(copy).toBeEnabled();
+    await expectVisibleFocus(copy);
   }
 });
 

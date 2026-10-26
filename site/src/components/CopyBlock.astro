@@ -26,9 +26,11 @@ const { id, label, text, action = 'Copy' } = Astro.props;
       const status = block?.querySelector<HTMLElement>('[role="status"]');
       const label = button.querySelector<HTMLElement>('[data-copy-label]');
       const target = document.getElementById(button.dataset.copyTarget ?? '');
-      if (!status || !label || !target) return;
-      button.disabled = true;
+      if (!status || !label || !target || button.getAttribute('aria-busy') === 'true') return;
+      button.setAttribute('aria-busy', 'true');
+      button.setAttribute('aria-disabled', 'true');
       label.textContent = 'Copying…';
+      status.textContent = 'Copying to clipboard…';
       try {
         await navigator.clipboard.writeText(target.textContent ?? '');
         label.textContent = 'Copied';
@@ -39,7 +41,8 @@ const { id, label, text, action = 'Copy' } = Astro.props;
         status.textContent = 'Clipboard unavailable. Select and copy the text manually.';
         status.dataset.state = 'error';
       } finally {
-        button.disabled = false;
+        button.removeAttribute('aria-busy');
+        button.removeAttribute('aria-disabled');
       }
     });
   });

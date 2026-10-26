@@ -30,7 +30,7 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; 
 button { font: inherit; }
 a, button { -webkit-tap-highlight-color: transparent; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
-button:disabled { cursor: wait; opacity: .65; }
+button:disabled, button[aria-disabled='true'] { cursor: wait; opacity: .65; }
 [hidden] { display: none !important; }
 img, svg { display: block; flex-shrink: 0; }
 p, h1, h2, h3, figure, pre, blockquote { margin: 0; }
