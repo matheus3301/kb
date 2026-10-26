@@ -148,13 +148,14 @@ Current source includes the
 [receipt-history scaling repair](docs/qa/backup-performance-v1.md),
 compatibility-report and published-asset verification guardrails without changing
 persisted or wire formats.
-**V05 is blocked:** the predeclared 20-read quiet matrix measured 10k CLI search
-at **384.470 ms against a 380 ms ceiling** (baseline 487.272 ms); the other 15
-rows and core targets passed. There is no waiver or repeat-until-green policy.
-Cold-CLI profiling/optimization is pending; a Go runtime change restarts full
-qualification. The completed 1,800-second run on `7ceed676` with 32,850
-acknowledged mutations/replays remains historical evidence, not proof for new code.
-The original v0.4.0 backup-timeout failure also remains recorded.
+The cold-CLI optimization is implemented. Its release-shaped candidate passed
+the complete local resource matrix, then failed its final extended-workload
+restore at the unchanged 30-second timeout. Current source adds bounded restore
+synchronization while retaining every required file/directory sync and waiting
+for all workers before cleanup or publication. Source checks and a local release
+snapshot passed; the corrected runtime still needs its own complete resource and
+extended-workload qualification. The [qualification record](docs/qa/v1-qualification.md)
+retains all earlier failures and keeps each artifact's evidence separate.
 
 The read-only published-archive verification matrix is configured; its first
 actual release execution is still pending. The [exit checklist](docs/stability.md),

@@ -166,8 +166,10 @@ the input alongside operation fields. Apply accepts the Plan directly.
 CLI includes init, status, list, search, read, context, links, create, patch, move,
 archive, apply, validate, index rebuild, maintain, recover, export, backup, restore,
 mcp and version.
-Add --dry-run to writes; maintain applies only with --apply. Recover is explicit
-and also supports dry run. Read defaults to a bounded response; section headings
+Create, patch, move, archive and apply support --dry-run; maintain writes only
+with --apply. Recover is explicit and also supports --dry-run. Backup and restore
+stage their requested outputs and have no --dry-run mode.
+Read defaults to a bounded response; section headings
 must be unambiguous or addressed by an explicit section identifier.
 
 MCP uses the official Go SDK over stdio, fixed to the startup root. Its

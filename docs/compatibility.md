@@ -16,11 +16,19 @@ for shipped behavior; `main` may contain unreleased corrections. The
 
 ## Current qualification status
 
-**Stable v1 is not ready.** The predeclared 20-read quiet matrix failed V05 only
-on 10k CLI search: **384.470 ms > 380 ms**, despite improving on its 487.272 ms
-baseline. The other 15 rows and core targets passed. Preserve that failure and
-the two earlier failed attempts; do not waive the ceiling, combine passing rows
-or repeat until green. Causal cold-CLI profiling/optimization is pending.
+**Stable v1 remains in qualification.** Cold-CLI optimization is implemented;
+its release-shaped candidate passed all 16 local resource rows and three core
+targets. That candidate's extended workload subsequently failed its final
+third-seed restore at the unchanged 30-second command timeout, around 5,450
+receipts. The [qualification record](qa/v1-qualification.md) retains that whole
+failure and all four earlier failed resource matrices.
+
+Current source fixes restore synchronization with a bounded batch, retaining
+every required file/directory sync and joining workers before cleanup or config
+publication. Source checks and a local package snapshot passed; the corrected
+runtime requires fresh complete resource and extended-workload observations.
+Earlier passing cells and binaries do not qualify changed Go code. No ceiling,
+timeout or work minimum was raised.
 
 The receipt-scale-fixed `7ceed676bed3c1218563f9534a1c095dd3ce4cec` binary completed
 the 1,800-second log-disabled/index-enabled profile with 32,850 acknowledged

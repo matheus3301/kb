@@ -267,7 +267,8 @@ it does not prohibit exporting authorized content to a separate directory.
 
 `kb mcp` serves stdio with a fixed startup root. Read-only mode exposes six tools:
 `kb_status`, `kb_list`, `kb_search`, `kb_read`, `kb_context`, `kb_validate`.
-Write-enabled mode adds `kb_create`, `kb_patch`, `kb_move`, `kb_apply`. Other CLI
+Write-enabled mode adds `kb_create`, `kb_patch`, `kb_move`, `kb_apply`, `kb_backup`
+and `kb_restore`. Other CLI
 commands do not automatically have MCP equivalents. See [agent setup](agent-setup.md)
 for configuration and [tool schemas](../schemas/kb.v1.tools.json) for inputs.
 
