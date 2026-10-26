@@ -1,12 +1,13 @@
 # Candidate.5 v1 qualification evidence
 
-**Reviewable completed local qualification; not stable publication authorization
-or installed-v1 proof.** Frozen candidate.5 D01–D03 and local V01–V06 evidence
-have completed passing reports, including **34,840 extended ACK and 27 exact
-backup/restores** plus the separate 1,200-ACK default-log companion.
-PR24's initial-head CI passed all 11 jobs; latest integrated-head CI, V08 and
-actual published/installed-v1 proof remain pending. Experimental v0.4.0 remains
-the observed published/Homebrew release.
+**Historical candidate.5 qualification with separately bound actual v1 delivery.**
+Frozen candidate.5 D01–D03 and local V01–V06 evidence completed passing reports,
+including **34,840 extended ACK and 27 exact backup/restores** plus the separate
+1,200-ACK default-log companion. [v1.0.0 delivery](v1-delivery.md) now records
+actual publication, native/source guards and Homebrew installation without
+relabeling these measurements. Both final installed consumers passed and received
+bounded independent acceptance; only combined-docs review/protected integration
+remain pending. All earlier failed consumer attempts remain failed history.
 
 ## Exact source and executable
 
@@ -46,24 +47,25 @@ local native Darwin arm64 and archived-source CLI/MCP workflows; four archives
 were inspected, not executed on four platforms. It is not actual published-v1,
 native Linux or Homebrew proof.
 
-[PR24](https://github.com/matheus3301/kb/pull/24) is a draft. Its initial head
-`c372b33bf3a41fd90cd1ee939c1e7c96e19ea37a` passed all **11 Linux/macOS CI jobs**
-in [run 40285002580](https://github.com/matheus3301/kb/actions/runs/40285002580).
-Later compatibility integration reached `503d758`; the latest exact head after
-evidence integration still requires passing CI. Earlier [5c94 main CI](https://github.com/matheus3301/kb/actions/runs/40264275136)
-is historical only. Evidence-editor verification was static Git/artifact hashing
-and independent Python arithmetic, not a gate rerun.
+[PR24](https://github.com/matheus3301/kb/pull/24) merged through protected main
+`0a6d04d3c25840b2c71c0b98d50478dc6749879a`. Final head
+`dcc7ad90665209886009c8674ad2d10e8c0de4de` passed all 11 jobs in
+[CI 40287161946](https://github.com/matheus3301/kb/actions/runs/40287161946);
+[exact merged-main CI](https://github.com/matheus3301/kb/actions/runs/40287653868)
+passed application jobs and its gate, with an intentional push-only Dependency
+Review skip. Earlier head CI remains historical. Editor verification was static
+Git/artifact hashing and arithmetic, not a gate or runtime rerun.
 
 | Criterion | Current observed evidence | Remaining boundary |
 | --- | --- | --- |
-| V01 source/integration | Frozen 72-file map, actual local full gates and native/source snapshot | Exact-current-head hosted CI and final docs/release binding |
-| V02 retrieval | Fresh 47 parity pairs / 17 category validations, original labels/floors | Final evidence review |
+| V01 source/integration | Frozen 72-file map, actual source gates/snapshot, exact final PR/main CI and separate released-source binding | Later docs-only integration retains its own CI requirement |
+| V02 retrieval | Fresh 47 parity pairs / 17 category validations, original labels/floors | Accepted bounded source evidence, not arbitrary semantic usefulness |
 | V03 reliability | 34,840 extended ACK / 27 checkpoints; 1,200-ACK default-log companion; 105 observed test-child kills | Finite local-process/filesystem observation, not arbitrary history or power-loss proof |
-| V04 backup/restore | All 27 extended exact-fidelity checkpoints, replay/continued writes, fresh archive compatibility and distinct production/scale evidence | Final published artifact/installed binding; no universal disaster guarantee |
+| V04 backup/restore | All 27 extended exact-fidelity checkpoints, replay/continued writes, fresh archive compatibility and distinct production/scale evidence | Actual delivery bound separately; no universal disaster guarantee |
 | V05 resources | One whole fresh 16-row + three-core-target matrix passed; independent D03 audit accepted | Bounded host result, not V08 or a portable SLA |
-| V06 upgrades | Actual pinned v0.3.1 eight-check and v0.4.0 nine-check reports | Final release/installed binding |
-| V07 packages/consumers | Local native/source snapshot; historical v0.4.0 installation | Actual published-v1 artifacts, Homebrew and independent installed consumers |
-| V08 | Focused source/R1 and D03 reviews exist | Independent publication-authorization review of final evidence remains pending |
+| V06 upgrades | Candidate.5 eight/nine-check reports retained; separate actual installed-v1 eight/nine-check upgrades passed | No automatic downgrade or blanket older-version promise |
+| V07 packages/consumers | Actual published/native/source/tap/Homebrew proofs and final CLI17/MCP20 consumers passed with bounded independent result acceptance | Finite tested scope; separate released/candidate/installed identities |
+| V08 final closure | Prepublication approval, F1 closure and final installed-consumer result acceptance observed | Combined postpublication documentation-head review and protected integration pending; not human approval |
 
 ## D01 — Unchanged judgments, fresh observations
 
@@ -254,18 +256,21 @@ was not verified, and no confirmed-data loss was demonstrated. The older 7ceed
 never reused for candidate.5. Candidate.3's passing resource window is historical
 and linked separately. No CGO-causality, discarded-failure or best-cell claim.
 
-The fixed retrieval corpus/floors, 1,800-second/10,000-ACK and 60-second/250-ACK
-profile gates, 30-second timeout, original core targets and all D03 ceilings are
-unchanged. Final evidence retains the actual completed candidate.5 extended
-report. Remaining gates are exact-current-head remote CI, independent V08
-publication authorization, then separately authorized published artifacts, native
-channels, Homebrew and independent installed CLI+skill/MCP consumers. Local
-snapshots and source equality cannot substitute for actual published/installed
-hashes or Linux execution.
+No qualification policy was relaxed: corpus labels/floors, the
+1,800-second/10,000-ACK and 60-second/250-ACK profile gates, 30-second command
+timeout, original core targets and every D03 ceiling remain unchanged.
+The actual completed candidate.5 report is retained. Protected integration,
+independent automated prepublication approval and real v1.0.0 release/native/tap/
+Homebrew proofs are now separately recorded in the [delivery report](v1-delivery.md).
+They do not rename candidate measurements as released-binary observations.
 
-The [stability checklist](../stability.md) centralizes current status. This
-reviewable documentation is not gated on V08 approval; it exists for that review.
-No human approval, stable tag, release or installed-v1 result is claimed.
+Both final fresh-context installed consumers passed and received bounded
+independent result acceptance. All six older failures remain failed, with
+observer false negatives, observed capacity rejection and unattributed failures
+distinguished in the [delivery record](v1-delivery.md). No blanket provider or
+product attribution follows. Final combined-documentation review and protected
+integration remain pending. The [stability checklist](../stability.md) centralizes
+status; automated review is not human approval or overall final-completion sign-off.
 
 ## Public reproduction, after the active qualification slot is released
 

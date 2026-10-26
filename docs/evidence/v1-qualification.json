@@ -1,6 +1,6 @@
 {
   "schema_version": "kb.v1-candidate5-qualification.v1",
-  "publication_state": "reviewable completed factual snapshot; not stable readiness/publication",
+  "publication_state": "v1.0.0 published/Homebrew installed and final independent consumer results accepted; combined-docs review/protected integration pending",
   "runtime_source": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
   "documentation_base": "c372b33bf3a41fd90cd1ee939c1e7c96e19ea37a",
   "candidate_identity": {
@@ -239,21 +239,34 @@
     },
     "documented_PR_url": "https://github.com/matheus3301/kb/pull/24",
     "documented_head": "c372b33bf3a41fd90cd1ee939c1e7c96e19ea37a",
-    "latest_post_evidence_integration_head": "pending; requires exact-head passing CI after evidence integration",
+    "latest_post_evidence_integration_head": "0a6d04d exact-main CI passed; later delivery-doc integration requires its own CI",
     "documented_head_status": "PASS all11Linux/macOS jobs includinggate",
     "documented_head_CI_url": "https://github.com/matheus3301/kb/actions/runs/40285002580",
-    "latest_known_integrated_head_prefix": "503d758"
+    "latest_known_integrated_head_prefix": "0a6d04d",
+    "final_PR_head": "dcc7ad90665209886009c8674ad2d10e8c0de4de",
+    "final_PR_CI_url": "https://github.com/matheus3301/kb/actions/runs/40287161946",
+    "final_PR_CI_status": "PASS all11jobs",
+    "released_main_commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+    "released_main_CI_url": "https://github.com/matheus3301/kb/actions/runs/40287653868",
+    "released_main_CI_status": "PASS application jobs+gate; Dependency Review intentional push skip"
   },
   "observed_components": {
     "D01": "PASS fresh47parity pairs/17category validations; original judgments retained",
     "D02": "PASS actual candidate5 extended34840ACK/27checkpoints/three>=600second seeds plus separate default-log1200ACK;105test-child cases passed",
     "D03": "PASS whole16resource rows/three core targets independently accepted; all raw ordering/drift retained",
-    "D04": "PASS actual pinnedv0.3.1eight-check/v0.4.0nine-check prior upgrades including real prior-v0.4.0archive; postpublication package/install proof pending"
+    "D04": "PASS pinned prior-version qualification and actual released-v1 native/archive/tap/Homebrew/installed consumer outcomes; final combined-documentation review/protected integration pending."
   },
-  "V08": "pending independent publication-authorization review; focused R1/D03 reviews do not satisfy it",
-  "published_installed": "v0.4.0",
-  "published_v1_installed_proof": null,
-  "release_binding": "Actual final docs/release commit and rebuilt executable bytes must be recorded separately; source/test equivalence never implies identical artifacts.",
+  "V08": "Independent automated prepublication approval and actual bounded final CLI17/MCP20 result review accepted; final combined-documentation head/protected integration remain pending. Not human approval or overall final completion.",
+  "published_installed": "v1.0.0",
+  "published_v1_installed_proof": {
+    "path": "docs/evidence/v1-delivery.json",
+    "release_source_commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+    "Homebrew_installed_binary_sha256": "cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878",
+    "published_native_arm64_binary_sha256": "745dfa43a3f33bdbb8b468c7afd59cdd16dab0c05304c378717f1717a245a5a3",
+    "V07_complete": true,
+    "independent_consumers_and_postpublication_review": "CLI17/MCP20actualPASS independently accepted; combined-docs review/protected integration pending"
+  },
+  "release_binding": "Releasedv1.0.0 source0a6d04d has all72Go/module bytes equal qualifiedCB66. Candidate5, prebuilt native release and Homebrew source build retain distinct observed hashes. Detailed actual release/install/consumer status is separate in v1-delivery.json.",
   "input_registry": {
     "candidate5-identity.json": {
       "sha256": "a50c15cc4d9ebab03348627078b347aad4de379aba2a030e5705a9c703803a7c",
@@ -418,9 +431,8 @@
   },
   "editor_actions": "Read-only Git/source/artifact hashes and independent Python arithmetic only; no builds/tests/benchmarks/profiles/product commands.",
   "remaining": [
-    "Local D01-D03/V01-V06 evidence is complete; latest exact integrated-head hosted CI remains required.",
-    "Independent V08 publication-authorization review of completed evidence.",
-    "Separately authorized publication, package/tap/Homebrew and installed consumers."
+    "Final independent combined postpublication documentation-head review.",
+    "Protected integration and actual exact-head CI for the final docs-only record."
   ],
   "functional_receipt_attribution": {
     "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
@@ -434,7 +446,8 @@
     "v1-reliability.json": "docs/evidence/v1-reliability.json",
     "v1-compatibility.json": "docs/evidence/v1-compatibility.json",
     "v1-restore-production.json": "docs/evidence/v1-restore-production.json",
-    "v1-qualification-history.json": "docs/evidence/v1-qualification-history.json"
+    "v1-qualification-history.json": "docs/evidence/v1-qualification-history.json",
+    "v1-delivery.json": "docs/evidence/v1-delivery.json"
   },
   "qualification_report": "docs/qa/v1-qualification.md",
   "public_projection_sha256": {
@@ -443,7 +456,10 @@
     "v1-reliability.json": "a40b0d2a65bc3765f0505683fd932f7eb8b74d8a8d15b21579c00f4c6763cfb8",
     "v1-compatibility.json": "3d5ec09defd177b9307e94093e027e84ef9fe6a72efefef57199e680c4d9981c",
     "v1-restore-production.json": "ef843aba1c96e7d9fb85b1a16cb8171cfe0ae916ef37b39591fa4349e5ea9d55",
-    "v1-qualification-history.json": "e98fb6fb5218b263cd1208f259c5de63f00260a38e942116066d37b5d8c3fec8"
+    "v1-qualification-history.json": "e98fb6fb5218b263cd1208f259c5de63f00260a38e942116066d37b5d8c3fec8",
+    "v1-delivery.json": "913afc6642d669cf18550332d1b7de4e0e97b3d8b5a195c9bea22449ad00d2f1"
   },
-  "input_registry_snapshot_scope": "Coordinator-facts-running-snapshot and coordinator-facts-completed-snapshot are distinct captured hashes of the coordinator facts input before and after completion; the later snapshot supersedes only current status, not history."
+  "input_registry_snapshot_scope": "Coordinator-facts-running-snapshot and coordinator-facts-completed-snapshot are distinct captured hashes of the coordinator facts input before and after completion; the later snapshot supersedes only current status, not history.",
+  "delivery_documentation_base": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+  "component_checkpoint_scope": "Existing component reports retain their dated source-qualification metrics and original review/install-stage metadata. Current review, release and installed-consumer closure status is centralized in this manifest and v1-delivery.json; historical payloads are not rewritten."
 }

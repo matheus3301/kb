@@ -1,13 +1,14 @@
 # v1.0 exit criteria
 
-**Candidate.5 evidence is reviewable; stable readiness/publication remain pending.**
-Experimental [v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0),
-source `74f0d19`, remains the observed published/Homebrew-installed release.
-The current executable is `v1.0.0-candidate.5`, Go/module source
+**v1.0.0 is published, Homebrew-installed and consumer-qualified; final combined-docs review/integration is pending.**
+The [actual delivery report](qa/v1-delivery.md) binds released source
+`0a6d04d3c25840b2c71c0b98d50478dc6749879a`, published native/archive-source guards,
+tap publication and the actual macOS arm64 upgrade/formula test.
+The qualified local executable remains `v1.0.0-candidate.5`, Go/module source
 `cb66fd77a120d8c8531f9077a32d2bf51ef7921c`, SHA-256
 `59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46`,
-CGO=0. All **72 Go/module files**, including tests, match the documentation base.
-The final docs/release commit and rebuilt executable identity remain separate.
+CGO=0. All **72 Go/module files** match the actual published source archive.
+Candidate, published-native and Homebrew-built executable hashes remain distinct.
 
 The [current qualification report](qa/v1-qualification.md) and
 [source/build manifest](evidence/v1-qualification.json) record actual local full
@@ -15,11 +16,12 @@ gates/snapshot, fresh 47-pair retrieval, pinned prior-version upgrades, 105
 observed test-child kills, a passing 1,200-ACK default-log companion and one
 complete passing local 16-row/three-core-target resource matrix.
 **The completed extended D02 observation passed: 34,840 ACK, 27 backup/restores,
-zero errors and three seeds each over 600 active seconds.** PR24's initial-head
-CI passed all 11 jobs; latest integrated-head CI, V08 publication-authorization
-review and actual published-v1/Homebrew/installed consumers remain pending.
-Factual documentation is available for that review; V08 is not a prerequisite
-for making completed evidence inspectable.
+zero errors and three seeds each over 600 active seconds.** Exact final PR/main
+CI and all five guarded release jobs passed. Independent automated OMP
+prepublication review accepted bounded source/evidence; F1 is closed.
+Final independent installed consumers passed **CLI+skill 17/17 and MCP-only
+20/20 checks**, with bounded independent result acceptance. All six earlier
+failed consumer attempts retain their outcomes and specific attribution limits.
 
 [Failure history](evidence/v1-qualification-history.json) retains all three failed
 7ceed matrices, the failed source-b71 CGO=1 matrix, the original backup-timeout
@@ -74,15 +76,15 @@ not proofs of relevance, isolation, durability or readiness.
 
 ## Candidate acceptance — observed evidence and remaining gates
 
-- [ ] **V01 — Exact integrated candidate.**
+- [x] **V01 — Exact integrated candidate.**
   [The source/build manifest](evidence/v1-qualification.json) binds 72 matching
   Go/module files, harness hashes and the actual candidate.5 executable.
   Local full gates passed **93 Python tests, 88.8% Go coverage, race/scans,
   12 fuzz targets, four cross-builds and 43 documentation requests**; actual
-  native/archive-source snapshots passed. [PR24 CI](https://github.com/matheus3301/kb/actions/runs/40285002580)
-  passed **all 11 jobs** on initial head `c372b33`; the latest integrated head
-  must pass separately. Local V01 evidence is complete; hosted integration and
-  actual published hashes require separate binding.
+  native/archive-source snapshots passed. Exact [final PR24 CI](https://github.com/matheus3301/kb/actions/runs/40287161946)
+  and [released-main CI](https://github.com/matheus3301/kb/actions/runs/40287653868)
+  passed; actual published/installed identities are separately bound in the
+  [delivery evidence](evidence/v1-delivery.json), not relabeled candidate metrics.
 - [x] **V02 — Retrieval usefulness and parity.**
   [Fresh candidate.5 evidence](evidence/v1-retrieval.json) passed 47 CLI/MCP pairs
   and 17 category validations on unchanged corpus
@@ -132,18 +134,20 @@ not proofs of relevance, isolation, durability or readiness.
   Prior-produced archives are not applicable to v0.3.1, which lacks those tools.
   Test-only source equivalence never relabels the candidate.4 scale executable.
   No automatic downgrade or blanket older-version guarantee is promised.
-- [ ] **V07 — Published packages and installed consumers.**
-  Historical installed v0.4.0 and local candidate snapshots are not installed-v1
-  proof. Under D04 and [release operations](releases.md), verify actual published
-  macOS arm64 Homebrew/native artifacts, Linux amd64 native/archive-source
-  workflows, formula test, separately installed CLI skill and independent stdio
-  MCP consumers, retaining exact release identity/checksums and client limits.
-- [ ] **V08 — Independent publication-authorization review.**
-  Review final current evidence, docs/catalogs/skill, retained failures and bounded
-  D01–D04 scope. Focused independent R1/source and D03 reviews are **not V08**;
-  the final publication-authorization decision remains pending. Automated review
-  is not human approval. Actual tag/publication, Homebrew and installed verification
-  remain separately authorized and separately evidenced.
+- [x] **V07 — Published packages and installed consumers.**
+  Actual v1.0.0 assets, Linux amd64/macOS arm64 native and archived-source
+  verification, tap publication, macOS arm64 Homebrew upgrade/formula test,
+  installed acceptance/43 documentation requests and both prior-version upgrades
+  passed. The six installed skill files match public/published source bytes.
+  Final fresh-context consumers passed **CLI+skill 17/17 and MCP-only 20/20**;
+  independent automated review accepted their actual facts/citations, allowed
+  tools, byte purity and teardowns. Earlier failures remain failed history.
+- [ ] **V08 — Final independent documentation/integration closure.**
+  Independent automated focused OMP review accepted prepublication source/evidence,
+  closed F1 and accepted both final installed-consumer results within their
+  bounded scope. Exact PR/main CI and guarded publication passed. Only the final
+  combined postpublication documentation head and protected integration remain
+  pending. This is **not human approval** or overall final-completion sign-off.
 
 ## Qualification policy — D01–D04
 
