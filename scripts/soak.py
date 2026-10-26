@@ -282,47 +282,57 @@ class Workload:
 
 
 def run_seed(binary, seed, writers, duration, backup_interval, timeout, maintain_log=False):
+    """Keep workspace lifecycle failures bounded without erasing prior workload facts."""
     report = {'seed': seed, 'ok': False, 'rounds': 0, 'counts': {}, 'backup_checks': [], 'failures': []}
     start = time.monotonic()
-    with tempfile.TemporaryDirectory(prefix='kb-soak-') as directory:
-        workspace = Path(directory).resolve()
-        home = workspace / 'home'
-        home.mkdir()
-        environment = {'PATH': '', 'HOME': str(home), 'TMPDIR': str(workspace), 'LANG': 'C.UTF-8', 'GOMAXPROCS': '2'}
-        cli = CLI(binary, workspace / 'knowledge', environment, timeout)
-        workload = Workload(cli, seed, writers, maintain_log)
-        try:
-            workload.setup()
-            report['initial_storage'] = storage(cli.root)
-            active_start = time.monotonic()
-            next_backup = active_start + backup_interval
-            with ThreadPoolExecutor(max_workers=writers) as pool:
-                while report['rounds'] == 0 or time.monotonic() - active_start < duration:
-                    workload.round(report['rounds'], pool)
-                    report['rounds'] += 1
-                    if time.monotonic() >= next_backup:
-                        report['backup_checks'].append(workload.backup(report['rounds']))
-                        next_backup = time.monotonic() + backup_interval
-            report['work_seconds'] = time.monotonic() - active_start
-            report['backup_checks'].append(workload.backup(report['rounds']))
-            report['final_storage'] = storage(cli.root)
-            report['acknowledged_per_work_second'] = (workload.counts['mutations'] + workload.counts['replays']) / report['work_seconds']
-            check_counts(writers, report['rounds'], workload.counts)
-            require(cli.counts['conflict'] == workload.counts['conflicts'], 'unaccounted conflicts')
-            require(cli.counts['error'] == 0, 'unaccounted command errors')
-            require(cli.acknowledgements['mutations'] == workload.counts['mutations']
-                    + workload.counts['setup_mutations'] + workload.counts['restored_mutations'],
-                    'unaccounted acknowledged mutations')
-            require(cli.acknowledgements['replays'] == workload.counts['replays']
-                    + workload.counts['restored_replays'], 'unaccounted acknowledged replays')
-            report['ok'] = True
-        except Exception as error:
-            report['failures'].append(public_failure(error))
-        report['counts'] = dict(workload.counts)
-        report['commands'] = {key: cli.counts[key] for key in ('success', 'conflict', 'error')}
-        report['all_root_acknowledgements'] = {key: cli.acknowledgements[key] for key in ('mutations', 'replays')}
-        report['timings'] = cli.timings
-        report['confirmed_receipts'] = len(workload.receipts)
+    workspace_check = 'workspace-create-or-enter'
+    try:
+        with tempfile.TemporaryDirectory(prefix='kb-soak-') as directory:
+            workspace_check = 'workspace-setup'
+            workspace = Path(directory).resolve()
+            home = workspace / 'home'
+            home.mkdir()
+            environment = {'PATH': '', 'HOME': str(home), 'TMPDIR': str(workspace), 'LANG': 'C.UTF-8', 'GOMAXPROCS': '2'}
+            cli = CLI(binary, workspace / 'knowledge', environment, timeout)
+            workload = Workload(cli, seed, writers, maintain_log)
+            try:
+                workload.setup()
+                report['initial_storage'] = storage(cli.root)
+                active_start = time.monotonic()
+                next_backup = active_start + backup_interval
+                with ThreadPoolExecutor(max_workers=writers) as pool:
+                    while report['rounds'] == 0 or time.monotonic() - active_start < duration:
+                        workload.round(report['rounds'], pool)
+                        report['rounds'] += 1
+                        if time.monotonic() >= next_backup:
+                            report['backup_checks'].append(workload.backup(report['rounds']))
+                            next_backup = time.monotonic() + backup_interval
+                report['work_seconds'] = time.monotonic() - active_start
+                report['backup_checks'].append(workload.backup(report['rounds']))
+                report['final_storage'] = storage(cli.root)
+                report['acknowledged_per_work_second'] = (workload.counts['mutations'] + workload.counts['replays']) / report['work_seconds']
+                check_counts(writers, report['rounds'], workload.counts)
+                require(cli.counts['conflict'] == workload.counts['conflicts'], 'unaccounted conflicts')
+                require(cli.counts['error'] == 0, 'unaccounted command errors')
+                require(cli.acknowledgements['mutations'] == workload.counts['mutations']
+                        + workload.counts['setup_mutations'] + workload.counts['restored_mutations'],
+                        'unaccounted acknowledged mutations')
+                require(cli.acknowledgements['replays'] == workload.counts['replays']
+                        + workload.counts['restored_replays'], 'unaccounted acknowledged replays')
+                report['ok'] = True
+            except Exception as error:
+                report['failures'].append(public_failure(error))
+            report['counts'] = dict(workload.counts)
+            report['commands'] = {key: cli.counts[key] for key in ('success', 'conflict', 'error')}
+            report['all_root_acknowledgements'] = {key: cli.acknowledgements[key] for key in ('mutations', 'replays')}
+            report['timings'] = cli.timings
+            report['confirmed_receipts'] = len(workload.receipts)
+            workspace_check = 'workspace-cleanup'
+    except Exception as error:
+        failure = public_failure(error)
+        failure.update(operation='workspace', check=workspace_check)
+        report['failures'].append(failure)
+        report['ok'] = False
     report['elapsed_seconds'] = time.monotonic() - start
     return report
 
