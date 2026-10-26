@@ -1,0 +1,17 @@
+**
+!mise.toml
+!assets/
+!assets/logo.png
+!site/
+!site/package.json
+!site/pnpm-lock.yaml
+!site/astro.config.mjs
+!site/tsconfig.json
+!site/src/
+!site/src/**
+!site/public/
+!site/public/**
+!site/Dockerfile
+!site/Dockerfile.dockerignore
+**/.env
+**/.env.*
