@@ -43,9 +43,9 @@ func tokens(s string, accents bool) []string {
 	return strings.FieldsFunc(fold(s, accents), func(r rune) bool { return !isWord(r) })
 }
 
-// Normalize words rather than an entire body. Most words need only the ASCII
-// fast path, even in multilingual notes; full Unicode folding still applies to
-// every non-ASCII word. Retokenize its expansion to preserve word boundaries.
+// Most words need only ASCII lowercasing. Their existing word boundaries cannot
+// change, so visit them without retokenizing. Full Unicode folding may expand
+// words; retain normalization and retokenization for every non-ASCII word.
 func forEachToken(text string, accents bool, visit func(string)) {
 	if !utf8.ValidString(text) {
 		for _, token := range tokens(text, accents) {
@@ -54,6 +54,21 @@ func forEachToken(text string, accents bool, visit func(string)) {
 		return
 	}
 	for word := range strings.FieldsFuncSeq(text, func(r rune) bool { return !isWord(r) }) {
+		ascii, upper := true, false
+		for i := 0; i < len(word); i++ {
+			if word[i] >= utf8.RuneSelf {
+				ascii = false
+				break
+			}
+			upper = upper || word[i] >= 'A' && word[i] <= 'Z'
+		}
+		if ascii {
+			if upper {
+				word = strings.ToLower(word)
+			}
+			visit(word)
+			continue
+		}
 		for token := range strings.FieldsFuncSeq(fold(word, accents), func(r rune) bool { return !isWord(r) }) {
 			visit(token)
 		}
