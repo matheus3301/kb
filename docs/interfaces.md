@@ -164,13 +164,16 @@ wrap one operation into Apply, accepting summary, actor and idempotency_key from
 the input alongside operation fields. Apply accepts the Plan directly.
 
 CLI includes init, status, list, search, read, context, links, create, patch, move,
-archive, apply, validate, index rebuild, maintain, recover, export, mcp and version.
+archive, apply, validate, index rebuild, maintain, recover, export, backup, restore,
+mcp and version.
 Add --dry-run to writes; maintain applies only with --apply. Recover is explicit
 and also supports dry run. Read defaults to a bounded response; section headings
 must be unambiguous or addressed by an explicit section identifier.
 
-MCP uses the official Go SDK over stdio, fixed to the startup root. Expose the ten
-tools in the spec using the same DTOs, input limits, policy and errors as CLI.
+MCP uses the official Go SDK over stdio, fixed to the startup root. Its
+[runtime-checked catalog](../schemas/kb.v1.tools.json) exposes six read-only tools
+or twelve tools with writes enabled, including operational backup and restore,
+using the same DTOs, input limits, policy and errors as CLI.
 Tools return structuredContent plus compact text. Read-only hides and rejects
 writes. Validation findings are report data, while execution failures set isError.
 Expose kb://local/ resources without granting filesystem access outside the base.
