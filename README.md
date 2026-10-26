@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="assets/logo.svg" alt="Knowledge Base logo" width="104" height="104" />
+  <img src="assets/logo.png" alt="Knowledge Base blue-jay mascot" width="104" height="104" />
   <h1>KB — Knowledge Base</h1>
-  <p><strong>A local Knowledge Base for humans and AI agents.</strong></p>
-  <p>Readable Markdown. A revision-aware CLI. A shared MCP interface.</p>
+  <p><strong>Your Knowledge Base. In Markdown. In your terminal.</strong></p>
+  <p>Local files for you. A CLI and a skill for your agent.</p>
 </div>
 
 <p align="center">
@@ -14,13 +14,16 @@
 
 `kb` lets you search, read, and update a Knowledge Base stored as
 [OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format) Markdown.
-Use any editor to read the files. Use the CLI or MCP server to make changes
-with revision checks, previews, and recoverable transactions. Optional PARA
-folders keep projects, areas, resources, and archives easy to navigate.
+Use any editor to read the files, and the CLI to make changes with revision
+checks, previews, and recoverable transactions. Add the `knowledge-base` skill
+to give your agent the same workflow. Optional PARA folders keep projects,
+areas, resources, and archives easy to navigate.
 
 ## Getting started
 
-Install on macOS or Linux with Homebrew, then initialize a new directory:
+With [Homebrew](https://brew.sh/) installed on macOS or Linux, choose a new
+directory for this example. Do not replace an existing `KB_ROOT` selection
+without checking which collection it identifies:
 
 ```sh
 brew install matheus3301/tap/kb
@@ -52,9 +55,12 @@ Data commands return JSON by default. `KB_ROOT` selects the Knowledge Base;
 all note paths are relative to it. Follow the [quickstart](docs/quickstart.md)
 for editing and coordinated changes, or use [other installation methods](docs/installation.md).
 
-For an existing collection, initialize the same directory, then run
-`kb validate --profile okf`. Agents can [repair diagnosed issues in batches](skills/knowledge-base/references/repair.md)
-with `kb apply --repair --incremental`; initialization does not convert notes.
+For an existing collection, preserve its notes, configuration, and operational
+state first. Follow [agent setup](docs/agent-setup.md#choose-the-knowledge-base)
+to select or initialize that same directory deliberately; initialization does
+not convert notes. Validate with `kb validate --profile okf` before writing.
+Agents can [repair diagnosed issues in batches](skills/knowledge-base/references/repair.md)
+with an explicitly reviewed `kb apply --repair --incremental` plan.
 
 ## At a glance
 
@@ -66,13 +72,15 @@ with `kb apply --repair --incremental`; initialization does not convert notes.
   recovery journal.
 - **Maintain:** inspect links, validate format/health, update managed navigation,
   export validated knowledge snapshots, and stage operational backup/restore.
-- **Connect:** choose CLI + the `knowledge-base` skill, or a self-contained stdio
-  MCP server. The binary needs no model, Node, Git, or network at runtime.
+- **Work with your agent:** install the CLI + `knowledge-base` skill and choose
+  a workdir consultation policy. The binary needs no model, Node, Git, or network
+  at runtime.
 
 ## CLI + skill
 
-Install the [knowledge-base skill](skills/knowledge-base/SKILL.md) from the
-agent's workdir using [Skills](https://skills.sh):
+With Node.js 22.20+ and npm/npx available, install the
+[knowledge-base skill](skills/knowledge-base/SKILL.md) from the agent's workdir
+using [Skills](https://skills.sh):
 
 ```sh
 npx skills add matheus3301/kb --skill knowledge-base
@@ -85,32 +93,26 @@ and add a deliberate workdir instruction to use the skill. Start a new agent
 turn/session after setup and verify consultation of the intended root.
 Installation alone does not guarantee consultation on every question.
 
-See [setup and upgrading the renamed skill](docs/agent-setup.md). Earlier
-releases used the installation name `knowledge-memory`.
+The installer defaults to project scope; choose the intended agent. Use global
+scope only deliberately. Follow the complete [agent setup guide](docs/agent-setup.md)
+for prerequisites, preserving an existing collection and workdir policy,
+verification, and upgrading the old `knowledge-memory` skill name.
 
-## MCP
+### Let your agent set it up
 
-MCP is the alternative agent interface and needs neither the CLI skill nor
-shell commands for agent operations. The server supplies initialization guidance
-and describes inputs, results, previews, revision conflicts, retries and access
-boundaries through discovery.
+Copy this prompt into your agent:
 
-Register a stdio server in your MCP client. Start with read-only access:
-
-```json
-{
-  "mcpServers": {
-    "kb": {
-      "command": "kb",
-      "args": ["--root", "./example-kb", "mcp", "--read-only"]
-    }
-  }
-}
+```text
+Set up KB using the CLI + knowledge-base skill. Read
+https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md
+and use https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt
+as the documentation index. Follow the setup guide within my permissions.
+Preserve existing knowledge bases and agent instructions. Confirm the intended
+agent, workdir, installation scope, base root, and consultation/write policy
+before changing configuration; do not make global changes by default.
+Verify the binary, installed skill, selected root, and activation in a fresh
+agent turn. Report actual checks and anything you could not verify.
 ```
-
-Use an absolute root if the client cannot set the intended working directory.
-[MCP guide](docs/mcp.md) explains write-enabled access and exposed operations.
-Binary installation, skill installation, and MCP registration are separate actions.
 
 ## Command map
 
@@ -162,11 +164,35 @@ isolation, universal power-loss guarantee, LTS or SLA is claimed; see
 
 ## Documentation
 
+- [Documentation index](docs/README.md): task-oriented routes through the existing guides.
 - [Quickstart](docs/quickstart.md), [CLI guide](docs/cli.md), and [installation](docs/installation.md).
-- [Agent setup](docs/agent-setup.md), [MCP guide](docs/mcp.md), [CLI skill](skills/knowledge-base/SKILL.md), and [llms.txt](llms.txt).
+- [Agent setup](docs/agent-setup.md), [CLI skill](skills/knowledge-base/SKILL.md), and [llms.txt](llms.txt).
 - [Architecture](docs/project-overview.md), [specification](docs/spec.md), and [interface contract](docs/interfaces.md).
-- [Quality gates](docs/quality.md), [retrieval evaluation](docs/qa/retrieval-quality.md), [backups](docs/backups.md), [performance](docs/performance.md), and [release operations](docs/releases.md).
-- [Roadmap](docs/roadmap.md), [v1.0 exit criteria](docs/stability.md), and [compatibility/support](docs/compatibility.md).
+- [Quality gates](docs/quality.md), [backups](docs/backups.md), and [compatibility/support](docs/compatibility.md).
+
+### Optional MCP interface
+
+MCP is the alternative agent interface and needs neither the CLI skill nor
+shell commands for agent operations. The server supplies initialization guidance
+and describes inputs, results, previews, revision conflicts, retries and access
+boundaries through discovery.
+
+Register a stdio server in your MCP client. Start with read-only access:
+
+```json
+{
+  "mcpServers": {
+    "kb": {
+      "command": "kb",
+      "args": ["--root", "./example-kb", "mcp", "--read-only"]
+    }
+  }
+}
+```
+
+Use an absolute root if the client cannot set the intended working directory.
+[MCP guide](docs/mcp.md) explains write-enabled access and exposed operations.
+Binary installation, skill installation, and MCP registration are separate actions.
 
 ## Contributing
 

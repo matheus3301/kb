@@ -22,10 +22,66 @@ silently bypass this workflow.
 | Release snapshot | Pinned GoReleaser config, four binary packages and source archive, checksums, privacy, source formula, and real native/source-build workflows. |
 | Vulnerabilities | govulncheck; dependency review blocks newly introduced high/critical known vulnerabilities. |
 
-Tool versions are pinned. Dependabot proposes Action and Go module updates;
-updates to development tools are separate explicit changes. No automatic merge
-is configured. Release publication requires an explicit version tag and follows
-the [tag-only workflow](releases.md).
+Root `mise.toml` is authoritative for development-tool versions. Go, Node, pnpm,
+GoReleaser, golangci-lint, actionlint, Gitleaks, and govulncheck use exact pins.
+Python preserves its existing minor-series selector, not an exact patch
+pin; CI's setup-python receives that selector from the toolchain reader.
+The reader requires bootstrap Python 3.11 or newer for standard-library
+`tomllib` and fails clearly if it is unavailable.
+Repository validation checks the Go directive in `go.mod` and
+`site/package.json`'s `packageManager` against their respective pins.
+`scripts/tools.json` contains Go module mappings, not versions.
+Dependabot proposes Action and Go module updates; updates to development tools
+are separate explicit changes. No automatic merge is configured. Release
+publication requires an explicit version tag and follows the
+[tag-only workflow](releases.md).
+
+## Static website
+
+The marketing site is separate from the Go runtime. **Website** is an unconditional,
+read-only CI job required by **CI gate** on every workflow event. It uses the
+Node and pnpm pins in root `mise.toml` and the committed `site/pnpm-lock.yaml`.
+The job runs from `site/`: `pnpm install --frozen-lockfile`,
+`pnpm audit --audit-level=high`, `pnpm run check`, `pnpm run build`,
+`pnpm exec playwright install --with-deps chromium`, and `pnpm test`.
+It installs pinned Node without cache before pnpm, then enables the pnpm cache.
+Frozen installation fails when the manifest and
+lockfile disagree; dependency changes must update both deliberately.
+Audit includes development dependencies: the build and browser tooling are
+part of the site's supply chain. High or critical advisories and audit-service
+errors fail the job; there are no audit exclusions. Registry availability and
+newly published advisories can affect this check independently of the
+checked-out source. See [pnpm install](https://pnpm.io/cli/install) and
+[pnpm audit](https://pnpm.io/cli/audit).
+
+For local setup, run `mise install`, then `mise exec -- make tools`.
+Run `mise exec -- make site-check` for the same frozen install, audit, source,
+build, and browser checks. It installs Chromium; Linux hosts may also need
+`mise exec -- pnpm --dir site exec playwright install --with-deps chromium`
+for system libraries. Activating mise in the shell is an alternative to
+the `mise exec --` prefix.
+Node and pnpm are development/CI tooling only; neither they nor mise are
+required by the CLI or MCP runtime. Public `npx skills` installation commands
+remain unchanged. `mise exec -- make check` retains the Go/runtime gates;
+the separately required website job must also pass before integration.
+
+Playwright starts the **built static preview** at `http://127.0.0.1:4321/kb/`,
+never the development server or an existing listener. Desktop (1440 × 1000) and
+mobile (390 × 844) projects exercise audience tabs, Arrow/Home/End keyboard
+navigation, visible keyboard focus, actual clipboard commands and setup prompt,
+and denied-clipboard manual-copy feedback. Both setup views are checked for
+horizontal page overflow and serious/critical axe findings. Browser exceptions,
+console errors, HTTP errors, and external runtime resource requests fail tests.
+These checks do not establish complete accessibility or universal browser support.
+Only local page fragments are checked; canonical GitHub documentation links are
+not fetched as an external-availability gate.
+
+Full-page human and agent setup screenshots, failure traces, and the HTML report
+are generated under `.build/site/`, outside public source. CI uploads that folder
+as **website-evidence** for seven days, even after a browser failure; missing
+evidence fails upload. Screenshots contain the public site only. Artifact upload
+does not attach images inline to a PR and requires no comment or write token.
+Real screenshot review remains necessary alongside automated checks.
 
 ## Implemented validation and its limits
 

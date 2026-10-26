@@ -8,6 +8,11 @@ versions, qualification outcomes and native versus cross-build-only scope.
 Binary installation, skill installation, MCP registration and workdir activation
 are separate actions.
 
+For agent use, follow [agent setup](agent-setup.md) after installing the binary:
+it covers the separate `knowledge-base` skill installation, deliberate root
+selection, preserving existing collections, and workdir policy activation.
+Installing either component alone does not activate a consultation policy.
+
 ## Source checkout
 
 Use Git and the Go toolchain declared in
@@ -30,6 +35,10 @@ with the selected release documentation; source `dev`/`unknown` defaults are
 not exact released-artifact proof.
 
 ## Homebrew
+
+Install [Homebrew](https://brew.sh/) first if you choose this channel, and check
+whether `kb` is already installed before replacing or upgrading it. Installation
+requires network access and permission to install packages.
 
 The non-prerelease publication workflow maintains a source formula in
 [matheus3301/homebrew-tap](https://github.com/matheus3301/homebrew-tap):

@@ -1,4 +1,4 @@
-.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke retrieval-eval soak-smoke
+.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke retrieval-eval soak-smoke site-check
 
 # Match distributed CLI builds without changing the race-test environment.
 CLI_BUILD_ENV := CGO_ENABLED=0 GOWORK=off GOTOOLCHAIN=local
@@ -49,6 +49,16 @@ retrieval-eval:
 soak-smoke:
 	$(CLI_BUILD_ENV) go build -trimpath -o .build/kb ./cmd/kb
 	$(PYTHON) scripts/soak.py --binary .build/kb --duration 3 --seeds 1729 --writers 4 --minimum-work 1 --backup-interval 1 --output .build/soak-smoke.json
+
+# The static marketing site has its own required CI job, separate from Go runtime gates.
+site-check: export ASTRO_TELEMETRY_DISABLED=1
+site-check:
+	pnpm --dir site install --frozen-lockfile
+	pnpm --dir site audit --audit-level=high
+	pnpm --dir site run check
+	KB_SITE_BASE=/kb/ pnpm --dir site run build
+	pnpm --dir site exec playwright install chromium
+	KB_SITE_BASE=/kb/ pnpm --dir site test
 
 check: repo lint test build fuzz security acceptance benchmark-smoke retrieval-eval soak-smoke
 

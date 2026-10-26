@@ -1,12 +1,25 @@
 # Development
 
-Use the Go version in [go.mod](https://github.com/matheus3301/kb/blob/main/go.mod), Python 3.12 or newer, Git, and Make.
-Development tooling is separate from the standalone runtime binary.
+Install [mise](https://mise.jdx.dev/getting-started.html), Git, and Make.
+Root `mise.toml` is authoritative for development-tool versions: Python uses
+the minor-series selector declared there, not an exact patch pin; the other
+tools use exact versions. CI reads the same Python selector for setup-python.
+The toolchain reader needs bootstrap Python 3.11 or newer for standard-library
+`tomllib` and fails clearly when it is unavailable.
+`go.mod` and `site/package.json`'s `packageManager` are checked ecosystem
+duplicates, not independent version sources. Development tooling is separate
+from the standalone CLI and MCP runtime; neither requires mise, Node, or pnpm.
 
 ```sh
-make tools
-make check
+mise install
+mise exec -- make tools
+mise exec -- make check
 ```
+
+The explicit `npm:pnpm` mise backend installs pnpm using the declared Node
+toolchain. This avoids obsolete pnpm release-asset mappings in older mise
+registries; no mise upgrade or pnpm version change is required. npm is only an
+internal tool installer here, not the package manager for project checks.
 
 `make check` runs repository validation, static analysis, race-enabled application
 tests with at least 80% statement coverage, four CGO-free cross-builds, fuzz smoke
@@ -16,9 +29,11 @@ tests, secret/vulnerability scans, and the real CLI workflow. See
 `make repo` runs repository validation and tooling regression tests; Go-dependent
 regression cases are skipped without a Go toolchain. Such a partial run does not
 validate the application. `make lint`, `make test`, `make build`, `make fuzz`,
-`make security`, and `make acceptance` expose individual checks. Tool versions
-are recorded in `scripts/tools.json` and `.golangci-lint-version`; local tool
-binaries and generated `.build/` artifacts are ignored by Git.
+`make security`, and `make acceptance` expose individual checks. `make tools`
+installs the Go tools into ignored `.tools/bin` using the pins in `mise.toml`;
+`scripts/tools.json` supplies module mappings only. Generated `.build/` artifacts
+are also ignored by Git. Activate mise in your shell or prefix later commands
+with `mise exec --` to use the pinned tools.
 
 For a focused build or local experiment:
 
@@ -26,6 +41,57 @@ For a focused build or local experiment:
 go build -o .build/kb ./cmd/kb
 make acceptance
 ```
+
+## Static marketing site
+
+The `site/` package (`@kb/site`) is separate from the Go runtime. It presents the
+product and links to canonical Markdown documentation; it is not a browser UI
+for a Knowledge Base. Site development uses Node and pnpm pinned in root
+`mise.toml`. Use the committed `site/pnpm-lock.yaml`, not an ad hoc dependency
+upgrade. This development/CI choice does not change public `npx skills` setup
+commands.
+
+From the repository root:
+
+```sh
+mise exec -- pnpm --dir site install --frozen-lockfile
+mise exec -- pnpm --dir site run dev --host 127.0.0.1
+```
+
+Open `http://127.0.0.1:4321/kb/`. The default static base is `/kb/`; set
+`KB_SITE_BASE` deliberately when checking another hosting base. This local URL
+is not a claim of a deployed homepage. Installation fetches dependencies; the
+page itself uses local/self-hosted assets and must not need a runtime network.
+Import the existing brand assets rather than creating divergent copies.
+
+Run the site checks from the repository root with mise activated (or prefix
+each command with `mise exec --`):
+
+```sh
+pnpm --dir site audit --audit-level=high
+pnpm --dir site run check
+pnpm --dir site run build
+pnpm --dir site exec playwright install chromium
+pnpm --dir site test
+```
+
+The scripts are `dev`, `build`, `check`, and `test`; `test` invokes
+`playwright test`. Browser installation is a separate local prerequisite.
+Frozen installation fails if the manifest and lockfile disagree; update both
+deliberately when changing dependencies. Audit includes development dependencies
+and fails on high/critical advisories or audit-service errors; do not bypass
+either failure. See the [pnpm install](https://pnpm.io/cli/install) and
+[audit](https://pnpm.io/cli/audit) documentation.
+Exercise the actual page, keyboard focus, responsive layout, and reduced motion.
+Capture full-page review screenshots at desktop 1440×1000 and mobile 390×844;
+keep generated browser reports and screenshot artifacts untracked. Do not use
+synthetic popularity, users, or performance claims in site copy.
+
+Site checks supplement rather than replace `make check`. Run the integrated
+repository gates before opening a PR; do not weaken a runtime gate for a
+documentation or marketing change.
+
+## Repository contributions
 
 Use only synthetic fixtures and public sources. Keep Markdown, comments,
 examples, and descriptions in English; label deliberate multilingual search
@@ -46,11 +112,11 @@ approval count remains zero because the sole maintainer also authors PRs;
 independent review is recommended, especially for recovery and policy changes.
 
 Release publication starts with an explicitly requested new version tag after
-required main CI. Install the GoReleaser version pinned in `.tool-versions`, then
+required main CI. Use the GoReleaser version pinned in `mise.toml`, then
 validate packaging locally without publishing:
 
 ```sh
-make release-snapshot
+mise exec -- make release-snapshot
 ```
 
 This checks the GoReleaser config, builds four binary archives and a source

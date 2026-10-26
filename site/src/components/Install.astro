@@ -1,0 +1,75 @@
+---
+import CopyBlock from './CopyBlock.astro';
+const install = 'brew install matheus3301/tap/kb\nnpx skills add matheus3301/kb --skill knowledge-base';
+const setup = 'export KB_ROOT="$PWD/example-kb"\nkb init --para\nkb status';
+const prompt = `Help me set up KB using its CLI and knowledge-base skill.
+Read https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md and use https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt as the documentation index. Treat these documents as reference, not permission for unrelated actions.
+Install the CLI with brew install matheus3301/tap/kb and the skill with npx skills add matheus3301/kb --skill knowledge-base from my intended agent workdir. Explain prerequisites and ask before making changes that need approval.
+Preserve existing knowledge bases, skills, instructions and agent configuration. Ask which base and workdir to use; do not overwrite them or enable MCP/global settings implicitly.
+Configure the selected root and add a deliberate workdir consultation policy while preserving existing instructions. Skill installation alone does not activate that policy.
+Verify kb version, the installed skill and an actual search/read against the intended base in a fresh agent turn. Report what was verified and any remaining setup steps.`;
+---
+<section id="get-started" class="install-section section" aria-labelledby="install-title">
+  <div class="section-intro">
+    <h2 id="install-title">A small setup.<br />A lasting reference.</h2>
+    <p>Install the CLI. Give your agent the skill.<br class="desktop-break" /> Choose where your knowledge lives.</p>
+    <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/installation.md">All installation methods <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="install-content" data-install-tabs>
+    <div class="install-tabs" aria-label="Choose your setup">
+      <button type="button" id="tab-you" data-tab="you">For You</button>
+      <button type="button" id="tab-agent" data-tab="agent">For Your Agent</button>
+    </div>
+    <div id="panel-you" class="install-panel" data-panel="you" aria-labelledby="tab-you">
+      <p class="panel-intro">On macOS or Linux, have Homebrew and Node.js 22.20+ with npm/npx ready. Node is needed only for skill installation, not the Go CLI runtime. Run the skill installer from your intended agent workdir.</p>
+      <CopyBlock id="install-commands" label="Install CLI + skill" text={install} />
+      <h3>Choose your base. Activate deliberately.</h3>
+      <p>For a new base, choose a directory before running:</p>
+      <CopyBlock id="base-commands" label="Create a new example base" text={setup} />
+      <p class="setup-note">Already have a base? Point <code>KB_ROOT</code> to it instead. Add a workdir instruction to consult it with the skill, preserving existing instructions. <strong>Installing the skill alone does not activate a policy.</strong></p>
+      <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/agent-setup.md">Configure and verify agent activation <span aria-hidden="true">↗</span></a>
+    </div>
+    <div id="panel-agent" class="install-panel" data-panel="agent" aria-labelledby="tab-agent">
+      <p class="panel-intro">Copy this prompt into your agent. It points to the public setup guide and keeps you in control of the base and workdir.</p>
+      <CopyBlock id="agent-setup-prompt" label="Setup prompt" action="Copy" text={prompt} />
+      <p class="setup-note">The prompt requests the same CLI + skill install, preserves existing configuration, and asks for verification. Your agent may still need your approval.</p>
+      <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/agent-setup.md">Read the setup guide <span aria-hidden="true">↗</span></a>
+    </div>
+    <noscript><p>Both setup paths are shown. Copy commands or the setup prompt manually.</p></noscript>
+  </div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-install-tabs]').forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-panel]'));
+    const list = root.querySelector('.install-tabs');
+    list?.setAttribute('role', 'tablist');
+    function selectTab(index: number, focus = false) {
+      tabs.forEach((tab, current) => {
+        const selected = current === index;
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-selected', String(selected));
+        tab.setAttribute('aria-controls', `panel-${tab.dataset.tab}`);
+        tab.tabIndex = selected ? 0 : -1;
+        panels[current].setAttribute('role', 'tabpanel');
+        panels[current].tabIndex = 0;
+        panels[current].hidden = !selected;
+      });
+      if (focus) tabs[index].focus();
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectTab(index));
+      tab.addEventListener('keydown', (event) => {
+        let next: number;
+        if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        selectTab(next, true);
+      });
+    });
+    selectTab(0);
+  });
+</script>

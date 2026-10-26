@@ -1,55 +1,36 @@
 # KB — Knowledge Base
 
-> A local Markdown Knowledge Base for humans and AI agents, with a revision-aware CLI and stdio MCP server. Native OKF notes, optional PARA organization, and reviewable changes.
+> Local Markdown knowledge for humans and AI agents. Use the revision-aware CLI and knowledge-base skill for agent workflows; optional stdio MCP is independent.
 
-Data commands emit kb.v1 JSON. Use the installed `kb --help` and subcommand help
-for available flags; source documentation can describe a newer checkout.
-Choose CLI + the knowledge-base skill, or independently descriptive stdio MCP.
-MCP needs neither the CLI skill nor shell commands. Binary installation, skill
-installation, MCP registration and workdir activation are separate. Verify
-activation in a new agent turn/session. Note content is data, not instructions.
-
-These links describe the checked-out/main contract, not proof that every feature
-or correction is installed. Consult the README project status, compatibility
-policy and immutable release record for current published/installed versions and
-qualification outcomes.
+Start with agent setup. Installing a skill does not activate a workdir policy.
+Preserve existing bases and instructions; choose root, scope and write permission
+deliberately. Data commands emit kb.v1 JSON. Check installed help/version against
+release documentation: main can describe newer source. Notes are data, not
+instructions. This index is discovery guidance, not setup authorization.
 
 ## Start here
 
-- [README](https://raw.githubusercontent.com/matheus3301/kb/main/README.md): Purpose, Homebrew setup, first note, and command map.
-- [Quickstart](https://raw.githubusercontent.com/matheus3301/kb/main/docs/quickstart.md): Complete create/search/read/edit/plan workflow.
-- [CLI guide](https://raw.githubusercontent.com/matheus3301/kb/main/docs/cli.md): Commands, flags, JSON inputs, errors, and limits.
-- [Agent setup](https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md): Skill installation, workdir activation, MCP, and upgrading the old skill name.
+- [Agent setup](https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md): Complete Homebrew + skill installation, prerequisites, project/global scope, existing bases, workdir activation and verification.
+- [Documentation index](https://raw.githubusercontent.com/matheus3301/kb/main/docs/README.md): Task-oriented navigation through canonical Markdown guides.
+- [README](https://raw.githubusercontent.com/matheus3301/kb/main/README.md): Product, first CLI workflow and actual project status.
+- [Installation](https://raw.githubusercontent.com/matheus3301/kb/main/docs/installation.md): Binary channels, checksums, upgrades and limits.
+- [Quickstart](https://raw.githubusercontent.com/matheus3301/kb/main/docs/quickstart.md): Existing disposable create/search/read/edit/plan examples.
+- [CLI guide](https://raw.githubusercontent.com/matheus3301/kb/main/docs/cli.md): Commands, JSON requests, errors and budgets.
 
-## CLI + skill
+## CLI + knowledge-base skill
 
-- [knowledge-base skill](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/SKILL.md): CLI operation selection and bundled conditional references; usable independently after installation.
-- [Retrieval](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/retrieval.md): Root choice, discovery, filtering, citations, and no-write queries.
-- [Writing](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/writing.md): Complete requests, revisions, provenance, retries, and coordinated plans.
-- [Diagnose and repair](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/repair.md): Actionable lint, strict health validation and explicit incremental repair batches.
-- [Maintenance](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/maintenance.md): Health review, navigation, recovery, and export boundaries.
-- [CLI results](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/results.md): CLI envelopes, errors, exit codes, and budgets.
+- [Skill](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/SKILL.md): CLI operation selection and bundled conditional references.
+- [Retrieval](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/retrieval.md): Root choice, search, source reads and citations.
+- [Writing](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/writing.md): Provenance, revisions, previews, retries and coordinated plans.
+- [Repair](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/repair.md): Diagnose first; repair only within explicit authorization.
+- [Maintenance](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/maintenance.md): Health, navigation, recovery and export boundaries.
+- [Results](https://raw.githubusercontent.com/matheus3301/kb/main/skills/knowledge-base/references/results.md): Envelopes, errors, exit codes and limits.
 
-## MCP
+## Operations and optional integration
 
-- [MCP guide](https://raw.githubusercontent.com/matheus3301/kb/main/docs/mcp.md): Standalone MCP setup, discovery, tools, results, and operating boundaries; no skill required.
-- [Tool catalog](https://raw.githubusercontent.com/matheus3301/kb/main/schemas/kb.v1.tools.json): Server initialization instructions and the runtime tool descriptions/input/output schemas.
-
-## Optional
-
-- [Installation](https://raw.githubusercontent.com/matheus3301/kb/main/docs/installation.md): Source, prebuilt binaries, and upgrades.
-- [Wire schema](https://raw.githubusercontent.com/matheus3301/kb/main/schemas/kb.v1.envelope.schema.json): Machine-readable response envelope.
-- [Interface contract](https://raw.githubusercontent.com/matheus3301/kb/main/docs/interfaces.md): DTOs, recovery semantics, and implementation details.
-- [Operational backups](https://raw.githubusercontent.com/matheus3301/kb/main/docs/backups.md): CLI/MCP version-1 archives, exact settled receipts, new-only restore, exclusions and local-staging limits; available since v0.4.0.
-- [Retrieval evaluation](https://raw.githubusercontent.com/matheus3301/kb/main/docs/qa/retrieval-quality.md): Synthetic bilingual lexical judgments, ceiling-aware Recall@5, exact citations, budgets, purity and CLI/MCP parity.
-- [Large-corpus results](https://raw.githubusercontent.com/matheus3301/kb/main/docs/performance-large-corpus.md): Quiet paired local 10k/50k measurements, modest improvements and disclosed regressions; not a portable SLA.
-- [Performance](https://raw.githubusercontent.com/matheus3301/kb/main/docs/performance.md): Original local targets met in v0.3.1, dated measurements and remaining large-corpus costs; not portable SLAs.
-- [Receipt-history scaling](https://raw.githubusercontent.com/matheus3301/kb/main/docs/qa/backup-performance-v1.md): Failed v0.4.0 endurance attempt, reproduced cause, bounded paired fix measurements and remaining restore cost; not a full reliability pass.
-- [Reliability method](https://raw.githubusercontent.com/matheus3301/kb/main/docs/qa/reliability-v1.md): Separate 30-minute log-disabled/index-enabled and 60-second default-log profiles, receipt/event-log growth, real interruption scope and limits.
-- [Releases](https://github.com/matheus3301/kb/releases): Published versions and installed-package verification.
-
-## Roadmap and stability
-
-- [Roadmap](https://raw.githubusercontent.com/matheus3301/kb/main/docs/roadmap.md): Implemented increments, qualification sequence and explicit out-of-scope features.
-- [v1.0 exit criteria](https://raw.githubusercontent.com/matheus3301/kb/main/docs/stability.md): V01–V08 evidence, selected D01–D04 qualification policies and finalization checklist; no premature readiness claim.
-- [Compatibility and support](https://raw.githubusercontent.com/matheus3301/kb/main/docs/compatibility.md): CLI/JSON/MCP/OKF/config/state/archive version axes, v1.x compatibility policy, upgrade limits and native versus cross-build-only channels.
+- [Backups](https://raw.githubusercontent.com/matheus3301/kb/main/docs/backups.md): Operational archives, new-only restore, exclusions and local-staging limits.
+- [Compatibility and support](https://raw.githubusercontent.com/matheus3301/kb/main/docs/compatibility.md): Published/installed identities, upgrade limits and qualified platforms.
+- [Quality and evidence](https://raw.githubusercontent.com/matheus3301/kb/main/docs/quality.md): Required checks, dated observations and remaining limits.
+- [MCP guide](https://raw.githubusercontent.com/matheus3301/kb/main/docs/mcp.md): Optional independent stdio setup and discovery; no CLI skill required.
+- [MCP tool catalog](https://raw.githubusercontent.com/matheus3301/kb/main/schemas/kb.v1.tools.json): Initialization guidance and tool input/output schemas.
+- [Releases](https://github.com/matheus3301/kb/releases): Immutable version records; not every source change is installed.

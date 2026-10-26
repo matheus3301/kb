@@ -9,6 +9,7 @@ import tempfile
 import unittest
 
 import quality
+import toolchain
 
 
 @unittest.skipUnless(shutil.which("go"), "Go toolchain required for gate integration tests")
@@ -17,7 +18,8 @@ class GoGateTests(unittest.TestCase):
         root = Path(directory)
         (root / "scripts").mkdir()
         shutil.copy2(quality.ROOT / "scripts/quality.py", root / "scripts/quality.py")
-        (root / "go.mod").write_text("module example.com/gatefixture\n\ngo 1.27.3\n")
+        version = toolchain.versions()["go"]
+        (root / "go.mod").write_text(f"module example.com/gatefixture\n\ngo {version}\n")
         (root / "choose.go").write_text(
             "package gatefixture\n\n"
             "func Choose(b bool) int { if b { return 1 }; return 2 }\n"

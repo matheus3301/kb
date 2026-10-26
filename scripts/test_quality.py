@@ -22,7 +22,7 @@ jobs:
 
     def results(self):
         return {name: {"result": "success"} for name in
-                ("repository", "static", "tests", "security", "build", "release-config", "compatibility", "dependency-review")}
+                ("repository", "website", "static", "tests", "security", "build", "release-config", "compatibility", "dependency-review")}
 
     def test_unpinned_action_is_rejected(self):
         self.assertTrue(quality.workflow_findings(self.workflow("actions/checkout@v7")))
@@ -108,6 +108,64 @@ jobs:
                 jobs = self.results()
                 jobs["tests"]["result"] = status
                 self.assertTrue(quality.gate_findings(jobs, "pull_request"))
+
+    def test_website_is_required_for_every_event(self):
+        for event in ("pull_request", "push", "workflow_dispatch", "schedule"):
+            for status in ("failure", "cancelled", "skipped", None):
+                jobs = self.results()
+                if event != "pull_request":
+                    jobs["dependency-review"]["result"] = "skipped"
+                if status is None:
+                    del jobs["website"]
+                else:
+                    jobs["website"]["result"] = status
+                with self.subTest(event=event, status=status):
+                    self.assertIn("required job did not succeed: website",
+                                  quality.gate_findings(jobs, event))
+
+    def test_website_validation_cannot_be_removed_or_skipped(self):
+        workflow = (quality.ROOT / ".github/workflows/ci.yml").read_text()
+        self.assertEqual([], quality.workflow_findings(workflow, "ci.yml"))
+        for command in ("pnpm install --frozen-lockfile", "pnpm audit --audit-level=high", "pnpm run check", "pnpm run build",
+                        "pnpm exec playwright install --with-deps chromium", "pnpm test"):
+            with self.subTest(command=command):
+                altered = workflow.replace(f"- run: {command}\n", "- run: true\n")
+                self.assertTrue(quality.workflow_findings(altered, "ci.yml"))
+        for before, after in (
+            ("[repository, website, static", "[repository, static"),
+            ("  website:\n", "  website:\n    if: false\n"),
+            ("      - run: pnpm test\n", "      - run: pnpm test\n        if: false\n"),
+            ("      KB_SITE_BASE: /kb/", "      KB_SITE_BASE: /"),
+            ("pnpm audit --audit-level=high", "pnpm audit --audit-level=critical"),
+            ("pnpm audit --audit-level=high", "pnpm audit --prod --audit-level=high"),
+            ("pnpm audit --audit-level=high", "pnpm audit --audit-level=high --ignore-registry-errors"),
+            ("pnpm audit --audit-level=high", "pnpm audit --audit-level=high --ignore-unfixable"),
+            ("pnpm install --frozen-lockfile", "pnpm install"),
+            ("          path: .build/site/", "          path: absent/"),
+            ("          if-no-files-found: error", "          if-no-files-found: ignore"),
+            ("          package-manager-cache: false", "          package-manager-cache: true"),
+        ):
+            with self.subTest(before=before):
+                self.assertTrue(quality.workflow_findings(workflow.replace(before, after), "ci.yml"))
+        start = workflow.index("      - uses: actions/setup-node@")
+        end = workflow.index("      - uses: pnpm/action-setup@", start)
+        bootstrap = workflow[start:end]
+        self.assertIn("website must bootstrap pinned Node without cache before pnpm",
+                      quality.workflow_findings(workflow.replace(bootstrap, ""), "ci.yml"))
+
+    def test_site_sources_stay_checked_but_generated_dependencies_do_not(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            included = ["site/src/pages/index.astro", "site/tests/landing.spec.ts",
+                        "site/pnpm-lock.yaml", "internal/core/example.go"]
+            excluded = ["site/node_modules/package/README.md", "site/dist/index.html",
+                        "site/.astro/content.d.ts", ".build/site/desktop.png"]
+            for name in included + excluded:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("synthetic fixture\n")
+            self.assertEqual(sorted(included),
+                             [str(path.relative_to(root)) for path in quality.tracked_content(root)])
 
     def test_prior_version_compatibility_is_required_by_the_gate(self):
         for status in ("failure", "cancelled", "skipped", None):

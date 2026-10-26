@@ -27,14 +27,61 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: "3.12"
+          python-version: ${{ steps.toolchain.outputs.python }}
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - run: make repo
+
+  website:
+    name: Website
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      KB_SITE_BASE: /kb/
+      ASTRO_TELEMETRY_DISABLED: "1"
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: toolchain
+        working-directory: .
+        run: python3 scripts/toolchain.py github-outputs
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ steps.toolchain.outputs.node }}
+          package-manager-cache: false
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: ${{ steps.toolchain.outputs.pnpm }}
+          package_json_file: site/package.json
+          run_install: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ steps.toolchain.outputs.node }}
+          cache: pnpm
+          cache-dependency-path: site/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=high
+      - run: pnpm run check
+      - run: pnpm run build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: website-evidence
+          path: .build/site/
+          if-no-files-found: error
+          retention-days: 7
 
   static:
     name: Static analysis
@@ -44,13 +91,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9
         with:
-          version-file: .golangci-lint-version
+          version: ${{ steps.toolchain.outputs.golangci-lint }}
           install-only: true
           skip-cache: true
       - run: python3 scripts/quality.py install-tools actionlint
@@ -68,9 +117,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - run: make test fuzz acceptance
       - run: make benchmark-smoke
@@ -105,12 +156,14 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: "3.12"
+          python-version: ${{ steps.toolchain.outputs.python }}
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - name: Build the immutable previous release and current candidate
         run: |
@@ -141,9 +194,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - run: make build
 
@@ -156,13 +211,15 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
         with:
-          version-file: .tool-versions
+          version: ${{ steps.toolchain.outputs.goreleaser }}
           install-only: true
       - run: make release-snapshot
 
@@ -175,9 +232,11 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - run: python3 scripts/quality.py install-tools gitleaks govulncheck
       - run: make security
@@ -198,7 +257,7 @@ jobs:
   gate:
     name: CI gate
     if: always()
-    needs: [repository, static, tests, security, build, release-config, compatibility, dependency-review]
+    needs: [repository, website, static, tests, security, build, release-config, compatibility, dependency-review]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

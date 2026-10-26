@@ -11,7 +11,9 @@ the product source; it is not the user's knowledge base.
 - Use Go, explicit constructors, and standard library facilities first. Add a
   dependency only for a concrete requirement; record the decision and version.
 - No UI, embedded LLM, telemetry, automatic Git sync, global agent configuration
-  changes, legacy compatibility layer, or remote transport in the MVP.
+  changes, legacy compatibility layer, or remote transport in the runtime MVP.
+  The separate static marketing site in `site/` is allowed; it must not become a
+  collection UI or a runtime dependency.
 - Product skills belong in `skills/<name>/SKILL.md` when implemented. Skill
   installation, binary installation, and MCP registration are separate concerns.
 - Keep the agent interfaces independent: the knowledge-base skill teaches CLI

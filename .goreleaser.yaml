@@ -45,7 +45,9 @@ archives:
         info: *public_file
       - src: SECURITY.md
         info: *public_file
-      - src: assets/*.svg
+      - src: assets/*.png
+        info: *public_file
+      - src: assets/*.md
         info: *public_file
       - src: docs/*.md
         info: *public_file
