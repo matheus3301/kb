@@ -1,4 +1,4 @@
-.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke retrieval-eval
+.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke retrieval-eval soak-smoke
 
 export PATH := $(CURDIR)/.tools/bin:$(PATH)
 PYTHON ?= python3
@@ -43,7 +43,11 @@ retrieval-eval:
 	go build -trimpath -o .build/kb ./cmd/kb
 	$(PYTHON) scripts/retrieval_eval.py --binary .build/kb --output .build/retrieval-quality.json
 
-check: repo lint test build fuzz security acceptance benchmark-smoke retrieval-eval
+soak-smoke:
+	go build -trimpath -o .build/kb ./cmd/kb
+	$(PYTHON) scripts/soak.py --binary .build/kb --duration 3 --seeds 1729 --writers 4 --minimum-work 1 --backup-interval 1 --output .build/soak-smoke.json
+
+check: repo lint test build fuzz security acceptance benchmark-smoke retrieval-eval soak-smoke
 
 release-check:
 	$(GORELEASER) check

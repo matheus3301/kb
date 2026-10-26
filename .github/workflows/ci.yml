@@ -75,6 +75,7 @@ jobs:
       - run: make test fuzz acceptance
       - run: make benchmark-smoke
       - run: make retrieval-eval
+      - run: make soak-smoke
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
@@ -83,6 +84,44 @@ jobs:
           include-hidden-files: true
           if-no-files-found: ignore
           retention-days: 7
+
+  compatibility:
+    name: Prior-version compatibility
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Build the immutable previous release and current candidate
+        run: |
+          mkdir -p .build/compatibility-baseline
+          kb_baseline_commit=2ca104f48cc4a6551f4bbc4fae12d51432e42dff
+          test "$(git rev-parse 'v0.3.1^{commit}')" = "$kb_baseline_commit"
+          git archive "$kb_baseline_commit" | tar -x -C .build/compatibility-baseline
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          (
+            cd .build/compatibility-baseline
+            go build -trimpath -ldflags "-X main.version=v0.3.1 -X main.commit=$kb_baseline_commit" -o ../previous-kb ./cmd/kb
+          )
+          go build -trimpath -ldflags "-X main.version=qualification -X main.commit=$GITHUB_SHA" -o .build/candidate-kb ./cmd/kb
+      - name: Exercise actual prior-version CLI and MCP upgrade workflows
+        run: python3 scripts/compatibility.py --baseline .build/previous-kb --candidate .build/candidate-kb --candidate-version qualification --candidate-commit "$GITHUB_SHA" --output .build/compatibility.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: compatibility-evidence
+          path: .build/compatibility.json
+          if-no-files-found: error
+          retention-days: 30
 
   build:
     name: Cross-build
@@ -149,7 +188,7 @@ jobs:
   gate:
     name: CI gate
     if: always()
-    needs: [repository, static, tests, security, build, release-config, dependency-review]
+    needs: [repository, static, tests, security, build, release-config, compatibility, dependency-review]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

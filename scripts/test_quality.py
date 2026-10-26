@@ -22,7 +22,7 @@ jobs:
 
     def results(self):
         return {name: {"result": "success"} for name in
-                ("repository", "static", "tests", "security", "build", "release-config", "dependency-review")}
+                ("repository", "static", "tests", "security", "build", "release-config", "compatibility", "dependency-review")}
 
     def test_unpinned_action_is_rejected(self):
         self.assertTrue(quality.workflow_findings(self.workflow("actions/checkout@v7")))
@@ -66,6 +66,17 @@ jobs:
                 jobs = self.results()
                 jobs["tests"]["result"] = status
                 self.assertTrue(quality.gate_findings(jobs, "pull_request"))
+
+    def test_prior_version_compatibility_is_required_by_the_gate(self):
+        for status in ("failure", "cancelled", "skipped", None):
+            jobs = self.results()
+            if status is None:
+                del jobs["compatibility"]
+            else:
+                jobs["compatibility"]["result"] = status
+            with self.subTest(status=status):
+                self.assertIn("required job did not succeed: compatibility",
+                              quality.gate_findings(jobs, "pull_request"))
 
     def test_release_snapshot_is_required_by_the_gate(self):
         for status in ("failure", "cancelled", "skipped"):

@@ -136,7 +136,7 @@ def acceptance_findings(root, spec, criteria):
 
 def gate_findings(needs, event):
     findings = []
-    for job in ("repository", "static", "tests", "security", "build", "release-config"):
+    for job in ("repository", "static", "tests", "security", "build", "release-config", "compatibility"):
         if needs.get(job, {}).get("result") != "success":
             findings.append(f"required job did not succeed: {job}")
     expected = "success" if event == "pull_request" else "skipped"
