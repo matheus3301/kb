@@ -126,29 +126,38 @@ jobs:
     def test_website_validation_cannot_be_removed_or_skipped(self):
         workflow = (quality.ROOT / ".github/workflows/ci.yml").read_text()
         self.assertEqual([], quality.workflow_findings(workflow, "ci.yml"))
-        for command in ("npm ci", "npm audit --audit-level=high", "npm run check", "npm run build",
-                        "npx playwright install --with-deps chromium", "npm test"):
+        for command in ("pnpm install --frozen-lockfile", "pnpm audit --audit-level=high", "pnpm run check", "pnpm run build",
+                        "pnpm exec playwright install --with-deps chromium", "pnpm test"):
             with self.subTest(command=command):
                 altered = workflow.replace(f"- run: {command}\n", "- run: true\n")
                 self.assertTrue(quality.workflow_findings(altered, "ci.yml"))
         for before, after in (
             ("[repository, website, static", "[repository, static"),
             ("  website:\n", "  website:\n    if: false\n"),
-            ("      - run: npm test\n", "      - run: npm test\n        if: false\n"),
+            ("      - run: pnpm test\n", "      - run: pnpm test\n        if: false\n"),
             ("      KB_SITE_BASE: /kb/", "      KB_SITE_BASE: /"),
-            ("npm audit --audit-level=high", "npm audit --audit-level=critical"),
-            ("npm audit --audit-level=high", "npm audit --omit=dev --audit-level=high"),
+            ("pnpm audit --audit-level=high", "pnpm audit --audit-level=critical"),
+            ("pnpm audit --audit-level=high", "pnpm audit --prod --audit-level=high"),
+            ("pnpm audit --audit-level=high", "pnpm audit --audit-level=high --ignore-registry-errors"),
+            ("pnpm audit --audit-level=high", "pnpm audit --audit-level=high --ignore-unfixable"),
+            ("pnpm install --frozen-lockfile", "pnpm install"),
             ("          path: .build/site/", "          path: absent/"),
             ("          if-no-files-found: error", "          if-no-files-found: ignore"),
+            ("          package-manager-cache: false", "          package-manager-cache: true"),
         ):
             with self.subTest(before=before):
                 self.assertTrue(quality.workflow_findings(workflow.replace(before, after), "ci.yml"))
+        start = workflow.index("      - uses: actions/setup-node@")
+        end = workflow.index("      - uses: pnpm/action-setup@", start)
+        bootstrap = workflow[start:end]
+        self.assertIn("website must bootstrap pinned Node without cache before pnpm",
+                      quality.workflow_findings(workflow.replace(bootstrap, ""), "ci.yml"))
 
     def test_site_sources_stay_checked_but_generated_dependencies_do_not(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             included = ["site/src/pages/index.astro", "site/tests/landing.spec.ts",
-                        "site/package-lock.json", "internal/core/example.go"]
+                        "site/pnpm-lock.yaml", "internal/core/example.go"]
             excluded = ["site/node_modules/package/README.md", "site/dist/index.html",
                         "site/.astro/content.d.ts", ".build/site/desktop.png"]
             for name in included + excluded:

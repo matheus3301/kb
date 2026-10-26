@@ -27,9 +27,11 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - name: Verify tag, main ancestry, and successful exact-commit CI
         run: python3 scripts/release.py verify-tag
@@ -50,9 +52,11 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - name: Require stable tap credential before publishing anything
         if: ${{ !contains(github.ref_name, '-') }}
@@ -66,7 +70,7 @@ jobs:
       - uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
         with:
           distribution: goreleaser
-          version-file: .tool-versions
+          version: ${{ steps.toolchain.outputs.goreleaser }}
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -98,13 +102,15 @@ jobs:
           ref: ${{ github.ref }}
           fetch-depth: 0
           persist-credentials: false
+      - id: toolchain
+        run: python3 scripts/toolchain.py github-outputs
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: go.mod
+          go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: "3.12"
+          python-version: ${{ steps.toolchain.outputs.python }}
       - name: Download this tag's published archives with independent identity expectations
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

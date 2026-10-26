@@ -53,12 +53,12 @@ soak-smoke:
 # The static marketing site has its own required CI job, separate from Go runtime gates.
 site-check: export ASTRO_TELEMETRY_DISABLED=1
 site-check:
-	npm --prefix site ci
-	npm --prefix site audit --audit-level=high
-	npm --prefix site run check
-	KB_SITE_BASE=/kb/ npm --prefix site run build
-	cd site && npm exec -- playwright install chromium
-	KB_SITE_BASE=/kb/ npm --prefix site test
+	pnpm --dir site install --frozen-lockfile
+	pnpm --dir site audit --audit-level=high
+	pnpm --dir site run check
+	KB_SITE_BASE=/kb/ pnpm --dir site run build
+	pnpm --dir site exec playwright install chromium
+	KB_SITE_BASE=/kb/ pnpm --dir site test
 
 check: repo lint test build fuzz security acceptance benchmark-smoke retrieval-eval soak-smoke
 

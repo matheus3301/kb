@@ -24,7 +24,7 @@ silently bypass this workflow.
 
 Root `mise.toml` is authoritative for development-tool versions. Go, Node, pnpm,
 GoReleaser, golangci-lint, actionlint, Gitleaks, and govulncheck use exact pins.
-Python preserves the existing `3.12` minor-series selector, not an exact patch
+Python preserves its existing minor-series selector, not an exact patch
 pin; CI's setup-python receives that selector from the toolchain reader.
 The reader requires bootstrap Python 3.11 or newer for standard-library
 `tomllib` and fails clearly if it is unavailable.
@@ -41,10 +41,11 @@ publication requires an explicit version tag and follows the
 The marketing site is separate from the Go runtime. **Website** is an unconditional,
 read-only CI job required by **CI gate** on every workflow event. It uses the
 Node and pnpm pins in root `mise.toml` and the committed `site/pnpm-lock.yaml`.
-From the repository root, the job runs `pnpm --dir site install --frozen-lockfile`,
-`pnpm --dir site audit --audit-level=high`, `pnpm --dir site run check`,
-`pnpm --dir site run build`, `pnpm --dir site exec playwright install --with-deps chromium`,
-and `pnpm --dir site test`. Frozen installation fails when the manifest and
+The job runs from `site/`: `pnpm install --frozen-lockfile`,
+`pnpm audit --audit-level=high`, `pnpm run check`, `pnpm run build`,
+`pnpm exec playwright install --with-deps chromium`, and `pnpm test`.
+It installs pinned Node without cache before pnpm, then enables the pnpm cache.
+Frozen installation fails when the manifest and
 lockfile disagree; dependency changes must update both deliberately.
 Audit includes development dependencies: the build and browser tooling are
 part of the site's supply chain. High or critical advisories and audit-service

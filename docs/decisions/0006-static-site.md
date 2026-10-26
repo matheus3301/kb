@@ -16,6 +16,12 @@ Exact package versions are recorded in `site/package.json` and
 `site/pnpm-lock.yaml`. Root `mise.toml` owns the current Node and pnpm pins;
 `site/package.json`'s `packageManager` is a checked duplicate of the pnpm pin.
 
+The pnpm migration preserves exact direct dependency declarations and retains
+package integrity verification. A fresh resolution under pnpm's default release-age policy selects
+`magic-string` 1.4.3 instead of the npm lock's newly published 1.4.4; no age
+exception, audit exclusion, or direct dependency was added to force the result.
+The resolver also omits an unused optional Vite peer and its platform packages.
+
 - Astro 7.4.1: static HTML generation, asset processing and component authoring. Its Node `>=22.22.0` engine requirement constrains toolchain updates; Astro 7.4.2 requires a newer Node patch. The initial 6.4.8 selection was rejected after `npm audit` reported critical/high advisories; no audit suppression was added.
 - `@astrojs/check` 0.9.12 and TypeScript 5.9.3: Astro and browser-script type checking.
 - `@types/node` 22.x: types for the Node-based browser-test configuration; the exact patch is locked.

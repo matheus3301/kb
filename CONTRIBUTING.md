@@ -2,7 +2,7 @@
 
 Install [mise](https://mise.jdx.dev/getting-started.html), Git, and Make.
 Root `mise.toml` is authoritative for development-tool versions: Python uses
-the existing `3.12` minor-series selector, not an exact patch pin; the other
+the minor-series selector declared there, not an exact patch pin; the other
 tools use exact versions. CI reads the same Python selector for setup-python.
 The toolchain reader needs bootstrap Python 3.11 or newer for standard-library
 `tomllib` and fails clearly when it is unavailable.
