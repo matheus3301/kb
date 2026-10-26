@@ -1,6 +1,6 @@
 # Releases
 
-Release automation uses GoReleaser **2.19.0**, pinned in `.tool-versions`.
+Release automation uses GoReleaser pinned in root `mise.toml`.
 `.goreleaser.yaml` builds four CGO-free binaries, packages the public docs and
 licenses, creates a source archive, calculates SHA-256 checksums, and prepares
 Conventional Commit changelog groups. The configuration was informed by
@@ -35,14 +35,16 @@ Prereleases do not need the tap token and never update the stable formula.
 
 ## Validate without publishing
 
-Install the GoReleaser version in `.tool-versions` with your tool manager or the
+Install [mise](https://mise.jdx.dev/getting-started.html) to use the authoritative
+development-tool pins in root `mise.toml`. GoReleaser also provides
 [official installation instructions](https://goreleaser.com/install/).
-Then run:
+From the repository root, run:
 
 ```sh
-make tools
-make check
-make release-snapshot
+mise install
+mise exec -- make tools
+mise exec -- make check
+mise exec -- make release-snapshot
 ```
 
 `make release-snapshot` validates the config, builds all targets with

@@ -22,30 +22,42 @@ silently bypass this workflow.
 | Release snapshot | Pinned GoReleaser config, four binary packages and source archive, checksums, privacy, source formula, and real native/source-build workflows. |
 | Vulnerabilities | govulncheck; dependency review blocks newly introduced high/critical known vulnerabilities. |
 
-Tool versions are pinned. Dependabot proposes Action and Go module updates;
-updates to development tools are separate explicit changes. No automatic merge
-is configured. Release publication requires an explicit version tag and follows
-the [tag-only workflow](releases.md).
+Root `mise.toml` is authoritative for Go, Node, pnpm, GoReleaser, golangci-lint,
+actionlint, Gitleaks, and govulncheck versions. Repository validation checks the
+Go directive in `go.mod` and `site/package.json`'s `packageManager` against those
+pins. `scripts/tools.json` contains Go module mappings, not versions.
+Dependabot proposes Action and Go module updates; updates to development tools
+are separate explicit changes. No automatic merge is configured. Release
+publication requires an explicit version tag and follows the
+[tag-only workflow](releases.md).
 
 ## Static website
 
 The marketing site is separate from the Go runtime. **Website** is an unconditional,
-read-only CI job required by **CI gate** on every workflow event. It uses Node
-22.22.3 and the pinned `site/package-lock.json` dependency tree. The job runs
-`npm ci`, `npm audit --audit-level=high`, `npm run check`, `npm run build`, installs
-Chromium with its system dependencies, and runs `npm test`. Audit includes
-development dependencies: the build and browser tooling are part of the site's
-supply chain. High or critical advisories fail the job; there are no audit
-exclusions. Registry availability and newly published advisories can affect this
-check, independently of the checked-out source.
+read-only CI job required by **CI gate** on every workflow event. It uses the
+Node and pnpm pins in root `mise.toml` and the committed `site/pnpm-lock.yaml`.
+From the repository root, the job runs `pnpm --dir site install --frozen-lockfile`,
+`pnpm --dir site audit --audit-level=high`, `pnpm --dir site run check`,
+`pnpm --dir site run build`, `pnpm --dir site exec playwright install --with-deps chromium`,
+and `pnpm --dir site test`. Frozen installation fails when the manifest and
+lockfile disagree; dependency changes must update both deliberately.
+Audit includes development dependencies: the build and browser tooling are
+part of the site's supply chain. High or critical advisories and audit-service
+errors fail the job; there are no audit exclusions. Registry availability and
+newly published advisories can affect this check independently of the
+checked-out source. See [pnpm install](https://pnpm.io/cli/install) and
+[pnpm audit](https://pnpm.io/cli/audit).
 
-Run `make site-check` locally with the site Node toolchain and npm available.
-It installs the locked dependencies and Chromium, then runs the same audit,
-source, build, and browser checks. Linux hosts may need
-`cd site && npx playwright install --with-deps chromium` for system libraries.
-Node is only needed for site development/CI, not for the CLI or MCP runtime.
-`make check` retains the Go/runtime gates; the separately required website job
-must also pass before integration.
+For local setup, run `mise install`, then `mise exec -- make tools`.
+Run `mise exec -- make site-check` for the same frozen install, audit, source,
+build, and browser checks. It installs Chromium; Linux hosts may also need
+`mise exec -- pnpm --dir site exec playwright install --with-deps chromium`
+for system libraries. Activating mise in the shell is an alternative to
+the `mise exec --` prefix.
+Node and pnpm are development/CI tooling only; neither they nor mise are
+required by the CLI or MCP runtime. Public `npx skills` installation commands
+remain unchanged. `mise exec -- make check` retains the Go/runtime gates;
+the separately required website job must also pass before integration.
 
 Playwright starts the **built static preview** at `http://127.0.0.1:4321/kb/`,
 never the development server or an existing listener. Desktop (1440 × 1000) and
