@@ -1,0 +1,789 @@
+{
+  "schema_version": "kb.v1-delivery.v1",
+  "status": "STABLE_V1_RELEASE_AND_INSTALLED_QUALIFICATION_APPROVED; final integration governed by exact-head/main CI in PR25",
+  "release": {
+    "version": "v1.0.0",
+    "source_commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+    "published_at": "2026-10-26T07:56:16Z",
+    "url": "https://github.com/matheus3301/kb/releases/tag/v1.0.0",
+    "annotated_tag_pushed_from_exact_merged_main": true
+  },
+  "source_qualification_binding": {
+    "qualified_runtime_source": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "candidate_version": "v1.0.0-candidate.5",
+    "candidate_binary_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+    "Go_module_files": 72,
+    "Go_module_map_sha256": "567d8104823d1f31b0ab22ab94cf2c761fdb2db78438d1afa9cb75434864af25",
+    "published_source_archive_all72_content_SHA_match_qualified_manifest": true,
+    "candidate_measurements_reused_as_released_binary_measurements": false,
+    "qualification_report": "docs/qa/v1-qualification.md",
+    "qualification_manifest": "docs/evidence/v1-qualification.json"
+  },
+  "protected_integration": {
+    "PR_url": "https://github.com/matheus3301/kb/pull/24",
+    "final_PR_head": "dcc7ad90665209886009c8674ad2d10e8c0de4de",
+    "final_PR_CI": {
+      "url": "https://github.com/matheus3301/kb/actions/runs/40287161946",
+      "status": "PASS",
+      "successful_jobs": 11
+    },
+    "merged_main_commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+    "merged_main_CI": {
+      "url": "https://github.com/matheus3301/kb/actions/runs/40287653868",
+      "status": "PASS",
+      "application_jobs_and_gate": "PASS",
+      "dependency_review": "Intentional push-event skip; not counted as application validation"
+    }
+  },
+  "independent_prepublication_review": {
+    "reviewer_role": "Independent automated focused OMP reviewer",
+    "human_approval": false,
+    "decision": "FINAL BOUNDED CONDITIONAL PREPUBLICATION APPROVAL",
+    "effective_reviewed_documentation_commit": "dcc7ad90665209886009c8674ad2d10e8c0de4de",
+    "original_evidence_base_commit": "5b2788ace0390907e90a0a8edcd1cc9fd83992cb",
+    "base_review_sha256": "7012f4aeac296b1cdaa1b7c7d91bd1db1ba4aca4c8b84a58b72e6fe84448f763",
+    "F1_closure_receipt_sha256": "b16c40cc8c5c035698099512f8851f85cf87dd43a2795ac7c1faf5bd7181983e",
+    "F1_closed": true,
+    "open_findings": [],
+    "actual_exact_head_main_CI_and_guarded_publication_conditions_satisfied": true,
+    "scope": "Bounded candidate.5 source/evidence acceptance plus exact documentation correction. Not postpublication consumer approval or universal safety."
+  },
+  "release_workflow": {
+    "url": "https://github.com/matheus3301/kb/actions/runs/40288191833",
+    "source_commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-26T07:49:46Z",
+    "completed_at": "2026-10-26T07:57:26Z",
+    "jobs": [
+      {
+        "name": "Verify release source",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-26T07:49:49Z",
+        "completedAt": "2026-10-26T07:55:07Z",
+        "url": "https://github.com/matheus3301/kb/actions/runs/40288191833/job/121456762886"
+      },
+      {
+        "name": "Publish GitHub release",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-26T07:55:09Z",
+        "completedAt": "2026-10-26T07:56:20Z",
+        "url": "https://github.com/matheus3301/kb/actions/runs/40288191833/job/121458573866"
+      },
+      {
+        "name": "Verify published native and source archives (macos-15)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-26T07:56:24Z",
+        "completedAt": "2026-10-26T07:57:15Z",
+        "url": "https://github.com/matheus3301/kb/actions/runs/40288191833/job/121458990802"
+      },
+      {
+        "name": "Verify published native and source archives (ubuntu-24.04)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-26T07:56:23Z",
+        "completedAt": "2026-10-26T07:56:58Z",
+        "url": "https://github.com/matheus3301/kb/actions/runs/40288191833/job/121458990816"
+      },
+      {
+        "name": "Update Homebrew tap",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-26T07:57:18Z",
+        "completedAt": "2026-10-26T07:57:25Z",
+        "url": "https://github.com/matheus3301/kb/actions/runs/40288191833/job/121459303050"
+      }
+    ],
+    "both_native_arms_completed_before_tap_started": true
+  },
+  "anonymous_assets": {
+    "verified": true,
+    "checksums_file_sha256": "274fd52b188d5a704be8b0bffbd5006b16f87f4fbf885c44472a3cde90f86fb4",
+    "archives": {
+      "kb_1.0.0_darwin_amd64.tar.gz": {
+        "sha256": "c22394ad6ee73a867f4873b30e450e6373b811a69553d5ebf2f142315977a99c",
+        "members": 97,
+        "owner_path_privacy_checks": true
+      },
+      "kb_1.0.0_darwin_arm64.tar.gz": {
+        "sha256": "c6572f25a862e0f95870befbfc448478bd53a3e560882a27340560ce9e972372",
+        "members": 97,
+        "owner_path_privacy_checks": true
+      },
+      "kb_1.0.0_linux_amd64.tar.gz": {
+        "sha256": "d6bb44e02532f7db167b7a5108e0ded50c08d5a24ecd4821844f6e4bd33777cf",
+        "members": 97,
+        "owner_path_privacy_checks": true
+      },
+      "kb_1.0.0_linux_arm64.tar.gz": {
+        "sha256": "01b0bc712807aea048c582ec176e9e7d3cc134800b83107a97d9743d264c7cc0",
+        "members": 97,
+        "owner_path_privacy_checks": true
+      },
+      "kb_1.0.0_source.tar.gz": {
+        "sha256": "26e724aa78473578a645a07fc7cf846187982d6c7f1abf1c7dca380fbd3906c1",
+        "members": 231,
+        "owner_path_privacy_checks": true
+      }
+    },
+    "formula_matches_checksummed_source": true,
+    "foreign_darwin_amd64_linux_arm64_archives_inspected_not_executed": true
+  },
+  "published_native_verification": [
+    {
+      "platform": "linux/amd64",
+      "runner": "ubuntu-24.04",
+      "status": "PASS",
+      "native_binary_executed": true,
+      "archived_source_built_and_executed": true,
+      "documentation_requests_per_artifact": 43,
+      "CLI_MCP_backup_restore_consumers": "PASS",
+      "job_url": "https://github.com/matheus3301/kb/actions/runs/40288191833/job/121458990816"
+    },
+    {
+      "platform": "darwin/arm64",
+      "runner": "macos-15",
+      "status": "PASS",
+      "native_binary_executed": true,
+      "archived_source_built_and_executed": true,
+      "documentation_requests_per_artifact": 43,
+      "CLI_MCP_backup_restore_consumers": "PASS",
+      "job_url": "https://github.com/matheus3301/kb/actions/runs/40288191833/job/121458990802"
+    }
+  ],
+  "tap": {
+    "status": "PASS",
+    "commit": "766bb23eae2624c8ed6b7599525c93447a7a85c5",
+    "url": "https://github.com/matheus3301/homebrew-tap/commit/766bb23eae2624c8ed6b7599525c93447a7a85c5"
+  },
+  "Homebrew_installation": {
+    "status": "PASS",
+    "upgrade_from": "v0.4.0",
+    "binary": {
+      "commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+      "version": "v1.0.0"
+    },
+    "installed_binary_sha256": "cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878",
+    "published_darwin_arm64_binary_sha256": "745dfa43a3f33bdbb8b468c7afd59cdd16dab0c05304c378717f1717a245a5a3",
+    "platform": {
+      "system": "Darwin",
+      "machine": "arm64"
+    },
+    "formula_version": "1.0.0",
+    "built_as_bottle": false,
+    "go_toolchain": "go1.27.3",
+    "build_fields": {
+      "-buildmode": "exe",
+      "-compiler": "gc",
+      "-trimpath": "true",
+      "CGO_ENABLED": "0",
+      "GOARCH": "arm64",
+      "GOOS": "darwin",
+      "GOARM64": "v8.0"
+    },
+    "formula_test_passed": true,
+    "formula_test_exit_code": 0,
+    "binary_hashes_distinct_and_bound_separately": true
+  },
+  "installed_functional": {
+    "status": "PASS",
+    "binary": {
+      "commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+      "version": "v1.0.0"
+    },
+    "binary_sha256": "cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878",
+    "synthetic_only": true,
+    "acceptance": {
+      "passed": true,
+      "check_groups": 14,
+      "checks": [
+        {
+          "name": "isolated-idempotent-init",
+          "criteria": [
+            "A01",
+            "A19",
+            "A26"
+          ]
+        },
+        {
+          "name": "create-read-and-durable-retry",
+          "criteria": [
+            "A03",
+            "A11",
+            "A12"
+          ]
+        },
+        {
+          "name": "preview-cas-and-body-edit",
+          "criteria": [
+            "A09",
+            "A10"
+          ]
+        },
+        {
+          "name": "verification-invalidation-preserves-trailing-annotation",
+          "criteria": [
+            "A09"
+          ]
+        },
+        {
+          "name": "noop-preserves-file-bytes-and-history",
+          "criteria": [
+            "A09"
+          ]
+        },
+        {
+          "name": "bounded-citable-context-and-pure-queries",
+          "criteria": [
+            "A16",
+            "A25"
+          ]
+        },
+        {
+          "name": "batch-conflict-publishes-nothing",
+          "criteria": [
+            "A21"
+          ]
+        },
+        {
+          "name": "one-source-integrates-two-existing-concepts",
+          "criteria": [
+            "A21",
+            "A25"
+          ]
+        },
+        {
+          "name": "changed-basis-signals-review-without-rewriting-synthesis",
+          "criteria": [
+            "A23",
+            "A24"
+          ]
+        },
+        {
+          "name": "move-maintains-incoming-link-and-anchor",
+          "criteria": [
+            "A13"
+          ]
+        },
+        {
+          "name": "move-preserves-nested-provenance-comments-and-decimals",
+          "criteria": [
+            "A03",
+            "A13"
+          ]
+        },
+        {
+          "name": "traversal-absolute-and-symlink-denied",
+          "criteria": [
+            "A14"
+          ]
+        },
+        {
+          "name": "degraded-base-raw-diagnostics-and-explicit-repair",
+          "criteria": [
+            "A04",
+            "A05"
+          ]
+        },
+        {
+          "name": "validated-export-and-original-source-immutability",
+          "criteria": [
+            "A18",
+            "A22"
+          ]
+        }
+      ]
+    },
+    "documentation_real_requests": 43,
+    "compatibility": [
+      {
+        "ok": true,
+        "identities": {
+          "baseline": {
+            "version": "v0.3.1",
+            "commit": "2ca104f48cc4a6551f4bbc4fae12d51432e42dff",
+            "sha256": "0f6267b05e3eb80ae053cd113aecdb61b3d6e29bd74451b9dc658578b9643238"
+          },
+          "candidate": {
+            "version": "v1.0.0",
+            "commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+            "sha256": "cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878"
+          }
+        },
+        "checks": [
+          "baseline-cli-contract",
+          "baseline-independent-mcp",
+          "upgrade-cli-and-receipts",
+          "candidate-independent-mcp",
+          "operational-backup-restore",
+          "rollback-boundary",
+          "old-pending-recovery-then-upgrade",
+          "binary-immutability"
+        ],
+        "check_count": 8,
+        "prior_archive": {
+          "status": "not_applicable"
+        },
+        "old_pending_recovery_then_upgrade": true,
+        "report_sha256": "d33a4f05653a90819d9348aabe208c1b93bb2c5a653b8cc7922dc99909f4c348"
+      },
+      {
+        "ok": true,
+        "identities": {
+          "baseline": {
+            "version": "v0.4.0",
+            "commit": "74f0d196408c1354899802e18ce569b0eab33adf",
+            "sha256": "bc61edae093dea6896b3f842ca2ab7441341e25f078495f1a6230cd25aa00443"
+          },
+          "candidate": {
+            "version": "v1.0.0",
+            "commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+            "sha256": "cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878"
+          }
+        },
+        "checks": [
+          "baseline-cli-contract",
+          "baseline-independent-mcp",
+          "prior-produced-archive",
+          "upgrade-cli-and-receipts",
+          "candidate-independent-mcp",
+          "operational-backup-restore",
+          "rollback-boundary",
+          "old-pending-recovery-then-upgrade",
+          "binary-immutability"
+        ],
+        "check_count": 9,
+        "prior_archive": {
+          "status": "passed",
+          "archive_sha256": "94bf5994ddeedb66774836727f07dfa9a6c182021524651e8585b0e2478447ba",
+          "authoritative_bytes_exact": true,
+          "bytes": 9005,
+          "files": 11,
+          "manifest_revision": "sha256:5a04df99f9f021acdbfb768b8f546254812a28ca2d17be6c54b39ce980a5fd3c",
+          "restored_manifest_revision": "sha256:5a04df99f9f021acdbfb768b8f546254812a28ca2d17be6c54b39ce980a5fd3c",
+          "replayed_requests": 3,
+          "source_unchanged": true,
+          "producer": {
+            "version": "v0.4.0",
+            "commit": "74f0d196408c1354899802e18ce569b0eab33adf",
+            "sha256": "bc61edae093dea6896b3f842ca2ab7441341e25f078495f1a6230cd25aa00443"
+          },
+          "consumer": {
+            "version": "v1.0.0",
+            "commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+            "sha256": "cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878"
+          },
+          "continued_write_checks": 2
+        },
+        "old_pending_recovery_then_upgrade": true,
+        "report_sha256": "9d0b168b5d6cdd7fab5060425a2ca196d933ac36269bb544491cda1601b4754c"
+      }
+    ],
+    "installed_skill_byte_matches_public_and_published_source": true,
+    "skill_file_sha256": {
+      "SKILL.md": "ddb8952e79ac30e3c428d611eb7e2b86e220011a8eb9b6634c435db1dc33efef",
+      "references/maintenance.md": "8b00ba8e213cbbb1b322d855a161cd474962f6754f45e58ea1c14d762195af33",
+      "references/repair.md": "7b6b13997fbf90b235dcecd1ce4df9d52c78aac3f31498a4dc07480eadd48cea",
+      "references/results.md": "f3ee847041a468ed8de47352f1d1760ff5f0035eeb23ced16021d16a1cbdbf18",
+      "references/retrieval.md": "fc0735527373ea4916c91a80c8de67b0087d3d5a06fa9da9d38e359556dc803f",
+      "references/writing.md": "709945de1db8e7b0fd154194cb22371d10f355753cf1553246934f68eb3910a4"
+    }
+  },
+  "independent_installed_consumers": {
+    "CLI_with_skill": {
+      "status": "PASS",
+      "report_sha256": "4683e9525d15c7859317bce6309c157b6498259b90763be2e1d9e49b20997fbf",
+      "passed_check_count": 17,
+      "checks": {
+        "selected_model_effort": true,
+        "first_prompt_completed": true,
+        "CLI_preview_requested": true,
+        "latest_policy_recorded": true,
+        "provenance_and_basis": true,
+        "replacement_source_cited": true,
+        "replacement_basis_current": true,
+        "no_invented_human_verification": true,
+        "source_snapshots_unchanged": true,
+        "backup_restored": true,
+        "learning_client_teardown": true,
+        "query_session_is_new": true,
+        "query_selected_model_effort": true,
+        "follow_up_completed": true,
+        "follow_up_answer": true,
+        "follow_up_byte_purity": true,
+        "sources_still_unchanged": true
+      },
+      "model": "openai-codex/gpt-6.1-sol",
+      "effort": "high",
+      "binary": {
+        "commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+        "version": "v1.0.0"
+      },
+      "installed_binary_sha256": "cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878",
+      "observer_sha256": {
+        "harness_sha256": "dfeac1c6525354365b8cc62dd97464783c56ac62410fe6c464b153fb481362d7",
+        "answer_predicate_sha256": "c3ddc974c8ec69f175d324c6bdaaf57ba3d69082e142cf6588d1999d926259e2",
+        "scope": "Finite structured fixture:exact typed current policy and runtime-verification state, each citation independently bound to an exact current path/revision/physical fact range; no prose substring or general truth inference."
+      },
+      "fresh_learning_and_query_native_contexts": true,
+      "no_prior_chat_carryover": true,
+      "learning_and_final_teardowns_checked": true,
+      "both_prompts_completed_without_native_error": true,
+      "full_root_byte_purity_passed": true,
+      "structured_fact_validation": {
+        "passed_checks": 17,
+        "source_citation": {
+          "path": "source-new.md",
+          "revision": "sha256:abcf7bb1f6f8bbb44de5cd014bf5352f2a049ddcdfe6883e41caad84c2f009f3",
+          "line_start": 6,
+          "line_end": 6
+        },
+        "positive_current_policy_line_verified": true,
+        "captured_source_sha256": "abcf7bb1f6f8bbb44de5cd014bf5352f2a049ddcdfe6883e41caad84c2f009f3",
+        "policy_days": 30,
+        "runtime_enforcement_verified": false,
+        "both_native_prompts_completed": true,
+        "learning_and_query_contexts_distinct": true,
+        "learning_and_final_teardown_checked": true,
+        "full_root_byte_purity_check_passed": true
+      },
+      "toolset_and_trace_validation": {
+        "learning_and_query_enabled_tools": [
+          "read",
+          "bash"
+        ],
+        "skill_read_calls": 8,
+        "installed_CLI_calls": 30,
+        "temporary_request_creation_cleanup_calls": 2,
+        "direct_KB_filesystem_read_observed": false,
+        "review_scope": "This actual captured run only; independent reviewer closed allowed-scope condition per coordinator."
+      }
+    },
+    "MCP_only": {
+      "status": "PASS",
+      "report_sha256": "15b64628646cb74b054b472e1ce8e7d2cafa9e1f47cde3489862cfa36cc09a8e",
+      "passed_check_count": 20,
+      "checks": {
+        "selected_model_effort": true,
+        "mcp_only_tools": true,
+        "first_prompt_completed": true,
+        "matching_successful_preview_before_publication": true,
+        "latest_policy_recorded": true,
+        "provenance_and_basis": true,
+        "replacement_source_cited": true,
+        "replacement_basis_current": true,
+        "no_invented_human_verification": true,
+        "source_snapshots_unchanged": true,
+        "backup_restored": true,
+        "learning_client_teardown": true,
+        "query_session_is_new": true,
+        "query_selected_model_effort": true,
+        "query_mcp_only_tools": true,
+        "follow_up_completed": true,
+        "follow_up_answer": true,
+        "follow_up_byte_purity": true,
+        "follow_up_only_retrieval": true,
+        "sources_still_unchanged": true
+      },
+      "model": "openai-codex/gpt-6.1-sol",
+      "effort": "high",
+      "binary": {
+        "commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+        "version": "v1.0.0"
+      },
+      "installed_binary_sha256": "cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878",
+      "observer_sha256": {
+        "harness_sha256": "dfeac1c6525354365b8cc62dd97464783c56ac62410fe6c464b153fb481362d7",
+        "answer_predicate_sha256": "c3ddc974c8ec69f175d324c6bdaaf57ba3d69082e142cf6588d1999d926259e2",
+        "scope": "Finite structured fixture:exact typed current policy and runtime-verification state, each citation independently bound to an exact current path/revision/physical fact range; no prose substring or general truth inference."
+      },
+      "fresh_learning_and_query_native_contexts": true,
+      "no_prior_chat_carryover": true,
+      "learning_and_final_teardowns_checked": true,
+      "both_prompts_completed_without_native_error": true,
+      "full_root_byte_purity_passed": true,
+      "structured_fact_validation": {
+        "passed_checks": 20,
+        "source_citation": {
+          "path": "source-new.md",
+          "revision": "sha256:abcf7bb1f6f8bbb44de5cd014bf5352f2a049ddcdfe6883e41caad84c2f009f3",
+          "line_start": 6,
+          "line_end": 6
+        },
+        "positive_current_policy_line_verified": true,
+        "captured_source_sha256": "abcf7bb1f6f8bbb44de5cd014bf5352f2a049ddcdfe6883e41caad84c2f009f3",
+        "policy_days": 30,
+        "runtime_enforcement_verified": false,
+        "both_native_prompts_completed": true,
+        "learning_and_query_contexts_distinct": true,
+        "learning_and_final_teardown_checked": true,
+        "full_root_byte_purity_check_passed": true
+      },
+      "toolset_and_trace_validation": {
+        "learning_and_query_tools_match_advertised_MCP_tools": true,
+        "query_only_retrieval_check_passed": true
+      }
+    }
+  },
+  "postpublication_independent_review": {
+    "status": "APPROVED_SUBJECT_TO_PROTECTED_INTEGRATION",
+    "reviewed_head": "b33739b9015fab60456f42ac878cb24f18c6a10f",
+    "reviewer_role": "Independent automated focused OMP reviewer",
+    "human_approval": false,
+    "receipt_sha256": "45a18f0aca18d0e104aa1d22f3858351265a4bec4394f6514d7c1074955f68f3",
+    "consumer_results_accepted": true,
+    "consumer_review_receipt_sha256": "1a5301b060cb1d9ef7b4232e7e8260ff34ffbd29de51389f2c5b800e34e80f32",
+    "P01": "CLOSED: actual accepted consumer receipt and provenance recorded",
+    "approved_successor_scope": "Only known receipt/status projection and dependent public hashes; runtime, measured artifacts, failures and substantive support scope unchanged.",
+    "integration_conditions": [
+      "Required CI must pass on the exact successor PR head.",
+      "Normal protected merge and exact merged-main CI must pass.",
+      "Actual results and final closure are recorded in the public PR/release receipts after execution, not predicted here."
+    ],
+    "integration_evidence_url": "https://github.com/matheus3301/kb/pull/25",
+    "confirming_automated_review": {
+      "reviewed_head": "b33739b9015fab60456f42ac878cb24f18c6a10f",
+      "reviewer_role": "Fresh independent automated OMP final-delivery reviewer",
+      "human_approval": false,
+      "receipt_sha256": "d25f833bfe41b2bf1db97aff2d44bb4b42bb09a3c4c5cbbad86d057ce64fcba7",
+      "decision": "Bounded conditional approval; same receipt/status projection and protected successor/main CI requirements."
+    }
+  },
+  "V07_complete": true,
+  "input_receipt_sha256": {
+    "v1-delivery-state.json": "5dec1243d40ba60d2eb53b89f850dcceb9261c21c1b52ff05f721eb8d34efea9",
+    "v1-installed-identity.json": "6a1af63871f0cd46aa3765eaecdf8f8e68427083bc93ce5281cdf9b792e520d4",
+    "v1-installed-functional-receipt.json": "2757afa8dd588fc2bf0cecf7870209a14df2544e7a9e2f638800b8c84c43e007",
+    "v1.0.0-asset-verification.json": "75b89c5a48da427eb053843bda66811f4a62717fef42626b82c5a51d31e06e30",
+    "v1-release-workflow.json": "fce28ffa5d4fa029bc3e8d8b983adce9afd1b2b250b42e6bb14ae236dd65dd4a",
+    "v1-installed-acceptance.json": "45a95fc4b84f35c07cb4b68334b82b356482c033b269557a7f40bfa8e6330360",
+    "v1-installed-v031-compatibility.json": "d33a4f05653a90819d9348aabe208c1b93bb2c5a653b8cc7922dc99909f4c348",
+    "v1-installed-v040-compatibility.json": "9d0b168b5d6cdd7fab5060425a2ca196d933ac36269bb544491cda1601b4754c",
+    "v1-agent-mcp-attempt1-failed.json": "6e85f101153c702cdaa692a61a6cb4733c8736520600a604477aa34bae35cbb3",
+    "v1-agent-cli-attempt3-fresh.json": "4683e9525d15c7859317bce6309c157b6498259b90763be2e1d9e49b20997fbf",
+    "v1-agent-mcp-attempt5-fresh.json": "15b64628646cb74b054b472e1ce8e7d2cafa9e1f47cde3489862cfa36cc09a8e",
+    "coordinator-delivery-state-final-consumers": "6bbf7e45412af76e30aeed10877204e0de4679df29e3d3c42a4821db64617a77",
+    "v1-agent-cli-attempt1-failed.json": "a8958aa5b8de2453a8700d1e9f28c9ba3c9503882c7fce5b7ce0f97a85dd321e",
+    "v1-agent-cli-attempt2.json": "bfc81379398d8078799ed466cd711871cc8e5138fbc4df9063b3cfc5cfe61b5a",
+    "v1-agent-mcp-attempt2.json": "d3ee67436a8ac950bc71834c50ab5e24df18c1da7f63245bc6884a89a2e0d639",
+    "v1-agent-mcp-attempt3.json": "a6a6920cbf9c15ddd817994280859ba10aa805b9425b18e9c098691909e32e2a",
+    "v1-agent-mcp-attempt4-structured.json": "29209611532415db281508232c7c57a0d73aff186af767849702dfd579b03e5f",
+    "consumer-method-review-editor-snapshot": "dc7d1888b8acdb81c01dfb38be0285459cf1f78349c47125e6814f0b14a7ab15",
+    "independent_consumer_result_review": "1a5301b060cb1d9ef7b4232e7e8260ff34ffbd29de51389f2c5b800e34e80f32",
+    "final_postpublication_review": "45a18f0aca18d0e104aa1d22f3858351265a4bec4394f6514d7c1074955f68f3",
+    "confirming_final_delivery_review": "d25f833bfe41b2bf1db97aff2d44bb4b42bb09a3c4c5cbbad86d057ce64fcba7"
+  },
+  "editor_static_validation": {
+    "actual_downloaded_archive_hashes_checked": 5,
+    "actual_source_Go_module_SHA_checked": 72,
+    "actual_published_and_shared_skill_files_checked": 6,
+    "actual_native_and_Homebrew_executable_SHA_checked": true,
+    "actual_workflow_native_before_tap_timestamps_checked": true,
+    "product_commands_executed_by_editor": false,
+    "final_report_hashes_checked": 2,
+    "final_passed_check_counts": [
+      17,
+      20
+    ],
+    "both_exact_positive_current_citations_checked": true,
+    "CLI_toolset_and_trace_classified": true,
+    "prior_failed_report_hashes_preserved": 6
+  },
+  "limits": [
+    "Actual native execution is Linux amd64 and macOS arm64; other binary targets are archive inspection/cross-build evidence only.",
+    "The actual Homebrew upgrade/formula test is macOS arm64, not a Linux Homebrew installation claim.",
+    "Candidate.5 long/resource evidence remains bound to its own source/build/artifact; no long workload or quiet matrix was rerun against installed v1.",
+    "Failed earlier qualification and consumer attempts remain failed history; no attribution of lost confirmed state or product defect without evidence.",
+    "Automated reviewer/consumer actor identity or task obedience is not correctness proof; consumer-visible checks and receipts must be observed.",
+    "No portable latency SLA, arbitrary-history, hostile-editor isolation or hardware power-loss guarantee.",
+    "Fresh native conversations do not imply an MCP-server cold restart, cache eviction, or unrestricted prose/semantic evaluation; the finite structured fixture and actual data checks bound acceptance."
+  ],
+  "consumer_attempt_history": [
+    {
+      "interface": "CLI_with_skill",
+      "attempt": 1,
+      "status": "FAILED",
+      "report_sha256": "a8958aa5b8de2453a8700d1e9f28c9ba3c9503882c7fce5b7ce0f97a85dd321e",
+      "classification": "UNATTRIBUTED_NATIVE_TURN_FAILURE",
+      "limits": "No retained native follow-up result/answer establishes cause; not assigned to product or provider.",
+      "recorded_checks": {
+        "selected_model_effort": true,
+        "first_prompt_completed": true,
+        "CLI_preview_requested": true,
+        "latest_policy_recorded": true,
+        "provenance_and_basis": true,
+        "replacement_source_cited": true,
+        "replacement_basis_current": true,
+        "no_invented_human_verification": true,
+        "source_snapshots_unchanged": true,
+        "backup_restored": true,
+        "follow_up_completed": false
+      },
+      "not_reclassified_as_success": true,
+      "post_answer_byte_purity_not_established": true
+    },
+    {
+      "interface": "CLI_with_skill",
+      "attempt": 2,
+      "status": "FAILED",
+      "report_sha256": "bfc81379398d8078799ed466cd711871cc8e5138fbc4df9063b3cfc5cfe61b5a",
+      "classification": "CONFIRMED_OBSERVER_FALSE_NEGATIVE",
+      "limits": "Valid30-day hyphenated current-policy answer rejected by unaccepted prose-v2 pattern; later purity checks did not execute.",
+      "recorded_checks": {
+        "selected_model_effort": true,
+        "first_prompt_completed": true,
+        "CLI_preview_requested": true,
+        "latest_policy_recorded": true,
+        "provenance_and_basis": true,
+        "replacement_source_cited": true,
+        "replacement_basis_current": true,
+        "no_invented_human_verification": true,
+        "source_snapshots_unchanged": true,
+        "backup_restored": true,
+        "follow_up_completed": true,
+        "follow_up_answer": false
+      },
+      "not_reclassified_as_success": true,
+      "post_answer_byte_purity_not_established": true
+    },
+    {
+      "interface": "MCP_only",
+      "attempt": 1,
+      "status": "FAILED",
+      "report_sha256": "6e85f101153c702cdaa692a61a6cb4733c8736520600a604477aa34bae35cbb3",
+      "classification": "UNATTRIBUTED_ANSWER_ASSERTION",
+      "limits": "Actual answer not retained before assertion; cause remains unknown.",
+      "recorded_checks": {
+        "selected_model_effort": true,
+        "mcp_only_tools": true,
+        "first_prompt_completed": true,
+        "matching_successful_preview_before_publication": true,
+        "latest_policy_recorded": true,
+        "provenance_and_basis": true,
+        "replacement_source_cited": true,
+        "replacement_basis_current": true,
+        "no_invented_human_verification": true,
+        "source_snapshots_unchanged": true,
+        "backup_restored": true,
+        "follow_up_completed": true,
+        "follow_up_answer": false
+      },
+      "not_reclassified_as_success": true,
+      "post_answer_byte_purity_not_established": true
+    },
+    {
+      "interface": "MCP_only",
+      "attempt": 2,
+      "status": "FAILED",
+      "report_sha256": "d3ee67436a8ac950bc71834c50ab5e24df18c1da7f63245bc6884a89a2e0d639",
+      "classification": "UNATTRIBUTED_NO_TEXT_RESULT",
+      "limits": "RPC returned no text assistant message; missing retained native result prevents product/provider attribution.",
+      "recorded_checks": {
+        "selected_model_effort": true,
+        "mcp_only_tools": true
+      },
+      "not_reclassified_as_success": true,
+      "post_answer_byte_purity_not_established": true
+    },
+    {
+      "interface": "MCP_only",
+      "attempt": 3,
+      "status": "FAILED",
+      "report_sha256": "a6a6920cbf9c15ddd817994280859ba10aa805b9425b18e9c098691909e32e2a",
+      "classification": "CONFIRMED_OBSERVER_FALSE_NEGATIVE",
+      "limits": "Independently valid current direct-source30-day answer rejected solely by literal synthesis-filename requirement; later purity checks did not execute.",
+      "recorded_checks": {
+        "selected_model_effort": true,
+        "mcp_only_tools": true,
+        "first_prompt_completed": true,
+        "matching_successful_preview_before_publication": true,
+        "latest_policy_recorded": true,
+        "provenance_and_basis": true,
+        "replacement_source_cited": true,
+        "replacement_basis_current": true,
+        "no_invented_human_verification": true,
+        "source_snapshots_unchanged": true,
+        "backup_restored": true,
+        "follow_up_completed": true,
+        "follow_up_answer": false
+      },
+      "not_reclassified_as_success": true,
+      "post_answer_byte_purity_not_established": true
+    },
+    {
+      "interface": "MCP_only",
+      "attempt": 4,
+      "status": "FAILED",
+      "report_sha256": "29209611532415db281508232c7c57a0d73aff186af767849702dfd579b03e5f",
+      "classification": "OBSERVED_RETRYABLE_PROVIDER_CAPACITY_REJECTION",
+      "limits": "Native query reported retryable turn_rate_limit_exceeded; no second answer or completed follow-up purity. HTTP status absent; underlying capacity cause not established.",
+      "recorded_checks": {
+        "selected_model_effort": true,
+        "mcp_only_tools": true,
+        "first_prompt_completed": true,
+        "matching_successful_preview_before_publication": true,
+        "latest_policy_recorded": true,
+        "provenance_and_basis": true,
+        "replacement_source_cited": true,
+        "replacement_basis_current": true,
+        "no_invented_human_verification": true,
+        "source_snapshots_unchanged": true,
+        "backup_restored": true,
+        "follow_up_completed": false
+      },
+      "not_reclassified_as_success": true,
+      "post_answer_byte_purity_not_established": true,
+      "provider_signal": {
+        "code": "turn_rate_limit_exceeded",
+        "retryable": true,
+        "http_status": null
+      }
+    }
+  ],
+  "observer_method": {
+    "fresh_context_harness_sha256": "dfeac1c6525354365b8cc62dd97464783c56ac62410fe6c464b153fb481362d7",
+    "structured_oracle_sha256": "c3ddc974c8ec69f175d324c6bdaaf57ba3d69082e142cf6588d1999d926259e2",
+    "finite_structured_question": true,
+    "each_typed_fact_and_each_citation_checked": true,
+    "pure_positive_negative_cases": 18,
+    "pure_case_execution_provenance": "Owner-reported PASS; not rerun by evidence editor or method reviewer.",
+    "prior_v2_status": "NOT ACCEPTED: current-vs-historical claim, path/revision substring and cross-citation line-borrowing flaws; no v2 result is promoted.",
+    "coordinator_referenced_structured_method_review_sha256": "f1dd8dd0aadd26ed15e9d7d76c5fbf364da889b5bb551698298e4f0db9f32406",
+    "editor_read_method_review_snapshot_sha256": "dc7d1888b8acdb81c01dfb38be0285459cf1f78349c47125e6814f0b14a7ab15",
+    "method_review_scope": "Bounded finite-fixture method acceptance only; these dated method snapshots are not final combined-documentation approval."
+  },
+  "independent_consumer_result_review": {
+    "status": "ACCEPTED_BOUNDED_BOTH_FINAL_RUNS",
+    "reviewer_role": "Independent automated focused OMP reviewer",
+    "human_approval": false,
+    "verified_scope": [
+      "CLI17/MCP20actualpassed checks",
+      "Positive current source line6 and exact revision",
+      "Fresh native contexts, fixed model/effort and allowed tools",
+      "Full-root byte purity and both teardowns",
+      "CLI read/bash trace allowed-scope condition closed for this run"
+    ],
+    "provenance": "Actual bounded independent automated fresh-session consumer receipt; its stored bytes and scope were independently checked. Not human approval or a general model-obedience guarantee.",
+    "receipt_sha256": "1a5301b060cb1d9ef7b4232e7e8260ff34ffbd29de51389f2c5b800e34e80f32"
+  },
+  "documentation_snapshot_boundary": {
+    "immutable_tag": "v1.0.0",
+    "tagged_source_commit": "0a6d04d3c25840b2c71c0b98d50478dc6749879a",
+    "publication_utc": "2026-10-26T07:56:16Z",
+    "archived_documentation": "Dated prepublication checkpoint at tagged source; not rewritten after publication.",
+    "postpublication_record_date": "2026-10-26",
+    "current_record": "Separate postpublication facts and review/integration state; no tag or release assets moved/replaced."
+  },
+  "separate_observer_infrastructure_event": {
+    "event": "Independent reviewer HTTP429",
+    "retry_after_seconds": 362,
+    "retry_delay_respected": true,
+    "provenance": "Coordinator-confirmed separate event, not an HTTP-status attribution for MCP4 or any earlier unknown failure.",
+    "product_result": false
+  },
+  "release_and_installed_qualification_complete": true,
+  "documentation_review_complete": true
+}

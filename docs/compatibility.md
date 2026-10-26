@@ -1,10 +1,11 @@
 # Compatibility and support
 
-Published and installed production is experimental
-**[v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0)** at
-`74f0d196408c1354899802e18ce569b0eab33adf`. Candidate.5 has completed bounded local
-source/artifact qualification; final independent review, latest exact-head
-protected CI, publication and installed verification remain pending.
+Published and Homebrew-installed production is stable
+**[v1.0.0](https://github.com/matheus3301/kb/releases/tag/v1.0.0)** at
+`0a6d04d3c25840b2c71c0b98d50478dc6749879a`. Actual package, installed functional
+and both fresh controlled CLI + skill/MCP consumer checks passed. Independent
+automated postpublication review approved the bounded method, results and
+documentation, subject to normal protected integration.
 Product version, wire version, knowledge format, configuration, operational
 state and backup format are separate axes. `kb.v1` is not product v1.0.
 
@@ -17,14 +18,96 @@ for shipped behavior; `main` may contain unreleased corrections. The
 
 ## Current qualification status
 
-**Local candidate qualification is complete; V08 approval is not claimed.**
-The measured executable is **`v1.0.0-candidate.5`**, source
+### Published and installed release
+
+**v1.0.0 was published on 2026-10-26 at 07:56:16 UTC.** Released source is
+`0a6d04d3c25840b2c71c0b98d50478dc6749879a`.
+
+- Exact-source protected-main [CI 40287653868](https://github.com/matheus3301/kb/actions/runs/40287653868)
+  passed. [Release 40288191833](https://github.com/matheus3301/kb/actions/runs/40288191833)
+  completed all five jobs successfully. Both actual published-verification arms
+  executed their host-native archive and archived source on **Linux amd64** and
+  **macOS arm64**, including CLI/MCP backup/restore and 43 documented requests
+  per artifact, before the tap updated.
+- Anonymous downloads verified all four binary archives, the source archive,
+  checksums and source-formula identity. The tap update is
+  [`766bb23eae2624c8ed6b7599525c93447a7a85c5`](https://github.com/matheus3301/homebrew-tap/commit/766bb23eae2624c8ed6b7599525c93447a7a85c5).
+- Actual **macOS arm64 Homebrew** source upgrade from v0.4.0 to v1.0.0 and
+  `brew test matheus3301/tap/kb` passed. Installed version/full commit match the
+  release. Installed executable SHA-256 is
+  `cb3abc103c5e8e1dbc0af6d8e2812695b30e2f10354bef90e5850425aad13878`.
+  Published Darwin arm64 executable SHA-256 is
+  `745dfa43a3f33bdbb8b468c7afd59cdd16dab0c05304c378717f1717a245a5a3`.
+  The Homebrew source build and prebuilt archive are distinct artifacts, not
+  byte-identical executables.
+- Installed CLI acceptance, **43 documentation requests**, both pinned prior-version
+  upgrades and restoration of an archive actually produced by v0.4.0 passed.
+  The six CLI skill files matched public source byte-for-byte; installation and
+  activation remain separate from binary installation.
+- The actual published source archive's **72 Go/module files** matched qualified
+  source `cb66fd77a120d8c8531f9077a32d2bf51ef7921c` byte-for-byte. This binds the
+  unchanged runtime source, not the differently labeled executable hashes.
+
+### Controlled installed consumers
+
+Two actual consumers of the Homebrew-installed v1.0.0 executable passed on fresh
+synthetic roots. Each used separate native learning and query contexts, with no
+learning conversation carried into the query. Both selected the same model and
+effort: `openai-codex/gpt-6.1-sol`, `high`.
+
+| Interface | Observed checks | Final report SHA-256 |
+| --- | --- | --- |
+| CLI + separately supplied knowledge-base skill | **17 passed** | `4683e9525d15c7859317bce6309c157b6498259b90763be2e1d9e49b20997fbf` |
+| Independently descriptive stdio MCP, no skill or agent CLI data commands | **20 passed** | `15b64628646cb74b054b472e1ce8e7d2cafa9e1f47cde3489862cfa36cc09a8e` |
+
+The workflows checked preview, supported learning with provenance and current
+basis revisions, source preservation, backup/restore and no invented human
+verification. Fresh query contexts returned structured current facts with exact
+current source revisions/physical citations, distinguished recorded policy from
+unverified runtime enforcement and left the full root byte-identical. Learning
+and query teardown checks passed. The MCP follow-up used retrieval tools only.
+
+Both final runs used the same frozen observer
+`dfeac1c6525354365b8cc62dd97464783c56ac62410fe6c464b153fb481362d7`
+and structured oracle
+`c3ddc974c8ec69f175d324c6bdaaf57ba3d69082e142cf6588d1999d926259e2`.
+This finite-fixture oracle checks each typed current fact and its own exact
+path/revision/physical fact range, not arbitrary prose or general truth.
+Bounded independent method/result acceptance and final automated V08 approval
+are separately recorded in the [delivery evidence](evidence/v1-delivery.json).
+Neither is human approval or a general model-obedience guarantee.
+
+Earlier attempts remain failed, not retroactively green:
+
+- The first MCP answer was unavailable, the first CLI turn error was
+  unclassified, and another MCP attempt returned no answer text. Their causes
+  remain unknown; later results do not explain them.
+- An MCP answer correctly cited the current direct source but failed a literal
+  synthesis-path assertion: an independently confirmed observer false negative.
+  Its overall attempt remains failed; later purity checks had not executed.
+- Another CLI answer failed a prose pattern on valid hyphenation. That observer
+  revision also had unaccepted substring-matching and citation-line-borrowing
+  defects; it is not final acceptance evidence.
+- A later MCP attempt reported an explicit retryable capacity turn error and did
+  not complete the follow-up/purity checks. This does not classify earlier
+  unexplained failures as provider failures. A separate reviewer's rate-limit
+  delay was respected.
+
+The two final passes are distinct fresh observations under the justified
+structured method, not edits to failed reports. Runtime source, executable and
+resource/workload thresholds did not change. Controlled explicit activation is
+not universal model/client obedience. Final automated postpublication review
+accepted this bounded evidence and documentation; the [exit checklist](stability.md)
+records scope and the required protected-integration conditions.
+
+### Prepublication local candidate observations
+
+The measured executable was **`v1.0.0-candidate.5`**, source
 `cb66fd77a120d8c8531f9077a32d2bf51ef7921c`, SHA-256
 `59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46`,
 built with `CGO_ENABLED=0`. Its 72 Go/module source-file identities remained
-unchanged through qualification. Documentation commits and future release builds
-must retain their own source/executable identities; unchanged Go bytes do not
-imply identical release binaries.
+unchanged through qualification. Published, installed and candidate executables
+retain their own identities; unchanged Go bytes do not imply identical binaries.
 
 - Source gates and the local **macOS arm64 native/archive-source release snapshot**
   passed. The complete local D03 matrix passed **all 16 rows and three core
@@ -48,18 +131,14 @@ These local results do not establish portable latency, arbitrary history sizes,
 whole-machine isolation or hardware power-loss safety. The unchanged wire and
 persisted formats, receipt retention and log-growth limits below still apply.
 
-**Final independent V08 review and the latest exact-head protected CI remain
-pending**, followed by separately authorized publication and actual package/
-installed-channel verification. The real published native/archive-source matrix
-must pass before the tap updates; Homebrew/formula, installed CLI/documentation
-and independent CLI + skill/MCP consumers need their own observed results.
-A local snapshot or earlier installed release does not establish those outcomes.
-The [exit checklist](stability.md) owns the final decision; production remains
-v0.4.0 and the v1.x commitments below remain conditional.
+These profiles were observed on candidate.5, not rerun on the Homebrew source
+build or the Linux native archive. Package and installed checks above bind their
+own artifacts. The final automated postpublication review is recorded in the
+[exit checklist](stability.md), separate from these observed checks.
 
-The [earlier qualification snapshot](qa/v1-qualification.md) retains candidate.3's
-failed shipping restore and all earlier failed resource matrices. The original
-v0.4.0 backup-timeout failure and bounded repair evidence remain in the
+The [qualification record](qa/v1-qualification.md) preserves prepublication
+candidate.5 evidence, candidate.3's failed restore and all earlier failed matrices.
+The original v0.4.0 backup-timeout failure and bounded repair evidence remain in the
 [scaling report](qa/backup-performance-v1.md). The `7ceed676` endurance pass is
 historical evidence for that binary only. No failed attempt was relabeled, no
 earlier pass was transferred and no deadline, ceiling or work minimum was raised.
@@ -109,13 +188,13 @@ D02's extended log-disabled/index-enabled profile, shorter default-log profile
 and deterministic default-log boundary tests do not change the receipt format or
 replay contract. There is no automatic compaction.
 
-## Experimental change and upgrade policy
+## Pre-v1 origins and upgrade policy
 
-Before v1.0, compatibility is evaluated per release; a pre-1.0 minor release may
-change interfaces and must disclose breaking behavior and any migration in its
-release notes. Patch releases target compatible corrections, not silent schema
-or data migrations. There is no blanket promise that every old client, skill,
-configuration or journal will work with every future experimental binary.
+Experimental pre-v1 compatibility was evaluated per release; a minor release
+could change interfaces, with breaking behavior and migration disclosed in its
+release notes. Patch releases targeted compatible corrections, not silent schema
+or data migrations. Those origins do not imply that every old client, skill,
+configuration or journal works with every future binary.
 The v0.3.1 patch required no knowledge-format migration and left the v0.3.0 CLI
 skill unchanged; this is a release-specific fact, not a general upgrade rule.
 
@@ -126,7 +205,7 @@ The v0.3.1 origin needs an operator-reviewed backup procedure because it lacks
 the backup command. v0.4.0 and compatible newer binaries provide the
 [backup workflow](backups.md); verify a fresh restore and retain the archive
 on separate protected storage. v0.4.0 has a reproduced
-[receipt-history scaling problem](qa/backup-performance-v1.md); candidate
+[receipt-history scaling problem](qa/backup-performance-v1.md); v1.0.0
 corrections preserve existing formats and do not expire receipts. Keep the
 prior executable: reverting it does not prove a safe state downgrade. Never
 restore old content over live newer journals/receipts.
@@ -136,11 +215,12 @@ metadata-fidelity defects; use v0.1.3 or later for those corrections. An upgrade
 cannot recover already lost metadata; reconcile with original files/backups.
 [Installation guidance](installation.md) preserves the affected cases.
 
-## Conditional v1.x commitments
+## v1.x commitments
 
-D04 selects these rules for stable-v1 qualification, **not as guarantees of the
-current experimental release**. They take effect only after V06–V08 in the
-[exit checklist](stability.md) pass and stable v1.0.0 is explicitly released.
+The following D04 commitments apply to the stable v1.x line. Actual V06/V07
+checks, prepublication conditions and the bounded final automated V08 review
+are complete. [The exit checklist](stability.md) records evidence and normal
+protected-integration requirements; no human approval is claimed.
 
 - Preserve documented CLI command/flag meanings and exit mappings within v1.x.
   Additive opt-in commands/flags are allowed; removals, changed defaults with
@@ -187,8 +267,8 @@ those bytes in separate staging and verifies exact content/config/receipts,
 old-request replay, continued writes and producer-root purity. v0.3.1's archive
 edge is explicitly not applicable, not a fictional pass. The
 [consumer recipe](qa/compatibility-v1.md) separates source-build, actual Homebrew
-and final-artifact evidence. No persisted format changes are required by the
-current candidate corrections.
+and final-artifact evidence. The v1.0.0 corrections require no persisted-format
+migration and do not expire durable receipts.
 
 ## Platform and maintenance support
 
@@ -205,13 +285,12 @@ each host's native artifact and archived source. Tap publication requires the
 whole matrix to succeed. Neither flow executes foreign binaries; temporary-prefix
 execution is not a real Homebrew installation. See [release operations](releases.md).
 
-[v0.4.0 installed verification](https://github.com/matheus3301/kb/releases/tag/v0.4.0)
-includes actual **macOS arm64 Homebrew** source installation/upgrade, formula,
-CLI/documentation requests and separate CLI + skill and MCP consumers. D04's
-other required channel is **Linux amd64 native archive and archived-source
-execution**, including CI release snapshots. Every final candidate needs
-exact-identity evidence on both required channels; an earlier release does not
-qualify later artifacts automatically.
+[v1.0.0 package verification](https://github.com/matheus3301/kb/releases/tag/v1.0.0)
+covers actual **macOS arm64 Homebrew** source upgrade/formula checks and
+**Linux amd64 published native-archive/archived-source execution**. Exact identities
+and the fresh controlled consumer results and final-review boundary are recorded above.
+Earlier [v0.4.0 installed verification](https://github.com/matheus3301/kb/releases/tag/v0.4.0)
+remains release-specific historical evidence; it does not qualify later artifacts.
 
 **Linux arm64 and macOS amd64 are package/cross-build-only**, not native-qualified.
 Linux native archive/source execution does not imply a tested Linux Homebrew

@@ -192,11 +192,14 @@ attempts, repeat until green, average failures away or raise ceilings.
 Run controlled timing only after concurrent soak/build/test work ends and review
 drift independently. Current outcomes belong in the [exit checklist](stability.md).
 
-D04 selects conditional v1.x compatibility, synthetic upgrade checks, macOS
-arm64 Homebrew and Linux amd64 native archive/source qualification. Cross-built
-Linux arm64/macOS amd64 are not installed-qualified. V01–V08 require the exact
-candidate and independently reviewed evidence; D01–D04 are delegated policy
-choices, not fabricated human approval. Final evidence and status changes belong
+D04 defines the [v1.x compatibility policy](compatibility.md), synthetic upgrade
+checks, macOS arm64 Homebrew and Linux amd64 native archive/source qualification.
+Actual V06/V07 checks and prepublication conditions are fulfilled. The bounded
+final automated postpublication review and active v1.x policy are recorded there,
+with normal protected-integration requirements.
+Cross-built Linux arm64/macOS amd64 are not installed-qualified. V01–V08 require
+the exact candidate and independently reviewed evidence; D01–D04 are delegated
+policy choices, not fabricated human approval. Current evidence and status belong
 in the [finalization checklist](stability.md#finalization-checklist).
 
 Candidate integration requires the **dual-baseline native compatibility CI

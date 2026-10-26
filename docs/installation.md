@@ -77,8 +77,11 @@ content, configuration and `.kb/state/` together. **v0.3.1 has no backup command
 that origin needs an operator-reviewed backup procedure, not `export` alone.
 With v0.4.0 or a compatible newer binary, use the [operational archive workflow](backups.md),
 verify a fresh restore and retain archives on separate protected storage.
-v0.4.0 has a reproduced [receipt-history scaling limitation](qa/backup-performance-v1.md);
-the v1 candidate correction does not change persisted formats or expire receipts.
+v0.4.0's reproduced [receipt-history scaling limitation](qa/backup-performance-v1.md)
+still matters when staging an archive with that prior binary. Consult the
+[compatibility policy](compatibility.md) for published corrections and bounded
+observations. Corrections do not expire receipts, imply a format migration or
+establish capacity for arbitrary histories.
 Never overlay old content on live newer journals/receipts or assume reverting
 the executable proves safe state downgrade.
 

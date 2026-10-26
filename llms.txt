@@ -52,4 +52,4 @@ qualification outcomes.
 
 - [Roadmap](https://raw.githubusercontent.com/matheus3301/kb/main/docs/roadmap.md): Implemented increments, qualification sequence and explicit out-of-scope features.
 - [v1.0 exit criteria](https://raw.githubusercontent.com/matheus3301/kb/main/docs/stability.md): V01–V08 evidence, selected D01–D04 qualification policies and finalization checklist; no premature readiness claim.
-- [Compatibility and support](https://raw.githubusercontent.com/matheus3301/kb/main/docs/compatibility.md): CLI/JSON/MCP/OKF/config/state/archive version axes, conditional v1.x commitments, upgrade limits and native versus cross-build-only channels.
+- [Compatibility and support](https://raw.githubusercontent.com/matheus3301/kb/main/docs/compatibility.md): CLI/JSON/MCP/OKF/config/state/archive version axes, v1.x compatibility policy, upgrade limits and native versus cross-build-only channels.
