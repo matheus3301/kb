@@ -22,10 +22,15 @@ silently bypass this workflow.
 | Release snapshot | Pinned GoReleaser config, four binary packages and source archive, checksums, privacy, source formula, and real native/source-build workflows. |
 | Vulnerabilities | govulncheck; dependency review blocks newly introduced high/critical known vulnerabilities. |
 
-Root `mise.toml` is authoritative for Go, Node, pnpm, GoReleaser, golangci-lint,
-actionlint, Gitleaks, and govulncheck versions. Repository validation checks the
-Go directive in `go.mod` and `site/package.json`'s `packageManager` against those
-pins. `scripts/tools.json` contains Go module mappings, not versions.
+Root `mise.toml` is authoritative for development-tool versions. Go, Node, pnpm,
+GoReleaser, golangci-lint, actionlint, Gitleaks, and govulncheck use exact pins.
+Python preserves the existing `3.12` minor-series selector, not an exact patch
+pin; CI's setup-python receives that selector from the toolchain reader.
+The reader requires bootstrap Python 3.11 or newer for standard-library
+`tomllib` and fails clearly if it is unavailable.
+Repository validation checks the Go directive in `go.mod` and
+`site/package.json`'s `packageManager` against their respective pins.
+`scripts/tools.json` contains Go module mappings, not versions.
 Dependabot proposes Action and Go module updates; updates to development tools
 are separate explicit changes. No automatic merge is configured. Release
 publication requires an explicit version tag and follows the

@@ -1,7 +1,11 @@
 # Development
 
-Install [mise](https://mise.jdx.dev/getting-started.html), Python 3.12 or newer,
-Git, and Make. Root `mise.toml` is authoritative for development-tool versions.
+Install [mise](https://mise.jdx.dev/getting-started.html), Git, and Make.
+Root `mise.toml` is authoritative for development-tool versions: Python uses
+the existing `3.12` minor-series selector, not an exact patch pin; the other
+tools use exact versions. CI reads the same Python selector for setup-python.
+The toolchain reader needs bootstrap Python 3.11 or newer for standard-library
+`tomllib` and fails clearly when it is unavailable.
 `go.mod` and `site/package.json`'s `packageManager` are checked ecosystem
 duplicates, not independent version sources. Development tooling is separate
 from the standalone CLI and MCP runtime; neither requires mise, Node, or pnpm.
