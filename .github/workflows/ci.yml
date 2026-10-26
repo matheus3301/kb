@@ -42,6 +42,7 @@ jobs:
     timeout-minutes: 15
     env:
       KB_SITE_BASE: /kb/
+      ASTRO_TELEMETRY_DISABLED: "1"
     defaults:
       run:
         working-directory: site

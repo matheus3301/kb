@@ -51,6 +51,7 @@ soak-smoke:
 	$(PYTHON) scripts/soak.py --binary .build/kb --duration 3 --seeds 1729 --writers 4 --minimum-work 1 --backup-interval 1 --output .build/soak-smoke.json
 
 # The static marketing site has its own required CI job, separate from Go runtime gates.
+site-check: export ASTRO_TELEMETRY_DISABLED=1
 site-check:
 	npm --prefix site ci
 	npm --prefix site audit --audit-level=high
