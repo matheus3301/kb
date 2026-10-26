@@ -135,33 +135,28 @@ syntax, JSON requests, errors, and operating limits.
 
 ## Project status
 
-**Published and installed: experimental
-[v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0). Stable v1.0.0
-qualification remains pending.** The released source is
-`74f0d196408c1354899802e18ce569b0eab33adf`. It includes lexical retrieval,
-revision-checked writes, self-contained MCP and [operational backup/restore](docs/backups.md).
-Actual Homebrew/formula and CLI/MCP consumer verification covers macOS arm64;
-Linux amd64 native archive and archived-source execution is the other required
-qualification channel. Linux arm64 and macOS amd64 remain package/cross-build-only.
+**Local candidate qualification completed; final review and publication pending.**
+Published and installed production remains experimental
+**[v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0)**.
+`v1.0.0-candidate.5` passed source checks, a local native/archive-source release
+snapshot, the complete local resource matrix and both reliability profiles.
+The 30-minute log-disabled/index-enabled profile completed **34,840 main-root
+mutation/replay acknowledgments and 27 backup/restore checkpoints**; the separate
+shorter default-log companion also passed. These are bounded local observations,
+not a portable SLA or a guarantee for arbitrary receipt histories.
 
-Current source includes the
-[receipt-history scaling repair](docs/qa/backup-performance-v1.md),
-compatibility-report and published-asset verification guardrails without changing
-persisted or wire formats.
-The cold-CLI optimization is implemented. Its release-shaped candidate passed
-the complete local resource matrix, then failed its final extended-workload
-restore at the unchanged 30-second timeout. Current source adds bounded restore
-synchronization while retaining every required file/directory sync and waiting
-for all workers before cleanup or publication. Source checks and a local release
-snapshot passed; the corrected runtime still needs its own complete resource and
-extended-workload qualification. The [qualification record](docs/qa/v1-qualification.md)
-retains all earlier failures and keeps each artifact's evidence separate.
+See [candidate identity, results and limits](docs/compatibility.md#current-qualification-status).
+Final independent V08 review, successful latest exact-head protected CI, actual
+publication/package verification and Homebrew/installed CLI + skill/MCP consumers
+remain pending. Publication and installed verification are separate steps.
+The [exit checklist](docs/stability.md) governs the decision; no approval or
+published/installed v1 is claimed. Earlier [qualification history](docs/qa/v1-qualification.md)
+and failed attempts remain tied to their original artifacts.
 
-The read-only published-archive verification matrix is configured; its first
-actual release execution is still pending. The [exit checklist](docs/stability.md),
-[compatibility/support](docs/compatibility.md) and independent readiness decision
-remain required before stable publication. No portable SLA, arbitrary-editor
-isolation, universal power-loss guarantee or factual-truth certification is claimed.
+Primary native scope is macOS arm64 Homebrew and Linux amd64 native archive/
+archived-source execution. Linux arm64 and macOS amd64 remain package/cross-build-only.
+No arbitrary-editor isolation, universal power-loss guarantee or factual-truth
+certification is claimed; see [compatibility/support](docs/compatibility.md).
 
 ## Documentation
 
