@@ -1,5 +1,9 @@
 # Operational backup and restore
 
+Implemented in integrated source preparing **v0.4.0 qualification**, not in
+published production **v0.3.1**. Candidate restoration/reliability evidence and
+stable-v1 review remain pending under [V03/V04](stability.md).
+
 Operational archives are distinct from `kb export`: export produces a validated
 knowledge bundle and excludes operational state. Backup preserves exact bytes
 and durable request receipts, without claiming that the collection is conformant.
@@ -114,6 +118,15 @@ There is no atomic multi-file directory publication or claim of universal crash,
 power-loss, disk/controller or filesystem durability. A successful restore is
 not a semantic validation or an end-to-end disaster-recovery certification.
 
+Receipt count has no automatic expiry, retention or rotation. Receipts retain
+full before/after diff text only within a **256 KiB aggregate per-receipt diff
+budget**; excess diff text is truncated. A growing event log can therefore
+accumulate roughly quadratic diff storage while its images fit that cap, not
+indefinitely; other serialized receipt fields remain outside the diff budget.
+Existing log/note/archive bounds can reject operations with explicit errors.
+Monitor/protect growing state and archive capacity; never delete receipts to fit
+a backup. No automatic compaction or receipt-format change is part of this contract.
+
 ## Verification scope
 
 Synthetic regressions cover CLI/MCP parity, exact content/config/receipt bytes,
@@ -125,3 +138,16 @@ Real child processes are killed after observed transaction and operational
 publication boundaries; recovery and restore retries are exercised afterward.
 Archive and path parsers have fuzz targets. These are tested boundaries, not a
 claim that all possible interruptions or hardware failures are covered.
+
+D02 additionally requires two separately reported candidate profiles: at least
+30 minutes across three seeds/four writers with log maintenance disabled but
+indexes maintained and at least 10,000 acknowledged mutation/replay outcomes;
+and at least 60 seconds total across three seeds/four writers with default log
+maintenance enabled, at least 250 acknowledged mutation/replay outcomes combined
+and backup/restore. Report unique effects and replays separately. Both use setup
+creates followed by sustained patch/CAS/replay/read/search and periodic archives;
+reads/search do not count toward the minima. Deterministic regressions separately
+cover create/move/archive/apply/preview and multi-file publication. Both profiles
+verify receipt replay and continued writes after synthetic restoration.
+These extended observations and their independent review remain pending here;
+the long profile must not be presented as default-log-enabled evidence.

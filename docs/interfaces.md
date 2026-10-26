@@ -1,12 +1,13 @@
 # Implementation contract
 
 This document closes implementation gaps in spec v0.3. It originated with
-v0.1.0 and includes extensions through experimental v0.3.1; the public wire
+v0.1.0 and includes the integrated post-v0.3.1 roadmap additions; the public wire
 version remains `kb.v1`. `internal/api/types.go` is the shared DTO contract.
-The [compatibility policy](compatibility.md) separates these version axes and
-proposed v1.x commitments; the [exit checklist](stability.md) does not declare
-readiness. The package ownership below records the original implementation split;
-coordinate changes to shared types explicitly.
+Current source is preparing v0.4.0 qualification; published production remains
+experimental v0.3.1 and lacks backup/restore. The [compatibility policy](compatibility.md)
+separates these axes and conditional v1.x commitments; the [exit checklist](stability.md)
+does not declare readiness. Package ownership below records the original split;
+coordinate shared-type changes explicitly.
 
 `api.Revision` is SHA-256 of complete file bytes, prefixed `sha256:`. Shared
 `api.Generation` hashes sorted scoped Markdown paths joined as path, NUL,
@@ -120,8 +121,9 @@ most 1 MiB. Reject overlapping source/destination paths and multiple operations
 on the same path. Update known links and basis_revisions on move, and clear
 verified on substantively changed notes. Never touch raw source snapshots.
 
-Use an exclusive lock. Mutations recover any pending journal before accepting a
-new request. Check a durable receipt before revalidating retry preconditions.
+Use an exclusive lock. Note transactions recover any pending journal before
+accepting a new request; operational backup/restore refuse pending recovery.
+Check a durable receipt before revalidating retry preconditions.
 Request hashing excludes dry_run; the same key and effective request replays the
 receipt, while a different request conflicts. Receipts currently have no expiry.
 

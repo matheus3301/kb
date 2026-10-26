@@ -1,34 +1,36 @@
 # Compatibility and support
 
-Status as of **2026-10-25**: experimental **v0.3.1**. This policy records the
-released contract and the proposed commitments to review before v1.0. Product
-version, wire version, knowledge format, configuration and operational state are
-separate axes. `kb.v1` does **not** mean the product has reached v1.0.
+Status as of **2026-10-25**: published production is experimental **v0.3.1**;
+current integrated source includes all four roadmap increments and is being
+prepared for **v0.4.0 qualification**. Stable v1.0.0 remains pending.
+Product version, wire version, knowledge format, configuration, operational
+state and backup format are separate axes. `kb.v1` is not product v1.0.
 
 The [specification](spec.md), [CLI guide](cli.md), [interface contract](interfaces.md),
 [MCP guide](mcp.md) and version-specific
 [release notes](https://github.com/matheus3301/kb/releases) remain authoritative
-for shipped behavior. Use documentation from the installed version's tag;
-`main` may describe newer merged code. A [roadmap](roadmap.md) item is not an
-available interface. The [exit checklist](stability.md) tracks missing evidence.
+for their respective surfaces. Use the installed version's tagged documentation
+for shipped behavior: `main` includes merged additions not available in v0.3.1.
+The [exit checklist](stability.md) tracks exact-candidate evidence and review.
 
-## Released contract and version axes
+## Current source contract and version axes
 
-| Surface | v0.3.1 behavior and boundary |
+| Surface | Integrated source behavior and boundary |
 | --- | --- |
 | Product/binary | `kb version --json` identifies release version/source commit. Source installs may report `dev`/`unknown`; they are not release identity proof. Go internals under `internal/` are not a supported external library API. |
 | CLI commands/flags | Installed help describes available commands. Root precedence is `--root`, `KB_ROOT`, then nearest ancestor config; `init` without an explicit root initializes the current directory instead. Explicit flags override matching JSON inputs. Unknown input fields, invalid shapes and trailing JSON are rejected. No legacy flag aliases are promised. |
 | CLI exit status | 0 success; 1 validation failure; 2 invalid request or otherwise unmapped domain failure; 3 missing resource; 4 revision/idempotency conflict, `DESTINATION_EXISTS` or `CASE_COLLISION`; 5 access/path/symlink/read-only/write-disabled restriction; 6 I/O/lock/cancellation/recovery failure. See the [exact mapping caveats](cli.md#exit-codes-and-errors), not broad error-family guesses. |
 | `kb.v1` JSON | Data commands emit one envelope with `schema_version`, `ok`, `data` or `error`, `warnings` and `meta`; logs go to stderr. Read the [envelope schema](../schemas/kb.v1.envelope.schema.json). Validation can return `ok: true`, `conformant: false` and CLI exit 1; strict validation also fails on warnings. Domain error codes are machine signals; error prose is not a parsing API. |
-| MCP tools/stdio | Six read-only tools, ten when writes are enabled, in the [runtime-checked catalog](../schemas/kb.v1.tools.json). The server uses a fixed startup root/configuration; stdout is JSON-RPC only. Results carry `kb.v1` in `structuredContent`; compact text is not the data contract. Tool failures set `isError`; validation findings can be successful report data. Actual access checks, not annotations, enforce read-only. |
+| MCP tools/stdio | Six read-only tools, twelve with writes enabled, in the [runtime-checked catalog](../schemas/kb.v1.tools.json). v0.3.1 has ten write-enabled tools; backup/restore are merged additions. Fixed startup root/configuration; stdout is JSON-RPC only. Results carry `kb.v1` in `structuredContent`; compact text is not the data contract. Tool failures set `isError`; validation findings can be successful report data. Access checks, not annotations, enforce read-only. |
 | Knowledge format | Native OKF v0.2 as pinned in the [specification sources](spec.md); optional root `okf_version` is knowledge-format metadata, not the product or JSON version. Unknown types/metadata and YAML comments are preserved by supported targeted edits. PARA is optional. Application size/path/JSON policies are distinct from OKF conformance. No legacy-note migration or universal future-OKF compatibility is promised. |
 | Configuration | `.kb/config.toml` uses `version = 1`. Configuration is loaded when the base opens; restart a long-lived MCP process after changing it. Config version is independent of `kb.v1` and OKF. Do not change it manually to suggest compatibility with an unknown version. |
-| Durable operational state | `.kb/state/` contains advisory locking, the version-1 prepared/committed journal and durable receipts. The journal's version is not a public backup format. Receipts retain request identity/replay semantics and currently have no expiry. Do not delete, hand-edit or reconstruct these files to bypass recovery. No cross-version downgrade or external state-file editing API is promised. |
+| Durable operational state | `.kb/state/` contains advisory locking, version-1 prepared/committed journal and durable receipts with no expiry. Journal version is not backup version. Do not delete, hand-edit or reconstruct state to bypass recovery. No external state-file editing API or untested downgrade is promised. |
 | Derived state | `.kb/cache/` is disposable and rebuildable; it is not authoritative content or durable receipts. Cache layout is internal, not a client integration API. |
-| Export | A validated scoped knowledge snapshot with an inclusion/exclusion report. It excludes operational state and is not an operational backup. v0.3.1 has no backup/restore CLI command or MCP tool. |
+| Export | A validated scoped knowledge snapshot with an inclusion/exclusion report. It excludes operational state and is not an operational backup. |
+| Operational backup/restore | Merged after v0.3.1: version-1 checksummed tar under the [backup contract](backups.md), preserving exact included files, config and settled receipts. Pending journals are refused, not archived; cache/locks and declared exclusions are omitted. Restore reserves a new confined destination and publishes config last. The running server never changes root. Integrity is not authenticity or disaster-recovery certification. |
 
 CLI and MCP share domain semantics on their overlapping operations, not identical
-command inventories: v0.3.1 MCP has no init, maintenance, recovery, export or
+command inventories: MCP has no init, maintenance, recovery, export or
 index-rebuild tool. Inspect discovery instead of translating every CLI command
 into an invented tool name. Restart the MCP server to load a new executable.
 
@@ -38,6 +40,18 @@ to the same effective query/configuration and generation; restart on stale or
 invalid cursors. Store exact revisions for CAS, not timestamps. Trust/health
 signals do not certify factual truth, and advisory locks do not isolate external
 editors that ignore them.
+
+Receipt count has no automatic expiry, retention or rotation. Each receipt's
+aggregate raw diff text is capped at **256 KiB**; full before/after file images
+are represented only while they fit, and excess diff text is truncated.
+Extending a retained event log can accumulate roughly quadratic diff storage
+while the growing images fit that cap, **not unbounded quadratic growth forever**.
+Revisions and other serialized receipt fields are outside that diff-text budget.
+Log/note/archive bounds still apply and rejected operations report explicit
+errors. Monitor/protect growing state without deleting durable replay receipts.
+D02's extended log-disabled/index-enabled profile, shorter default-log profile
+and deterministic default-log boundary tests do not change the receipt format or
+replay contract. There is no automatic compaction.
 
 ## Experimental change and upgrade policy
 
@@ -49,23 +63,25 @@ configuration or journal will work with every future experimental binary.
 The v0.3.1 patch required no knowledge-format migration and left the v0.3.0 CLI
 skill unchanged; this is a release-specific fact, not a general upgrade rule.
 
-Before upgrading a base with pending recovery, finish recovery with the current
-supported binary or obtain a reviewed version-specific procedure. Preserve notes,
-configuration and durable state together using an operator-reviewed backup
-procedure; `export` alone cannot preserve idempotency receipts. Retain the old
-binary and verify the new version/commit and synthetic workflow before production
-use. Reverting the executable is not evidence that newer state can be downgraded.
-Do not restore old content over live newer journals/receipts.
+Before upgrading a base with pending recovery, finish recovery with the prior
+supported binary or follow a reviewed version-specific procedure. Preserve notes,
+configuration and durable state together; `export` alone loses receipts.
+v0.3.1 needs an operator-reviewed backup procedure because it lacks the new
+backup command. With a qualifying newer binary, use the [backup contract](backups.md),
+verify a fresh synthetic restore and retain the archive on separate protected
+storage. Keep the prior executable; reverting it does not prove a state downgrade
+is safe. Never restore old content over live newer journals/receipts.
 
 v0.1.0 was withdrawn and must never be reused. v0.1.1/v0.1.2 have documented
 metadata-fidelity defects; use v0.1.3 or later for those corrections. An upgrade
 cannot recover already lost metadata; reconcile with original files/backups.
 [Installation guidance](installation.md) preserves the affected cases.
 
-## Proposed v1.x commitments — require exit review
+## Conditional v1.x commitments
 
-These are intended compatibility rules, **not current v1.0 guarantees**. Approve
-scope and upgrade origins in D04 of the [exit checklist](stability.md) first.
+D04 selects these rules for stable-v1 qualification, **not as guarantees of the
+current experimental release**. They take effect only after V06–V08 in the
+[exit checklist](stability.md) pass and stable v1.0.0 is explicitly released.
 
 - Preserve documented CLI command/flag meanings and exit mappings within v1.x.
   Additive opt-in commands/flags are allowed; removals, changed defaults with
@@ -82,14 +98,24 @@ scope and upgrade origins in D04 of the [exit checklist](stability.md) first.
   optional additions do not imply support in older clients. Negotiate the MCP
   protocol through the SDK rather than treating product version as protocol
   version. No remote transport is promised.
-- Version knowledge/configuration/operational-state changes independently.
-  Document accepted version ranges, upgrade steps, pending-journal handling and
-  downgrade limits before changing a persisted format. Never reinterpret unknown
-  durable state, discard receipts or require a silent destructive migration.
-  A future backup manifest needs its own explicit version/integrity contract.
+- Preserve native pinned OKF v0.2 knowledge and configuration version 1 semantics
+  within the documented scope; unknown metadata/presentation remains preserved
+  by supported edits. Preserve settled version-1 operational receipts/replay and
+  version-1 backup archives. Knowledge/config/state/archive versions remain
+  independent. A future format change must declare accepted versions, upgrade
+  procedure, pending-journal handling and downgrade limits; never reinterpret
+  unknown state, discard receipts or silently migrate destructively.
 - No aliases, deprecated compatibility layer or dual implementation is implied.
   A breaking cutover requires an explicit versioned decision and migrated callers,
   docs, schemas, skill/client guidance and contract evidence.
+
+The selected upgrade path is **v0.3.1 → v0.4.0 → v1.0.0**, conditional on
+synthetic V06 qualification at each transition. Require exact note/config/receipt
+fidelity, stale-revision conflict behavior, prior-request replay and continued
+writes, plus version-1 archive restoration where available. Recover pending
+journals with the prior binary before upgrade. Older experimental origins,
+unknown format versions and downgrade after newer writes are not blanket support
+claims; publish a reviewed migration procedure if a future change needs one.
 
 ## Platform and maintenance support
 
@@ -108,6 +134,13 @@ Linux amd64/arm64 and macOS amd64 packages are built, not claimed installed-test
 by that record. Apple signing/notarization is not configured. Windows, network
 filesystems, remote multi-host writers and universal power-loss durability are
 not validated support claims. Failpoint and interruption tests have bounded scope.
+
+For stable-v1 qualification, D04 requires actual **macOS arm64 Homebrew**
+installation/upgrade, formula and installed CLI/MCP verification, plus **Linux
+amd64 native archive and archived-source** workflows. Those candidate results are
+still pending. Linux arm64 and macOS amd64 remain cross-build/package-only until
+separate native evidence and a support decision exist. Linux native archive/source
+qualification does not imply a tested Linux Homebrew installation.
 
 No LTS branch, support lifetime, response-time SLA or automatic backport schedule
 is promised. Report supported, reproducible defects through the repository;

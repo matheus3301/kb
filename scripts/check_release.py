@@ -6,12 +6,14 @@ import os
 from pathlib import Path
 import platform
 import re
+import shutil
 import subprocess
 import tarfile
 import tempfile
 
 import acceptance
 import check_docs
+import compatibility
 import release
 
 
@@ -80,12 +82,18 @@ def main():
         native = workspace / "native"
         with tarfile.open(dist / f"kb_{version}_{system}_{arch}.tar.gz") as archive:
             archive.extractall(native, filter="data")
-        binary = native / "kb"
+        prefix = workspace / "prefix"
+        (prefix / "bin").mkdir(parents=True)
+        binary = prefix / "bin/kb"
+        shutil.copy2(native / "kb", binary)
+        if hashlib.sha256(binary.read_bytes()).digest() != hashlib.sha256((native / "kb").read_bytes()).digest():
+            raise ValueError("temporary-prefix installation changed the native executable")
         info = json.loads(subprocess.check_output([str(binary), "version", "--json"]))["data"]
         if info != {"version": "v" + version, "commit": commit}:
             raise ValueError("release binary source identity is incorrect")
         acceptance.exercise(binary)
         check_docs.exercise(binary, native)
+        compatibility.exercise_candidate(binary)
         source = workspace / "source"
         with tarfile.open(dist / source_name) as archive:
             archive.extractall(source, filter="data")
@@ -95,10 +103,13 @@ def main():
                         f"-s -w -X main.version=v{version} -X main.commit={commit}",
                         "-o", str(installed), "./cmd/kb"],
                        cwd=source / f"kb-{version}", env=env, check=True)
+        compatibility.identity(installed, "v" + version, commit, "source")
         acceptance.exercise(installed)
         check_docs.exercise(installed, source / f"kb-{version}")
-    print("Release snapshot passed: four platforms, source archive, checksums, privacy, docs/licenses, "
-          "formula identity, extracted binary workflow, and source build workflow.")
+        compatibility.exercise_candidate(installed)
+    print("Release snapshot passed: four inspected platform archives, source archive, checksums, privacy, docs/licenses, "
+          "formula identity, temporary-prefix native workflow, source build workflow, and CLI/MCP backup/restore consumers. "
+          "Only the host-native binary and source build were executed.")
 
 
 if __name__ == "__main__":
