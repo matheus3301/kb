@@ -115,11 +115,15 @@ func TestRestoreBatchJoinsBeforeFailedLeafCleanup(t *testing.T) {
 	defer func() {
 		releaseOnce.Do(func() { close(release) })
 		if !controlJoined {
-			<-controlDone
+			if err := <-controlDone; err != nil {
+				t.Errorf("blocked descriptor control failed during teardown: %v", err)
+			}
 		}
 		batch.workers.Wait()
 		if !joined {
-			<-finished
+			if err := <-finished; err == nil {
+				t.Error("failed restore batch unexpectedly succeeded during teardown")
+			}
 		}
 	}()
 	waitRestoreDescriptorClosed(t, failed)

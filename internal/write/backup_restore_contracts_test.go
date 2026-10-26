@@ -27,8 +27,17 @@ func restoreContractFixture(t *testing.T) (*Service, *fakeProvider, []api.Plan) 
 // Ignore only disposable state and operational outputs, not config or receipts.
 func restoreContractFiles(t *testing.T, root string) map[string][]byte {
 	t.Helper()
+	fixture, err := os.OpenRoot(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := fixture.Close(); err != nil {
+			t.Error(err)
+		}
+	}()
 	files := map[string][]byte{}
-	err := filepath.WalkDir(root, func(name string, entry fs.DirEntry, walkErr error) error {
+	err = filepath.WalkDir(root, func(name string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
 		}
@@ -49,7 +58,7 @@ func restoreContractFiles(t *testing.T, root string) map[string][]byte {
 		if !entry.Type().IsRegular() {
 			t.Fatalf("unexpected nonregular authoritative file %s", relative)
 		}
-		data, err := os.ReadFile(name)
+		data, err := fixture.ReadFile(relative)
 		if err != nil {
 			return err
 		}
