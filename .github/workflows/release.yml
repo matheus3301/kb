@@ -81,10 +81,66 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  verify-published:
+    name: Verify published native and source archives (${{ matrix.os }})
+    needs: publish
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Download this tag's published archives with independent identity expectations
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import sys
+          sys.path.insert(0, "scripts")
+          import release
+
+          tag = release.release_tag(os.environ["GITHUB_REF_NAME"])
+          version = tag[1:]
+          commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          dist = Path(".build/dist")
+          dist.mkdir(parents=True)
+          filenames = [f"kb_{version}_{system}_{arch}.tar.gz"
+                       for system in ("linux", "darwin") for arch in ("amd64", "arm64")]
+          filenames += [f"kb_{version}_source.tar.gz", "checksums.txt"]
+          command = ["gh", "release", "download", tag, "--repo", os.environ["GITHUB_REPOSITORY"], "--dir", str(dist)]
+          for filename in filenames:
+              command.extend(["--pattern", filename])
+          subprocess.run(command, check=True)
+          (dist / "metadata.json").write_text(json.dumps({"version": version, "commit": commit}) + "\n")
+          PY
+      - name: Prepare the temporary source-formula expectation
+        run: python3 scripts/release.py formula
+      - name: Exercise the published native archive and archived source on this host
+        run: python3 scripts/check_release.py
+
   tap:
     name: Update Homebrew tap
-    needs: publish
-    if: ${{ !contains(github.ref_name, '-') }}
+    needs: [publish, verify-published]
+    if: ${{ success() && !contains(github.ref_name, '-') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     concurrency:

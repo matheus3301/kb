@@ -44,6 +44,39 @@ def release_write_allowed(text, name, position):
             and "run: make tools check\n" in verify[0])
 
 
+def published_release_findings(text):
+    jobs = dict(re.findall(r"^  ([\w-]+):\s*\n(.*?)(?=^  [\w-]+:|\Z)", text, re.M | re.S))
+    verified, tap = jobs.get("verify-published", ""), jobs.get("tap", "")
+    # Deliberately bounded to this workflow's explicit publication contract.
+    # Default success propagation plus both dependencies blocks failed/skipped QA.
+    requirements = {
+        "published verification must follow publication": "    needs: publish\n",
+        "published verification must use both native hosts": "        os: [ubuntu-24.04, macos-15]\n",
+        "published verification must execute its native matrix": "    runs-on: ${{ matrix.os }}\n",
+        "published verification must retain both host outcomes": "      fail-fast: false\n",
+        "published verification must remain read-only": "    permissions:\n      contents: read\n",
+        "published verification must check out the exact tag": "          ref: ${{ github.ref }}\n",
+        "published version must come from the validated tag": 'tag = release.release_tag(os.environ["GITHUB_REF_NAME"])',
+        "published commit must come from checked-out source": 'commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()',
+        "published expectations must not come from artifacts": 'json.dumps({"version": version, "commit": commit})',
+        "published archives must come from this release": '["gh", "release", "download", tag, "--repo", os.environ["GITHUB_REPOSITORY"]',
+        "published download must use exact asset filenames": 'command.extend(["--pattern", filename])',
+        "published download failure must stop verification": 'subprocess.run(command, check=True)',
+        "published verification must prepare the source expectation": "run: python3 scripts/release.py formula\n",
+        "published verification must exercise actual archives": "run: python3 scripts/check_release.py\n",
+    }
+    findings = [message for message, required in requirements.items() if required not in verified]
+    if re.search(r"^\s+if:", verified, re.M):
+        findings.append("published verification must not conditionally skip jobs or steps")
+    if "secrets.HOMEBREW_TAP_TOKEN" in verified:
+        findings.append("published verification must not receive the tap credential")
+    if "    needs: [publish, verify-published]\n" not in tap:
+        findings.append("tap must depend on publication and the complete published verification matrix")
+    if "    if: ${{ success() && !contains(github.ref_name, '-') }}\n" not in tap:
+        findings.append("tap must require successful dependencies and a stable tag")
+    return findings
+
+
 def workflow_findings(text, name=""):
     findings = []
     for target in re.findall(r"^\s*-?\s*uses:\s*([^\s#]+)", text, re.M):
@@ -61,6 +94,8 @@ def workflow_findings(text, name=""):
         findings.append("workflow must declare contents: read")
     if "persist-credentials: false" not in text:
         findings.append("checkout must not persist credentials")
+    if name == "release.yml":
+        findings.extend(published_release_findings(text))
     return findings
 
 
