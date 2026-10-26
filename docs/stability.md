@@ -1,11 +1,22 @@
 # v1.0 exit criteria
 
 **Candidate qualification; stable-v1 readiness remains pending.** All four
-initial [roadmap](roadmap.md) increments are integrated at `a320dea` as of
-**2026-10-25**. Published/installed production remains experimental **v0.3.1**.
-The next intended qualification release is **v0.4.0**, not yet a published or
-installed result here. This checklist extends A01–A26 in the
+initial [roadmap](roadmap.md) increments are integrated. Experimental
+[v0.4.0](https://github.com/matheus3301/kb/releases/tag/v0.4.0), source
+`74f0d19`, is published and installed through Homebrew on macOS arm64 as of
+**2026-10-26 UTC**. The receipt-scale correction is merged through
+[PR #21](https://github.com/matheus3301/kb/pull/21); further cold-CLI performance
+work and final qualification remain pending. This checklist extends A01–A26 in the
 [acceptance inventory](acceptance.json); no item alone authorizes publication.
+
+The frozen `7ceed676bed3c1218563f9534a1c095dd3ce4cec` runtime completed three
+600-second, four-writer seeds with 16,425 mutations, 16,425 identical-request
+replays and 24 exact backup/restore checks. Its separate default-log companion
+also passed. These are bounded observations for that runtime, not qualification
+of a later implementation. Its three complete D03 performance attempts remain
+failed; the 20-read-sample attempt exceeded the 10k CLI-search ceiling at
+384.470 ms versus 380 ms. Other passing rows do not offset that failure. Keep
+the ceilings unchanged and qualify any changed runtime afresh before V08.
 
 ## Evidence and status rules
 
