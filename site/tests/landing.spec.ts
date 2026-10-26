@@ -308,6 +308,14 @@ test('brand images decode as self-hosted WebP and compact PNG favicons preserve 
 
 test('both setup views fit, pass serious/critical axe checks, and produce public screenshots', async ({ page }, testInfo) => {
   await openLanding(page);
+  // Include the below-fold brand image in the actual page evidence.
+  const footerLogo = page.locator('footer .brand img');
+  await footerLogo.scrollIntoViewIfNeeded();
+  await expect.poll(() => footerLogo.evaluate(element => {
+    const image = element as HTMLImageElement;
+    return image.complete && image.naturalWidth > 0;
+  })).toBe(true);
+  await page.evaluate(() => window.scrollTo(0, 0));
   await expectNoPageOverflow(page);
   await expectAccessible(page);
   await page.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}.png`), fullPage: true });
