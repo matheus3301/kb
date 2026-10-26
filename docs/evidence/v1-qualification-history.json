@@ -4815,5 +4815,12 @@
       },
       "checkpoint_scope": "Checkpoint seconds combine receipt validation, backup, restore, exact byte/replay/continued-write and cleanup checks; the30second timeout applies separately to each CLI command, not the combined checkpoint."
     }
-  }
+  },
+  "candidate5_historical_separation": {
+    "candidate3_qualified_for_candidate5": false,
+    "candidate3_passed_D03_evidence": "docs/evidence/cold-cli-performance-v1.json",
+    "candidate3_passed_D03_evidence_sha256": "d5a9f084b5f9b590bdc36e41455d0fcb95d5e5b6acd5194257657f2c5504dbf3",
+    "candidate4_scale_is_candidate5_binary": false
+  },
+  "prior_public_history_sha256": "9854a994985ee7355ac4250e2762f6b9edc9986fff84240dfd4b6305e1189f82"
 }

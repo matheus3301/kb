@@ -1,599 +1,762 @@
 {
-  "schema_version": "kb.v1-shipping-reliability.v1",
-  "publication_state": "reviewable-candidate-evidence; not stable publication or installed-v1 proof",
-  "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
-  "candidate_binary_sha256": "sha256:8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
-  "shipping_extended_profile": {
-    "schema_version": "kb.soak.v1",
-    "ok": false,
-    "platform": {
-      "system": "Darwin",
-      "release": "25.6.0",
-      "machine": "arm64",
-      "python": "3.14.4"
+  "schema_version": "kb.v1-candidate5-reliability.v1",
+  "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+  "candidate_binary_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+  "D02_complete": true,
+  "extended_profile": {
+    "status": "PASS",
+    "started_utc": "2026-10-26T06:42:32Z",
+    "completed_report": {
+      "schema_version": "kb.soak.v1",
+      "ok": true,
+      "platform": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "machine": "arm64",
+        "python": "3.14.4"
+      },
+      "binary_revision": "sha256:59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+      "writers": 4,
+      "seeds": [
+        1729,
+        2718,
+        31415
+      ],
+      "requested_seconds": 1800.0,
+      "minimum_work": 10000,
+      "backup_interval_seconds": 60.0,
+      "command_timeout_seconds": 30.0,
+      "profile": {
+        "maintain_indexes": true,
+        "maintain_log": false,
+        "notes": 5
+      },
+      "runs": [
+        {
+          "seed": 1729,
+          "ok": true,
+          "rounds": 1136,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5680,
+            "replays": 5680,
+            "conflicts": 3408,
+            "reads": 11360,
+            "searches": 1136,
+            "backup_checks": 9,
+            "restored_mutations": 9,
+            "restored_replays": 18
+          },
+          "backup_checks": [
+            {
+              "round": 140,
+              "seconds": 4.821333166910335,
+              "files": 714,
+              "bytes": 729714,
+              "manifest_revision": "sha256:1f3c847649ae84387e3c53e531cbc78b8864f4e0a08e47b9337edf0a14837eda",
+              "storage": {
+                "receipt_files": 705,
+                "receipt_bytes": 726225,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 309,
+              "seconds": 7.012034666957334,
+              "files": 1559,
+              "bytes": 1600920,
+              "manifest_revision": "sha256:ccb3f0ba86b51d1e65f0735e5375616b545635384d25e73f23ad6d65d3c89af2",
+              "storage": {
+                "receipt_files": 1550,
+                "receipt_bytes": 1597431,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 467,
+              "seconds": 10.932151207933202,
+              "files": 2349,
+              "bytes": 2415394,
+              "manifest_revision": "sha256:21ce04b89467dff8704f10428980531b592cdeb5a1db8d125106f3db70b52bc3",
+              "storage": {
+                "receipt_files": 2340,
+                "receipt_bytes": 2411906,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 615,
+              "seconds": 14.681853999965824,
+              "files": 3089,
+              "bytes": 3178362,
+              "manifest_revision": "sha256:f3fb18696ec63bc84a54ed69f61c16ebb64e7c46631aaf3412d4975afe93d0b6",
+              "storage": {
+                "receipt_files": 3080,
+                "receipt_bytes": 3174873,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 756,
+              "seconds": 17.71462945791427,
+              "files": 3794,
+              "bytes": 3905178,
+              "manifest_revision": "sha256:e07f4e24a8776a4491ea3a69aba1f048bb52c902ded93a29e6bb7a590cc08048",
+              "storage": {
+                "receipt_files": 3785,
+                "receipt_bytes": 3901690,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 889,
+              "seconds": 20.613948332960717,
+              "files": 4459,
+              "bytes": 4590792,
+              "manifest_revision": "sha256:5a82de2f9fe3dae5e319104f7f29375d7fd599d6f084adee367ecbe8fa206e2e",
+              "storage": {
+                "receipt_files": 4450,
+                "receipt_bytes": 4587304,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1014,
+              "seconds": 24.03806016605813,
+              "files": 5084,
+              "bytes": 5235344,
+              "manifest_revision": "sha256:17d846837bae3996747e7dee77757ed1da8a036dcce4be6f2ee6c52a960a8d2f",
+              "storage": {
+                "receipt_files": 5075,
+                "receipt_bytes": 5231850,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1136,
+              "seconds": 26.75071604200639,
+              "files": 5694,
+              "bytes": 5866050,
+              "manifest_revision": "sha256:975e1fdd072da17be065768521a58275b076980d7cee39badf19569ba97bad76",
+              "storage": {
+                "receipt_files": 5685,
+                "receipt_bytes": 5862557,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1136,
+              "seconds": 25.930002707988024,
+              "files": 5694,
+              "bytes": 5866050,
+              "manifest_revision": "sha256:975e1fdd072da17be065768521a58275b076980d7cee39badf19569ba97bad76",
+              "storage": {
+                "receipt_files": 5685,
+                "receipt_bytes": 5862557,
+                "log_bytes": 23
+              }
+            }
+          ],
+          "failures": [],
+          "initial_storage": {
+            "receipt_files": 5,
+            "receipt_bytes": 6431,
+            "log_bytes": 23
+          },
+          "work_seconds": 608.5681901669595,
+          "final_storage": {
+            "receipt_files": 5685,
+            "receipt_bytes": 5862557,
+            "log_bytes": 23
+          },
+          "acknowledged_per_work_second": 18.66676599853733,
+          "commands": {
+            "success": 23943,
+            "conflict": 3408,
+            "error": 0
+          },
+          "all_root_acknowledgements": {
+            "mutations": 5694,
+            "replays": 5698
+          },
+          "timings": {
+            "init": {
+              "calls": 1,
+              "total_seconds": 0.00874687498435378,
+              "max_seconds": 0.00874687498435378
+            },
+            "create": {
+              "calls": 5,
+              "total_seconds": 0.445495581952855,
+              "max_seconds": 0.10832366603426635
+            },
+            "read": {
+              "calls": 11387,
+              "total_seconds": 190.22398230340332,
+              "max_seconds": 0.2894360829377547
+            },
+            "patch": {
+              "calls": 14795,
+              "total_seconds": 1478.4007212320575,
+              "max_seconds": 0.4839937499491498
+            },
+            "search": {
+              "calls": 1136,
+              "total_seconds": 7.379498165799305,
+              "max_seconds": 0.015302667045034468
+            },
+            "backup": {
+              "calls": 9,
+              "total_seconds": 7.585956998984329,
+              "max_seconds": 1.3170698329340667
+            },
+            "restore": {
+              "calls": 9,
+              "total_seconds": 133.59108587610535,
+              "max_seconds": 23.33291483297944
+            },
+            "index": {
+              "calls": 9,
+              "total_seconds": 0.06221087591256946,
+              "max_seconds": 0.007427916978485882
+            }
+          },
+          "confirmed_receipts": 5685,
+          "elapsed_seconds": 635.2077224580571
+        },
+        {
+          "seed": 2718,
+          "ok": true,
+          "rounds": 1173,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5865,
+            "replays": 5865,
+            "conflicts": 3519,
+            "reads": 11730,
+            "searches": 1173,
+            "backup_checks": 9,
+            "restored_mutations": 9,
+            "restored_replays": 18
+          },
+          "backup_checks": [
+            {
+              "round": 190,
+              "seconds": 4.647498124977574,
+              "files": 964,
+              "bytes": 987464,
+              "manifest_revision": "sha256:22978bf5b22f6dd699f0ff6a344aca3c46a3388273a367df479a2d2f9ee5bade",
+              "storage": {
+                "receipt_files": 955,
+                "receipt_bytes": 983977,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 358,
+              "seconds": 8.504491708008572,
+              "files": 1804,
+              "bytes": 1853490,
+              "manifest_revision": "sha256:e0aa5ddf491f4be4a5c46d2b5e5606c0b4e1a371263116aa611b93bc043f16f9",
+              "storage": {
+                "receipt_files": 1795,
+                "receipt_bytes": 1850001,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 514,
+              "seconds": 12.10588408401236,
+              "files": 2584,
+              "bytes": 2657654,
+              "manifest_revision": "sha256:7d3705e4cc0c780c11b2e73d7fbf10addf7cf9108cbfd939d9f5419cb9da188f",
+              "storage": {
+                "receipt_files": 2575,
+                "receipt_bytes": 2654166,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 659,
+              "seconds": 15.474648167029954,
+              "files": 3309,
+              "bytes": 3405096,
+              "manifest_revision": "sha256:e6d0f8b9c3577b391a589389603b25546a8f666d2b04656e44a61b6c6f559004",
+              "storage": {
+                "receipt_files": 3300,
+                "receipt_bytes": 3401607,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 796,
+              "seconds": 19.20184470899403,
+              "files": 3994,
+              "bytes": 4111288,
+              "manifest_revision": "sha256:10e6f610ecad510def57169ebc05e67dd9291d195af5005acf1d9afbf95afed3",
+              "storage": {
+                "receipt_files": 3985,
+                "receipt_bytes": 4107799,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 928,
+              "seconds": 22.782580207916908,
+              "files": 4654,
+              "bytes": 4791726,
+              "manifest_revision": "sha256:49420eababbf2ea4f81eeb0f3ce0603cdb42970fc4c8b181596637cc65a8aa94",
+              "storage": {
+                "receipt_files": 4645,
+                "receipt_bytes": 4788237,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1054,
+              "seconds": 24.80891079106368,
+              "files": 5284,
+              "bytes": 5442076,
+              "manifest_revision": "sha256:c8d26425a7f44e9c07fb9eb198f57fa7afe400772cd5710f4a764caa5f05350c",
+              "storage": {
+                "receipt_files": 5275,
+                "receipt_bytes": 5438582,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1173,
+              "seconds": 27.953329332987778,
+              "files": 5879,
+              "bytes": 6057339,
+              "manifest_revision": "sha256:7d3ccf1902f2e62beb8f9c7d0921b64bf6c49b9ea59a404a0c2aa57408f31f9c",
+              "storage": {
+                "receipt_files": 5870,
+                "receipt_bytes": 6053845,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1173,
+              "seconds": 27.42005620803684,
+              "files": 5879,
+              "bytes": 6057339,
+              "manifest_revision": "sha256:7d3ccf1902f2e62beb8f9c7d0921b64bf6c49b9ea59a404a0c2aa57408f31f9c",
+              "storage": {
+                "receipt_files": 5870,
+                "receipt_bytes": 6053845,
+                "log_bytes": 23
+              }
+            }
+          ],
+          "failures": [],
+          "initial_storage": {
+            "receipt_files": 5,
+            "receipt_bytes": 6431,
+            "log_bytes": 23
+          },
+          "work_seconds": 616.6623812079197,
+          "final_storage": {
+            "receipt_files": 5870,
+            "receipt_bytes": 6053845,
+            "log_bytes": 23
+          },
+          "acknowledged_per_work_second": 19.021753811256087,
+          "commands": {
+            "success": 24720,
+            "conflict": 3519,
+            "error": 0
+          },
+          "all_root_acknowledgements": {
+            "mutations": 5879,
+            "replays": 5883
+          },
+          "timings": {
+            "init": {
+              "calls": 1,
+              "total_seconds": 0.0080467090010643,
+              "max_seconds": 0.0080467090010643
+            },
+            "create": {
+              "calls": 5,
+              "total_seconds": 0.32781054195947945,
+              "max_seconds": 0.09158004203345627
+            },
+            "read": {
+              "calls": 11757,
+              "total_seconds": 193.79175150336232,
+              "max_seconds": 0.2287539589451626
+            },
+            "patch": {
+              "calls": 15276,
+              "total_seconds": 1471.0832445400301,
+              "max_seconds": 0.46673733298666775
+            },
+            "search": {
+              "calls": 1173,
+              "total_seconds": 7.618914966587909,
+              "max_seconds": 0.026122958050109446
+            },
+            "backup": {
+              "calls": 9,
+              "total_seconds": 8.014838208910078,
+              "max_seconds": 1.3599365840200335
+            },
+            "restore": {
+              "calls": 9,
+              "total_seconds": 141.73440387495793,
+              "max_seconds": 24.227167541976087
+            },
+            "index": {
+              "calls": 9,
+              "total_seconds": 0.06386650097556412,
+              "max_seconds": 0.007505167042836547
+            }
+          },
+          "confirmed_receipts": 5870,
+          "elapsed_seconds": 644.6844748340081
+        },
+        {
+          "seed": 31415,
+          "ok": true,
+          "rounds": 1175,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5875,
+            "replays": 5875,
+            "conflicts": 3525,
+            "reads": 11750,
+            "searches": 1175,
+            "backup_checks": 9,
+            "restored_mutations": 9,
+            "restored_replays": 18
+          },
+          "backup_checks": [
+            {
+              "round": 188,
+              "seconds": 4.429772667004727,
+              "files": 954,
+              "bytes": 980021,
+              "manifest_revision": "sha256:b9b01865f13c8d7ca550be53a5167d22ac6c4546c3d53687e8942b7a8fbac2a1",
+              "storage": {
+                "receipt_files": 945,
+                "receipt_bytes": 976527,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 355,
+              "seconds": 8.284203291055746,
+              "files": 1789,
+              "bytes": 1843422,
+              "manifest_revision": "sha256:8b1ea1db919d3feacca32b7e15dc9685cc6457e5adfb4d4d9ddff86568a8a9b5",
+              "storage": {
+                "receipt_files": 1780,
+                "receipt_bytes": 1839929,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 514,
+              "seconds": 11.98351199994795,
+              "files": 2584,
+              "bytes": 2665469,
+              "manifest_revision": "sha256:5a1625610675d695bbba5f18d19a8c8ff95c60be284272f76482793ee005f430",
+              "storage": {
+                "receipt_files": 2575,
+                "receipt_bytes": 2661975,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 663,
+              "seconds": 15.954223250038922,
+              "files": 3329,
+              "bytes": 3435780,
+              "manifest_revision": "sha256:d24f08fc0b69371511b9bc96847e6a957234ee9216af4d961d9f6655b641d40d",
+              "storage": {
+                "receipt_files": 3320,
+                "receipt_bytes": 3432287,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 801,
+              "seconds": 18.453533082967624,
+              "files": 4019,
+              "bytes": 4149220,
+              "manifest_revision": "sha256:ab7ed36a08062d1215b2c52ec80fd3be2199d7aaa068652adbb33e443c3a8a98",
+              "storage": {
+                "receipt_files": 4010,
+                "receipt_bytes": 4145727,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 931,
+              "seconds": 21.64166508393828,
+              "files": 4669,
+              "bytes": 4821324,
+              "manifest_revision": "sha256:d2a46e803e3644ced5ed32f2cbf016d83f38eb3ff75037914cdecb5df28ccafb",
+              "storage": {
+                "receipt_files": 4660,
+                "receipt_bytes": 4817830,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1056,
+              "seconds": 25.055677958065644,
+              "files": 5294,
+              "bytes": 5468359,
+              "manifest_revision": "sha256:3b20183553f2fc400eb06634620c356e88d45465073d663d51a26b8db54424f2",
+              "storage": {
+                "receipt_files": 5285,
+                "receipt_bytes": 5464861,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1175,
+              "seconds": 27.689365957980044,
+              "files": 5889,
+              "bytes": 6085377,
+              "manifest_revision": "sha256:f4d7a7990acdca0cca4b3e77a20b180988d13d3de6622bced6c4ef9a47149750",
+              "storage": {
+                "receipt_files": 5880,
+                "receipt_bytes": 6081878,
+                "log_bytes": 23
+              }
+            },
+            {
+              "round": 1175,
+              "seconds": 26.98624779097736,
+              "files": 5889,
+              "bytes": 6085377,
+              "manifest_revision": "sha256:f4d7a7990acdca0cca4b3e77a20b180988d13d3de6622bced6c4ef9a47149750",
+              "storage": {
+                "receipt_files": 5880,
+                "receipt_bytes": 6081878,
+                "log_bytes": 23
+              }
+            }
+          ],
+          "failures": [],
+          "initial_storage": {
+            "receipt_files": 5,
+            "receipt_bytes": 6435,
+            "log_bytes": 23
+          },
+          "work_seconds": 615.9444065419957,
+          "final_storage": {
+            "receipt_files": 5880,
+            "receipt_bytes": 6081878,
+            "log_bytes": 23
+          },
+          "acknowledged_per_work_second": 19.076396952715687,
+          "commands": {
+            "success": 24762,
+            "conflict": 3525,
+            "error": 0
+          },
+          "all_root_acknowledgements": {
+            "mutations": 5889,
+            "replays": 5893
+          },
+          "timings": {
+            "init": {
+              "calls": 1,
+              "total_seconds": 0.007471375050954521,
+              "max_seconds": 0.007471375050954521
+            },
+            "create": {
+              "calls": 5,
+              "total_seconds": 0.31233887700363994,
+              "max_seconds": 0.07301166700199246
+            },
+            "read": {
+              "calls": 11777,
+              "total_seconds": 193.04493500385433,
+              "max_seconds": 0.2279522909084335
+            },
+            "patch": {
+              "calls": 15302,
+              "total_seconds": 1467.6928319344297,
+              "max_seconds": 0.4528938749572262
+            },
+            "search": {
+              "calls": 1175,
+              "total_seconds": 7.669045710936189,
+              "max_seconds": 0.02305783296469599
+            },
+            "backup": {
+              "calls": 9,
+              "total_seconds": 8.092325584031641,
+              "max_seconds": 1.3711788749787956
+            },
+            "restore": {
+              "calls": 9,
+              "total_seconds": 140.3599912081845,
+              "max_seconds": 24.03753133304417
+            },
+            "index": {
+              "calls": 9,
+              "total_seconds": 0.06254966580308974,
+              "max_seconds": 0.007615290931425989
+            }
+          },
+          "confirmed_receipts": 5880,
+          "elapsed_seconds": 643.5102392500266
+        }
+      ],
+      "failures": [],
+      "scope": "finite synthetic local-process correctness; not power-loss proof",
+      "acknowledged_work": 34840,
+      "totals": {
+        "setup_mutations": 15,
+        "mutations": 17420,
+        "replays": 17420,
+        "conflicts": 10452,
+        "reads": 34840,
+        "searches": 3484,
+        "backup_checks": 27,
+        "restored_mutations": 27,
+        "restored_replays": 54
+      },
+      "elapsed_seconds": 1923.4088054159656
     },
-    "binary_revision": "sha256:8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
-    "writers": 4,
+    "editor_validation": {
+      "ok": true,
+      "method": "Independent completed-report configuration/clock/accounting/receipt/checkpoint algebra, hashes and immutable72-source recheck; not a second product execution or postmortem read of disposed roots.",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+      "binary_revision": "sha256:59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+      "report_sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1",
+      "actual_work_seconds": [
+        608.5681901669595,
+        616.6623812079197,
+        615.9444065419957
+      ],
+      "total_active_seconds": 1841.174977916875,
+      "elapsed_seconds": 1923.4088054159656,
+      "main_root_mutations": 17420,
+      "main_root_replays": 17420,
+      "expected_conflicts": 10452,
+      "completed_checkpoints": 27,
+      "restored_mutations": 27,
+      "restored_replays": 54,
+      "max_restore_seconds": 24.227167541976087,
+      "max_backup_seconds": 1.3711788749787956,
+      "max_checkpoint_files": 5889,
+      "max_checkpoint_content_bytes": 6085377,
+      "max_combined_checkpoint_seconds": 27.953329332987778,
+      "ACK_per_active_second": 18.922699047006574,
+      "supervisor_child_returncodes": {
+        "restore-endurance": 0,
+        "restore-default-log": 0
+      }
+    },
+    "coordinator_verified_summary": {
+      "ok": true,
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+      "binary_revision": "sha256:59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+      "supervisor": {
+        "restore-endurance": {
+          "returncode": 0,
+          "ok": true,
+          "report_sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1"
+        },
+        "restore-default-log": {
+          "returncode": 0,
+          "ok": true,
+          "report_sha256": "ca6d607ce1dc6ac669fe26bb892657f0792e9810dfe5464300bf9fede86f1d1a"
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 1729,
+          "work_seconds": 608.5681901669595,
+          "rounds": 1136,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5680,
+            "replays": 5680,
+            "conflicts": 3408,
+            "reads": 11360,
+            "searches": 1136,
+            "backup_checks": 9,
+            "restored_mutations": 9,
+            "restored_replays": 18
+          },
+          "confirmed_receipts": 5685
+        },
+        {
+          "seed": 2718,
+          "work_seconds": 616.6623812079197,
+          "rounds": 1173,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5865,
+            "replays": 5865,
+            "conflicts": 3519,
+            "reads": 11730,
+            "searches": 1173,
+            "backup_checks": 9,
+            "restored_mutations": 9,
+            "restored_replays": 18
+          },
+          "confirmed_receipts": 5870
+        },
+        {
+          "seed": 31415,
+          "work_seconds": 615.9444065419957,
+          "rounds": 1175,
+          "counts": {
+            "setup_mutations": 5,
+            "mutations": 5875,
+            "replays": 5875,
+            "conflicts": 3525,
+            "reads": 11750,
+            "searches": 1175,
+            "backup_checks": 9,
+            "restored_mutations": 9,
+            "restored_replays": 18
+          },
+          "confirmed_receipts": 5880
+        }
+      ],
+      "totals": {
+        "setup_mutations": 15,
+        "mutations": 17420,
+        "replays": 17420,
+        "conflicts": 10452,
+        "reads": 34840,
+        "searches": 3484,
+        "backup_checks": 27,
+        "restored_mutations": 27,
+        "restored_replays": 54
+      },
+      "acknowledged_work": 34840,
+      "max_restore_seconds": 24.227167541976087,
+      "max_checkpoint_files": 5889,
+      "report_sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1",
+      "elapsed_seconds": 1923.4088054159656
+    }
+  },
+  "requirements": {
+    "total_active_seconds_minimum": 1800,
+    "per_seed_seconds_minimum": 600,
     "seeds": [
       1729,
       2718,
       31415
     ],
-    "requested_seconds": 1800.0,
-    "minimum_work": 10000,
-    "backup_interval_seconds": 60.0,
-    "command_timeout_seconds": 30.0,
-    "profile": {
-      "maintain_indexes": true,
-      "maintain_log": false,
-      "notes": 5
-    },
-    "runs": [
-      {
-        "seed": 1729,
-        "ok": true,
-        "rounds": 1117,
-        "counts": {
-          "setup_mutations": 5,
-          "mutations": 5585,
-          "replays": 5585,
-          "conflicts": 3351,
-          "reads": 11170,
-          "searches": 1117,
-          "backup_checks": 9,
-          "restored_mutations": 9,
-          "restored_replays": 18
-        },
-        "backup_checks": [
-          {
-            "round": 142,
-            "seconds": 6.247885665972717,
-            "files": 724,
-            "bytes": 740020,
-            "manifest_revision": "sha256:b6bc8170de75047a1f43fb44ceb073b82d68a0ec65f6b70a265a007397ff6c92",
-            "storage": {
-              "receipt_files": 715,
-              "receipt_bytes": 736531,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 312,
-            "seconds": 8.434389624977484,
-            "files": 1574,
-            "bytes": 1616310,
-            "manifest_revision": "sha256:b7adfb6ea6ca5cb14fc7a247879c99e9a30a558102bbace1fdeb4d7c8f44e448",
-            "storage": {
-              "receipt_files": 1565,
-              "receipt_bytes": 1612821,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 472,
-            "seconds": 13.119274999946356,
-            "files": 2374,
-            "bytes": 2441092,
-            "manifest_revision": "sha256:81050642d3ca7538de4d91b47960bb83da72c6f9439f00e0933cc69648e5385c",
-            "storage": {
-              "receipt_files": 2365,
-              "receipt_bytes": 2437604,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 600,
-            "seconds": 16.14880850003101,
-            "files": 3014,
-            "bytes": 3100902,
-            "manifest_revision": "sha256:df93c98855a5a67d5386d892e1fba8719b97842384ecbdf0e1ac941541aba3ea",
-            "storage": {
-              "receipt_files": 3005,
-              "receipt_bytes": 3097413,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 737,
-            "seconds": 20.063003499992192,
-            "files": 3699,
-            "bytes": 3807094,
-            "manifest_revision": "sha256:9ba4ed4710f712e89e21f5c0d6b200fc91e0bf07ba5218ec10273b9cf7441aa7",
-            "storage": {
-              "receipt_files": 3690,
-              "receipt_bytes": 3803605,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 871,
-            "seconds": 23.05172491702251,
-            "files": 4369,
-            "bytes": 4497830,
-            "manifest_revision": "sha256:c021511fbc102fd60af7f445e86cec035de221e92f2027eb2c6d747ac15bbdf7",
-            "storage": {
-              "receipt_files": 4360,
-              "receipt_bytes": 4494344,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 996,
-            "seconds": 27.40661854192149,
-            "files": 4994,
-            "bytes": 5142212,
-            "manifest_revision": "sha256:ea0207e3525d59435b5c5fe000903986ea7be3201254581fc967f2db0fae48a0",
-            "storage": {
-              "receipt_files": 4985,
-              "receipt_bytes": 5138724,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 1117,
-            "seconds": 30.450634540989995,
-            "files": 5599,
-            "bytes": 5767703,
-            "manifest_revision": "sha256:383d8a7cdea143dd3383e3514a80991ca572f15b0ab0fb9ce91ab56c0c237d19",
-            "storage": {
-              "receipt_files": 5590,
-              "receipt_bytes": 5764210,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 1117,
-            "seconds": 29.984236874966882,
-            "files": 5599,
-            "bytes": 5767703,
-            "manifest_revision": "sha256:383d8a7cdea143dd3383e3514a80991ca572f15b0ab0fb9ce91ab56c0c237d19",
-            "storage": {
-              "receipt_files": 5590,
-              "receipt_bytes": 5764210,
-              "log_bytes": 23
-            }
-          }
-        ],
-        "failures": [],
-        "initial_storage": {
-          "receipt_files": 5,
-          "receipt_bytes": 6427,
-          "log_bytes": 23
-        },
-        "work_seconds": 626.9155622500693,
-        "final_storage": {
-          "receipt_files": 5590,
-          "receipt_bytes": 5764210,
-          "log_bytes": 23
-        },
-        "acknowledged_per_work_second": 17.817391483965775,
-        "commands": {
-          "success": 23544,
-          "conflict": 3351,
-          "error": 0
-        },
-        "all_root_acknowledgements": {
-          "mutations": 5599,
-          "replays": 5603
-        },
-        "timings": {
-          "init": {
-            "calls": 1,
-            "total_seconds": 0.008622749941423535,
-            "max_seconds": 0.008622749941423535
-          },
-          "create": {
-            "calls": 5,
-            "total_seconds": 0.46879279206041247,
-            "max_seconds": 0.11513108399230987
-          },
-          "read": {
-            "calls": 11197,
-            "total_seconds": 190.32414251193404,
-            "max_seconds": 0.24058245797641575
-          },
-          "patch": {
-            "calls": 14548,
-            "total_seconds": 1484.3829468886834,
-            "max_seconds": 0.552623291965574
-          },
-          "search": {
-            "calls": 1117,
-            "total_seconds": 7.188342726789415,
-            "max_seconds": 0.02447974996175617
-          },
-          "backup": {
-            "calls": 9,
-            "total_seconds": 7.791551166912541,
-            "max_seconds": 1.540135124931112
-          },
-          "restore": {
-            "calls": 9,
-            "total_seconds": 155.15097491489723,
-            "max_seconds": 27.031513249967247
-          },
-          "index": {
-            "calls": 9,
-            "total_seconds": 0.0629284578608349,
-            "max_seconds": 0.009045667015016079
-          }
-        },
-        "confirmed_receipts": 5590,
-        "elapsed_seconds": 657.6329013330396
-      },
-      {
-        "seed": 2718,
-        "ok": true,
-        "rounds": 1162,
-        "counts": {
-          "setup_mutations": 5,
-          "mutations": 5810,
-          "replays": 5810,
-          "conflicts": 3486,
-          "reads": 11620,
-          "searches": 1162,
-          "backup_checks": 8,
-          "restored_mutations": 8,
-          "restored_replays": 16
-        },
-        "backup_checks": [
-          {
-            "round": 190,
-            "seconds": 5.22494804195594,
-            "files": 964,
-            "bytes": 987456,
-            "manifest_revision": "sha256:90c06ce148ed3c31169052d13d450d920ecdc201cf5e2b87d34a132fa24eb481",
-            "storage": {
-              "receipt_files": 955,
-              "receipt_bytes": 983969,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 358,
-            "seconds": 9.639294250053354,
-            "files": 1804,
-            "bytes": 1853490,
-            "manifest_revision": "sha256:827099fbb55c173a2fbc876bd5317d919154aa1385c0c0255e03427c173805b7",
-            "storage": {
-              "receipt_files": 1795,
-              "receipt_bytes": 1850001,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 514,
-            "seconds": 13.898906624992378,
-            "files": 2584,
-            "bytes": 2657642,
-            "manifest_revision": "sha256:f997ba1d1c6bb58b43febe9bfafca07bca937787fb66b739deb9bfc25c1dca46",
-            "storage": {
-              "receipt_files": 2575,
-              "receipt_bytes": 2654153,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 661,
-            "seconds": 18.318945624982007,
-            "files": 3319,
-            "bytes": 3415424,
-            "manifest_revision": "sha256:8a89417f68270d8b005ce7885f56259cc3ee5f2910ef1c8bec2947948be31b53",
-            "storage": {
-              "receipt_files": 3310,
-              "receipt_bytes": 3411935,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 798,
-            "seconds": 22.06422137503978,
-            "files": 4004,
-            "bytes": 4121650,
-            "manifest_revision": "sha256:09a736adf2609b1e5b4a8a1341c736263ded70c25e7322600002b88c5370e6e9",
-            "storage": {
-              "receipt_files": 3995,
-              "receipt_bytes": 4118161,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 929,
-            "seconds": 25.339412458008155,
-            "files": 4659,
-            "bytes": 4796952,
-            "manifest_revision": "sha256:7066c5cf4cdca6d3733c297588fd397391805bc82c49e7f1e47bea2a11b8ad9f",
-            "storage": {
-              "receipt_files": 4650,
-              "receipt_bytes": 4793463,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 1052,
-            "seconds": 28.607796208001673,
-            "files": 5274,
-            "bytes": 5431822,
-            "manifest_revision": "sha256:7e15f6a1d15d5bb42774d0641e44f019b63e749d390a9fdd4fe9c2071db26685",
-            "storage": {
-              "receipt_files": 5265,
-              "receipt_bytes": 5428330,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 1162,
-            "seconds": 31.628004916012287,
-            "files": 5824,
-            "bytes": 6000506,
-            "manifest_revision": "sha256:0dac9a2b6294064b67ee0b58e6f1b1190b03b585c6db93b4fa6c7b47af52ccfc",
-            "storage": {
-              "receipt_files": 5815,
-              "receipt_bytes": 5997012,
-              "log_bytes": 23
-            }
-          }
-        ],
-        "failures": [],
-        "initial_storage": {
-          "receipt_files": 5,
-          "receipt_bytes": 6430,
-          "log_bytes": 23
-        },
-        "work_seconds": 600.1190743329935,
-        "final_storage": {
-          "receipt_files": 5815,
-          "receipt_bytes": 5997012,
-          "log_bytes": 23
-        },
-        "acknowledged_per_work_second": 19.362823974417292,
-        "commands": {
-          "success": 24480,
-          "conflict": 3486,
-          "error": 0
-        },
-        "all_root_acknowledgements": {
-          "mutations": 5823,
-          "replays": 5826
-        },
-        "timings": {
-          "init": {
-            "calls": 1,
-            "total_seconds": 0.0077700839610770345,
-            "max_seconds": 0.0077700839610770345
-          },
-          "create": {
-            "calls": 5,
-            "total_seconds": 0.33879391686059535,
-            "max_seconds": 0.10807941691018641
-          },
-          "read": {
-            "calls": 11644,
-            "total_seconds": 191.53240396955516,
-            "max_seconds": 0.23708445904776454
-          },
-          "patch": {
-            "calls": 15130,
-            "total_seconds": 1455.6131345625035,
-            "max_seconds": 0.40620854089502245
-          },
-          "search": {
-            "calls": 1162,
-            "total_seconds": 7.499744806205854,
-            "max_seconds": 0.01864770893007517
-          },
-          "backup": {
-            "calls": 8,
-            "total_seconds": 6.3653234171215445,
-            "max_seconds": 1.301730833016336
-          },
-          "restore": {
-            "calls": 8,
-            "total_seconds": 136.85555787407793,
-            "max_seconds": 27.981605499982834
-          },
-          "index": {
-            "calls": 8,
-            "total_seconds": 0.05458708491642028,
-            "max_seconds": 0.007356832968071103
-          }
-        },
-        "confirmed_receipts": 5815,
-        "elapsed_seconds": 632.3830639169319
-      },
-      {
-        "seed": 31415,
-        "ok": false,
-        "rounds": 1089,
-        "counts": {
-          "setup_mutations": 5,
-          "mutations": 5445,
-          "replays": 5445,
-          "conflicts": 3267,
-          "reads": 10890,
-          "searches": 1089,
-          "backup_checks": 7,
-          "restored_mutations": 7,
-          "restored_replays": 14
-        },
-        "backup_checks": [
-          {
-            "round": 186,
-            "seconds": 5.0183390830643475,
-            "files": 944,
-            "bytes": 969599,
-            "manifest_revision": "sha256:b7e957160814709f1e671f9578d6bac117e5497424ad63cac17db3100a0df1eb",
-            "storage": {
-              "receipt_files": 935,
-              "receipt_bytes": 966105,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 353,
-            "seconds": 9.622324500000104,
-            "files": 1779,
-            "bytes": 1832994,
-            "manifest_revision": "sha256:e58fcd63cf15a31ca5887d634b6528e69d9fa9ce3e6ce6ad78c40455882de460",
-            "storage": {
-              "receipt_files": 1770,
-              "receipt_bytes": 1829500,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 497,
-            "seconds": 15.379404874984175,
-            "files": 2499,
-            "bytes": 2577424,
-            "manifest_revision": "sha256:d3f931dd8273a61effab3332c1dc47718db348c851a272498b1fd0f2201a3a52",
-            "storage": {
-              "receipt_files": 2490,
-              "receipt_bytes": 2573932,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 636,
-            "seconds": 19.104898708988912,
-            "files": 3194,
-            "bytes": 3296051,
-            "manifest_revision": "sha256:7b69fba6877b5acf9ebdf844cf4cd4884e63bc8d749ac7bb9ce43fffc48fb7e2",
-            "storage": {
-              "receipt_files": 3185,
-              "receipt_bytes": 3292558,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 767,
-            "seconds": 24.263830916024745,
-            "files": 3849,
-            "bytes": 3973282,
-            "manifest_revision": "sha256:4e9b880ed58c2dbdeb22049a598a171734b20d825728d1d812230df7462913d4",
-            "storage": {
-              "receipt_files": 3840,
-              "receipt_bytes": 3969790,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 892,
-            "seconds": 30.711364999995567,
-            "files": 4474,
-            "bytes": 4619505,
-            "manifest_revision": "sha256:843280a050754af19993e15c8a76ea3ec7c3a39bcc72828f711bf38277eb7dd7",
-            "storage": {
-              "receipt_files": 4465,
-              "receipt_bytes": 4616012,
-              "log_bytes": 23
-            }
-          },
-          {
-            "round": 1007,
-            "seconds": 30.676083959056996,
-            "files": 5049,
-            "bytes": 5214155,
-            "manifest_revision": "sha256:652521d7a6d9cd7853187778fc28fe81a130acd9ba1bb95cd4f9b10f6f108e25",
-            "storage": {
-              "receipt_files": 5040,
-              "receipt_bytes": 5210657,
-              "log_bytes": 23
-            }
-          }
-        ],
-        "failures": [
-          {
-            "error_type": "TimeoutExpired",
-            "category": "timeout",
-            "check": "cli-command-timeout",
-            "operation": "restore"
-          }
-        ],
-        "initial_storage": {
-          "receipt_files": 5,
-          "receipt_bytes": 6435,
-          "log_bytes": 23
-        },
-        "work_seconds": 600.1653707079822,
-        "commands": {
-          "success": 22939,
-          "conflict": 3267,
-          "error": 1
-        },
-        "all_root_acknowledgements": {
-          "mutations": 5457,
-          "replays": 5459
-        },
-        "timings": {
-          "init": {
-            "calls": 1,
-            "total_seconds": 0.008019208093173802,
-            "max_seconds": 0.008019208093173802
-          },
-          "create": {
-            "calls": 5,
-            "total_seconds": 0.34625354316085577,
-            "max_seconds": 0.1062529580667615
-          },
-          "read": {
-            "calls": 10911,
-            "total_seconds": 186.8152605514042,
-            "max_seconds": 0.2615374169545248
-          },
-          "patch": {
-            "calls": 14178,
-            "total_seconds": 1432.1855659511639,
-            "max_seconds": 0.44919308403041214
-          },
-          "search": {
-            "calls": 1089,
-            "total_seconds": 7.155146160861477,
-            "max_seconds": 0.01985341589897871
-          },
-          "backup": {
-            "calls": 8,
-            "total_seconds": 6.164440457941964,
-            "max_seconds": 1.2160569169791415
-          },
-          "restore": {
-            "calls": 8,
-            "total_seconds": 149.89858462603297,
-            "max_seconds": 30.00442033400759
-          },
-          "index": {
-            "calls": 7,
-            "total_seconds": 0.04740595805924386,
-            "max_seconds": 0.0072695830604061484
-          }
-        },
-        "confirmed_receipts": 5450,
-        "elapsed_seconds": 633.1844849589979
-      }
-    ],
-    "failures": [
-      {
-        "error_type": "CheckFailure",
-        "category": "invariant",
-        "check": "one or more seed runs failed"
-      }
-    ],
-    "scope": "finite synthetic local-process correctness; not power-loss proof",
-    "acknowledged_work": 33680,
-    "totals": {
-      "setup_mutations": 15,
-      "mutations": 16840,
-      "replays": 16840,
-      "conflicts": 10104,
-      "reads": 33680,
-      "searches": 3368,
-      "backup_checks": 24,
-      "restored_mutations": 24,
-      "restored_replays": 48
-    },
-    "elapsed_seconds": 1923.206963542034
+    "writers": 4,
+    "main_root_mutation_replay_minimum": 10000,
+    "maintain_log": false,
+    "maintain_indexes": true,
+    "command_timeout_seconds": 30
   },
-  "shipping_default_log_companion": {
+  "completed_default_log_companion": {
     "schema_version": "kb.soak.v1",
     "ok": true,
     "platform": {
@@ -602,7 +765,7 @@
       "machine": "arm64",
       "python": "3.14.4"
     },
-    "binary_revision": "sha256:8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+    "binary_revision": "sha256:59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
     "writers": 4,
     "seeds": [
       1729,
@@ -622,14 +785,14 @@
       {
         "seed": 1729,
         "ok": true,
-        "rounds": 41,
+        "rounds": 40,
         "counts": {
           "setup_mutations": 5,
-          "mutations": 205,
-          "replays": 205,
-          "conflicts": 123,
-          "reads": 410,
-          "searches": 41,
+          "mutations": 200,
+          "replays": 200,
+          "conflicts": 120,
+          "reads": 400,
+          "searches": 40,
           "backup_checks": 2,
           "restored_mutations": 2,
           "restored_replays": 4
@@ -637,95 +800,95 @@
         "backup_checks": [
           {
             "round": 22,
-            "seconds": 1.1119084580568597,
+            "seconds": 0.9730261249933392,
             "files": 124,
-            "bytes": 1588903,
-            "manifest_revision": "sha256:af4281782ae8d90f98dbd18e819c97e4a2acb4915047b684b8827dac70ba9b92",
+            "bytes": 1588895,
+            "manifest_revision": "sha256:ad26ec1c3bb4132b069d5fb0d97c5f915bd1adc56bb38682318d8798bd16f61b",
             "storage": {
               "receipt_files": 115,
-              "receipt_bytes": 1573313,
+              "receipt_bytes": 1573302,
               "log_bytes": 12133
             }
           },
           {
-            "round": 41,
-            "seconds": 1.8740337920608,
-            "files": 219,
-            "bytes": 5042078,
-            "manifest_revision": "sha256:b4ec61328ed4d7755b1a8b29b72ebdda87102f27bf16636a867611c67f76ea79",
+            "round": 40,
+            "seconds": 1.5661780000664294,
+            "files": 214,
+            "bytes": 4811903,
+            "manifest_revision": "sha256:28ac9f9d443ed67f761b3da1b3c88a45d938239b299b76480d1209e5b79c36b6",
             "storage": {
-              "receipt_files": 210,
-              "receipt_bytes": 5016454,
-              "log_bytes": 22165
+              "receipt_files": 205,
+              "receipt_bytes": 4786806,
+              "log_bytes": 21637
             }
           }
         ],
         "failures": [],
         "initial_storage": {
           "receipt_files": 5,
-          "receipt_bytes": 10775,
+          "receipt_bytes": 10773,
           "log_bytes": 567
         },
-        "work_seconds": 20.505156875005923,
+        "work_seconds": 20.001323624979705,
         "final_storage": {
-          "receipt_files": 210,
-          "receipt_bytes": 5016454,
-          "log_bytes": 22165
+          "receipt_files": 205,
+          "receipt_bytes": 4786806,
+          "log_bytes": 21637
         },
-        "acknowledged_per_work_second": 19.994970167712093,
+        "acknowledged_per_work_second": 19.998676462613652,
         "commands": {
-          "success": 885,
-          "conflict": 123,
+          "success": 864,
+          "conflict": 120,
           "error": 0
         },
         "all_root_acknowledgements": {
-          "mutations": 212,
-          "replays": 209
+          "mutations": 207,
+          "replays": 204
         },
         "timings": {
           "init": {
             "calls": 1,
-            "total_seconds": 0.008367000031284988,
-            "max_seconds": 0.008367000031284988
+            "total_seconds": 0.00874695903621614,
+            "max_seconds": 0.00874695903621614
           },
           "create": {
             "calls": 5,
-            "total_seconds": 0.48643916577566415,
-            "max_seconds": 0.12196208292152733
+            "total_seconds": 0.46639979106839746,
+            "max_seconds": 0.11495916696731001
           },
           "read": {
-            "calls": 416,
-            "total_seconds": 6.494769820361398,
-            "max_seconds": 0.23335920798126608
+            "calls": 406,
+            "total_seconds": 7.682033742428757,
+            "max_seconds": 0.23924937495030463
           },
           "patch": {
-            "calls": 539,
-            "total_seconds": 62.13422219606582,
-            "max_seconds": 0.39239141601137817
+            "calls": 526,
+            "total_seconds": 60.11279962758999,
+            "max_seconds": 0.37974562495946884
           },
           "search": {
-            "calls": 41,
-            "total_seconds": 0.2723462926223874,
-            "max_seconds": 0.008856749976985157
+            "calls": 40,
+            "total_seconds": 0.27828203968238086,
+            "max_seconds": 0.009155250038020313
           },
           "backup": {
             "calls": 2,
-            "total_seconds": 0.17667824996169657,
-            "max_seconds": 0.09808829193934798
+            "total_seconds": 0.2836165828630328,
+            "max_seconds": 0.18347695795819163
           },
           "restore": {
             "calls": 2,
-            "total_seconds": 2.399298624950461,
-            "max_seconds": 1.548967457958497
+            "total_seconds": 1.8725273329764605,
+            "max_seconds": 1.1881033329991624
           },
           "index": {
             "calls": 2,
-            "total_seconds": 0.01995758304838091,
-            "max_seconds": 0.010673416079953313
+            "total_seconds": 0.01912208297289908,
+            "max_seconds": 0.011776500032283366
           }
         },
-        "confirmed_receipts": 210,
-        "elapsed_seconds": 22.906204249942675
+        "confirmed_receipts": 205,
+        "elapsed_seconds": 22.058978667017072
       },
       {
         "seed": 2718,
@@ -745,25 +908,25 @@
         "backup_checks": [
           {
             "round": 22,
-            "seconds": 1.1181355000007898,
+            "seconds": 0.9867886250140145,
             "files": 124,
-            "bytes": 1588885,
-            "manifest_revision": "sha256:08fcd49b72b51d1fbc797f51dc55bbe0bae5b99110981dcc910aab1f48f67503",
+            "bytes": 1588895,
+            "manifest_revision": "sha256:531b4a76476e4a5f57088ed436c6c7fd3b84c8dcbed9378133be8f30311b72f1",
             "storage": {
               "receipt_files": 115,
-              "receipt_bytes": 1573293,
+              "receipt_bytes": 1573302,
               "log_bytes": 12133
             }
           },
           {
             "round": 41,
-            "seconds": 1.8591476250439882,
+            "seconds": 1.5817782500525936,
             "files": 219,
-            "bytes": 5042054,
-            "manifest_revision": "sha256:ea6c296384852b0af43931e95a91bc9c6cd79bbb5e2492ea08aef0026325ce67",
+            "bytes": 5042078,
+            "manifest_revision": "sha256:089fc66c0b75467ddc460d448631bca5112ff4878a39dd150402bcc8b0319745",
             "storage": {
               "receipt_files": 210,
-              "receipt_bytes": 5016430,
+              "receipt_bytes": 5016453,
               "log_bytes": 22165
             }
           }
@@ -774,13 +937,13 @@
           "receipt_bytes": 10775,
           "log_bytes": 567
         },
-        "work_seconds": 20.2347607499687,
+        "work_seconds": 20.136574457981624,
         "final_storage": {
           "receipt_files": 210,
-          "receipt_bytes": 5016430,
+          "receipt_bytes": 5016453,
           "log_bytes": 22165
         },
-        "acknowledged_per_work_second": 20.26216198284599,
+        "acknowledged_per_work_second": 20.360960641817925,
         "commands": {
           "success": 885,
           "conflict": 123,
@@ -793,86 +956,86 @@
         "timings": {
           "init": {
             "calls": 1,
-            "total_seconds": 0.01503729191608727,
-            "max_seconds": 0.01503729191608727
+            "total_seconds": 0.017502250033430755,
+            "max_seconds": 0.017502250033430755
           },
           "create": {
             "calls": 5,
-            "total_seconds": 0.40173391602002084,
-            "max_seconds": 0.10105116700287908
+            "total_seconds": 0.4491567910881713,
+            "max_seconds": 0.09702175005804747
           },
           "read": {
             "calls": 416,
-            "total_seconds": 6.39557403861545,
-            "max_seconds": 0.20913383294828236
+            "total_seconds": 7.1124352113110945,
+            "max_seconds": 0.2577477080048993
           },
           "patch": {
             "calls": 539,
-            "total_seconds": 61.869171339669265,
-            "max_seconds": 0.3745494580361992
+            "total_seconds": 61.23454629431944,
+            "max_seconds": 0.37338074995204806
           },
           "search": {
             "calls": 41,
-            "total_seconds": 0.2828062045155093,
-            "max_seconds": 0.008611832978203893
+            "total_seconds": 0.28620604425668716,
+            "max_seconds": 0.009953042026609182
           },
           "backup": {
             "calls": 2,
-            "total_seconds": 0.15107999905012548,
-            "max_seconds": 0.09360466606449336
+            "total_seconds": 0.2337112909881398,
+            "max_seconds": 0.13854520802851766
           },
           "restore": {
             "calls": 2,
-            "total_seconds": 2.4254824590170756,
-            "max_seconds": 1.5404505420010537
+            "total_seconds": 1.9902258749352768,
+            "max_seconds": 1.257726209005341
           },
           "index": {
             "calls": 2,
-            "total_seconds": 0.01758945791516453,
-            "max_seconds": 0.010541957919485867
+            "total_seconds": 0.01620870816987008,
+            "max_seconds": 0.008584666065871716
           }
         },
         "confirmed_receipts": 210,
-        "elapsed_seconds": 22.532029499998316
+        "elapsed_seconds": 22.20667854207568
       },
       {
         "seed": 31415,
         "ok": true,
-        "rounds": 40,
+        "rounds": 39,
         "counts": {
           "setup_mutations": 5,
-          "mutations": 200,
-          "replays": 200,
-          "conflicts": 120,
-          "reads": 400,
-          "searches": 40,
+          "mutations": 195,
+          "replays": 195,
+          "conflicts": 117,
+          "reads": 390,
+          "searches": 39,
           "backup_checks": 2,
           "restored_mutations": 2,
           "restored_replays": 4
         },
         "backup_checks": [
           {
-            "round": 22,
-            "seconds": 1.074074957985431,
-            "files": 124,
-            "bytes": 1602568,
-            "manifest_revision": "sha256:52084409bcf2ad046d7b7f01b831e5ab984b8f3852639e28da379cf3cc55acde",
+            "round": 23,
+            "seconds": 0.9585022500250489,
+            "files": 129,
+            "bytes": 1737092,
+            "manifest_revision": "sha256:81a1168c44199edaec08f54ff32bdaa08cf91cf1fb3b5ff219c56b72a30a9d5a",
             "storage": {
-              "receipt_files": 115,
-              "receipt_bytes": 1586855,
-              "log_bytes": 12248
+              "receipt_files": 120,
+              "receipt_bytes": 1720846,
+              "log_bytes": 12781
             }
           },
           {
-            "round": 40,
-            "seconds": 1.860891874996014,
-            "files": 214,
-            "bytes": 4854734,
-            "manifest_revision": "sha256:e0328d23d46ed78a4c8882f5723b2dd20df27047e43db1d204f6438fff770db4",
+            "round": 39,
+            "seconds": 1.4569011670537293,
+            "files": 209,
+            "bytes": 4627898,
+            "manifest_revision": "sha256:589555285eeaf65325540e780376842b7dec9003836558daa589c7bcb2b645ca",
             "storage": {
-              "receipt_files": 205,
-              "receipt_bytes": 4829429,
-              "log_bytes": 21842
+              "receipt_files": 200,
+              "receipt_bytes": 4603124,
+              "log_bytes": 21309
             }
           }
         ],
@@ -882,98 +1045,102 @@
           "receipt_bytes": 10804,
           "log_bytes": 572
         },
-        "work_seconds": 20.46554304100573,
+        "work_seconds": 20.29642429202795,
         "final_storage": {
-          "receipt_files": 205,
-          "receipt_bytes": 4829429,
-          "log_bytes": 21842
+          "receipt_files": 200,
+          "receipt_bytes": 4603124,
+          "log_bytes": 21309
         },
-        "acknowledged_per_work_second": 19.545046969852745,
+        "acknowledged_per_work_second": 19.215207289157064,
         "commands": {
-          "success": 864,
-          "conflict": 120,
+          "success": 843,
+          "conflict": 117,
           "error": 0
         },
         "all_root_acknowledgements": {
-          "mutations": 207,
-          "replays": 204
+          "mutations": 202,
+          "replays": 199
         },
         "timings": {
           "init": {
             "calls": 1,
-            "total_seconds": 0.010382333071902394,
-            "max_seconds": 0.010382333071902394
+            "total_seconds": 0.012066459050402045,
+            "max_seconds": 0.012066459050402045
           },
           "create": {
             "calls": 5,
-            "total_seconds": 0.41310895793139935,
-            "max_seconds": 0.10361662495415658
+            "total_seconds": 0.476618165965192,
+            "max_seconds": 0.11191674997098744
           },
           "read": {
-            "calls": 406,
-            "total_seconds": 6.7815558752045035,
-            "max_seconds": 0.1891317090485245
+            "calls": 396,
+            "total_seconds": 6.890359834069386,
+            "max_seconds": 0.27504512504674494
           },
           "patch": {
-            "calls": 526,
-            "total_seconds": 62.85914622468408,
-            "max_seconds": 0.41081174998544157
+            "calls": 513,
+            "total_seconds": 62.63906985032372,
+            "max_seconds": 0.5240214170189574
           },
           "search": {
-            "calls": 40,
-            "total_seconds": 0.28614283027127385,
-            "max_seconds": 0.008560416987165809
+            "calls": 39,
+            "total_seconds": 0.2760614569997415,
+            "max_seconds": 0.008678417070768774
           },
           "backup": {
             "calls": 2,
-            "total_seconds": 0.17133545805700123,
-            "max_seconds": 0.08907479199115187
+            "total_seconds": 0.13579804194159806,
+            "max_seconds": 0.07928574993275106
           },
           "restore": {
             "calls": 2,
-            "total_seconds": 2.4126689169788733,
-            "max_seconds": 1.5878085839794949
+            "total_seconds": 1.917572290985845,
+            "max_seconds": 1.2005812500137836
           },
           "index": {
             "calls": 2,
-            "total_seconds": 0.015430667088367045,
-            "max_seconds": 0.008231875021010637
+            "total_seconds": 0.01476799906231463,
+            "max_seconds": 0.007689666002988815
           }
         },
-        "confirmed_receipts": 205,
-        "elapsed_seconds": 22.808455082937144
+        "confirmed_receipts": 200,
+        "elapsed_seconds": 22.25507691700477
       }
     ],
     "failures": [],
     "scope": "finite synthetic local-process correctness; not power-loss proof",
-    "acknowledged_work": 1220,
+    "acknowledged_work": 1200,
     "totals": {
       "setup_mutations": 15,
-      "mutations": 610,
-      "replays": 610,
-      "conflicts": 366,
-      "reads": 1220,
-      "searches": 122,
+      "mutations": 600,
+      "replays": 600,
+      "conflicts": 360,
+      "reads": 1200,
+      "searches": 120,
       "backup_checks": 6,
       "restored_mutations": 6,
       "restored_replays": 12
     },
-    "elapsed_seconds": 68.24793449998833
+    "elapsed_seconds": 66.52189441595692
   },
-  "shipping_current_boundary_summary": {
-    "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
-    "integrated_main": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
+  "companion_editor_accounting_validation": "PASS; actual clocks, receipt/ACK/counter/checkpoint accounting; no second runtime execution",
+  "observed_test_child_interruptions": {
+    "ok": true,
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
     "CGO_ENABLED": "0",
+    "GOMAXPROCS": 2,
     "repetitions": 3,
-    "observed_boundary_kill_cases": 102,
+    "observed_boundary_kill_cases": 105,
     "case_groups": {
       "TestRealProcessInterruptionRecoveryAndOperationalArchives": 33,
       "TestRealProcessInterruptionEveryPublicationAndRecoveryPosition": 54,
-      "TestRealProcessInterruptionEveryRestoreFilePosition": 15
+      "TestRealProcessInterruptionEveryRestoreFilePosition": 15,
+      "TestRestoreBatchInterruptedReceiptHistory": 3
     },
-    "package_seconds": 24.901,
-    "ok": true,
-    "limits": "Observed-boundary test children, not the public CLI binary or hardware power loss.",
+    "package_seconds": 22.336,
+    "limits": "Observed-boundary test children including3receipt-batch interruptions; notpublicCLI or hardwarepowerloss proof.",
+    "failures": 0,
+    "skips": 0,
     "observed_case_repetition_counts": {
       "TestRealProcessInterruptionEveryPublicationAndRecoveryPosition/publication/1": 3,
       "TestRealProcessInterruptionEveryPublicationAndRecoveryPosition/publication/2": 3,
@@ -1008,164 +1175,14 @@
       "TestRealProcessInterruptionRecoveryAndOperationalArchives/removed": 3,
       "TestRealProcessInterruptionRecoveryAndOperationalArchives/restore-file": 3,
       "TestRealProcessInterruptionRecoveryAndOperationalArchives/restore-published": 3,
-      "TestRealProcessInterruptionRecoveryAndOperationalArchives/restore-validated": 3
-    },
-    "failures": 0,
-    "skips": 0,
-    "recording_sha256": "sha256:0c34a9c98dfec835fe3dd584f2817684f542f4bba7ab74f8f7ab6daff76ecf69"
+      "TestRealProcessInterruptionRecoveryAndOperationalArchives/restore-validated": 3,
+      "TestRestoreBatchInterruptedReceiptHistory": 3
+    }
   },
-  "extended_requirements": {
-    "seconds_total_minimum": 1800,
-    "seconds_per_seed_minimum": 600,
-    "seeds": [
-      1729,
-      2718,
-      31415
-    ],
-    "writers": 4,
-    "main_root_mutation_plus_replay_minimum": 10000,
-    "maintain_indexes": true,
-    "maintain_log": false,
-    "command_timeout_seconds": 30
-  },
-  "historical_endurance_not_reused": true,
-  "D02_complete": false,
+  "historical_long_observation_reused": false,
   "limits": [
-    "Companion completion is not an1800-second shipping qualification.",
-    "Counts never replace actual per-seed active time.",
-    "The command timeout applies separately to each CLI command, not a combined backup/restore checkpoint.",
-    "Observed local-filesystem correctness is not universal power-loss safety or hostile-editor isolation."
-  ],
-  "shipping_extended_profile_validation": {
-    "ok": false,
-    "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
-    "binary_revision": "sha256:8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
-    "input_report_sha256": "sha256:943e3a519b5a83c0b60849071025378abd4bcda42f729c5fcfae9594f97f2b45",
-    "status": "failed-not-qualified",
-    "acknowledged_work": 33680,
-    "totals": {
-      "setup_mutations": 15,
-      "mutations": 16840,
-      "replays": 16840,
-      "conflicts": 10104,
-      "reads": 33680,
-      "searches": 3368,
-      "backup_checks": 24,
-      "restored_mutations": 24,
-      "restored_replays": 48
-    },
-    "actual_work_seconds": [
-      626.9155622500693,
-      600.1190743329935,
-      600.1653707079822
-    ],
-    "overall_elapsed_seconds": 1923.206963542034,
-    "failed_seed": 31415,
-    "failed_operation": "restore",
-    "failure": {
-      "error_type": "TimeoutExpired",
-      "category": "timeout",
-      "check": "cli-command-timeout",
-      "operation": "restore"
-    },
-    "failed_restore_max_seconds": 30.00442033400759,
-    "completed_backup_restore_checks": 24,
-    "final_failed_checkpoint_fidelity_completed": false,
-    "lost_confirmed_state_demonstrated": false,
-    "independent_report_validator": "rejected-profile-not-complete-pass",
-    "limits": [
-      "Counts and clocks do not offset a real timeout or incomplete final restore.",
-      "No post-timeout final storage inventory was recorded for the failed seed.",
-      "No timeout, acceptance ceiling or production runtime changed by evidence editor."
-    ],
-    "max_completed_checkpoint_files": 5824,
-    "max_completed_checkpoint_bytes": 6000506,
-    "max_combined_successful_checkpoint_seconds": 31.628004916012287,
-    "max_single_backup_seconds": 1.540135124931112,
-    "max_single_successful_seed_restore_seconds": 27.981605499982834,
-    "reported_main_root_ACK_per_active_second": 18.43257435727193
-  },
-  "shipping_default_log_independent_validation": {
-    "ok": true,
-    "independent_validation": "Completed-report algebra, configuration, actual clocks, receipt accounting, command outcomes and checkpoint/continued-write invariants; not a second execution or inspection of disposed roots.",
-    "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
-    "binary_revision": "sha256:8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
-    "acknowledged_work": 1220,
-    "totals": {
-      "setup_mutations": 15,
-      "mutations": 610,
-      "replays": 610,
-      "conflicts": 366,
-      "reads": 1220,
-      "searches": 122,
-      "backup_checks": 6,
-      "restored_mutations": 6,
-      "restored_replays": 12
-    },
-    "actual_work_seconds": [
-      20.505156875005923,
-      20.2347607499687,
-      20.46554304100573
-    ],
-    "overall_elapsed_seconds": 68.24793449998833,
-    "acknowledgements_per_active_second": 19.93286198200464,
-    "acknowledgements_per_overall_second": 17.875998869976183,
-    "backup_checks": 6,
-    "max_checkpoint_files": 219,
-    "max_checkpoint_authoritative_bytes": 5042078,
-    "max_combined_checkpoint_seconds": 1.8740337920608,
-    "max_single_backup_seconds": 0.09808829193934798,
-    "max_single_restore_seconds": 1.5878085839794949,
-    "max_final_receipt_files": 210,
-    "max_final_receipt_bytes": 5016454,
-    "per_seed_storage_growth": [
-      {
-        "seed": 1729,
-        "initial": {
-          "receipt_files": 5,
-          "receipt_bytes": 10775,
-          "log_bytes": 567
-        },
-        "final": {
-          "receipt_files": 210,
-          "receipt_bytes": 5016454,
-          "log_bytes": 22165
-        }
-      },
-      {
-        "seed": 2718,
-        "initial": {
-          "receipt_files": 5,
-          "receipt_bytes": 10775,
-          "log_bytes": 567
-        },
-        "final": {
-          "receipt_files": 210,
-          "receipt_bytes": 5016430,
-          "log_bytes": 22165
-        }
-      },
-      {
-        "seed": 31415,
-        "initial": {
-          "receipt_files": 5,
-          "receipt_bytes": 10804,
-          "log_bytes": 572
-        },
-        "final": {
-          "receipt_files": 205,
-          "receipt_bytes": 4829429,
-          "log_bytes": 21842
-        }
-      }
-    ]
-  },
-  "immutable_source_fixture": {
-    "relative_path": "raw/source.bin",
-    "bytes": 2048,
-    "expected_sha256": "sha256:10fc3c51a152e90e5b90319b601d92ccf37290ef53c35ff92507687d8a911a08",
-    "generator": "bytes(range(256)) * 8",
-    "derivation": "Expected fixture identity computed from committed harness constructor, not a separately exported per-run source hash.",
-    "checked_scope": "Committed harness compares exact source bytes at receipt-verification and restored-continuation boundaries; failed final restore did not complete its final fidelity checks."
-  }
+    "Finite synthetic local-process/filesystem correctness over the recorded windows only; not arbitrary history size, network filesystem, hostile editor isolation or hardware power-loss proof.",
+    "The separate default-log profile is60seconds, not a30-minute default-log qualification.",
+    "Observed test-child boundaries are not arbitrary public-CLI interruption proof; a combined checkpoint is not one30-second command."
+  ]
 }

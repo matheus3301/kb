@@ -1,0 +1,187 @@
+{
+  "schema_version": "kb.v1-restore-production-attribution.v1",
+  "owner_runtime_commit": "38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6",
+  "root_integration_commit": "5477946be88ef574499a07a7eabe7aa8b6bcc084",
+  "final_candidate5_source": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+  "test_only_delta": [
+    "internal/write/backup_restore_batch_test.go",
+    "internal/write/backup_restore_contracts_test.go"
+  ],
+  "all_other_Go_module_blobs_equal": true,
+  "focused_independent_review": {
+    "decision": {
+      "runtime": "BOUNDED ACCEPTANCE of committed production and regression scope; no concrete additional blocker found",
+      "R1_worker_cleanup": "CLOSED for reviewed committed source and targeted regression design, with passing execution owner-reported rather than independently rerun",
+      "Go_source": "Frozen; no Go change requested or made",
+      "V08": "NOT APPROVED by this focused review",
+      "stable_release_installation": "NOT ESTABLISHED"
+    },
+    "source_review": {
+      "backup_restore.go": "Fixed four pending descriptor/identity records, sequential preparation/write, no payload queue. All file Sync/close attempts finish before workers.Wait returns. Workers never remove leaves or close retained parents. Coordinator first registers every successful file identity, then finish runs for every pending record without short-circuiting errors; failed partial leaves are identity-guardedly removed and all retained parents closed there. Parent Sync and fresh anchoring remain for every successfully completed file.",
+      "error_ownership": "Write errors stay in prepared records. File Sync/close are evaluated even when writeErr is set. Successful file records are marked before parent Sync/identity, preserving them for outer cleanup on those later failures. Every prepared record survives through join and finish. Failed removal errors are retained; external/replaced/unremovable state may conservatively remain rather than be silently declared cleaned.",
+      "backup.go": "Explicit residual flush joins readBackup errors without hooks; deferred drain precedes outer cleanup, destination close and archive close. Count reset and deferred clear prevent double finishing after callback failure. Service.locked unlocks and closes source root only after closure defers finish. Archive-ordered callbacks execute on coordinator after join/finish. Final inventory and synchronous last config publication remain.",
+      "cancellation": "Post-prepare cancellation preserves newly enqueued record. Canceled and single-item drains may run inline but still complete all Sync/close/finish work and join launched peers. Context checks before callbacks and final return catch first and final callback cancellation; post-read check catches zero-pending cancellation. No config is published after an observed prepublication batch error/cancellation.",
+      "contracts": "No observed parser/checksum/limits/DTO/archive/retention/timeout change. Successful file/parent Syncs, directory-creation Syncs, config Syncs and final .kb/restores Sync remain. Four is a bound on pending file/parent pairs, not total process descriptors; temporary Sync/anchoring descriptors remain bounded.",
+      "inherited_limits": "Preparation Stat-error removal behavior and malicious same-user filesystem race limits are inherited from baseline, not newly certified. Post-config failures or restore-published-hook errors can leave a complete initialized output under the existing contract."
+    },
+    "test_execution_provenance": {
+      "provenance": "Targeted executions owner-reported and inspected by independent focused reviewer, not independently rerun.",
+      "reported_passes": [
+        {
+          "seconds": 83.898,
+          "scope": "Batch/root-contract race plus shuffle count3; before later success-order/cancel-first/preparation additions"
+        },
+        {
+          "seconds": 6.756,
+          "scope": "Successful archive order and first/final-residual cancellation race/shuffle count3"
+        },
+        {
+          "seconds": 2.8,
+          "scope": "Preparation collision with prior pending records and foreign/source/archive preservation count3"
+        }
+      ],
+      "current_full_gate_scope": "Later actual cb66 source full make check/snapshot receipts are recorded separately; earlier focused-review pending-gate prose is not current status."
+    },
+    "final_source_pin_decision": "FINAL SOURCE-PIN ACCEPTANCE for focused restore review; no production delta or new concrete blocker; not binary/method/V08/release acceptance",
+    "scope": "Focused R1/source/test acceptance, not final V08. Targeted execution owner-reported; actual final full source gates separately receipted."
+  },
+  "native_scale": {
+    "receipts": 6000,
+    "receipt_bytes": 5234713,
+    "samples_per_binary": 3,
+    "command_timeout_seconds": 30,
+    "GOMAXPROCS": 2,
+    "binaries": {
+      "baseline": {
+        "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+        "version": {
+          "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+          "version": "v1.0.0-candidate.3"
+        },
+        "cgo_enabled": 0,
+        "trimpath": true
+      },
+      "candidate": {
+        "sha256": "78dc608ad6810188b695c4af796a0811e713f6fce03db5a218739a9ac9d22b93",
+        "version": {
+          "commit": "38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6",
+          "version": "v1.0.0-candidate.4"
+        },
+        "cgo_enabled": 0,
+        "trimpath": true
+      }
+    },
+    "observations": [
+      {
+        "label": "baseline",
+        "sample": 0,
+        "elapsed_ms": 29400.285084,
+        "peak_rss_mib": 32.515625,
+        "exact_manifest_inventory_config_receipts": true,
+        "exact_replays": 3,
+        "continued_write": true,
+        "original_receipts_unchanged_after_write": true,
+        "source_and_archive_unchanged": true,
+        "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+        "files": 6009,
+        "bytes": 5235814
+      },
+      {
+        "label": "candidate",
+        "sample": 0,
+        "elapsed_ms": 24701.219709,
+        "peak_rss_mib": 31.78125,
+        "exact_manifest_inventory_config_receipts": true,
+        "exact_replays": 3,
+        "continued_write": true,
+        "original_receipts_unchanged_after_write": true,
+        "source_and_archive_unchanged": true,
+        "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+        "files": 6009,
+        "bytes": 5235814
+      },
+      {
+        "label": "baseline",
+        "sample": 1,
+        "elapsed_ms": 29043.362125,
+        "peak_rss_mib": 32.5,
+        "exact_manifest_inventory_config_receipts": true,
+        "exact_replays": 3,
+        "continued_write": true,
+        "original_receipts_unchanged_after_write": true,
+        "source_and_archive_unchanged": true,
+        "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+        "files": 6009,
+        "bytes": 5235814
+      },
+      {
+        "label": "candidate",
+        "sample": 1,
+        "elapsed_ms": 24588.338542,
+        "peak_rss_mib": 32.484375,
+        "exact_manifest_inventory_config_receipts": true,
+        "exact_replays": 3,
+        "continued_write": true,
+        "original_receipts_unchanged_after_write": true,
+        "source_and_archive_unchanged": true,
+        "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+        "files": 6009,
+        "bytes": 5235814
+      },
+      {
+        "label": "baseline",
+        "sample": 2,
+        "elapsed_ms": 28990.590417,
+        "peak_rss_mib": 31.796875,
+        "exact_manifest_inventory_config_receipts": true,
+        "exact_replays": 3,
+        "continued_write": true,
+        "original_receipts_unchanged_after_write": true,
+        "source_and_archive_unchanged": true,
+        "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+        "files": 6009,
+        "bytes": 5235814
+      },
+      {
+        "label": "candidate",
+        "sample": 2,
+        "elapsed_ms": 24834.842,
+        "peak_rss_mib": 32.8125,
+        "exact_manifest_inventory_config_receipts": true,
+        "exact_replays": 3,
+        "continued_write": true,
+        "original_receipts_unchanged_after_write": true,
+        "source_and_archive_unchanged": true,
+        "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+        "files": 6009,
+        "bytes": 5235814
+      }
+    ],
+    "artifact_identity_limit": "Actual candidate.4/38ab executable, not candidate.5. Production-source equivalence through two test-only changes is attribution, never binary relabeling.",
+    "performance_limit": "Three paired GOMAXPROCS2 native samples, baseline first/cache uncontrolled; not the GOMAXPROCS8 profiled prototype and not a uniform performance or endurance guarantee.",
+    "summary": {
+      "baseline": {
+        "ordered_elapsed_seconds": [
+          29.400285084,
+          29.043362124999998,
+          28.990590417
+        ],
+        "median_seconds": 29.043362124999998,
+        "sample_max_seconds": 29.400285084,
+        "peak_rss_mib": 32.515625
+      },
+      "candidate": {
+        "ordered_elapsed_seconds": [
+          24.701219709,
+          24.588338542000002,
+          24.834842000000002
+        ],
+        "median_seconds": 24.701219709,
+        "sample_max_seconds": 24.834842000000002,
+        "peak_rss_mib": 32.8125
+      }
+    }
+  },
+  "old_prototype_error_invariant_retroactively_fixed": false,
+  "V08": "pending publication-authorization review"
+}

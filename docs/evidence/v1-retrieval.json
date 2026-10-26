@@ -1,71 +1,70 @@
 {
-  "schema_version": "kb.v1-shipping-retrieval.v1",
-  "publication_state": "reviewable-candidate-evidence; not stable publication or installed-v1 proof",
-  "source_commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
-  "coordinator_attributed_binary_sha256": "sha256:8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
-  "identity_limit": "The raw evaluator omits executable identity; coordinator attributes this fresh invocation to the preserved shipping candidate.",
-  "corpus_sha256": "sha256:562af0124822b42e72125ae9307e5bc5a5fe9fb0f1164be13a8811aa6d49cc4c",
+  "schema_version": "kb.v1-candidate5-retrieval.v1",
+  "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+  "coordinator_bound_binary_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+  "identity_limit": "Raw evaluator omits executable identity; completed functional receipt and coordinator bind this fresh invocation to candidate.5.",
+  "corpus_sha256": "562af0124822b42e72125ae9307e5bc5a5fe9fb0f1164be13a8811aa6d49cc4c",
   "authored_search_judgments": [
     {
       "id": "portuguese-accented",
-      "query": "mem\u00f3ria a\u00e7\u00e3o",
+      "query": "memória ação",
       "relevant": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ],
       "matches": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ]
     },
     {
       "id": "portuguese-folded",
       "query": "MEMORIA ACAO",
       "relevant": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ],
       "matches": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ]
     },
     {
       "id": "portuguese-decomposed",
-      "query": "memo\u0301ria ac\u0327a\u0303o",
+      "query": "memória ação",
       "relevant": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ],
       "matches": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ]
     },
     {
       "id": "cafe-ambiguity",
-      "query": "caf\u00e9",
+      "query": "café",
       "relevant": [
-        "03_Resources/mem\u00f3ria.md",
+        "03_Resources/memória.md",
         "03_Resources/distractor.md"
       ],
       "matches": [
-        "03_Resources/mem\u00f3ria.md",
+        "03_Resources/memória.md",
         "03_Resources/distractor.md"
       ]
     },
     {
       "id": "cjk-whole-token",
-      "query": "\u6771\u4eac",
+      "query": "東京",
       "relevant": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ],
       "matches": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ]
     },
     {
       "id": "cyrillic-case",
-      "query": "\u041f\u0420\u0418\u0412\u0415\u0422",
+      "query": "ПРИВЕТ",
       "relevant": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ],
       "matches": [
-        "03_Resources/mem\u00f3ria.md"
+        "03_Resources/memória.md"
       ]
     },
     {
@@ -400,13 +399,13 @@
     },
     {
       "id": "unsupported-emoji-only",
-      "query": "\ud83e\uddea",
+      "query": "🧪",
       "relevant": [],
       "matches": []
     },
     {
       "id": "unsupported-cjk-substring",
-      "query": "\u4eac",
+      "query": "京",
       "literal": true,
       "relevant": [],
       "matches": []
@@ -530,7 +529,7 @@
       {
         "id": "portuguese-accented",
         "ranked": [
-          "03_Resources/mem\u00f3ria.md"
+          "03_Resources/memória.md"
         ],
         "total": 1,
         "recall_at5": 1.0,
@@ -540,7 +539,7 @@
       {
         "id": "portuguese-folded",
         "ranked": [
-          "03_Resources/mem\u00f3ria.md"
+          "03_Resources/memória.md"
         ],
         "total": 1,
         "recall_at5": 1.0,
@@ -550,7 +549,7 @@
       {
         "id": "portuguese-decomposed",
         "ranked": [
-          "03_Resources/mem\u00f3ria.md"
+          "03_Resources/memória.md"
         ],
         "total": 1,
         "recall_at5": 1.0,
@@ -561,7 +560,7 @@
         "id": "cafe-ambiguity",
         "ranked": [
           "03_Resources/distractor.md",
-          "03_Resources/mem\u00f3ria.md"
+          "03_Resources/memória.md"
         ],
         "total": 2,
         "recall_at5": 1.0,
@@ -571,7 +570,7 @@
       {
         "id": "cjk-whole-token",
         "ranked": [
-          "03_Resources/mem\u00f3ria.md"
+          "03_Resources/memória.md"
         ],
         "total": 1,
         "recall_at5": 1.0,
@@ -581,7 +580,7 @@
       {
         "id": "cyrillic-case",
         "ranked": [
-          "03_Resources/mem\u00f3ria.md"
+          "03_Resources/memória.md"
         ],
         "total": 1,
         "recall_at5": 1.0,
@@ -970,14 +969,14 @@
         "cases": [
           {
             "id": "portuguese-accented",
-            "query": "mem\u00f3ria a\u00e7\u00e3o",
+            "query": "memória ação",
             "filters": {},
             "literal": false,
             "positive": true,
             "relevant_documents": 1,
             "eligible_documents": 1,
             "ranked": [
-              "03_Resources/mem\u00f3ria.md"
+              "03_Resources/memória.md"
             ],
             "recall_at5": 1.0,
             "reciprocal_rank_at5": 1.0,
@@ -996,7 +995,7 @@
             "relevant_documents": 1,
             "eligible_documents": 1,
             "ranked": [
-              "03_Resources/mem\u00f3ria.md"
+              "03_Resources/memória.md"
             ],
             "recall_at5": 1.0,
             "reciprocal_rank_at5": 1.0,
@@ -1008,14 +1007,14 @@
           },
           {
             "id": "portuguese-decomposed",
-            "query": "memo\u0301ria ac\u0327a\u0303o",
+            "query": "memória ação",
             "filters": {},
             "literal": false,
             "positive": true,
             "relevant_documents": 1,
             "eligible_documents": 1,
             "ranked": [
-              "03_Resources/mem\u00f3ria.md"
+              "03_Resources/memória.md"
             ],
             "recall_at5": 1.0,
             "reciprocal_rank_at5": 1.0,
@@ -1027,14 +1026,14 @@
           },
           {
             "id": "cjk-whole-token",
-            "query": "\u6771\u4eac",
+            "query": "東京",
             "filters": {},
             "literal": false,
             "positive": true,
             "relevant_documents": 1,
             "eligible_documents": 1,
             "ranked": [
-              "03_Resources/mem\u00f3ria.md"
+              "03_Resources/memória.md"
             ],
             "recall_at5": 1.0,
             "reciprocal_rank_at5": 1.0,
@@ -1046,14 +1045,14 @@
           },
           {
             "id": "cyrillic-case",
-            "query": "\u041f\u0420\u0418\u0412\u0415\u0422",
+            "query": "ПРИВЕТ",
             "filters": {},
             "literal": false,
             "positive": true,
             "relevant_documents": 1,
             "eligible_documents": 1,
             "ranked": [
-              "03_Resources/mem\u00f3ria.md"
+              "03_Resources/memória.md"
             ],
             "recall_at5": 1.0,
             "reciprocal_rank_at5": 1.0,
@@ -1087,7 +1086,7 @@
         "cases": [
           {
             "id": "cafe-ambiguity",
-            "query": "caf\u00e9",
+            "query": "café",
             "filters": {},
             "literal": false,
             "positive": true,
@@ -1095,7 +1094,7 @@
             "eligible_documents": 2,
             "ranked": [
               "03_Resources/distractor.md",
-              "03_Resources/mem\u00f3ria.md"
+              "03_Resources/memória.md"
             ],
             "recall_at5": 1.0,
             "reciprocal_rank_at5": 1.0,
@@ -1753,7 +1752,7 @@
           },
           {
             "id": "unsupported-emoji-only",
-            "query": "\ud83e\uddea",
+            "query": "🧪",
             "filters": {},
             "literal": false,
             "positive": false,
@@ -1770,7 +1769,7 @@
           },
           {
             "id": "unsupported-cjk-substring",
-            "query": "\u4eac",
+            "query": "京",
             "filters": {},
             "literal": true,
             "positive": false,
@@ -2010,7 +2009,7 @@
       "floors": "Per positive query min(5, relevant_count)/relevant_count and the original first-relevant-rank-one constraint. Six relevant notes require 5/6, not 1."
     },
     "source_attribution": {
-      "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+      "commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
       "basis": "Caller-supplied attribution; raw evaluator report has no executable identity. Parent must bind fresh final evidence independently."
     },
     "limits": [
@@ -2037,5 +2036,7 @@
       "underlying failed evaluator rejected",
       "six-relevant 5/6 floor, 24/7 accounting and negative-only null means preserved"
     ]
-  }
+  },
+  "editor_recomputed_search_cases": 31,
+  "editor_recomputed_context_cases": 8
 }

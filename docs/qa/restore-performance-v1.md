@@ -1,9 +1,10 @@
 # Restore receipt-history diagnostics
 
-**2026-10-26 diagnostic snapshot, not a production fix or readiness decision.**
-The [whitelisted evidence](../evidence/restore-performance-v1.json) records
-completed synthetic observations, source/overlay fingerprints and explicit
-limitations. Production correction and fresh qualification remain pending.
+**Historical diagnostic snapshot plus separately attributed production follow-up;
+not a readiness decision.** The [whitelisted evidence](../evidence/restore-performance-v1.json)
+preserves the older synthetic observations/source overlays and their limitations.
+The appended production/6k section records later facts. Current candidate.5 local
+qualification passed; hosted CI, V08 and actual installed-v1 proof remain pending.
 
 ## Shipping failure remains failed
 
@@ -117,9 +118,9 @@ replay/continued-write correctness is not inferred merely from equal bytes.
 not accepted.** Independent review found `removeOwnedRestoreLeaf` reachable
 inside a worker before all workers had joined. These timings establish
 **successful-path evidence only; the error-path invariant is not established**.
-The runtime correction must keep hooks and cleanup on the coordinator after
-all joins, retaining ownership records and parent handles. This report does not
-claim that correction has been implemented, tested or qualified.
+That old prototype required coordinator hooks/cleanup after all joins, retaining
+ownership and parent handles. The separately committed correction is described
+below; its source review does not retroactively validate these prototype bytes.
 
 | Diagnostic executable | Version label | SHA-256 |
 | --- | --- | --- |
@@ -167,10 +168,62 @@ plus restore, and excludes output cleanup. It does **not** reproduce the private
 The [earlier receipt-scan repair](backup-performance-v1.md) is a separate bounded
 comparison and retains its own RSS regression.
 
-Still pending: frozen production source and focused failure/race/scale tests;
-actual shipping restore at **at least 6,000 receipts**; a new complete D03 matrix
-and actual 1,800-second/default-log qualification; fresh compatibility, retrieval
-and observed-boundary crash evidence; protected CI; V08 publication authorization;
-then separately authorized publication and actual Homebrew/installed verification.
-See [stability](../stability.md) and [backup contracts](../backups.md). No readiness,
-production-fix, published-v1 or universal power-loss claim is made here.
+At the earlier diagnostic checkpoint, production correction, 6k scale and fresh
+qualification were pending. The later section below updates those facts with
+distinct source/artifact identities; the original measurements and rejected
+error-path claim above remain unchanged. See [current qualification](v1-qualification.md)
+and [stability](../stability.md) for the active candidate and remaining gates.
+
+
+## Later committed production correction and native 6k scale
+
+The old prototype and its rejected cleanup claim above remain unchanged.
+Separately committed production source
+`38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6`, root integration
+`5477946be88ef574499a07a7eabe7aa8b6bcc084`, now joins all file-sync/close workers
+before coordinator-owned hooks, cleanup, retained-parent closure, final inventory
+and config publication. Every prepared ownership record survives cancellation
+and error draining. Independent focused source/R1 acceptance covers that committed
+implementation, not the old overlay artifact, final V08 or universal power loss.
+Targeted batch/contract race executions are owner-reported; later actual final
+full-source gates are separately receipted.
+
+Final source `cb66fd77a120d8c8531f9077a32d2bf51ef7921c` differs from 38ab in only
+`backup_restore_batch_test.go` and `backup_restore_contracts_test.go`, for checked
+channels and anchored fixture reads. All production Go/module bytes match.
+[Source/review attribution](../evidence/v1-restore-production.json) preserves that
+relationship without relabeling an executable.
+
+Three paired native samples at **6,000 transaction-produced receipts** used actual
+candidate.4/38ab, SHA-256
+`78dc608ad6810188b695c4af796a0811e713f6fce03db5a218739a9ac9d22b93`, versus the
+immutable candidate.3 baseline. All six samples finished within the unchanged
+30-second guard and matched 6,009 files / 5,235,814 content bytes, exact
+inventory/config/receipts, three restored old-request replays, continued writes,
+original receipt purity and unchanged source/archive.
+
+| Pair | Candidate.3 (s) | Candidate.4 (s) | Candidate.3 RSS (MiB) | Candidate.4 RSS (MiB) |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 29.400285 | 24.701220 | 32.515625 | 31.781250 |
+| 2 | 29.043362 | 24.588339 | 32.500000 | 32.484375 |
+| 3 | 28.990590 | 24.834842 | 31.796875 | 32.812500 |
+
+The pair-level peak RSS increased **32.515625 → 32.812500 MiB**. Native samples
+used `GOMAXPROCS=2`, while the earlier instrumented prototype used 8; different
+implementation/instrumentation contexts prevent a single-variable causal claim
+or a promise of uniform timing gains. This is **candidate.4 evidence, not a
+candidate.5 binary measurement**, despite the later test-only source delta.
+
+Candidate.5 is separately built from cb66, SHA-256
+`59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46`.
+Its actual 93-Python/88.8%-Go source gates and local native/source snapshot passed;
+fresh D03 passed all 16 rows and three core targets; fresh functional reports and
+the separate 1,200-ACK default-log companion passed. The completed extended
+observation passed **34,840 ACK / 27 exact backup/restores**, with three seeds
+over 600 active seconds, zero errors and maximum restore **24.227 seconds**
+at no more than **5,889 checkpoint files**. This is distinct candidate.5 evidence,
+not a relabeling of the candidate.4 6k pairs or historical failed candidate.3 run.
+PR24 initial-head CI passed all 11 jobs; latest integrated-head CI, final V08
+and actual publication/Homebrew/installed-consumer evidence remain pending.
+[Current qualification](v1-qualification.md) contains all identities, drift,
+historical failures and evidence limits.

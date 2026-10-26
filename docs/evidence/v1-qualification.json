@@ -1,26 +1,32 @@
 {
-  "schema_version": "kb.v1-shipping-qualification-plan.v1",
-  "publication_state": "reviewable-candidate-evidence; not stable publication or installed-v1 proof",
-  "runtime_source": "b71c0763c87313666b3dd79da08da12b7b3512c1",
-  "runtime_source_url": "https://github.com/matheus3301/kb/tree/b71c0763c87313666b3dd79da08da12b7b3512c1",
-  "build_protocol_source": "cdc261fb26e696bf26c7f621b3a2b495b09a2885",
-  "protected_main": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
-  "protected_main_tree": "f39d12927362971668b2e173ca01db2daec3ca67",
+  "schema_version": "kb.v1-candidate5-qualification.v1",
+  "publication_state": "reviewable completed factual snapshot; not stable readiness/publication",
+  "runtime_source": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+  "documentation_base": "c372b33bf3a41fd90cd1ee939c1e7c96e19ea37a",
   "candidate_identity": {
     "binary": {
-      "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
-      "version": "v1.0.0-candidate.3"
+      "commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+      "version": "v1.0.0-candidate.5"
     },
-    "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
-    "build_environment": {
-      "CGO_ENABLED": "0",
-      "GOWORK": "off",
-      "GOTOOLCHAIN": "local"
-    },
-    "flags": [
-      "-trimpath",
-      "-ldflags=-s -w plus declared version/source identity"
-    ]
+    "sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46"
+  },
+  "observed_build_fields": {
+    "-buildmode": "exe",
+    "-compiler": "gc",
+    "-trimpath": "true",
+    "CGO_ENABLED": "0",
+    "GOARCH": "arm64",
+    "GOOS": "darwin",
+    "GOARM64": "v8.0",
+    "vcs": "git",
+    "vcs.revision": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "vcs.time": "2026-10-26T06:00:42Z",
+    "vcs.modified": "false"
+  },
+  "declared_build_environment": {
+    "CGO_ENABLED": "0",
+    "GOWORK": "off",
+    "GOTOOLCHAIN": "local"
   },
   "all_go_module_files": {
     "cmd/kb/asset_health_test.go": "62660049a02722f51efc10149549c612112f9625",
@@ -66,13 +72,16 @@
     "internal/mcpserver/server.go": "aa372421e9733fc167725cbae0a98183aa4a22d4",
     "internal/mcpserver/server_test.go": "efce1f040d4674dbe2f1369911d3b2cfcfa0c59f",
     "internal/mcpserver/workflow_test.go": "947d76486683464fdf3b1bbfa77debb54bd66f2d",
-    "internal/write/backup.go": "2e70c140cc71dbc30c3ee9a350d21f656de20fe8",
+    "internal/write/backup.go": "30cd6da87d157047986c5781ebd531f54801fea0",
     "internal/write/backup_archive.go": "39d062802fc86ae72db906ad77a7476d816207f7",
     "internal/write/backup_inventory.go": "68f49d09ffe46cfe6d96ce6c88b66c4ebff45111",
     "internal/write/backup_manifest_test.go": "c20961fabeb74ba51b6cc389dfa62fcc4a7141c4",
     "internal/write/backup_output_test.go": "5c5b4b5a41eb68b2697e65f29af034be31ea3797",
     "internal/write/backup_parent_test.go": "97987ead46f10df3c559ec1f497a5749993b5482",
     "internal/write/backup_paths.go": "3adfaf450b48d5c649bd0fda10c07786b648e8f2",
+    "internal/write/backup_restore.go": "caa7fcba270b020d34e6027f077a8d6b8cf7d725",
+    "internal/write/backup_restore_batch_test.go": "136fe1674a6fafac141467ac684b14b39e141cc2",
+    "internal/write/backup_restore_contracts_test.go": "9c847c8df21b897611e9310dfc544627c250b88a",
     "internal/write/backup_scaling_test.go": "68aff158d1c2879978226339779bb6eb8196b841",
     "internal/write/backup_test.go": "f7dc2c96042923384157d7d7dfc109b1a0d75c0f",
     "internal/write/files.go": "f24710110a62c1219f5c3d763598130c8f68fe47",
@@ -93,7 +102,7 @@
     "internal/write/service.go": "c87d122ad6b6c50c24bd079a879535b82d76a445",
     "internal/write/service_test.go": "9b75e7ca377c4093732d9fb00b52d312e4995bba"
   },
-  "coordinator_recorded_source_file_sha256": {
+  "source_file_sha256": {
     "cmd/kb/asset_health_test.go": "0911cfa0f0a4a7c7f2c7f2b046b256ca609abb8cfb532dc4cf4bd6df686a47d7",
     "cmd/kb/backup_test.go": "a50c80c9896d61f920e25110f2b3e61a476d49cdbb39109e0699ec7a024c80b1",
     "cmd/kb/integration_test.go": "412a09d170316573237a1f98946f4ce610a87b0eb63cac009defad2d812e5203",
@@ -137,13 +146,16 @@
     "internal/mcpserver/server.go": "6c07d2b0043bc80c1b77eb0aa90cc1dc8bb184b233a366bfe6f33f521bc58988",
     "internal/mcpserver/server_test.go": "a53d71f58d7ef30969f61c85305c0bfc3b739166d702e4720b3472d0eec9702a",
     "internal/mcpserver/workflow_test.go": "fec3b63fd052adb5385ea2cdf3482c72ee2fc7babc34cd881da81763edfdc40a",
-    "internal/write/backup.go": "7ac9c0be049d3d7db2c0800228180f51228a9a5d0a41fd1d06b429ae3848ffef",
+    "internal/write/backup.go": "803b84764339ed90c16cb35ff58471b5d1685b90a5daebc7bbda4187e6b37821",
     "internal/write/backup_archive.go": "101fb96600fc1d98ec71a68e0af1b9dd4a215a470c9360a46dd0277236b72d01",
     "internal/write/backup_inventory.go": "385a2239266892be978e4aedbf434408e6427ed36361966db5ec2611328220a3",
     "internal/write/backup_manifest_test.go": "49124b3636c1d49192a7d5f57d2bda2ddbf4906a73f6c5b10a486e09b7bbf57f",
     "internal/write/backup_output_test.go": "00884bed4673ef2424378975adc0a278de409d275e5530867d81f95986c1a205",
     "internal/write/backup_parent_test.go": "7f3caaa55e5c17e716f23df1c1fe800a6e210b277fa39fa598f3641f5be1dae8",
     "internal/write/backup_paths.go": "e11f17d837834fd6986135a2b06d86ca317a7707b17b5b6c5bbf7aa97eee7b44",
+    "internal/write/backup_restore.go": "889010fa365fd7700c95e853e7ab5351e2e0e21983ac24ec49f42f4f22b193d3",
+    "internal/write/backup_restore_batch_test.go": "b2af82af22e1b22fa92d0cd6355540c14b38a850eacc48fbac5092aa607d0473",
+    "internal/write/backup_restore_contracts_test.go": "166c6703e541c774e76d129ecd1a4fd7389bc9f8636a392c123c00553e52b285",
     "internal/write/backup_scaling_test.go": "f87c41232a4cd113713adf77ade17bab819298113ae4495f308af3a31f992471",
     "internal/write/backup_test.go": "2e1aceac0676c3f7c8370188b06551c7eaf28a35f15d52f56d17a8ea10bebcf4",
     "internal/write/files.go": "7e3d0c693941d344047694f1e794e0bd3c301720ad6c2df934b76e3e3fc929e2",
@@ -164,264 +176,274 @@
     "internal/write/service.go": "27037fd2c0c77b31268ef34d1526f4c6a87ac9e55b5179811d74f85db62fbb63",
     "internal/write/service_test.go": "b0d10b6f27a48d1492dc88cff8e754950d7e51d2eefeb1b28147afa927e67da8"
   },
-  "all_go_module_map_sha256": "sha256:a52cf381561d235c79016226a854e6cb03ac1e4cfc143130c9db54d379babfec",
-  "all_go_module_map_definition": "All tracked *.go files plus go.mod/go.sum, including tests; sorted compact path-to-Git-blob-OID JSON.",
-  "matching_sources": [
-    "b71c0763c87313666b3dd79da08da12b7b3512c1",
-    "cdc261fb26e696bf26c7f621b3a2b495b09a2885",
-    "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7"
-  ],
-  "source_gate_attribution": {
-    "source": "Coordinator-bound completed source logs; no gate rerun by evidence editor.",
-    "tooling_tests": 91,
-    "go_statement_coverage_percent": 88.7,
-    "race": true,
+  "all_go_module_map_sha256": "567d8104823d1f31b0ab22ab94cf2c761fdb2db78438d1afa9cb75434864af25",
+  "source_map_definition": "All tracked *.go plus go.mod/go.sum, including tests; sorted compact path-to-Git-blob-OID JSON.",
+  "production_source_equivalence": {
+    "owner": "38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6",
+    "root_integration": "5477946be88ef574499a07a7eabe7aa8b6bcc084",
+    "candidate5": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "only_changed_paths": [
+      "internal/write/backup_restore_batch_test.go",
+      "internal/write/backup_restore_contracts_test.go"
+    ]
+  },
+  "operational_harnesses": {
+    "scripts/soak.py": {
+      "sha256": "277d9bad9f63a369c5791f222fdf3709d3c74a84fd169db02363684d740d05d0",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    },
+    "scripts/compatibility.py": {
+      "sha256": "b1fe0c1d65c2c2e78e379b787be2a15fab5f6426a0aa01f96b39624bb9b08c49",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    },
+    "scripts/retrieval_eval.py": {
+      "sha256": "ae329dcafafc89868136eecaaa49b6a6d7d7fba1934fb17c0e74eae52df64dd5",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    },
+    "scripts/benchmark.py": {
+      "sha256": "5ca637bb4b5805622d3de7f6c5c9bb5d544e91723c842545c6e8c1f0a972ff73",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    },
+    "scripts/acceptance.py": {
+      "sha256": "41e5f3efe8247a2bd7863e5d290903e87bc13171b4a99a7c5a0264a16179cb26",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c"
+    }
+  },
+  "source_gates": {
+    "ok": true,
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "command": "GOMAXPROCS=2 make check under shared lock",
+    "log_sha256": "0cdf24246f4e891eba75d4f0cb8a3b1a3a51826ae058e84e26750dbec76b6324",
+    "tooling_tests": 93,
+    "go_coverage_percent": 88.8,
     "fuzz_targets": 12,
     "cross_builds": 4,
-    "documentation_requests": 43,
-    "CGO0_source_snapshot": "passed"
+    "retrieval_passed": true,
+    "soak_smoke_ack": 80,
+    "limits": "Source qualification; not actual published v1 or a substitute for the separate completed D02/D03 observations.",
+    "documentation_requests": 43
   },
-  "hosted": {
-    "PR23": "https://github.com/matheus3301/kb/pull/23",
-    "exact_PR_CI": "https://github.com/matheus3301/kb/actions/runs/40263657403",
-    "exact_PR_CI_status": "passed",
-    "exact_main_CI_status": "passed",
-    "exact_main_CI_url": "https://github.com/matheus3301/kb/actions/runs/40264275136"
+  "source_snapshot": {
+    "ok": true,
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "go_module_files": 72,
+    "command": "make release-snapshot under shared lock",
+    "candidate_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+    "limits": "Four archives inspected; native Darwin arm64 and archived-source workflows executed locally. Not actual published v1, native Linux or Homebrew proof."
+  },
+  "remote_CI": {
+    "previous_main_CI": {
+      "source_commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
+      "url": "https://github.com/matheus3301/kb/actions/runs/40264275136",
+      "status": "historical PASS, not candidate5 sign-off"
+    },
+    "documented_PR_url": "https://github.com/matheus3301/kb/pull/24",
+    "documented_head": "c372b33bf3a41fd90cd1ee939c1e7c96e19ea37a",
+    "latest_post_evidence_integration_head": "pending; requires exact-head passing CI after evidence integration",
+    "documented_head_status": "PASS all11Linux/macOS jobs includinggate",
+    "documented_head_CI_url": "https://github.com/matheus3301/kb/actions/runs/40285002580",
+    "latest_known_integrated_head_prefix": "503d758"
   },
   "observed_components": {
-    "D01": "fresh47-pair/categories passed, authored membership retained",
-    "D02": "Shipping1800sec profile FAILED: seed31415 restore timeout30sec;33680 reported main-root ACK and24 completed checkpoints do not qualify. Default-log companion and102 deterministic cases passed.",
-    "D03": "one complete shipping matrix passed all16 rows+3core checks with8 native quiet proofs; independent automated bounded D03 audit passed, not V08",
-    "D04": "fresh actual-v040-produced archive upgrade passed9 checks; preserved-v031 upgrade passed8 checks",
-    "V07": "published-v1/installed proof pending post-publication",
-    "V08": "independent automated final review pending"
+    "D01": "PASS fresh47parity pairs/17category validations; original judgments retained",
+    "D02": "PASS actual candidate5 extended34840ACK/27checkpoints/three>=600second seeds plus separate default-log1200ACK;105test-child cases passed",
+    "D03": "PASS whole16resource rows/three core targets independently accepted; all raw ordering/drift retained",
+    "D04": "PASS actual pinnedv0.3.1eight-check/v0.4.0nine-check prior upgrades including real prior-v0.4.0archive; postpublication package/install proof pending"
   },
-  "input_registry": [
-    {
-      "id": "shipping-artifact-identity",
-      "sha256": "sha256:d552fa9383a0e25419a52c1a28bb9a2d047608cd707c251a4304746139a6aeeb",
-      "raw_publication": false
+  "V08": "pending independent publication-authorization review; focused R1/D03 reviews do not satisfy it",
+  "published_installed": "v0.4.0",
+  "published_v1_installed_proof": null,
+  "release_binding": "Actual final docs/release commit and rebuilt executable bytes must be recorded separately; source/test equivalence never implies identical artifacts.",
+  "input_registry": {
+    "candidate5-identity.json": {
+      "sha256": "a50c15cc4d9ebab03348627078b347aad4de379aba2a030e5705a9c703803a7c",
+      "bytes": 1019
     },
-    {
-      "id": "shipping-artifact-build-info",
-      "sha256": "sha256:b2f5882bb5eb4701499fc5cc983c995d8b1f4cdf8cd03ff4aa9a3b168ea3723e",
-      "raw_publication": false
+    "candidate5-build-info.txt": {
+      "sha256": "edd255493f5bfc6dae3a2d6b51821a1d93d25535599c0252662c86e254bf4caa",
+      "bytes": 1641
     },
-    {
-      "id": "coordinator-current-shipping-facts",
-      "sha256": "sha256:b0b4d1e36d14deb27abd5c2619c17325b472b173cfcacde926451398de4a32d5",
-      "raw_publication": false
+    "restore-source-freeze.json": {
+      "sha256": "883f427a736dc405a5de978b93479e274acc9046e500b441827d457aa945621a",
+      "bytes": 7946
     },
-    {
-      "id": "shipping-complete-D03-verdict",
-      "sha256": "sha256:2bfd81fe4044ae1b8fb67559458e814fd31939d7aaa749b160a13b128fde4103",
-      "raw_publication": false
+    "restore-full-check-receipt.json": {
+      "sha256": "2d89806169989b42901ec6c4f02beb8ae4e1977a77f031f698725e247587c13f",
+      "bytes": 452
     },
-    {
-      "id": "shipping-predeclared-recording-plan",
-      "sha256": "sha256:517821e4081833563c2ce2e8f1bf71cf127d20107601b102ca60f967c54a5834",
-      "raw_publication": false
+    "restore-final-snapshot-receipt.json": {
+      "sha256": "a24ea61ca752b27dd6473262c3087c613b14e6e0691ba0afbc06ff76751465fc",
+      "bytes": 382
     },
-    {
-      "id": "shipping-recording-only-evaluator-match",
-      "sha256": "sha256:07ec1d6cc95be247a303450697371bd787bba4d0ef034bdc9ea4dd794d485a16",
-      "raw_publication": false
+    "restore-final-full-check.log": {
+      "sha256": "0cdf24246f4e891eba75d4f0cb8a3b1a3a51826ae058e84e26750dbec76b6324",
+      "bytes": 602032
     },
-    {
-      "id": "shipping-verified-baseline.json",
-      "sha256": "sha256:1c60749b4ff4cd8cf00b02673b9e19c7d893b19dc7e4758241346ec3723989d9",
-      "raw_publication": false
+    "restore-final-snapshot.log": {
+      "sha256": "3758b1ff5302a6f0204e22b6c97a84e9d5e39018a2e4a369d8da771dd2f910a6",
+      "bytes": 3097
     },
-    {
-      "id": "shipping-verified-baseline.log",
-      "sha256": "sha256:9d094bd1f7fc5ec6166bd03c94894e4b3e6decff101180b78889593b60c6927d",
-      "raw_publication": false
+    "restore-verified-budget-results.json": {
+      "sha256": "88c5e515e99d31f8502f850d2ce15cad2a681263fd5f730f297952a3e9efe20e",
+      "bytes": 64090
     },
-    {
-      "id": "shipping-verified-baseline.raw.json",
-      "sha256": "sha256:76471acecfa8cd5039c1c6e884853b2fca6db2d48a9eb579a0356b97c919eda2",
-      "raw_publication": false
+    "restore-verified-plan.json": {
+      "sha256": "fca11ab0023a99eb7dcc9f4f53d176b584639f0eac5f96b11597157079322092",
+      "bytes": 20451
     },
-    {
-      "id": "shipping-verified-baseline-rebuild.json",
-      "sha256": "sha256:f3de944db8abd6c5b19c874e821a14ab8fd58784595059596d99a943456274f9",
-      "raw_publication": false
+    "restore_review/candidate5-d03-audit.json": {
+      "sha256": "e14d971fc5ed39f14aba68cae55639bdd36165a7b09af39179f8093542b3861a",
+      "bytes": 22518
     },
-    {
-      "id": "shipping-verified-baseline-rebuild.log",
-      "sha256": "sha256:3b75483210b0cc0b2c319f2d8894409e2ef54e4ca772973de1660fa3244d54e6",
-      "raw_publication": false
+    "restore-verified-baseline.json": {
+      "sha256": "0a3660255b8f1fbdb6b2756f30b97a7a15b71a25e5debfb7bcf3ade38b3ae8f7",
+      "bytes": 18950
     },
-    {
-      "id": "shipping-verified-baseline-rebuild.raw.json",
-      "sha256": "sha256:e47751797eda5bb584f8d9a4fcbcaf84044d2afe2693a4e4caa066aee606c0e3",
-      "raw_publication": false
+    "restore-verified-baseline.log": {
+      "sha256": "d781db560f7744650361ee883f2127f59ecebc95d4d760ca9f6359cee6fe572d",
+      "bytes": 9979
     },
-    {
-      "id": "shipping-verified-candidate.json",
-      "sha256": "sha256:9eb55e7c81b4f2336d28b4c1d11ac9ac95aa77bb49475a95aac0704d9532e53e",
-      "raw_publication": false
+    "restore-verified-baseline.raw.json": {
+      "sha256": "8e887551c540fc2b63e59fccac274a09ff545fa0bcd2444d8f09494af8478974",
+      "bytes": 64313
     },
-    {
-      "id": "shipping-verified-candidate.log",
-      "sha256": "sha256:36815f97a91322016a1faa7ea93067bb46b5df41fc8ed52aaa1c084385eeb77e",
-      "raw_publication": false
+    "restore-verified-baseline-rebuild.json": {
+      "sha256": "4756bac3a9763d636190bd438f3050155b66b90f57058f8e1651712768450e15",
+      "bytes": 1873
     },
-    {
-      "id": "shipping-verified-candidate.raw.json",
-      "sha256": "sha256:ac8f133b8c1ef6d7d72ab38817d4753be3bac037eed8ee05a96c164cbe6e10f0",
-      "raw_publication": false
+    "restore-verified-baseline-rebuild.log": {
+      "sha256": "8e292042fa4eec356453d59cfd4fa4dabbe05109c148b4a56ba01818a3419d7a",
+      "bytes": 719
     },
-    {
-      "id": "shipping-verified-candidate-rebuild.json",
-      "sha256": "sha256:122e2b959b314f17c831a76ef2dac8021c9a57400e05c9c8642bac3c6b0269da",
-      "raw_publication": false
+    "restore-verified-baseline-rebuild.raw.json": {
+      "sha256": "8af586c40b3533858a5699dafdae31c57d858dfda9ce51416b2ab3c2adfbf357",
+      "bytes": 4196
     },
-    {
-      "id": "shipping-verified-candidate-rebuild.log",
-      "sha256": "sha256:2133b17cb583603b2b77b376b47ca113e718977cd00a52a19c49c95c529eaecb",
-      "raw_publication": false
+    "restore-verified-candidate.json": {
+      "sha256": "4c9018204f1d0e0e60829ec95d4cc95249038eee499a1b2d9c88fa31175e0a91",
+      "bytes": 18974
     },
-    {
-      "id": "shipping-verified-candidate-rebuild.raw.json",
-      "sha256": "sha256:2b0071f2de280fca68b7273123f6cc65326d1aa1ec130c032f511185b64fd156",
-      "raw_publication": false
+    "restore-verified-candidate.log": {
+      "sha256": "7cf674a4570528f0017728c7bd315b201c7813911e4c3340678aca76ff85ac4a",
+      "bytes": 9991
     },
-    {
-      "id": "shipping-verified-core.log",
-      "sha256": "sha256:e97b96257a1bc39f1a49b516144d6d43ca84e26c90a008f4a733bfbe2f369fd8",
-      "raw_publication": false
+    "restore-verified-candidate.raw.json": {
+      "sha256": "c73006253d8f37c7bbd0c0a223b2d385d1e6e7cededbcfaa526c8b636aeed48b",
+      "bytes": 64325
     },
-    {
-      "id": "shipping-verified-core-bench",
-      "sha256": "sha256:83787d975dd2462b24179db3547144f25a42edbe4138cf1845b5a71c7a58a735",
-      "raw_publication": false
+    "restore-verified-candidate-rebuild.json": {
+      "sha256": "0fdcdc1bbf55c603e279091136734262e4ec16b4ffe06e211e9a50e39f1b25d0",
+      "bytes": 1876
     },
-    {
-      "id": "shipping-verified-run.json",
-      "sha256": "sha256:af8c4a33f6164dcbb453f69c40ac606226b5a39ec0cc83480a2bafc034a43dbd",
-      "raw_publication": false
+    "restore-verified-candidate-rebuild.log": {
+      "sha256": "62b161a9e1d6dfa3b9d38d03ab86313ad7187355223315aac6a57d5be1e98892",
+      "bytes": 710
     },
-    {
-      "id": "independent-automated-shipping-D03-review",
-      "sha256": "sha256:a92e607a778dda9161e36fc24767fba9a56d51877b620936b3b68d45d3be8a82",
-      "raw_publication": false
+    "restore-verified-candidate-rebuild.raw.json": {
+      "sha256": "d315e98c357d5d574cb812c566d840bc4b6b39feace3156435a5024ce5648750",
+      "bytes": 4179
     },
-    {
-      "id": "shipping-retrieval-observation",
-      "sha256": "sha256:84dae44b79581765751e58fa19ad1a47d11a930afa0a579cd854f9dc586c0a8a",
-      "raw_publication": false
+    "restore-verified-core.log": {
+      "sha256": "dbc0a2671a23b3567c692e45000ab2df0f0ad81e949e51e4f13e635e9b2e93f0",
+      "bytes": 471
     },
-    {
-      "id": "shipping-retrieval-category-projection",
-      "sha256": "sha256:51487497cc0da8b2f86de36a91bf1189ea9f991e3ad408100b6254ea36421d5e",
-      "raw_publication": false
+    "restore-verified-core-bench": {
+      "sha256": "83787d975dd2462b24179db3547144f25a42edbe4138cf1845b5a71c7a58a735",
+      "bytes": 8406642
     },
-    {
-      "id": "shipping-default-log-companion",
-      "sha256": "sha256:7cdf13defbda9ce344ee711ec0bce97654534570ec743f0380f54da228360f0c",
-      "raw_publication": false
+    "restore-verified-run.json": {
+      "sha256": "5fe413f35b326daf983978aaded106af211fdf01fe5ecb0f35f18063f5a4fd57",
+      "bytes": 5139
     },
-    {
-      "id": "shipping-CGO0-completed-interruption-summary",
-      "sha256": "sha256:3e390e58c479592926fd50c0d166e300d583a64505447b7a7ffdf72454039313",
-      "raw_publication": false
+    "restore-retrieval.json": {
+      "sha256": "84dae44b79581765751e58fa19ad1a47d11a930afa0a579cd854f9dc586c0a8a",
+      "bytes": 9379
     },
-    {
-      "id": "shipping-completed-interruption-JSONL",
-      "sha256": "sha256:0c34a9c98dfec835fe3dd584f2817684f542f4bba7ab74f8f7ab6daff76ecf69",
-      "raw_publication": false
+    "restore-retrieval-categories.json": {
+      "sha256": "e40180f64dce39112d81a4618c626272df78a2f41c065b9e7aed45e8de7bd060",
+      "bytes": 32359
     },
-    {
-      "id": "shipping-actual-v040-producer-archive-upgrade",
-      "sha256": "sha256:2688c9de62f1aa3a5113aff644034ba2c0d571d2be431b42def3a5d35c039781",
-      "raw_publication": false
+    "restore-v031-compatibility.json": {
+      "sha256": "13294590c71b48fe4c98fcfbf60c2a8f043b19a4fedfbbf4eadffc05cf565921",
+      "bytes": 2941
     },
-    {
-      "id": "shipping-actual-v031-upgrade",
-      "sha256": "sha256:323804166a5aa3790b5818e875e190dee341f48fa3421bd0067e97b97c9e9b4f",
-      "raw_publication": false
+    "restore-v040-compatibility.json": {
+      "sha256": "07e59d35fe722429030ec7ed4da1c9f094cff8e0a39dc409c9450a8e392fca9c",
+      "bytes": 3519
     },
-    {
-      "id": "source-b71-CGO1-complete-failed-matrix",
-      "sha256": "sha256:a9608bc7de9a7fce823248130f7589e169d19647294fc5bb0161c1341e8ca6e7",
-      "raw_publication": false
+    "restore-interruptions-summary.json": {
+      "sha256": "f3c58d62aafd061bc92ecc0f11674e8305c6144e0fc38cc22c1538f96d0cbad5",
+      "bytes": 617
     },
-    {
-      "id": "source-b71-CGO1-recording-plan",
-      "sha256": "sha256:2792b27974cd6ceb809cd32e8bef09c9df8d7c1850c09fbb8c2bea2c08f89a9a",
-      "raw_publication": false
+    "restore-interruptions.jsonl": {
+      "sha256": "97e239fb44bf565954b6781a2dad8ea079c4b023374ddece5d20acc9804802f4",
+      "bytes": 116410
     },
-    {
-      "id": "source-b71-CGO1-build-info",
-      "sha256": "sha256:5884a89e185220cbbae7eb0d2bd0336f26df0ca5c949518214a0191fc700015d",
-      "raw_publication": false
+    "restore-default-log.json": {
+      "sha256": "ca6d607ce1dc6ac669fe26bb892657f0792e9810dfe5464300bf9fede86f1d1a",
+      "bytes": 9838
     },
-    {
-      "id": "same-Go-source-full-check-log",
-      "sha256": "sha256:9db96e84f1cfcf1d06eda9015ca73cdc790ca160b722cc9cae3f3e3592bba8a4",
-      "raw_publication": false
+    "scale-native-paired-6000.json": {
+      "sha256": "24e1bdbddf335d48e050fcc80d32b34ab2926ff8a73d907e07659c6abd1708b6",
+      "bytes": 8987
     },
-    {
-      "id": "CGO0-committed-source-snapshot-log",
-      "sha256": "sha256:051267f33e1fab712e1d543cc5b818a54c9e970f4b1f0d5ba375064442c7f7fb",
-      "raw_publication": false
+    "restore_review/committed-production-review.json": {
+      "sha256": "643d37d9afb3f16d9ddd20246184ce1024df61e0baf0130a2742b1ce48428381",
+      "bytes": 14275
     },
-    {
-      "id": "shipping-CGO0-endurance-attempt1-failed",
-      "sha256": "sha256:943e3a519b5a83c0b60849071025378abd4bcda42f729c5fcfae9594f97f2b45",
-      "raw_publication": false
+    "restore_review/final-source-pin-review.json": {
+      "sha256": "d0c38c8d0c996d34440dffca54acd6c09b1734856b3c0fd2d0dc86812ce47b73",
+      "bytes": 4999
     },
-    {
-      "id": "historical-7ceed-verified-long-summary",
-      "sha256": "sha256:5607638bcb5ccbd722ae57b7f734fcddb22a098a2e6129c46e4546c0d337cbaa",
-      "raw_publication": false
+    "candidate5-functional-receipt.json": {
+      "sha256": "a753b11c3c1a78d9b560084315043d7fc8128f44c723b50cdb1c433775c87494",
+      "bytes": 1031
+    },
+    "restore-endurance.json": {
+      "sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1",
+      "bytes": 17872
+    },
+    "restore-endurance-verified-summary.json": {
+      "sha256": "63c2c7c703dabb1c80ae8039ee59504cf0945d96cd537797497339e1e321bc8f",
+      "bytes": 2247
+    },
+    "coordinator-facts-completed-snapshot": {
+      "sha256": "8d16e700e0521a66d65e60a88df8d96f946a041dc58ad31210d530c4ee52b20d",
+      "bytes": 7888
+    },
+    "coordinator-facts-running-snapshot": {
+      "sha256": "96e2dd97dff29f8981410ebeaefa06d0f8b9c12b3df3f35e8b01b9001eeb4783",
+      "bytes": 5366
     }
+  },
+  "editor_actions": "Read-only Git/source/artifact hashes and independent Python arithmetic only; no builds/tests/benchmarks/profiles/product commands.",
+  "remaining": [
+    "Local D01-D03/V01-V06 evidence is complete; latest exact integrated-head hosted CI remains required.",
+    "Independent V08 publication-authorization review of completed evidence.",
+    "Separately authorized publication, package/tap/Homebrew and installed consumers."
   ],
-  "release_binding": "A final docs-only release commit may share these Go/module source files but rebuilt version/commit metadata changes executable hashes. Record actual release bytes separately.",
-  "heavy_commands_run_by_editor": false,
-  "readiness_and_publication_blockers": [
-    "Disposition of actual shipping restore-timeout failure and fresh passing candidate-specific D02 qualification; never reuse historical long pass or increase timeout to hide failure.",
-    "Independent automated V08 publication-authorization review of the completed public documentation; not a prerequisite for reviewable evidence.",
-    "Actual protected publication and published-v1/Homebrew/independent installed-consumer verification."
-  ],
-  "public_snapshot_authorization": "Coordinator authorized whitelisted synthetic public evidence and documentation for independent review; stable publication is a separate decision.",
+  "functional_receipt_attribution": {
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "binary_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+    "ok": true,
+    "scope": "Completed CLI/MCP retrieval, actual preserved prior-version upgrade/archive and deterministic interruption driver receipt; no new execution by evidence editor."
+  },
   "public_evidence": {
     "v1-resources.json": "docs/evidence/v1-resources.json",
     "v1-retrieval.json": "docs/evidence/v1-retrieval.json",
     "v1-reliability.json": "docs/evidence/v1-reliability.json",
     "v1-compatibility.json": "docs/evidence/v1-compatibility.json",
+    "v1-restore-production.json": "docs/evidence/v1-restore-production.json",
     "v1-qualification-history.json": "docs/evidence/v1-qualification-history.json"
   },
   "qualification_report": "docs/qa/v1-qualification.md",
-  "V08_status": "pending independent publication-authorization review; no human approval claimed",
-  "operational_harnesses": {
-    "scripts/soak.py": {
-      "sha256": "sha256:3e2bf63a19eef0a5710967f707eb730604399baa9e26403249adb38fe6c03a6c",
-      "source_commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
-      "source_url": "https://github.com/matheus3301/kb/blob/5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7/scripts/soak.py"
-    },
-    "scripts/compatibility.py": {
-      "sha256": "sha256:b1fe0c1d65c2c2e78e379b787be2a15fab5f6426a0aa01f96b39624bb9b08c49",
-      "source_commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
-      "source_url": "https://github.com/matheus3301/kb/blob/5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7/scripts/compatibility.py"
-    },
-    "scripts/retrieval_eval.py": {
-      "sha256": "sha256:ae329dcafafc89868136eecaaa49b6a6d7d7fba1934fb17c0e74eae52df64dd5",
-      "source_commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
-      "source_url": "https://github.com/matheus3301/kb/blob/5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7/scripts/retrieval_eval.py"
-    },
-    "scripts/benchmark.py": {
-      "sha256": "sha256:5ca637bb4b5805622d3de7f6c5c9bb5d544e91723c842545c6e8c1f0a972ff73",
-      "source_commit": "5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7",
-      "source_url": "https://github.com/matheus3301/kb/blob/5c94c993aa8ec97295bdf6bcdb1d5cd2f052a2f7/scripts/benchmark.py"
-    }
-  },
   "public_projection_sha256": {
-    "docs/evidence/v1-resources.json": "sha256:a16f18eca93f5d3313e58c5eb17b29c89e8889b19ffef825b87217e111eb8b4d",
-    "docs/evidence/v1-retrieval.json": "sha256:e26add72fd2c0e26a9dbab3c7c26600ac699fe91c1ee6017b71401f54f41d6d3",
-    "docs/evidence/v1-reliability.json": "sha256:6011ebb260c34d998e2831d4411189409568c7a01b7b9723ed456fc5e09d6ca4",
-    "docs/evidence/v1-compatibility.json": "sha256:b922dbe826bcae28a15ac245acefea6e51562605ecc6093ad4cbd47aba60f312",
-    "docs/evidence/v1-qualification-history.json": "sha256:9854a994985ee7355ac4250e2762f6b9edc9986fff84240dfd4b6305e1189f82"
-  }
+    "v1-resources.json": "4395fa20edc88e5d1cfbd27aceb2e0edbc279915ab360895795e3e2891fd1cb7",
+    "v1-retrieval.json": "5826158448dad28f12a76de8afe9df3f5485e058270af439bcfbefa544049cc0",
+    "v1-reliability.json": "a40b0d2a65bc3765f0505683fd932f7eb8b74d8a8d15b21579c00f4c6763cfb8",
+    "v1-compatibility.json": "3d5ec09defd177b9307e94093e027e84ef9fe6a72efefef57199e680c4d9981c",
+    "v1-restore-production.json": "ef843aba1c96e7d9fb85b1a16cb8171cfe0ae916ef37b39591fa4349e5ea9d55",
+    "v1-qualification-history.json": "e98fb6fb5218b263cd1208f259c5de63f00260a38e942116066d37b5d8c3fec8"
+  },
+  "input_registry_snapshot_scope": "Coordinator-facts-running-snapshot and coordinator-facts-completed-snapshot are distinct captured hashes of the coordinator facts input before and after completion; the later snapshot supersedes only current status, not history."
 }

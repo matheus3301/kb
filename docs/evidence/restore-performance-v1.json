@@ -1,6 +1,6 @@
 {
   "schema_version": "kb.restore-performance-diagnostic.v1",
-  "status": "diagnostic-successful-path-snapshot; shipping-qualification-failed; not a production-fix or readiness claim",
+  "status": "Historical candidate3 failed diagnostics plus distinct corrected production/candidate4 scale and completed local candidate5 qualification; remoteCI/V08/publication/install pending",
   "environment": {
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "fixture_generation_GOMAXPROCS": "2",
@@ -532,9 +532,21 @@
     "fullsync_batch_control.py": {
       "sha256": "ea81813d87d5d82b48e33ab53d0742241fe35a06203c1ebeee012972c1b3cdf3",
       "bytes": 3163
+    },
+    "scale-native-paired-6000.json": {
+      "sha256": "24e1bdbddf335d48e050fcc80d32b34ab2926ff8a73d907e07659c6abd1708b6",
+      "bytes": 8987
     }
   },
-  "pending": {
+  "scope_limits": [
+    "One diagnostic sample per variant/size, not medians/p95/confidence intervals or portable SLA.",
+    "Successful manifest/byte and sync-count checks do not establish cancellation/error cleanup, join order or universal power-loss safety.",
+    "The120-second diagnostic guard does not replace the30-second shipping command timeout.",
+    "Diagnostic helpers/overlays are not shipped tools or an approved production implementation.",
+    "Raw per-call arrays, profiles, provider responses, local paths and orchestration transcripts are intentionally not published."
+  ],
+  "snapshot_date_utc": "2026-10-26",
+  "diagnostic_checkpoint_pending": {
     "frozen_production_fix_commit": null,
     "production_failure_race_contract_tests": "pending new committed implementation",
     "actual_shipping_restore_at_least_6000_receipts": null,
@@ -545,12 +557,236 @@
     "V08": "pending publication-authorization review",
     "stable_publication_and_Homebrew": "pending separately authorized actual execution"
   },
-  "scope_limits": [
-    "One diagnostic sample per variant/size, not medians/p95/confidence intervals or portable SLA.",
-    "Successful manifest/byte and sync-count checks do not establish cancellation/error cleanup, join order or universal power-loss safety.",
-    "The120-second diagnostic guard does not replace the30-second shipping command timeout.",
-    "Diagnostic helpers/overlays are not shipped tools or an approved production implementation.",
-    "Raw per-call arrays, profiles, provider responses, local paths and orchestration transcripts are intentionally not published."
-  ],
-  "snapshot_date_utc": "2026-10-26"
+  "production_correction_and_native_scale": {
+    "schema_version": "kb.v1-restore-production-attribution.v1",
+    "owner_runtime_commit": "38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6",
+    "root_integration_commit": "5477946be88ef574499a07a7eabe7aa8b6bcc084",
+    "final_candidate5_source": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "test_only_delta": [
+      "internal/write/backup_restore_batch_test.go",
+      "internal/write/backup_restore_contracts_test.go"
+    ],
+    "all_other_Go_module_blobs_equal": true,
+    "focused_independent_review": {
+      "decision": {
+        "runtime": "BOUNDED ACCEPTANCE of committed production and regression scope; no concrete additional blocker found",
+        "R1_worker_cleanup": "CLOSED for reviewed committed source and targeted regression design, with passing execution owner-reported rather than independently rerun",
+        "Go_source": "Frozen; no Go change requested or made",
+        "V08": "NOT APPROVED by this focused review",
+        "stable_release_installation": "NOT ESTABLISHED"
+      },
+      "source_review": {
+        "backup_restore.go": "Fixed four pending descriptor/identity records, sequential preparation/write, no payload queue. All file Sync/close attempts finish before workers.Wait returns. Workers never remove leaves or close retained parents. Coordinator first registers every successful file identity, then finish runs for every pending record without short-circuiting errors; failed partial leaves are identity-guardedly removed and all retained parents closed there. Parent Sync and fresh anchoring remain for every successfully completed file.",
+        "error_ownership": "Write errors stay in prepared records. File Sync/close are evaluated even when writeErr is set. Successful file records are marked before parent Sync/identity, preserving them for outer cleanup on those later failures. Every prepared record survives through join and finish. Failed removal errors are retained; external/replaced/unremovable state may conservatively remain rather than be silently declared cleaned.",
+        "backup.go": "Explicit residual flush joins readBackup errors without hooks; deferred drain precedes outer cleanup, destination close and archive close. Count reset and deferred clear prevent double finishing after callback failure. Service.locked unlocks and closes source root only after closure defers finish. Archive-ordered callbacks execute on coordinator after join/finish. Final inventory and synchronous last config publication remain.",
+        "cancellation": "Post-prepare cancellation preserves newly enqueued record. Canceled and single-item drains may run inline but still complete all Sync/close/finish work and join launched peers. Context checks before callbacks and final return catch first and final callback cancellation; post-read check catches zero-pending cancellation. No config is published after an observed prepublication batch error/cancellation.",
+        "contracts": "No observed parser/checksum/limits/DTO/archive/retention/timeout change. Successful file/parent Syncs, directory-creation Syncs, config Syncs and final .kb/restores Sync remain. Four is a bound on pending file/parent pairs, not total process descriptors; temporary Sync/anchoring descriptors remain bounded.",
+        "inherited_limits": "Preparation Stat-error removal behavior and malicious same-user filesystem race limits are inherited from baseline, not newly certified. Post-config failures or restore-published-hook errors can leave a complete initialized output under the existing contract."
+      },
+      "test_execution_provenance": {
+        "provenance": "Targeted executions owner-reported and inspected by independent focused reviewer, not independently rerun.",
+        "reported_passes": [
+          {
+            "seconds": 83.898,
+            "scope": "Batch/root-contract race plus shuffle count3; before later success-order/cancel-first/preparation additions"
+          },
+          {
+            "seconds": 6.756,
+            "scope": "Successful archive order and first/final-residual cancellation race/shuffle count3"
+          },
+          {
+            "seconds": 2.8,
+            "scope": "Preparation collision with prior pending records and foreign/source/archive preservation count3"
+          }
+        ],
+        "current_full_gate_scope": "Later actual cb66 source full make check/snapshot receipts are recorded separately; earlier focused-review pending-gate prose is not current status."
+      },
+      "final_source_pin_decision": "FINAL SOURCE-PIN ACCEPTANCE for focused restore review; no production delta or new concrete blocker; not binary/method/V08/release acceptance",
+      "scope": "Focused R1/source/test acceptance, not final V08. Targeted execution owner-reported; actual final full source gates separately receipted."
+    },
+    "native_scale": {
+      "receipts": 6000,
+      "receipt_bytes": 5234713,
+      "samples_per_binary": 3,
+      "command_timeout_seconds": 30,
+      "GOMAXPROCS": 2,
+      "binaries": {
+        "baseline": {
+          "sha256": "8aecbf6cf22d2c4bc8c97e1d8b63fea725dfa325b2e5f632f2ed97fc815815ac",
+          "version": {
+            "commit": "b71c0763c87313666b3dd79da08da12b7b3512c1",
+            "version": "v1.0.0-candidate.3"
+          },
+          "cgo_enabled": 0,
+          "trimpath": true
+        },
+        "candidate": {
+          "sha256": "78dc608ad6810188b695c4af796a0811e713f6fce03db5a218739a9ac9d22b93",
+          "version": {
+            "commit": "38ab64dfd2b362fb8848c7e331b0efb5d64b8ff6",
+            "version": "v1.0.0-candidate.4"
+          },
+          "cgo_enabled": 0,
+          "trimpath": true
+        }
+      },
+      "observations": [
+        {
+          "label": "baseline",
+          "sample": 0,
+          "elapsed_ms": 29400.285084,
+          "peak_rss_mib": 32.515625,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "candidate",
+          "sample": 0,
+          "elapsed_ms": 24701.219709,
+          "peak_rss_mib": 31.78125,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "baseline",
+          "sample": 1,
+          "elapsed_ms": 29043.362125,
+          "peak_rss_mib": 32.5,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "candidate",
+          "sample": 1,
+          "elapsed_ms": 24588.338542,
+          "peak_rss_mib": 32.484375,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "baseline",
+          "sample": 2,
+          "elapsed_ms": 28990.590417,
+          "peak_rss_mib": 31.796875,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        },
+        {
+          "label": "candidate",
+          "sample": 2,
+          "elapsed_ms": 24834.842,
+          "peak_rss_mib": 32.8125,
+          "exact_manifest_inventory_config_receipts": true,
+          "exact_replays": 3,
+          "continued_write": true,
+          "original_receipts_unchanged_after_write": true,
+          "source_and_archive_unchanged": true,
+          "manifest_revision": "sha256:e8739daca31fe9e1282fb63a52d53fc66633674a28991c91cb3399bd1f3f31e7",
+          "files": 6009,
+          "bytes": 5235814
+        }
+      ],
+      "artifact_identity_limit": "Actual candidate.4/38ab executable, not candidate.5. Production-source equivalence through two test-only changes is attribution, never binary relabeling.",
+      "performance_limit": "Three paired GOMAXPROCS2 native samples, baseline first/cache uncontrolled; not the GOMAXPROCS8 profiled prototype and not a uniform performance or endurance guarantee.",
+      "summary": {
+        "baseline": {
+          "ordered_elapsed_seconds": [
+            29.400285084,
+            29.043362124999998,
+            28.990590417
+          ],
+          "median_seconds": 29.043362124999998,
+          "sample_max_seconds": 29.400285084,
+          "peak_rss_mib": 32.515625
+        },
+        "candidate": {
+          "ordered_elapsed_seconds": [
+            24.701219709,
+            24.588338542000002,
+            24.834842000000002
+          ],
+          "median_seconds": 24.701219709,
+          "sample_max_seconds": 24.834842000000002,
+          "peak_rss_mib": 32.8125
+        }
+      }
+    },
+    "old_prototype_error_invariant_retroactively_fixed": false,
+    "V08": "pending publication-authorization review"
+  },
+  "current_candidate5_qualification": {
+    "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+    "binary_sha256": "59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+    "Go_module_files": 72,
+    "source_map_sha256": "567d8104823d1f31b0ab22ab94cf2c761fdb2db78438d1afa9cb75434864af25",
+    "D03": "PASS complete16+3 bounded local window",
+    "functional": "PASS47parity/17categories;8v031/9v040upgrades;105test-childkills",
+    "default_log": "PASS600mutations+600replays=1200ACK/6checks",
+    "extended_D02": "PASS actual34840ACK/27checkpoints; source and artifact bound separately from candidate4 scale",
+    "extended_started_utc": "2026-10-26T06:42:32Z",
+    "current_head_CI": "PR24 initialheadc372b33 PASS all11jobs; latest integratedhead CI remains pending",
+    "V08": "pending publication-authorization review",
+    "actual_published_v1_Homebrew_installed": "pending",
+    "completed_report_sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1",
+    "completed_endurance_summary": {
+      "ok": true,
+      "method": "Independent completed-report configuration/clock/accounting/receipt/checkpoint algebra, hashes and immutable72-source recheck; not a second product execution or postmortem read of disposed roots.",
+      "source_commit": "cb66fd77a120d8c8531f9077a32d2bf51ef7921c",
+      "binary_revision": "sha256:59d1b477031792cdf539aa3777fafc3942403b80aa8691a3403a8732bf928d46",
+      "report_sha256": "4c79486678cf7fc8a6f4c54a5c9c2659a5c1458993036ed70ecf912cc2b163e1",
+      "actual_work_seconds": [
+        608.5681901669595,
+        616.6623812079197,
+        615.9444065419957
+      ],
+      "total_active_seconds": 1841.174977916875,
+      "elapsed_seconds": 1923.4088054159656,
+      "main_root_mutations": 17420,
+      "main_root_replays": 17420,
+      "expected_conflicts": 10452,
+      "completed_checkpoints": 27,
+      "restored_mutations": 27,
+      "restored_replays": 54,
+      "max_restore_seconds": 24.227167541976087,
+      "max_backup_seconds": 1.3711788749787956,
+      "max_checkpoint_files": 5889,
+      "max_checkpoint_content_bytes": 6085377,
+      "max_combined_checkpoint_seconds": 27.953329332987778,
+      "ACK_per_active_second": 18.922699047006574,
+      "supervisor_child_returncodes": {
+        "restore-endurance": 0,
+        "restore-default-log": 0
+      }
+    }
+  }
 }
