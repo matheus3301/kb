@@ -8,7 +8,7 @@ import (
 )
 
 func FuzzWordNormalizationPreservesLexicalContract(f *testing.F) {
-	for _, seed := range []string{"Ação memória s3 k8s", "İIıi Straße Σσς", "a\u0301 ação\u0345", "東京 हिन्दी العربية", "\u0301\u0345", "ﬀ ŉ K Å ᾈ", "a/b.md#link foo_bar 123", ""} {
+	for _, seed := range []string{"Ação memória s3 k8s", "İIıi Straße Σσς", "a\u0301 ação\u0345", "東京 हिन्दी العربية", "\u0301\u0345", "ﬀ ŉ K Å ᾈ", "a/b.md#link foo_bar 123", "ASCII UPPER lowerCase A1 Z9", "lowercase numbers123 punctuation_/.-", "ASCII\xffUPPER \x80lowerCase", ""} {
 		f.Add(seed, true)
 		f.Add(seed, false)
 	}
@@ -26,6 +26,26 @@ func FuzzWordNormalizationPreservesLexicalContract(f *testing.F) {
 			t.Fatalf("token semantics changed for %q (%v): %q != %q", text, accents, expected, actual)
 		}
 	})
+}
+
+func TestLexicalASCIIWordsPreserveFoldingAndBoundaries(t *testing.T) {
+	for _, test := range []struct {
+		text    string
+		accents bool
+		want    []string
+	}{
+		{"ASCII UPPER lowerCase A1 Z9", false, []string{"ascii", "upper", "lowercase", "a1", "z9"}},
+		{"lower_case a1/123.z9#UPPER", true, []string{"lower", "case", "a1", "123", "z9", "upper"}},
+		{"A\u0301 AÇÃO Straße İ ﬀ", true, []string{"a", "acao", "strasse", "i", "ff"}},
+		{"A\u0301 AÇÃO Straße İ ﬀ", false, []string{"á", "ação", "strasse", "i\u0307", "ff"}},
+		{"ASCII\xffUPPER \x80lowerCase", true, []string{"ascii", "upper", "lowercase"}},
+	} {
+		var actual []string
+		forEachToken(test.text, test.accents, func(token string) { actual = append(actual, token) })
+		if !reflect.DeepEqual(actual, test.want) {
+			t.Fatalf("word folding changed for %q (accents=%v): got %q, want %q", test.text, test.accents, actual, test.want)
+		}
+	}
 }
 
 func FuzzPatchDoesNotMutateSourceImages(f *testing.F) {
