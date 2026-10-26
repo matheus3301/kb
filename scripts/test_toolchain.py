@@ -1,8 +1,11 @@
 """Mutation regressions for authoritative pins and required development gates."""
 
 import json
+import os
 from pathlib import Path
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -30,6 +33,16 @@ class ToolchainTests(unittest.TestCase):
 
     def test_consistent_toolchain_is_accepted(self):
         self.assertEqual([], toolchain.findings(self.root))
+
+    def test_github_outputs_match_action_version_contract(self):
+        output = self.root / "github-output"
+        subprocess.run([sys.executable, str(toolchain.ROOT / "scripts/toolchain.py"), "github-outputs"],
+                       env=dict(os.environ, GITHUB_OUTPUT=str(output)), check=True,
+                       capture_output=True, text=True)
+        values = dict(line.split("=", 1) for line in output.read_text().splitlines())
+        pins = toolchain.versions()
+        self.assertEqual("v" + pins["golangci-lint"], values.pop("golangci-lint"))
+        self.assertEqual({name: pin for name, pin in pins.items() if name != "golangci-lint"}, values)
 
     def test_go_and_pnpm_ecosystem_pin_drift_is_rejected(self):
         pins = toolchain.versions(self.root)

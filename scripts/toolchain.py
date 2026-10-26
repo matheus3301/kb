@@ -119,6 +119,9 @@ def main():
     if sys.argv[1:] == ["github-outputs"]:
         with Path(os.environ["GITHUB_OUTPUT"]).open("a") as output:
             for name, version in pins.items():
+                # The golangci-lint action requires a v-prefixed version input.
+                if name == "golangci-lint":
+                    version = "v" + version
                 output.write(f"{name}={version}\n")
     elif sys.argv[1:] == ["check"]:
         errors = findings()
