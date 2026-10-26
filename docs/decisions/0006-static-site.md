@@ -16,6 +16,12 @@ Exact package versions are recorded in `site/package.json` and
 `site/pnpm-lock.yaml`. Root `mise.toml` owns the current Node and pnpm pins;
 `site/package.json`'s `packageManager` is a checked duplicate of the pnpm pin.
 
+Use mise's explicit [`npm:pnpm` backend](https://mise.jdx.dev/dev-tools/backends/npm.html)
+with the declared Node toolchain. The short `pnpm` key selects an Aqua backend
+whose asset mapping in mise 2026.4.9 cannot install the selected pnpm release.
+Changing only the backend preserves the tool version without requiring a mise
+upgrade. npm is an internal tool installer; project development and CI use pnpm.
+
 The pnpm migration preserves exact direct dependency declarations and retains
 package integrity verification. A fresh resolution under pnpm's default release-age policy selects
 `magic-string` 1.4.3 instead of the npm lock's newly published 1.4.4; no age

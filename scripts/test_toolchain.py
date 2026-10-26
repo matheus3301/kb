@@ -52,7 +52,8 @@ class ToolchainTests(unittest.TestCase):
         original = path.read_text()
         for before, after in (
             ('node = "' + pins["node"] + '"', 'node = "22"'),
-            ('pnpm = "' + pins["pnpm"] + '"', 'pnpm = "latest"'),
+            ('"npm:pnpm" = "' + pins["pnpm"] + '"', '"npm:pnpm" = "latest"'),
+            ('"npm:pnpm" = "', 'pnpm = "'),
             ('go = "' + pins["go"] + '"', ''),
             ('[tools]', '[tools]\nextra = "1.2.3"'),
             ('python = "' + pins["python"] + '"', 'python = "3"'),

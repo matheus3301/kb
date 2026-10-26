@@ -15,8 +15,9 @@ except ModuleNotFoundError:
 ROOT = Path(__file__).resolve().parents[1]
 TOOL_KEYS = {
     name: name for name in
-    ("python", "go", "node", "pnpm", "goreleaser", "golangci-lint", "actionlint", "gitleaks")
+    ("python", "go", "node", "goreleaser", "golangci-lint", "actionlint", "gitleaks")
 }
+TOOL_KEYS["pnpm"] = "npm:pnpm"
 TOOL_KEYS["govulncheck"] = "go:golang.org/x/vuln/cmd/govulncheck"
 
 

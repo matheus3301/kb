@@ -16,6 +16,11 @@ mise exec -- make tools
 mise exec -- make check
 ```
 
+The explicit `npm:pnpm` mise backend installs pnpm using the declared Node
+toolchain. This avoids obsolete pnpm release-asset mappings in older mise
+registries; no mise upgrade or pnpm version change is required. npm is only an
+internal tool installer here, not the package manager for project checks.
+
 `make check` runs repository validation, static analysis, race-enabled application
 tests with at least 80% statement coverage, four CGO-free cross-builds, fuzz smoke
 tests, secret/vulnerability scans, and the real CLI workflow. See
