@@ -73,7 +73,7 @@ jobs:
       - name: Prepare checksummed Homebrew source formula
         if: ${{ !contains(github.ref_name, '-') }}
         run: python3 scripts/release.py formula
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !contains(github.ref_name, '-') }}
         with:
           name: homebrew-formula
@@ -102,7 +102,7 @@ jobs:
         with:
           go-version-file: go.mod
           cache: false
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
       - name: Download this tag's published archives with independent identity expectations
