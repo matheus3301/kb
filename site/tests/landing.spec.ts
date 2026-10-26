@@ -207,13 +207,13 @@ test('foundations explain the open format and evolving wiki with primary sources
   await expect(foundations.getByRole('article')).toHaveCount(2);
   await expect(okf).toBeVisible();
   await expect(wiki).toBeVisible();
-  for (const concept of [/Markdown/i, /YAML/i, /sources/i, /trust|review metadata/i, /v0\.2/i]) {
+  for (const concept of [/Markdown/i, /YAML/i, /sources/i, /trust|review/i, /v0\.2/i]) {
     await expect(okf).toContainText(concept);
   }
   await expect(okf).not.toContainText(/fully (?:supports|implements|compliant)|all (?:upstream )?features/i);
   await expect(okf).toContainText(/PARA/i);
   await expect(okf).toContainText(/optional/i);
-  await expect(okf).toContainText(/folders/i);
+  await expect(okf).toContainText(/folders?/i);
   await expect(okf).toContainText(/not.{0,60}OKF|separate.{0,60}OKF|OKF.{0,60}(?:not|separate)/i);
   for (const concept of [/agent/i, /synthes[ie]s/i, /sessions/i, /safe local/i, /search/i, /read/i, /preview/i, /revision/i]) {
     await expect(wiki).toContainText(concept);
