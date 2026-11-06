@@ -119,12 +119,15 @@ claim. Do not equate aggregate coverage or one green workflow with all criteria
 being satisfied.
 
 The setup candidate has a separate [S01–S44 inventory](setup-acceptance.json)
-and [evidence contract](setup-acceptance.md). Run
-`python3 scripts/check_docs.py --binary .build/kb --setup` against an integrated
-setup-capable candidate to execute documented dry-run/install/check/resolve/
-uninstall in a disposable synthetic home with `KB_ROOT` cleared. It also checks
-dry-run byte purity, unchanged-install no-op and preservation of the existing
-collection. This is not native agent/hook activation evidence. Published v1.0.0
+and [evidence contract](setup-acceptance.md). `make acceptance`, and therefore
+`make check`, requires
+`python3 scripts/check_docs.py --binary .build/kb --setup` against the integrated
+setup-capable candidate. It executes documented dry-run/install/check/resolve/
+uninstall in a disposable synthetic home with `KB_ROOT` cleared, checking
+read-only filesystem purity, repeated install/uninstall no-op and preservation
+of the existing collection. The `--setup` flag remains optional for separate
+old-release qualification. This is not native agent/hook activation evidence.
+Published v1.0.0
 does not contain setup; its historical documentation results remain separate.
 
 [Performance evidence](performance.md) retains the initial v0.1 core misses:

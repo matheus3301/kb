@@ -32,7 +32,7 @@ security:
 acceptance:
 	$(CLI_BUILD_ENV) go build -trimpath -o .build/kb ./cmd/kb
 	$(PYTHON) scripts/acceptance.py --binary .build/kb --output .build/acceptance.json
-	$(PYTHON) scripts/check_docs.py --binary .build/kb
+	$(PYTHON) scripts/check_docs.py --binary .build/kb --setup
 
 benchmark:
 	$(CLI_BUILD_ENV) go build -trimpath -o .build/kb ./cmd/kb
