@@ -14,6 +14,10 @@ processes. Before the fix, the ignored-`SIGTERM` case exceeded the independent
 stdout), malformed JSON and oversized output produce unavailable context;
 valid no-hit context remains a successful empty retrieval, not a process failure.
 These Node runtime fixtures do not establish native host event delivery.
+The regression requires the repository-pinned Node development tool. A missing
+Node executable fails with setup instructions; it is never counted as a skipped
+qualification pass. The installed KB binary has no new Node dependency.
+
 
 Native qualification and its exact host/build boundary are recorded in
 [evidence/setup-hook-qualification.json](evidence/setup-hook-qualification.json).

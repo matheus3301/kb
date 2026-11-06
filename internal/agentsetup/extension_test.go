@@ -16,7 +16,7 @@ import (
 func TestNativeExtensionProcessFailures(t *testing.T) {
 	node, err := exec.LookPath("node")
 	if err != nil {
-		t.Skip("Node is required to exercise the generated extension runtime")
+		t.Fatalf("Node is required for the generated-wrapper regression; run mise install, then mise exec -- go test ./internal/agentsetup: %v", err)
 	}
 	for _, scenario := range []string{"timeout", "failed", "empty", "malformed", "oversized", "no-hit"} {
 		t.Run(scenario, func(t *testing.T) {
