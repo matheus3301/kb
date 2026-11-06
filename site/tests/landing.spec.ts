@@ -114,7 +114,7 @@ test('copy controls write the complete visible commands and agent prompt to the 
   }
 });
 
-test('the agent prompt stays compact and references the complete immutable guide', async ({ page }) => {
+test('the agent prompt fits three visible lines and references the complete immutable guide', async ({ page }) => {
   await openLanding(page);
   await page.getByRole('tab', { name: 'For Your Agent', exact: true }).click();
   const panel = page.getByRole('tabpanel', { name: 'For Your Agent', exact: true });
@@ -127,6 +127,22 @@ test('the agent prompt stays compact and references the complete immutable guide
   await expect(panel.getByRole('link')).toHaveAttribute(
     'href', reference!.replace('raw.githubusercontent.com/matheus3301/kb/', 'github.com/matheus3301/kb/blob/'),
   );
+  const textLayout = await panel.locator('pre').evaluate(pre => {
+    const style = getComputedStyle(pre);
+    const contentHeight = pre.clientHeight
+      - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    const range = document.createRange();
+    range.selectNodeContents(pre);
+    return {
+      contentHeight,
+      lineHeight: parseFloat(style.lineHeight),
+      textHeight: range.getBoundingClientRect().height,
+    };
+  });
+  expect(textLayout.contentHeight, 'Wrapped prompt text must fit three rendered lines')
+    .toBeLessThanOrEqual(3 * textLayout.lineHeight + 1);
+  expect(textLayout.textHeight, 'All copied text must remain visible, not clipped')
+    .toBeLessThanOrEqual(textLayout.contentHeight + 1);
   const card = await panel.locator('.copy-block').boundingBox();
   expect(card!.height, 'The rendered prompt card must stay compact, including on mobile').toBeLessThanOrEqual(250);
   await expectNoPageOverflow(page);
