@@ -65,6 +65,13 @@ def workflow_findings(text):
     jobs = re.findall(r"^  [\w-]+:\s*\n(.*?)(?=^  [\w-]+:|\Z)", text, re.M | re.S)
     for job in jobs:
         steps = list(re.finditer(r"^      - [^\n]+\n(.*?)(?=^      - |\Z)", job, re.M | re.S))
+        test_step = re.search(r"^      - run: make test(?: |\n)", job, re.M)
+        if test_step:
+            node_steps = [step for step in steps if re.search(
+                r"^(?:      - |        )uses: actions/setup-node@", step[0], re.M)]
+            if not any(step.end() <= test_step.start() and "if:" not in step[0]
+                       for step in node_steps):
+                findings.append("native extension process tests require unconditional pinned Node before make test")
         readers = {"actions/setup-go": ("go-version", "go"),
                    "actions/setup-node": ("node-version", "node"),
                    "actions/setup-python": ("python-version", "python"),

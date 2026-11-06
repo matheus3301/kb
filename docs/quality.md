@@ -63,6 +63,11 @@ the `mise exec --` prefix.
 Node and pnpm are development/CI tooling only; neither they nor mise are
 required by the CLI or MCP runtime. The setup candidate bundles its CLI skill
 without Node; separate optional `npx skills` installation remains available.
+The Go test suite also uses pinned Node to exercise generated Pi/OMP wrappers
+against real failing and noncooperating child processes. Both CI test runners
+install it before `make test`; missing Node fails this regression rather than
+silently skipping it. This is a development-test dependency, not a requirement
+for installing or running the KB executable.
 `mise exec -- make check` retains the Go/runtime gates; the separately required
 website job must also pass before integration.
 

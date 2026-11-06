@@ -123,6 +123,9 @@ jobs:
         with:
           go-version: ${{ steps.toolchain.outputs.go }}
           cache: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ steps.toolchain.outputs.node }}
       - run: make test fuzz acceptance
       - run: make benchmark-smoke
       - run: make retrieval-eval
