@@ -1,7 +1,14 @@
 {
   "date": "2026-11-06",
-  "site_source_commit": "7b08e94b345c440668b52ce5566ca53b0af2b82b",
-  "method": "Actual Chromium screenshots of built Astro preview at /kb/, produced by passing Playwright suite and visually reviewed. Focused images capture the installation section.",
+  "site_source_commit": "f3de84162c43e92927fd34658f61c80fb416166c",
+  "site_source_tree": "ab0b13c88315702f8f14d31372597172709246f8",
+  "source_identity_note": "Source commit identifies the site lane before integration; cherry-picks may change commit identity. Tree and file hashes identify captured content.",
+  "source_sha256": {
+    "site/src/components/Install.astro": "eca521377dba3e778eda1d2cfa3978182c4f43dab2278ef9476a59a2cfc119b1",
+    "site/tests/landing.spec.ts": "3d88c3c0bfae567725547de2ef5552ec367ab90b374535c64d9a8daef0b7f77b",
+    "docs/agent-install.md": "9abc9f686966b2bdae8cba31e25b1b19fe4185c0af2dcac6360bf0ae82fbbac3"
+  },
+  "method": "Fresh actual Chromium screenshots of the final immutable-guide built Astro preview at /kb/, produced by the passing 24-test Playwright suite and visually reviewed. Focused images capture the installation section. Human captures are byte-identical to the prior images because their rendered pixels did not change.",
   "viewports": {
     "desktop": {
       "width": 1440,
@@ -14,20 +21,24 @@
   },
   "files": {
     "desktop-page.png": {
-      "sha256": "827675f65cab2213cd3ffaf3f023658b2d7aa46dcee8a5bca604ad9398ce1fac",
-      "bytes": 632618
+      "sha256": "450396b10ddc2eaad713e5bbf94e74b5f34d31d51e0226fbab587aed8cdde345",
+      "bytes": 629149
     },
     "desktop-human.png": {
       "sha256": "e8d3f641362fa31b208d77f16f9a1b35aa39e77d1627ff0353cc052fe950c9c2",
       "bytes": 128708
     },
     "desktop-agent.png": {
-      "sha256": "27e05326d827316b82a32e22bdaefd133c60b6a2c6d1bee3606e397fd7e01487",
-      "bytes": 199032
+      "sha256": "a3ab4b2417c2f403d179e3e9b4044d6eab880b5aee85db1a82a408b5715df243",
+      "bytes": 58165
     },
     "mobile-human.png": {
       "sha256": "54b312f1915fb014f97eeffcd975e8776f074ac54e4c517a207521bdfda61b59",
       "bytes": 109770
+    },
+    "mobile-agent.png": {
+      "sha256": "03f2c7ae7040782b370ae4bc7912e9ea7b6833ad10c846a5702bff2aa30319a9",
+      "bytes": 49744
     }
   },
   "limitations": [

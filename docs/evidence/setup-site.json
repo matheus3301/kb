@@ -9,11 +9,13 @@
     "dependency_audit": "No known vulnerabilities found",
     "astro_check": {"errors": 0, "warnings": 0, "hints": 0},
     "static_build": "passed",
-    "playwright": {"passed": 22, "failed": 0, "workers": 1},
+    "playwright": {"passed": 24, "failed": 0, "workers": 1},
     "viewports": [{"name": "desktop", "width": 1440, "height": 1000}, {"name": "mobile", "width": 390, "height": 844}],
     "preview": "http://127.0.0.1:4321/kb/",
     "checks": [
       "Real clipboard contents match every complete visible command/prompt block",
+      "Agent prompt has at most three source lines, at most 160 characters, and a rendered card height at most 250 CSS pixels",
+      "Copied raw Markdown URL and human-visible GitHub link address the same PR installer guide",
       "Denied clipboard feedback never reports false success",
       "Audience tabs support pointer and keyboard navigation with visible focus",
       "Both setup views have no horizontal page overflow",
@@ -22,7 +24,14 @@
       "Animation pause/replay/advance, reduced motion and no-JavaScript transcript remain usable",
       "Full-page human and agent screenshots generated at both viewports"
     ],
-    "manual_browser_review": "Desktop and mobile human/agent setup views inspected; mobile horizontal overflow observed as zero"
+    "manual_browser_review": "Final immutable-guide built preview opened in actual desktop/mobile browser tabs; focused screenshots and refreshed public images visually reviewed. Prompt is 2 source lines, 140 characters; desktop/mobile cards measured 156.0625/185.75 CSS pixels; horizontal page overflow was zero.",
+    "guide_reference": {
+      "url": "https://raw.githubusercontent.com/matheus3301/kb/21a82cd4c210a6aa593afa5750b4be8e643f3ce1/docs/agent-install.md",
+      "published_commit": "21a82cd4c210a6aa593afa5750b4be8e643f3ce1",
+      "fetch": "Raw URL fetched successfully; SHA-256 matched the local committed guide",
+      "sha256": "9abc9f686966b2bdae8cba31e25b1b19fe4185c0af2dcac6360bf0ae82fbbac3",
+      "bytes": 10080
+    }
   },
   "tests": ["site/tests/landing.spec.ts"],
   "local_artifacts": [
@@ -35,11 +44,12 @@
     ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile-setup.png",
     ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile-agent-setup.png"
   ],
+  "public_artifacts": ["docs/evidence/setup-site/manifest.json", "docs/evidence/setup-site/desktop-page.png", "docs/evidence/setup-site/desktop-human.png", "docs/evidence/setup-site/desktop-agent.png", "docs/evidence/setup-site/mobile-human.png", "docs/evidence/setup-site/mobile-agent.png"],
   "limits": [
-    "Local artifacts are ignored build output, not public screenshot links until deliberately included in the review.",
+    "Ignored local artifacts are supplemental; selected reviewed screenshots are committed under docs/evidence/setup-site/.",
     "Published v1.0.0 does not include setup; these website checks do not qualify a new runtime release.",
     "No native setup, agent activation or hook delivery claim follows from illustrative sessions or screenshots.",
     "Serious/critical axe checks and finite Chromium scenarios do not establish complete accessibility or universal browser support.",
-    "Remote documentation availability is not a gate; same-document fragments are checked."
+    "The immutable published guide URL was fetched and hashed successfully; remote availability is not a continuous browser-suite gate."
   ]
 }
