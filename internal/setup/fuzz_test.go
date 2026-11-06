@@ -16,19 +16,26 @@ func FuzzJSONCEntryPreservation(f *testing.F) {
 			return
 		}
 		raw := []byte(text)
-		if _, err := parseJSONFormat(raw, "jsonc"); err != nil {
+		root, err := parseJSONFormat(raw, "jsonc")
+		if err != nil || root.kind != '{' {
+			return
+		}
+		// A preexisting owned-key collision is a legitimate conflict. For an
+		// absent key, every accepted object must support insertion/removal:
+		// a publication guard must not hide an editor bug as a rejected plan.
+		if existing, _ := member(root, "kb-test"); existing != nil {
 			return
 		}
 		a := Artifact{Kind: "jsonc", Key: "kb-test", Content: []byte(`{"command":"kb"}`)}
 		out, managed, borrowed, err := editArtifact(raw, a, nil, false)
 		if err != nil {
-			return
+			t.Fatalf("accepted JSONC object rejected during edit: %v", err)
 		}
 		if _, err := parseJSONFormat(out, "jsonc"); err != nil {
 			t.Fatalf("edit produced invalid configuration: %v", err)
 		}
 		if borrowed {
-			return
+			t.Fatal("absent entry was incorrectly classified as borrowed")
 		}
 		restored, _, _, err := editArtifact(out, a, &asset{Artifact: a, Managed: managed}, true)
 		if err != nil {

@@ -116,8 +116,11 @@ newline presentation. Orphaned/duplicate/reversed markers conflict. JSON edits u
 validated byte spans rather than decoding/reserializing the document, preserving
 unrelated values, decimal presentation and whitespace. JSONC is accepted only for
 adapters declaring that format; same-length comment/trailing-comma masking preserves
-spans and string literals. Duplicate keys are rejected in both formats. TOML is
-validated before and after edits; the conservative section scanner respects quoted
+spans and string literals. A comma without a preceding member/element is invalid,
+not a trailing-comma extension; masking must not turn `{,}` or `[,]` into valid
+empty containers. Duplicate keys are rejected in both formats. Whole-document
+validation runs after JSON/JSONC entry and array edits as well as before them.
+TOML is validated before and after edits; the conservative section scanner respects quoted
 and multiline values. Unsupported/ambiguous structures fail before mutation.
 
 ## Publication and recovery

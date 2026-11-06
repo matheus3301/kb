@@ -245,6 +245,17 @@ func setJSONNode(raw []byte, n *jsonNode, parts []string, value []byte, remove b
 }
 
 func editJSON(raw []byte, a Artifact, old *asset, remove bool) ([]byte, []byte, bool, error) {
+	out, managed, borrowed, err := editJSONEntry(raw, a, old, remove)
+	if err != nil {
+		return nil, nil, false, err
+	}
+	if _, err := parseJSONFormat(out, a.Kind); err != nil {
+		return nil, nil, false, conflict("managed JSON edit would produce invalid configuration")
+	}
+	return out, managed, borrowed, nil
+}
+
+func editJSONEntry(raw []byte, a Artifact, old *asset, remove bool) ([]byte, []byte, bool, error) {
 	if _, err := parseJSON(a.Content); err != nil {
 		return nil, nil, false, invalid("artifact JSON value: " + err.Error())
 	}

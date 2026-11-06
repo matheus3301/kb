@@ -81,7 +81,14 @@ func maskJSONC(raw []byte, trailing bool) ([]byte, error) {
 				for j < len(out) && bytes.ContainsRune([]byte(" \r\n\t"), rune(out[j])) {
 					j++
 				}
-				if j < len(out) && (out[j] == '}' || out[j] == ']') {
+				previous := i - 1
+				for previous >= 0 && bytes.ContainsRune([]byte(" \r\n\t"), rune(out[previous])) {
+					previous--
+				}
+				// A comma following an opening container is not a trailing
+				// comma: masking it would turn invalid {,} or [,] into a valid
+				// empty container and leave the editor's spans inconsistent.
+				if j < len(out) && (out[j] == '}' || out[j] == ']') && previous >= 0 && out[previous] != '{' && out[previous] != '[' {
 					out[i] = ' '
 				}
 			}

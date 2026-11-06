@@ -200,3 +200,56 @@ func TestEmptyJSONAndSharedPolicyConflicts(t *testing.T) {
 		t.Fatal("incompatible shared policies combined")
 	}
 }
+
+func TestJSONCRejectsCommaOnlyContainersBeforePlanning(t *testing.T) {
+	for _, text := range []string{"{, }", "[,]", "{ /* preserve comment */ , }", `{"nested":[ /* no element */ ,]}`, `{"nested":{,}}`, `{"foreign":1,,}`, `{"foreign":[1,,]}`} {
+		t.Run(text, func(t *testing.T) {
+			e, project, root := fixtureEngine(t)
+			path := filepath.Join(project, "opencode.jsonc")
+			original := []byte(text)
+			put(t, path, original)
+			a := Artifact{Path: path, Kind: "jsonc", Key: "mcp.knowledge-base", Content: []byte(`{"command":"kb"}`)}
+			if _, err := e.PlanInstall(context.Background(), []Installation{installation("opencode", project, root, a)}); err == nil {
+				t.Fatal("invalid comma-only container passed setup preflight")
+			}
+			if !bytes.Equal(read(t, path), original) {
+				t.Fatal("invalid configuration changed during preflight")
+			}
+			if _, err := os.Stat(e.stateDir); !errors.Is(err, os.ErrNotExist) {
+				t.Fatal("invalid configuration created setup state")
+			}
+		})
+	}
+}
+
+func TestJSONCTrailingCommasRetainForeignCommentsAndStrings(t *testing.T) {
+	for _, text := range []string{
+		`{"foreign":"https://example.test/*literal*/",}`,
+		"{ // foreign header\n\"foreign\": [\"//literal\", /* retained array comment */], /* retained object comment */\n}",
+		`{"foreign":{"nested":true,},}`,
+	} {
+		t.Run(text, func(t *testing.T) {
+			a := Artifact{Kind: "jsonc", Key: "mcp.knowledge-base", Content: []byte(`{"command":"kb"}`)}
+			original := []byte(text)
+			out, managed, borrowed, err := editArtifact(original, a, nil, false)
+			if err != nil || borrowed {
+				t.Fatalf("valid trailing-comma JSONC rejected: %v", err)
+			}
+			if _, err := parseJSONFormat(out, "jsonc"); err != nil {
+				t.Fatal("installed entry made JSONC invalid", err)
+			}
+			// Insertion occurs at the object's closing delimiter; all original
+			// foreign content, including nested trailing commas, stays exact.
+			if !bytes.HasPrefix(out, original[:len(original)-1]) {
+				t.Fatal("foreign JSONC bytes were rewritten")
+			}
+			removed, _, _, err := editArtifact(out, a, &asset{Artifact: a, Managed: managed}, true)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := parseJSONFormat(removed, "jsonc"); err != nil {
+				t.Fatal("removing entry made JSONC invalid", err)
+			}
+		})
+	}
+}
