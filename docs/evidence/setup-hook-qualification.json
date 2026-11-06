@@ -25,16 +25,109 @@
       "result": "passed",
       "go": "1.27.3",
       "final_timeout_ms": 3507
+    },
+    "required_runtime_negative_probe": {
+      "condition": "PATH contains no Node executable",
+      "observed_exit": 1,
+      "result": "expected failure with actionable mise install and mise exec instructions",
+      "skipped": false
     }
   },
+  "unsupported_cli_smoke": {
+    "source_commit": "499265797816cb2fba7eae6a129b5de5bde0562b",
+    "binary_sha256": "e7f93f03273a262ed4a1870a26b41592916edd8966355073b3d23d45be9b7167",
+    "fixture": "Disposable synthetic home, project and collection; no personal configuration",
+    "unknown_agent": {
+      "exit": 2,
+      "code": "INVALID_INPUT",
+      "message": "unsupported agent unknown-host; run kb setup agents",
+      "filesystem_unchanged": true
+    },
+    "unsupported_cursor_global": {
+      "exit": 2,
+      "code": "INVALID_INPUT",
+      "message": "Cursor global rules require native UI configuration; use project scope",
+      "filesystem_unchanged": true,
+      "silent_scope_promotion": false
+    }
+  },
+  "native_method": {
+    "interface": "project CLI, portable PATH kb dispatch, hooks required, learning off",
+    "environment": "Disposable synthetic project, external collection and XDG configuration; existing ordinary authenticated native session; no personal agent/profile/trust edits",
+    "delivery": "Actual OMP RPC process loads the generated extension; inspect native kb-session and kb-context messages after a completed and settled prompt",
+    "prompt": "zzzxmissingmarker",
+    "no_hit": "PATH helper execs the actual candidate KB binary; unique unmatched lexical query returns no-hit context",
+    "failed": "PATH helper emits valid success-shaped JSON with FALSE_SUCCESS then exits 7; generated wrapper must deliver unavailable context instead",
+    "timeout": "PATH helper ignores SIGTERM and remains running; generated wrapper must terminate it and deliver unavailable context",
+    "disabled": "Ordinary native --no-extensions option; no explicit extension or alternate hook path",
+    "sdk": "omp-rpc Python package 0.1.0 from official OMP 18.16.0 source 650f3a108229ee11bf68ba3377f4e8c3391cd424",
+    "privacy": "No private prompts, raw sessions, private paths or personal configuration snapshots included"
+  },
+  "native_runs": [
+    {
+      "host": "OMP 18.16.0",
+      "platform": "Darwin arm64",
+      "host_sha256": "d4a10d97488d6054d2b18198bd24f461079952c7e0fb75ba66336ca0df0cb99e",
+      "host_identity": "Official v18.16.0 Darwin arm64 asset, checksum matches published SHA256SUMS.txt; --version reports omp/18.16.0",
+      "source": "Parent combined candidate after e0e85c5476ffc54a5f6343b127a40ab7bf233287 and 145a60a",
+      "kb_sha256": "97da89e4a6139f31efd5bfe60013e5b7f72894b270183cb2580961056ae0a574",
+      "requested_model": "openai-codex/gpt-6.1-sol, thinking high",
+      "sdk_boundary": "Matching official 18.16.0 source SDK",
+      "inspection_all_scenarios": {
+        "configured": true,
+        "ready_local_only": true,
+        "status": "activation_pending",
+        "activation_observed": false,
+        "version_platform_trust_activation_unobserved_diagnostic": true
+      },
+      "scenarios": [
+        {"scenario": "disabled", "result": "passed", "hook_invocations": 0, "native_kb_messages": 0},
+        {"scenario": "no-hit", "result": "passed", "hook_invocations": 2, "context_bytes": 730, "diagnostic": "No lexical matches"},
+        {"scenario": "failed", "result": "passed", "hook_invocations": 2, "context_bytes": 107, "diagnostic": "KB hook unavailable", "false_success_delivered": false},
+        {"scenario": "timeout", "result": "passed", "hook_invocations": 2, "context_bytes": 107, "diagnostic": "KB hook unavailable", "native_startup_seconds": 3.78694683406502}
+      ],
+      "all_hook_helpers_confirmed_gone_before_teardown": true,
+      "all_turns_completed_and_settled": true,
+      "all_collection_file_bytes_unchanged": true,
+      "all_native_teardowns_confirmed": true,
+      "all_survivor_pid_lists_empty": true
+    },
+    {
+      "host": "OMP 18.17.0",
+      "platform": "Darwin arm64",
+      "source_commit": "499265797816cb2fba7eae6a129b5de5bde0562b",
+      "kb_sha256": "e7f93f03273a262ed4a1870a26b41592916edd8966355073b3d23d45be9b7167",
+      "requested_model": "openai-codex/gpt-6.1-sol, thinking high",
+      "sdk_boundary": "18.16.0 source SDK exercised empirically with 18.17.0; not relabeled as a matching 18.16.0 runtime",
+      "inspection_all_scenarios": {
+        "configured": true,
+        "ready_local_only": true,
+        "status": "activation_pending",
+        "activation_observed": false,
+        "version_platform_trust_activation_unobserved_diagnostic": true
+      },
+      "scenarios": [
+        {"scenario": "disabled", "result": "passed", "hook_invocations": 0, "native_kb_messages": 0},
+        {"scenario": "no-hit", "result": "passed", "hook_invocations": 2, "context_bytes": 730, "diagnostic": "No lexical matches"},
+        {"scenario": "failed", "result": "passed", "hook_invocations": 2, "context_bytes": 107, "diagnostic": "KB hook unavailable", "false_success_delivered": false},
+        {"scenario": "timeout", "result": "passed", "hook_invocations": 2, "context_bytes": 107, "diagnostic": "KB hook unavailable", "native_startup_seconds": 3.7751494171097875}
+      ],
+      "all_turns_completed_and_settled": true,
+      "all_collection_file_bytes_unchanged": true,
+      "all_native_teardowns_confirmed": true,
+      "all_survivor_pid_lists_empty": true
+    }
+  ],
   "qualification_boundary": {
     "inspection": "ready checks local prerequisites only; activation_observed remains false and status remains activation_pending even with a discoverable executable of unknown version",
     "platform": "Native version/platform compatibility, trust and session activation are explicitly unobserved by setup check; no other platform or untested host build is qualified by these fixtures.",
     "native_event_delivery": "Recorded separately after native process observation; Node callback fixtures alone are not native-host activation evidence.",
-    "timeout": "Bounded observed immediate subprocess termination, not hard real-time or a general descendant-process supervisor."
+    "timeout": "Bounded observed immediate subprocess termination, not hard real-time or a general descendant-process supervisor; native startup measurements include host initialization, and completed model-turn times are not hook latency SLAs."
   },
   "primary_sources": [
     "https://nodejs.org/docs/latest-v22.x/api/child_process.html#child_processexecfilefile-args-options-callback",
-    "https://github.com/can1357/oh-my-pi/blob/650f3a108229ee11bf68ba3377f4e8c3391cd424/packages/coding-agent/src/cli/args.ts"
+    "https://github.com/can1357/oh-my-pi/blob/650f3a108229ee11bf68ba3377f4e8c3391cd424/packages/coding-agent/src/cli/args.ts",
+    "https://github.com/can1357/oh-my-pi/releases/tag/v18.16.0",
+    "https://github.com/can1357/oh-my-pi/releases/download/v18.16.0/SHA256SUMS.txt"
   ]
 }
