@@ -11,7 +11,7 @@ import (
 )
 
 func fixtureRequest() Request {
-	return Request{Agent: "codex", Scope: "project", Project: "/workspace/project", Home: "/home/example", ConfigHome: "/home/example/.config", Executable: "/opt/kb/bin/kb", Root: "/data/knowledge", Mode: "cli", Consult: "always", Learning: "off", Hooks: "off"}
+	return Request{Agent: "codex", Scope: "project", Project: "/workspace/project", Home: "/fixture/user", ConfigHome: "/fixture/user/.config", Executable: "/opt/kb/bin/kb", Root: "/data/knowledge", Mode: "cli", Consult: "always", Learning: "off", Hooks: "off"}
 }
 
 func findArtifact(t *testing.T, out Rendered, kind string) Artifact {
@@ -48,13 +48,14 @@ func TestHostConfigurationContracts(t *testing.T) {
 				}
 				var entry map[string]any
 				for _, a := range out.Artifacts {
-					if a.Kind == "toml" {
+					switch a.Kind {
+					case "toml":
 						var doc map[string]any
 						if _, err := toml.Decode(string(a.Content), &doc); err != nil {
 							t.Fatal(err)
 						}
 						entry = doc["mcp_servers"].(map[string]any)["knowledge-base"].(map[string]any)
-					} else if a.Kind == "json" || a.Kind == "jsonc" {
+					case "json", "jsonc":
 						if err := json.Unmarshal(a.Content, &entry); err != nil {
 							t.Fatal(err)
 						}
@@ -118,18 +119,24 @@ func TestProfileAndInstructionPrecedence(t *testing.T) {
 		paths                           []string
 		wantRule, wantSkill, wantConfig string
 	}{
-		{"codex", "global", map[string]string{"CODEX_HOME": "/profiles/codex"}, []string{"/profiles/codex/AGENTS.override.md"}, "/profiles/codex/AGENTS.override.md", "/home/example/.agents/skills/knowledge-base", "/profiles/codex/config.toml"},
+		{"codex", "global", map[string]string{"CODEX_HOME": "/profiles/codex"}, []string{"/profiles/codex/AGENTS.override.md"}, "/profiles/codex/AGENTS.override.md", "/fixture/user/.agents/skills/knowledge-base", "/profiles/codex/config.toml"},
 		{"codex", "project", nil, []string{"/workspace/project/AGENTS.override.md"}, "/workspace/project/AGENTS.override.md", "/workspace/project/.agents/skills/knowledge-base", "/workspace/project/.codex/config.toml"},
 		{"pi", "global", map[string]string{"PI_CODING_AGENT_DIR": "/profiles/pi"}, nil, "/profiles/pi/AGENTS.md", "/profiles/pi/skills/knowledge-base", "/profiles/pi/mcp.json"},
+		{"pi", "global", map[string]string{"PI_CODING_AGENT_DIR": "/profiles/pi"}, []string{"/profiles/pi/CLAUDE.md"}, "/profiles/pi/CLAUDE.md", "/profiles/pi/skills/knowledge-base", "/profiles/pi/mcp.json"},
+		{"pi", "project", nil, []string{"/workspace/project/AGENTS.MD"}, "/workspace/project/AGENTS.MD", "/workspace/project/.pi/skills/knowledge-base", "/workspace/project/.pi/mcp.json"},
 		{"omp", "global", map[string]string{"PI_CODING_AGENT_DIR": "/profiles/custom"}, nil, "/profiles/custom/RULES.md", "/profiles/custom/skills/knowledge-base", "/profiles/custom/mcp.json"},
-		{"omp", "global", map[string]string{"OMP_PROFILE": "work", "PI_CODING_AGENT_DIR": "/ignored"}, nil, "/home/example/.omp/profiles/work/agent/RULES.md", "/home/example/.omp/profiles/work/agent/skills/knowledge-base", "/home/example/.omp/profiles/work/agent/mcp.json"},
-		{"omp", "global", map[string]string{"OMP_PROFILE": "", "PI_PROFILE": "ignored"}, nil, "/home/example/.omp/agent/RULES.md", "/home/example/.omp/agent/skills/knowledge-base", "/home/example/.omp/agent/mcp.json"},
-		{"omp", "global", map[string]string{"PI_PROFILE": "legacy", "PI_CONFIG_DIR": ".custom-omp"}, nil, "/home/example/.custom-omp/profiles/legacy/agent/RULES.md", "/home/example/.custom-omp/profiles/legacy/agent/skills/knowledge-base", "/home/example/.custom-omp/profiles/legacy/agent/mcp.json"},
+		{"omp", "global", map[string]string{"OMP_PROFILE": "work", "PI_CODING_AGENT_DIR": "/ignored"}, nil, "/fixture/user/.omp/profiles/work/agent/RULES.md", "/fixture/user/.omp/profiles/work/agent/skills/knowledge-base", "/fixture/user/.omp/profiles/work/agent/mcp.json"},
+		{"omp", "global", map[string]string{"OMP_PROFILE": "", "PI_PROFILE": "ignored"}, nil, "/fixture/user/.omp/agent/RULES.md", "/fixture/user/.omp/agent/skills/knowledge-base", "/fixture/user/.omp/agent/mcp.json"},
+		{"omp", "global", map[string]string{"PI_PROFILE": "legacy", "PI_CONFIG_DIR": ".custom-omp"}, nil, "/fixture/user/.custom-omp/profiles/legacy/agent/RULES.md", "/fixture/user/.custom-omp/profiles/legacy/agent/skills/knowledge-base", "/fixture/user/.custom-omp/profiles/legacy/agent/mcp.json"},
 		{"omp", "project", map[string]string{"OMP_PROFILE": "work"}, nil, "/workspace/project/.omp/RULES.md", "/workspace/project/.omp/skills/knowledge-base", "/workspace/project/.omp/mcp.json"},
 		{"claude", "global", map[string]string{"CLAUDE_CONFIG_DIR": "/profiles/claude"}, nil, "/profiles/claude/rules/knowledge-base.md", "/profiles/claude/skills/knowledge-base", "/profiles/claude/.claude.json"},
 		{"opencode", "project", nil, []string{"/workspace/project/opencode.jsonc"}, "/workspace/project/AGENTS.md", "/workspace/project/.opencode/skills/knowledge-base", "/workspace/project/opencode.jsonc"},
-		{"antigravity", "global", nil, nil, "/home/example/.gemini/config/rules/knowledge-base.md", "/home/example/.gemini/config/skills/knowledge-base", "/home/example/.gemini/config/mcp_config.json"},
+		{"opencode", "project", nil, []string{"/workspace/project/CLAUDE.md"}, "/workspace/project/CLAUDE.md", "/workspace/project/.opencode/skills/knowledge-base", "/workspace/project/opencode.json"},
+		{"opencode", "global", nil, []string{"/fixture/user/.claude/CLAUDE.md"}, "/fixture/user/.claude/CLAUDE.md", "/fixture/user/.config/opencode/skills/knowledge-base", "/fixture/user/.config/opencode/opencode.json"},
+		{"antigravity", "global", nil, nil, "/fixture/user/.gemini/config/rules/knowledge-base.md", "/fixture/user/.gemini/config/skills/knowledge-base", "/fixture/user/.gemini/config/mcp_config.json"},
 		{"antigravity", "project", nil, nil, "/workspace/project/.agents/rules/knowledge-base.md", "/workspace/project/.agents/skills/knowledge-base", "/workspace/project/.agents/mcp_config.json"},
+		{"copilot", "project", nil, nil, "/workspace/project/.github/copilot-instructions.md", "/workspace/project/.github/skills/knowledge-base", "/workspace/project/.mcp.json"},
+		{"gemini", "global", map[string]string{"GEMINI_CLI_HOME": "/profiles/gemini"}, nil, "/profiles/gemini/.gemini/GEMINI.md", "/profiles/gemini/.gemini/skills/knowledge-base", "/profiles/gemini/.gemini/settings.json"},
 	}
 	for _, c := range cases {
 		t.Run(c.agent+"/"+c.wantRule, func(t *testing.T) {
@@ -219,7 +226,7 @@ func TestHookRegistrationUsesHostEventAndUnits(t *testing.T) {
 func TestRejectedRequestsProduceNoPartialIntents(t *testing.T) {
 	mutations := []func(*Request){
 		func(r *Request) { r.Agent = "unknown" }, func(r *Request) { r.Scope = "workspace" }, func(r *Request) { r.Mode = "both" }, func(r *Request) { r.Consult = "sometimes" }, func(r *Request) { r.Learning = "maybe" }, func(r *Request) { r.Hooks = "unsafe" },
-		func(r *Request) { r.Project = "relative" }, func(r *Request) { r.Home = "/home/../outside" }, func(r *Request) { r.Root = "/data/bad\nroot" }, func(r *Request) { r.Executable = "kb" }, func(r *Request) { r.ConfigHome = "" },
+		func(r *Request) { r.Project = "relative" }, func(r *Request) { r.Home = "/fixture/../outside" }, func(r *Request) { r.Root = "/data/bad\nroot" }, func(r *Request) { r.Executable = "kb" }, func(r *Request) { r.ConfigHome = "" },
 		func(r *Request) { r.Agent = "omp"; r.Environment = map[string]string{"OMP_PROFILE": "../escape"} }, func(r *Request) { r.Agent = "omp"; r.Environment = map[string]string{"OMP_PROFILE": "con"} }, func(r *Request) { r.Agent = "omp"; r.Environment = map[string]string{"PI_CONFIG_DIR": "../../other"} },
 		func(r *Request) { r.Agent = "pi"; r.Environment = map[string]string{"PI_CODING_AGENT_DIR": "relative"} }, func(r *Request) {
 			r.Agent = "opencode"

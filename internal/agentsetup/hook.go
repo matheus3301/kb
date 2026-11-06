@@ -199,6 +199,26 @@ func HookContext(ctx context.Context, root, event string, request HookRequest, l
 	if err != nil {
 		return "", err
 	}
+	// Core search is conjunctive. A natural-language prompt often contains words
+	// absent from every note. Broaden deterministically, without retrying errors:
+	// probe at most eight distinct terms, in prompt order, and stop at a match.
+	if len(result.Sources) == 0 && strings.Contains(query, " ") {
+		attempts := 0
+		for term := range strings.FieldsSeq(query) {
+			if utf8.RuneCountInString(term) < 3 {
+				continue
+			}
+			result, err = store.Context(ctx, api.ContextRequest{Query: term, MaxTokens: 1200, MaxBytes: hookContextBytes})
+			if err != nil {
+				return "", err
+			}
+			attempts++
+			if len(result.Sources) > 0 || attempts == 8 {
+				break
+			}
+		}
+		routing += "Lexical query broadened to bounded single-term probes; excerpts may be only partially relevant. Verify focused sources before relying on them.\n"
+	}
 	if status.Generation != result.Generation {
 		routing += "Collection changed during consultation; diagnostics and excerpts may describe different revisions. Re-read sources.\n"
 	}

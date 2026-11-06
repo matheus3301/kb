@@ -116,6 +116,7 @@ func noteHashes(t *testing.T, root string) map[string][32]byte {
 		t.Fatal(err)
 	}
 	for _, p := range paths {
+		// #nosec G304 -- Paths come only from the synthetic test root's Markdown glob.
 		data, err := os.ReadFile(p)
 		if err != nil {
 			t.Fatal(err)
@@ -246,4 +247,15 @@ func FuzzHookEvent(f *testing.F) {
 			t.Fatal("accepted input violates hook bounds")
 		}
 	})
+}
+
+func TestHookFindsEvidenceWhenPromptHasUnmatchedTerms(t *testing.T) {
+	root := syntheticHookBase(t)
+	text, err := HookContext(context.Background(), root, "UserPromptSubmit", HookRequest{Query: "alpha unmatchedsynthetictoken"}, "off")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(text, "Alpha synthetic evidence") {
+		t.Fatal("prompt conjunction hides existing task evidence")
+	}
 }

@@ -177,6 +177,18 @@ func existing(r Request, candidates ...string) string {
 	return candidates[len(candidates)-1]
 }
 
+// Existing instruction candidates must be non-empty. Creating a new preferred
+// file could otherwise hide the user's currently loaded fallback instructions.
+func preferredContext(r Request, dir string, names ...string) string {
+	for _, name := range names {
+		path := filepath.Join(dir, name)
+		if slices.Contains(r.ExistingPaths, path) {
+			return path
+		}
+	}
+	return filepath.Join(dir, "AGENTS.md")
+}
+
 // Render constructs an all-or-error plan without reading or writing the filesystem.
 func Render(r Request) (Rendered, error) {
 	d, err := descriptor(r.Agent)
@@ -260,9 +272,9 @@ func Render(r Request) (Rendered, error) {
 		if r.Agent == "omp" {
 			rule = filepath.Join(dir, "RULES.md")
 		} else if r.Scope == "global" {
-			rule = existing(r, filepath.Join(dir, "AGENTS.override.md"), filepath.Join(dir, "AGENTS.md"))
+			rule = preferredContext(r, dir, "AGENTS.override.md", "AGENTS.md", "AGENTS.MD", "CLAUDE.md", "CLAUDE.MD")
 		} else {
-			rule = existing(r, filepath.Join(base, "AGENTS.override.md"), rule)
+			rule = preferredContext(r, base, "AGENTS.override.md", "AGENTS.md", "AGENTS.MD", "CLAUDE.md", "CLAUDE.MD")
 		}
 		skill = filepath.Join(dir, "skills", "knowledge-base")
 		config = filepath.Join(dir, "mcp.json")
@@ -276,10 +288,14 @@ func Render(r Request) (Rendered, error) {
 		}
 		if r.Scope == "global" {
 			rule = filepath.Join(dir, "AGENTS.md")
+			if r.Environment["OPENCODE_DISABLE_CLAUDE_CODE"] == "" && r.Environment["OPENCODE_DISABLE_CLAUDE_CODE_PROMPT"] == "" {
+				rule = existing(r, rule, filepath.Join(r.Home, ".claude", "CLAUDE.md"), rule)
+			}
 			skill = filepath.Join(dir, "skills", "knowledge-base")
 		}
 		config = existing(r, filepath.Join(dir, "opencode.jsonc"), filepath.Join(dir, "opencode.json"))
 		if r.Scope == "project" {
+			rule = preferredContext(r, base, "AGENTS.md", "CLAUDE.md")
 			config = existing(r, filepath.Join(base, "opencode.jsonc"), filepath.Join(base, "opencode.json"))
 			skill = filepath.Join(base, ".opencode", "skills", "knowledge-base")
 		}
@@ -298,6 +314,14 @@ func Render(r Request) (Rendered, error) {
 		dir := filepath.Join(base, ".gemini")
 		rule = filepath.Join(base, "GEMINI.md")
 		if r.Scope == "global" {
+			if r.Environment["GEMINI_CLI_HOME"] != "" {
+				home, e := profilePath(r, "GEMINI_CLI_HOME", r.Home)
+				if e != nil {
+					return Rendered{}, e
+				}
+				dir = filepath.Join(home, ".gemini")
+				skill = filepath.Join(dir, "skills", "knowledge-base")
+			}
 			rule = filepath.Join(dir, "GEMINI.md")
 		}
 		config, hooksFile = filepath.Join(dir, "settings.json"), filepath.Join(dir, "settings.json")
@@ -307,6 +331,7 @@ func Render(r Request) (Rendered, error) {
 			return Rendered{}, e
 		}
 		rule = filepath.Join(base, ".github", "copilot-instructions.md")
+		skill = filepath.Join(base, ".github", "skills", "knowledge-base")
 		config = filepath.Join(base, ".mcp.json")
 		if r.Scope == "global" {
 			rule = filepath.Join(dir, "copilot-instructions.md")
@@ -332,7 +357,7 @@ func Render(r Request) (Rendered, error) {
 		}
 		config = filepath.Join(dir, "mcp_config.json")
 	}
-	out.Artifacts = append(out.Artifacts, Artifact{Path: rule, Kind: ruleKind, Key: "kb-policy-" + r.Agent, Content: []byte(rulePrefix + policy(r, d, skill)), Shared: ruleKind == "block"})
+	out.Artifacts = append(out.Artifacts, Artifact{Path: rule, Kind: ruleKind, Key: "kb-policy-" + r.Agent, Content: []byte(rulePrefix + policy(r, d)), Shared: ruleKind == "block"})
 	if r.Mode == "cli" {
 		out.SkillDir = skill
 	} else {
@@ -340,7 +365,7 @@ func Render(r Request) (Rendered, error) {
 		if configKind == "toml" {
 			content = []byte("[" + configKey + "]\ncommand = " + strconv.Quote(r.Executable) + "\nargs = " + string(mustJSON(mcpArgs(r))) + "\n")
 		}
-		out.Artifacts = append(out.Artifacts, Artifact{Path: config, Kind: configKind, Key: configKey, Content: content})
+		out.Artifacts = append(out.Artifacts, Artifact{Path: config, Kind: configKind, Key: configKey, Content: content, Shared: true})
 	}
 	if r.Hooks != "off" && hooksFile != "" {
 		out.Artifacts = append(out.Artifacts, hookArtifacts(r, hooksFile)...)
@@ -396,10 +421,7 @@ func invocation(r Request) string {
 	return r.Executable
 }
 
-func policy(r Request, d Descriptor, skill string) string {
-	if r.Portable {
-		skill, _ = filepath.Rel(r.Project, skill)
-	}
+func policy(r Request, d Descriptor) string {
 	text := "# Knowledge Base — " + d.Name + " (" + r.Scope + ")\n\n" +
 		"Host guard: this block applies only to the " + d.Name + " harness (agent ID " + r.Agent + "), not merely a model with a similar name. Ignore this entire block in every other harness. Never use another host's binding.\n\n"
 	if r.Scope == "global" {
@@ -410,7 +432,7 @@ func policy(r Request, d Descriptor, skill string) string {
 	if r.Mode == "mcp" {
 		text += "Interface: MCP only. Use the configured knowledge-base MCP server with its fixed collection root and self-contained initialization/tool guidance. Check the root reported by its responses; a project server named knowledge-base replaces the global entry for this host. No shell command, CLI resolver, or CLI skill is required. If that server is unavailable or reports the wrong root, report consultation unavailable; do not switch interfaces or guess another root.\n\n"
 	} else {
-		text += "Interface: CLI with the bundled knowledge-base skill. Run " + shellQuote(invocation(r)) + " setup resolve --agent " + r.Agent + " --project <current-working-directory> --json. Obey the returned effective root, mode, consult, learning and skill_dir, including project overrides. Resolve again when cwd changes. Ambient KB_ROOT does not replace this binding. If the resolved mode is MCP, use only its server guidance instead of CLI data commands. For CLI, read SKILL.md from the returned skill_dir (configured destination: " + strconv.Quote(skill) + ") and relevant references; pass the resolved root explicitly with --root to every data command.\n\n"
+		text += "Interface: CLI with the bundled knowledge-base skill. Run " + shellQuote(invocation(r)) + " setup resolve --agent " + r.Agent + " --project <current-working-directory> --json. Obey the returned effective root, mode, consult, learning and skill_dir, including project overrides. Resolve again when cwd changes. Ambient KB_ROOT does not replace this binding. If the resolved mode is MCP, use only its server guidance instead of CLI data commands. For CLI, read SKILL.md from the returned skill_dir and relevant references; pass the resolved root explicitly with --root to every data command.\n\n"
 	}
 	if r.Consult == "always" {
 		text += "Consult before every question or task. "
