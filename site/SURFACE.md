@@ -18,8 +18,8 @@ Mode: Persuade. Audience: humans and agent operators evaluating a local Markdown
 
 **AGENT HANDOFF:** Keep the visible/copyable prompt to one short instruction and
 the raw GitHub installer-guide URL (at most three source lines, no dense joined
-prose). Full setup policy lives in `docs/agent-install.md`, linked through the
-submitted PR branch while the candidate is unreleased. Browser checks cap prompt
+prose). Full setup policy lives in `docs/agent-install.md`, linked at a published
+immutable source commit so it survives PR branch deletion. Browser checks cap prompt
 length and rendered card height, alongside actual clipboard verification.
 
 Seed: none (user-pinned direction). The page remains code-led; the shared blue-bird identity was generated under human authorization. No paid page rendering.

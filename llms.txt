@@ -12,7 +12,7 @@ not authorize setup, collection writes, global changes, merge or release.
 
 ## Start here
 
-- [Agent installer guide](https://raw.githubusercontent.com/matheus3301/kb/feat/agent-setup/docs/agent-install.md): Self-contained setup workflow referenced by the site's short prompt. This source-candidate guide is on the PR branch, not a published release.
+- [Agent installer guide](https://raw.githubusercontent.com/matheus3301/kb/21a82cd4c210a6aa593afa5750b4be8e643f3ce1/docs/agent-install.md): Self-contained setup workflow referenced by the site's short prompt. Pinned source-candidate guide, not a published release.
 - [Agent setup](https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md): Version preflight, separate candidate source build, bundled CLI skill or independent MCP, explicit root/scope/agents/learning, dry-run/check/uninstall and activation evidence.
 - [Documentation index](https://raw.githubusercontent.com/matheus3301/kb/main/docs/README.md): Task-oriented navigation through canonical Markdown guides.
 - [README](https://raw.githubusercontent.com/matheus3301/kb/main/README.md): Product, first CLI workflow and actual project status.

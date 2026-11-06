@@ -114,7 +114,7 @@ test('copy controls write the complete visible commands and agent prompt to the 
   }
 });
 
-test('the agent prompt stays compact and references the complete PR guide', async ({ page }) => {
+test('the agent prompt stays compact and references the complete immutable guide', async ({ page }) => {
   await openLanding(page);
   await page.getByRole('tab', { name: 'For Your Agent', exact: true }).click();
   const panel = page.getByRole('tabpanel', { name: 'For Your Agent', exact: true });
@@ -122,7 +122,8 @@ test('the agent prompt stays compact and references the complete PR guide', asyn
   expect(prompt.split('\n').length, 'The copied source must have at most three lines').toBeLessThanOrEqual(3);
   expect(prompt.length, 'Line joining must not hide a long instruction block').toBeLessThanOrEqual(160);
   const reference = prompt.match(/https:\/\/\S+/)?.[0];
-  expect(reference).toBe('https://raw.githubusercontent.com/matheus3301/kb/feat/agent-setup/docs/agent-install.md');
+  expect(reference, 'The installer guide must survive PR branch deletion')
+    .toMatch(/^https:\/\/raw\.githubusercontent\.com\/matheus3301\/kb\/[0-9a-f]{40}\/docs\/agent-install\.md$/);
   await expect(panel.getByRole('link')).toHaveAttribute(
     'href', reference!.replace('raw.githubusercontent.com/matheus3301/kb/', 'github.com/matheus3301/kb/blob/'),
   );
