@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-06",
+  "site_source_commit": "7b08e94b345c440668b52ce5566ca53b0af2b82b",
+  "method": "Actual Chromium screenshots of built Astro preview at /kb/, produced by passing Playwright suite and visually reviewed. Focused images capture the installation section.",
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 1000
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "files": {
+    "desktop-page.png": {
+      "sha256": "827675f65cab2213cd3ffaf3f023658b2d7aa46dcee8a5bca604ad9398ce1fac",
+      "bytes": 632618
+    },
+    "desktop-human.png": {
+      "sha256": "e8d3f641362fa31b208d77f16f9a1b35aa39e77d1627ff0353cc052fe950c9c2",
+      "bytes": 128708
+    },
+    "desktop-agent.png": {
+      "sha256": "27e05326d827316b82a32e22bdaefd133c60b6a2c6d1bee3606e397fd7e01487",
+      "bytes": 199032
+    },
+    "mobile-human.png": {
+      "sha256": "54b312f1915fb014f97eeffcd975e8776f074ac54e4c517a207521bdfda61b59",
+      "bytes": 109770
+    }
+  },
+  "limitations": [
+    "Public website only; screenshots do not establish native agent activation.",
+    "Published v1.0.0 does not include setup; candidate availability is explicitly shown."
+  ]
+}
