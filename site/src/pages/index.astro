@@ -4,7 +4,7 @@ import '@fontsource/ibm-plex-mono/latin-500.css';
 import { Image, getImage } from 'astro:assets';
 import logo from '../../../assets/logo.png';
 import Install from '../components/Install.astro';
-import SourceDemo from '../components/SourceDemo.astro';
+import AgentDemo from '../components/AgentDemo.astro';
 import '../styles/global.css';
 const repo = 'https://github.com/matheus3301/kb';
 const docs = `${repo}/blob/main/docs`;
@@ -38,9 +38,8 @@ const favicons = await Promise.all([32, 64].map(size => getImage({ src: logo, wi
           <h1 id="hero-title">Your Knowledge Base.<br /><span>In Markdown.</span><br /><span>In your terminal.</span></h1>
           <p class="hero-description">Keep what you learn in files you own.<br class="desktop-break" /> Find it, read its sources, and carry it into your next agent session.</p>
           <div class="hero-actions"><a class="button button-primary" href="#get-started">Get started <svg width="17" height="17" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="hero-docs" href={`${docs}/quickstart.md`}>Read the quickstart</a></div>
-          <p class="hero-install"><code>brew install matheus3301/tap/kb</code><span>Local files. No account. Open source.</span></p>
         </div>
-        <SourceDemo />
+        <AgentDemo />
       </section>
       <div class="principles container" aria-label="Core principles"><p>Readable by you.</p><span aria-hidden="true">/</span><p>Usable by your agent.</p><span aria-hidden="true">/</span><p>Not locked in a chat.</p></div>
       <div class="container"><Install /></div>

@@ -1,0 +1,351 @@
+---
+import { agentSessions } from './agent-sessions';
+const exampleCount = agentSessions.length;
+---
+<section class="agent-demo" aria-labelledby="demo-title">
+  <header class="demo-header">
+    <span class="demo-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="m4 5 5 5-5 5m7 0h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <h2 id="demo-title">Agent session</h2>
+    <span class="demo-number">Example <span data-example-number>1</span> / {exampleCount}</span>
+  </header>
+
+  <div class="demo-stories">
+    {agentSessions.map((session, index) => (
+      <article class="demo-story" data-story data-active={index === 0 ? '' : undefined} inert={index !== 0}>
+        <div class="demo-prompt">
+          <p class="demo-label">You <span>{session.title}</span></p>
+          <p class="prompt-text">{session.prompt.split(' ').map((word, i) => <span style={`--word-delay: ${i * 35}ms`}>{word}{' '}</span>)}</p>
+        </div>
+
+        <div class="step-rail" role="group" aria-label="Session steps" data-enhanced>
+          {session.steps.map((step, i) => (
+            <button type="button" style={`--step-duration: ${step.duration}ms`} aria-current={index === 0 && i === session.steps.length - 1 ? 'step' : undefined}>
+              {step.label}
+            </button>
+          ))}
+        </div>
+
+        <div class="demo-stages">
+          {session.steps.map((step, i) => (
+            <div class="demo-stage" data-duration={step.duration} data-current={index === 0 && i === session.steps.length - 1 ? '' : undefined}>
+              {step.command && <p class="demo-command"><span aria-hidden="true">$</span><code>{step.command}</code></p>}
+              <div class="stage-result">
+                <p class="demo-label stage-heading">
+                  {step.heading}
+                  {i === 0 && <span class="thinking-dots" aria-hidden="true"><i></i><i></i><i></i></span>}
+                </p>
+                {step.text && <p class="stage-text">
+                  {step.label === 'Reply' ? step.text.split(' ').map((word, i) => (
+                    <span class="reply-word" style={`--word-delay: ${i * 22 + 380}ms`}>{word}{' '}</span>
+                  )) : step.text}
+                </p>}
+                {step.diff && <div class="demo-diff">
+                  <p><span aria-label="Remove">−</span><code>{step.diff[0]}</code></p>
+                  <p><span aria-label="Add">+</span><code>{step.diff[1]}</code></p>
+                </div>}
+                {step.path && <p class="demo-source"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" aria-hidden="true"><path d="M2.5 1.5h5l3 3v9h-8zM7.5 1.5v3h3M5 8h3m-3 2.5h3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg><code>{step.path}</code></p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <footer class="demo-controls" data-enhanced>
+    <span class="demo-mode">CLI + skill</span>
+    <div>
+      <button type="button" data-pause data-motion>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path class="pause-icon" d="M6 4v8m4-8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path class="play-icon" d="m6 4 6 4-6 4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <span>Pause</span>
+      </button>
+      <button type="button" data-replay data-motion>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 7a5 5 0 1 1 1.3 4.5M3 3.5V7h3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Replay
+      </button>
+      <button type="button" data-next aria-label="Next example">
+        Next
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <p class="demo-announcement" role="status"></p>
+  </footer>
+</section>
+
+<script>
+  function initDemo(demo: HTMLElement) {
+    const stories = [...demo.querySelectorAll<HTMLElement>('[data-story]')].map(element => ({
+      element,
+      title: element.querySelector('.demo-label span')!.textContent!,
+      stages: [...element.querySelectorAll<HTMLElement>('[data-duration]')],
+      buttons: [...element.querySelectorAll<HTMLButtonElement>('.step-rail button')],
+    }));
+    const number = demo.querySelector('[data-example-number]')!;
+    const pause = demo.querySelector<HTMLButtonElement>('[data-pause]')!;
+    const pauseLabel = pause.querySelector('span')!;
+    const announcement = demo.querySelector('[role=status]')!;
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const storageKey = 'kb-agent-demo-example';
+
+    let previous = -1;
+    try {
+      previous = Number(sessionStorage.getItem(storageKey) ?? -1);
+    } catch {
+      // The demo also works when storage is blocked.
+    }
+    const choices = stories.map((_, index) => index).filter(index => index !== previous);
+    const initial = choices[Math.floor(Math.random() * choices.length)];
+    try {
+      sessionStorage.setItem(storageKey, String(initial));
+    } catch {
+      // A reload can select the same example without session storage.
+    }
+
+    let story = 0;
+    let phase = stories[0].stages.length - 1;
+    let paused = false;
+    let visible = false;
+    let timer: number | undefined;
+    let started = 0;
+    let remaining = 0;
+
+    function stopClock() {
+      if (timer === undefined) return;
+      window.clearTimeout(timer);
+      timer = undefined;
+      remaining = Math.max(0, remaining - (performance.now() - started));
+    }
+
+    function updatePlayback() {
+      const playing = !paused && !motion.matches && visible && !document.hidden;
+      demo.toggleAttribute('data-playing', playing);
+      demo.toggleAttribute('data-paused', paused);
+      demo.toggleAttribute('data-reduced', motion.matches);
+      pauseLabel.textContent = paused ? 'Play' : 'Pause';
+      if (!playing) {
+        stopClock();
+      } else if (timer === undefined) {
+        started = performance.now();
+        timer = window.setTimeout(() => {
+          timer = undefined;
+          if (phase < stories[story].stages.length - 1) show(story, phase + 1);
+          else show((story + 1) % stories.length, 0);
+        }, remaining);
+      }
+    }
+
+    function show(index: number, step: number) {
+      stopClock();
+      const old = stories[story];
+      old.stages[phase].removeAttribute('data-current');
+      old.buttons[phase].removeAttribute('aria-current');
+
+      if (story !== index) {
+        old.element.removeAttribute('data-active');
+        old.element.inert = true;
+      }
+      story = index;
+      phase = step;
+      const current = stories[story];
+      current.element.setAttribute('data-active', '');
+      current.element.inert = false;
+      current.stages[phase].setAttribute('data-current', '');
+      current.buttons[phase].setAttribute('aria-current', 'step');
+      number.textContent = String(story + 1);
+      remaining = Number(current.stages[phase].dataset.duration);
+      updatePlayback();
+    }
+
+    function showExample(index: number) {
+      const staticView = motion.matches || paused;
+      show(index, staticView ? stories[index].stages.length - 1 : 0);
+    }
+
+    pause.addEventListener('click', () => {
+      paused = !paused;
+      updatePlayback();
+    });
+    demo.querySelector('[data-replay]')!.addEventListener('click', () => {
+      paused = false;
+      show(story, 0);
+    });
+    demo.querySelector('[data-next]')!.addEventListener('click', () => {
+      showExample((story + 1) % stories.length);
+      announcement.textContent = stories[story].title;
+    });
+    stories.forEach(({ buttons }, index) => buttons.forEach((button, step) => {
+      button.addEventListener('focus', () => {
+        if (motion.matches) return;
+        paused = true;
+        updatePlayback();
+      });
+      button.addEventListener('click', () => show(index, step));
+    }));
+    motion.addEventListener('change', () => showExample(story));
+    document.addEventListener('visibilitychange', updatePlayback);
+    new IntersectionObserver(([entry]) => {
+      visible = entry.intersectionRatio >= 0.3;
+      updatePlayback();
+    }, { threshold: 0.3 }).observe(demo);
+
+    demo.setAttribute('data-ready', '');
+    showExample(initial);
+  }
+
+  const demo = document.querySelector<HTMLElement>('.agent-demo');
+  if (demo) initDemo(demo);
+</script>
+
+<style>
+  .agent-demo {
+    --demo-inset: clamp(13px, 2vw, 23px);
+    --demo-panel: #0b2032;
+    min-width: 0;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--demo-panel);
+    box-shadow: 0 20px 65px #020b1570;
+    overflow-wrap: anywhere;
+  }
+  .demo-header, .demo-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-inline: var(--demo-inset);
+  }
+  .demo-header { padding-block: 13px; border-bottom: 1px solid var(--border); }
+  .demo-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--accent);
+  }
+  .demo-header h2 { font-size: 16px; letter-spacing: -.02em; text-wrap: initial; }
+  .demo-number, .demo-mode, .demo-label {
+    color: var(--muted);
+    font: 500 11px/1.45 var(--font-code);
+  }
+  .demo-number { margin-left: auto; white-space: nowrap; }
+  .demo-stories, .demo-stages { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .demo-story, .demo-stage { grid-area: 1 / 1; visibility: hidden; min-width: 0; }
+  .demo-story { display: grid; grid-template-rows: auto auto 1fr; padding: var(--demo-inset); }
+  .demo-story[data-active], .demo-story[data-active] .demo-stage[data-current] { visibility: visible; }
+  .demo-prompt {
+    min-height: 100px;
+    padding: 13px 15px;
+    border-left: 2px solid var(--accent);
+    border-radius: 0 7px 7px 0;
+    background: linear-gradient(105deg, #183550, var(--surface));
+  }
+  .demo-label { color: var(--accent); }
+  .demo-label span { margin-left: 10px; color: var(--muted); }
+  .prompt-text { margin-top: 7px; font-size: clamp(14px, 1.3vw, 16px); color: var(--text); line-height: 1.45; }
+  .step-rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 5px; margin: 10px 0 13px; }
+  .step-rail button {
+    padding: 6px 0 0;
+    min-height: 44px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .step-rail button::before {
+    content: '';
+    display: block;
+    height: 3px;
+    margin: 0 0 5px;
+    border-radius: 3px;
+    background: var(--border);
+  }
+  .step-rail button[aria-current] { color: var(--text); }
+  .step-rail button[aria-current]::before { background: var(--accent); }
+  .step-rail button:hover, .demo-controls button:hover { color: var(--text); background: var(--surface); }
+  .step-rail button:focus-visible, .demo-controls button:focus-visible { outline-offset: -2px; }
+  .demo-stage {
+    min-height: 149px;
+    padding: 13px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--background);
+  }
+  .demo-command { display: flex; align-items: baseline; gap: 9px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 12px; }
+  .demo-command span { font: 500 12px var(--font-code); color: var(--accent); }
+  .stage-text { margin-top: 6px; color: var(--text); font-size: 14px; line-height: 1.55; }
+  .thinking-dots { display: inline-flex; gap: 4px; vertical-align: middle; }
+  .thinking-dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+  .demo-source {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin-top: 10px;
+    color: var(--accent);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .demo-source svg { align-self: flex-start; }
+  .demo-diff { display: grid; gap: 5px; margin-top: 7px; }
+  .demo-diff p { display: flex; gap: 8px; padding: 4px 7px; color: #ffc0bf; background: #442732; font-size: 11px; border-radius: 4px; }
+  .demo-diff p:last-child { color: #aee7c6; background: #17392e; }
+  .demo-controls { justify-content: space-between; border-top: 1px solid var(--border); padding-block: 4px; }
+  .demo-controls > div { display: flex; gap: 4px; }
+  .demo-controls button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 44px;
+    padding-inline: 7px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .demo-controls [data-next] { color: var(--accent); }
+  .demo-announcement { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .agent-demo:not([data-ready]) [data-enhanced], [data-reduced] [data-motion] { display: none; }
+  .agent-demo:not([data-ready]) .demo-prompt { margin-bottom: 13px; }
+  .play-icon, [data-paused] .pause-icon { display: none; }
+  [data-paused] .play-icon { display: initial; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-ready] { --play-state: paused; }
+    [data-playing] { --play-state: running; }
+    [data-ready]:not([data-paused]) .demo-story[data-active] {
+      & :is(.prompt-text span, [data-current] .reply-word) {
+        animation: word-in .27s var(--word-delay) both var(--play-state);
+      }
+      & .demo-stage[data-current] {
+        animation: stage-slide .45s ease-out both var(--play-state);
+      }
+      & .demo-stage[data-current] .stage-result {
+        animation: stage-in .4s .45s ease-out both var(--play-state);
+      }
+      & .step-rail button[aria-current]::before {
+        background: linear-gradient(var(--accent), var(--accent)) left / 100% 100% no-repeat var(--border);
+        animation: step-progress var(--step-duration) linear both var(--play-state);
+      }
+      & [data-current] .thinking-dots i {
+        animation: dot-pulse 1s var(--dot-delay, 0s) infinite alternate var(--play-state);
+      }
+    }
+    .thinking-dots i:nth-child(2) { --dot-delay: .14s; }
+    .thinking-dots i:nth-child(3) { --dot-delay: .28s; }
+  }
+  @keyframes word-in { from { opacity: .48; } to { opacity: 1; } }
+  @keyframes stage-slide { from { transform: translateY(5px); } to { transform: translateY(0); } }
+  @keyframes stage-in { from { opacity: .65; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes step-progress { from { background-size: 8% 100%; } to { background-size: 100% 100%; } }
+  @keyframes dot-pulse { from { opacity: .35; transform: translateY(1px); } to { opacity: 1; transform: translateY(-2px); } }
+  @media (max-width: 370px) { .demo-mode { font-size: 10px; } }
+</style>
