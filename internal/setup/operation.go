@@ -24,6 +24,11 @@ func (e *Engine) Operation(p *Plan, id string, request any) (*Result, error) {
 	if strings.TrimSpace(id) != id || len(id) > 256 {
 		return nil, invalid("operation id must be 1–256 nonpadding bytes")
 	}
+	if pending, err := readSnapshot(e.pendingPath()); err != nil {
+		return nil, err
+	} else if pending.Exists {
+		return nil, recoveryRequired()
+	}
 	raw, err := json.Marshal(request)
 	if err != nil {
 		return nil, err

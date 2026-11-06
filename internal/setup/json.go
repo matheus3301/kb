@@ -85,7 +85,7 @@ func (p *jsonParser) value() (*jsonNode, error) {
 				return nil, err
 			}
 			if seen[key] {
-				return nil, conflict("duplicate JSON key: " + key)
+				return nil, conflict("duplicate JSON object key")
 			}
 			seen[key] = true
 			p.space()
@@ -181,7 +181,7 @@ func jsonEqual(a, b []byte) bool {
 // never decoded and reserialized. Empty inserted parents are restored from the
 // per-file baseline on clean uninstall, not inferred as user-owned or disposable.
 func setJSON(raw []byte, key string, value []byte, remove bool, format ...string) ([]byte, []byte, bool, error) {
-	if len(bytes.TrimSpace(raw)) == 0 {
+	if raw == nil {
 		raw = []byte("{}\n")
 	}
 	kind := "json"
@@ -249,7 +249,7 @@ func editJSON(raw []byte, a Artifact, old *asset, remove bool) ([]byte, []byte, 
 		return nil, nil, false, invalid("artifact JSON value: " + err.Error())
 	}
 	source := raw
-	if len(bytes.TrimSpace(source)) == 0 {
+	if source == nil {
 		source = []byte("{}\n")
 	}
 	n, err := parseJSONFormat(source, a.Kind)

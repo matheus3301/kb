@@ -51,7 +51,8 @@ func blockSpan(raw []byte, key string, kinds ...string) (int, int, error) {
 	if end <= start {
 		return 0, 0, conflict("reversed managed block: " + key)
 	}
-	if (start > 0 && raw[start-1] != '\n' && !(start == 3 && bytes.HasPrefix(raw, []byte{0xef, 0xbb, 0xbf}))) || (end < len(raw) && raw[end] != '\r' && raw[end] != '\n') {
+	atBOM := start == 3 && bytes.HasPrefix(raw, []byte{0xef, 0xbb, 0xbf})
+	if (start > 0 && raw[start-1] != '\n' && !atBOM) || (end < len(raw) && raw[end] != '\r' && raw[end] != '\n') {
 		return 0, 0, conflict("managed markers must occupy complete lines")
 	}
 	return start, end, nil

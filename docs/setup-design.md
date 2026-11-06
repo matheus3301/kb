@@ -156,17 +156,22 @@ need neither shell commands nor the CLI skill. Host/scope guards select one
 interface rather than mandating inherited CLI and project MCP simultaneously.
 
 Hooks accept bounded native JSON, resolve the event's cwd binding, and perform
-bounded cooperative-timeout read-only retrieval for CLI mode. MCP mode supplies an
-independent server reminder. Input/output ceilings are 64 KiB/16 KiB. Hook failures
-produce bounded native unavailability context and a nonzero result; no automatic
-note write, prompt/transcript log, hidden retry loop, trust bypass or strict
-exactly-once enforcement is claimed. Rules remain present. Native trust, restarts,
-reloads and version qualification remain host responsibilities.
+bounded cooperative-timeout direct-core read-only retrieval for both CLI and MCP
+integrations. Lifecycle machinery invokes the binary; the MCP model consumer still
+needs no shell, resolver, or CLI skill. Model-facing continuation and unavailable
+retrieval fallback name only the selected interface. Input/output ceilings are
+64 KiB/16 KiB. Hook failures produce bounded native unavailability context and a
+nonzero result; no automatic note write, prompt/transcript log, hidden retry loop,
+trust bypass or strict exactly-once enforcement is claimed. Rules remain present.
+Native trust, restarts, reloads and version qualification remain host responsibilities.
 
 `configured` means intended artifacts match. `ready` in check additionally means
-that the selected collection validates and the host executable exists on PATH.
-It is not proof of supported native version, trust, instruction discovery, model
-behavior or fresh-session retrieval. `activation_pending` is reported separately;
+that the selected collection validates, the native host executable exists on PATH,
+the recorded KB command is executable, and currently discovered profile/instruction
+destinations still match the installed paths. New overriding instruction files or
+changed profile homes are diagnosed. This is not proof of supported native version,
+trust, actual instruction loading, model behavior or fresh-session retrieval.
+`activation_pending` is reported separately;
 `activation_observed` remains false without actual native-session evidence.
 Unknown agents and unsupported modes/scopes/hooks fail preflight. See `kb setup
 agents` for declared capability limits and primary-source references.
@@ -187,13 +192,13 @@ native qualification. Test sources are synthetic/disposable and clear `KB_ROOT`.
 | S09–S10 | `TestLifecycleSharedBorrowedAndPristine`; explicit sharing and byte-stable repeat. |
 | S11–S13 | `TestPreflightPureAndAllOrNothing`, `TestSetupCLIPureDryRunAndValidation`; no dry-run writes or non-TTY prompts. |
 | S14–S16 | `TestOwnedConflictAndOutsideEdit`, `TestBorrowedDriftAndUpgrade`, `TestJSONCAndMarkerRejection`, lifecycle BOM/CRLF fixture. |
-| S17–S18 | `TestJSONAndTOMLPreserveForeignBytes`, malformed-config preflight and JSONC fuzz target. |
+| S17–S18 | `TestJSONAndTOMLPreserveForeignBytes`, `TestTOMLEscapedMultilineHeadersAndUpgrade`, empty/malformed-config preflight and JSONC fuzz target. |
 | S19–S20 | `TestPreconditionRaceAndSymlinkHardlink`, `TestUnsupportedManifestAndCaseCollision`, confined-path fuzz target. |
-| S21–S22 | `TestRollbackAtEveryPublicationBoundary`, recovery tests and `TestConcurrentInstallAndLockFailure`; no universal disk/crash-safety claim. |
+| S21–S22 | `TestRollbackAtEveryPublicationBoundary`, recovery tests, `TestReadOnlyDestinationPreflightAndPrivateState`, Git operational-failure preflight, and concurrency/lock regression; no universal disk/crash-safety claim. |
 | S23–S24 | `TestSetupCLICreateReplayAndModePolicyInheritance`; unused interface artifacts removed. |
 | S25–S28 | Shared/borrowed/owned uninstall tests, repeated uninstall, moved collection regression. |
 | S29–S30 | Embedded reference completeness, borrowed upgrade conflict, unsupported manifest regression. |
-| S31 | Adapter profile/override precedence tests; actual host shadowing requires native observation. |
+| S31 | Adapter profile/override precedence tests and `TestSetupProfileChangesAndExistingFallbackInstructions`; actual host loading remains native evidence. |
 | S32 | Fresh native retrieval/citation is explicitly not established by engine tests. |
 | S33–S35 | Compiled CLI collection-byte smoke and hook read-only regression; independent MCP generated-command tests exercise read-only tools. Authorized learning uses existing revision/provenance transaction coverage, not a new setup guarantee. |
 | S36 | Embedded offline assets; setup has no network dependency. |

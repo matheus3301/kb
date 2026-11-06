@@ -115,7 +115,12 @@ func (e *Engine) lock(ctx context.Context) (func(), error) {
 	if err := safePath(path); err != nil {
 		return nil, err
 	}
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|syscall.O_NOFOLLOW, 0600)
+	directory, err := os.OpenRoot(e.stateDir)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = directory.Close() }()
+	f, err := directory.OpenFile("lock", os.O_CREATE|os.O_RDWR|syscall.O_NOFOLLOW, 0600)
 	if err != nil {
 		return nil, err
 	}

@@ -27,7 +27,7 @@ type setupFixture struct {
 func newSetupFixture(t *testing.T) setupFixture {
 	t.Helper()
 	t.Setenv("KB_ROOT", "")
-	for _, key := range []string{"CLAUDE_CONFIG_DIR", "CODEX_HOME", "PI_CONFIG_DIR", "OMP_PROFILE", "PI_PROFILE", "PI_CODING_AGENT_DIR", "OPENCODE_CONFIG", "OPENCODE_CONFIG_DIR", "OPENCODE_CONFIG_CONTENT", "COPILOT_HOME"} {
+	for _, key := range []string{"CLAUDE_CONFIG_DIR", "CODEX_HOME", "PI_CONFIG_DIR", "OMP_PROFILE", "PI_PROFILE", "PI_CODING_AGENT_DIR", "OPENCODE_CONFIG", "OPENCODE_CONFIG_DIR", "OPENCODE_CONFIG_CONTENT", "COPILOT_HOME", "GEMINI_CLI_HOME", "OPENCODE_DISABLE_CLAUDE_CODE", "OPENCODE_DISABLE_CLAUDE_CODE_PROMPT"} {
 		t.Setenv(key, "")
 	}
 	base := t.TempDir()
@@ -91,6 +91,7 @@ func treeBytes(t *testing.T, root string) map[string]string {
 			files[path+"/"] = d.Name()
 			return nil
 		}
+		//nolint:gosec // The walk visits only the explicit disposable synthetic fixture root.
 		raw, err := os.ReadFile(path)
 		if err != nil {
 			return err

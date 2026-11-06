@@ -157,7 +157,6 @@ func (e *Engine) build(ctx context.Context, old, next catalog, stateSnapshot Sna
 	for _, id := range sortedKeys(next.Installations) {
 		in := next.Installations[id]
 		bindings.Bindings[id] = in.Binding
-		p.Installations = append(p.Installations, in)
 	}
 	bindingPath := filepath.Join(e.options.ConfigHome, "kb", "agent-setup.json")
 	before, err := readSnapshot(bindingPath)
@@ -216,6 +215,11 @@ func (e *Engine) build(ctx context.Context, old, next catalog, stateSnapshot Sna
 		}
 		return rank(p.Changes[i]) < rank(p.Changes[j])
 	})
+	for _, change := range p.Changes {
+		if err := preflightWritable(change); err != nil {
+			return nil, err
+		}
+	}
 	return p, nil
 }
 

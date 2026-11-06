@@ -63,7 +63,7 @@ func PrivacyArtifacts(ctx context.Context, b Binding, artifacts []Artifact, home
 		if !filepath.IsAbs(exclude) {
 			return nil, nil, conflict("Git returned a nonabsolute exclude path")
 		}
-		top := exec.CommandContext(ctx, git, "-C", b.Project, "rev-parse", "--show-toplevel")
+		top := exec.CommandContext(ctx, git, "-C", b.Project, "rev-parse", "--show-toplevel") // #nosec G204 -- PATH-resolved Git with fixed read-only argv; project is explicit and no shell runs.
 		topRaw, err := top.Output()
 		if err != nil {
 			return nil, nil, err
@@ -73,7 +73,7 @@ func PrivacyArtifacts(ctx context.Context, b Binding, artifacts []Artifact, home
 			return nil, nil, err
 		}
 		for _, path := range paths {
-			cmd := exec.CommandContext(ctx, git, "-C", b.Project, "ls-files", "--error-unmatch", "--", path)
+			cmd := exec.CommandContext(ctx, git, "-C", b.Project, "ls-files", "--error-unmatch", "--", path) // #nosec G204 -- Same checked Git executable, literal operation and separate canonical project/path arguments.
 			if err := cmd.Run(); err == nil {
 				return nil, nil, conflict("personal config is already tracked: " + path + "; use a private profile/global scope or remove it from Git explicitly before setup")
 			} else {

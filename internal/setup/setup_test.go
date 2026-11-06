@@ -47,6 +47,7 @@ func put(t *testing.T, path string, raw []byte) {
 }
 func read(t *testing.T, path string) []byte {
 	t.Helper()
+	//nolint:gosec // Reads only explicit files below this test's disposable fixture roots.
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)

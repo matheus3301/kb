@@ -30,17 +30,18 @@ type Artifact struct {
 
 // Binding selects one effective interface for an agent at one activation scope.
 type Binding struct {
-	Agent    string `json:"agent"`
-	Scope    string `json:"scope"`
-	Project  string `json:"project,omitempty"`
-	Root     string `json:"root"`
-	Mode     string `json:"mode"`
-	Consult  string `json:"consult"`
-	Learning string `json:"learning"`
-	Hooks    string `json:"hooks"`
-	Portable bool   `json:"portable,omitempty"`
-	SkillDir string `json:"skill_dir,omitempty"`
-	Disabled bool   `json:"disabled,omitempty"`
+	Agent      string `json:"agent"`
+	Scope      string `json:"scope"`
+	Project    string `json:"project,omitempty"`
+	Root       string `json:"root"`
+	Mode       string `json:"mode"`
+	Consult    string `json:"consult"`
+	Learning   string `json:"learning"`
+	Hooks      string `json:"hooks"`
+	Portable   bool   `json:"portable,omitempty"`
+	SkillDir   string `json:"skill_dir,omitempty"`
+	Executable string `json:"executable,omitempty"`
+	Disabled   bool   `json:"disabled,omitempty"`
 }
 
 type Installation struct {
@@ -155,6 +156,7 @@ type Plan struct {
 	Preconditions map[string]Snapshot `json:"-"`
 	Installations []Installation      `json:"installations"`
 	OperationID   string              `json:"operation_id,omitempty"`
+	Action        string              `json:"action"`
 	stateDir      string
 }
 
@@ -168,18 +170,25 @@ type ChangeSummary struct {
 	Mode       uint32 `json:"mode"`
 }
 type Result struct {
-	Schema      int             `json:"setup_schema_version"`
-	Status      string          `json:"status"`
-	DryRun      bool            `json:"dry_run"`
-	Changes     []ChangeSummary `json:"changes,omitempty"`
-	Bindings    []Binding       `json:"bindings,omitempty"`
-	Diagnostics []string        `json:"diagnostics,omitempty"`
+	Schema            int             `json:"setup_schema_version"`
+	Status            string          `json:"status"`
+	DryRun            bool            `json:"dry_run"`
+	ActivationPending bool            `json:"activation_pending"`
+	Changes           []ChangeSummary `json:"changes,omitempty"`
+	Bindings          []Binding       `json:"bindings,omitempty"`
+	Diagnostics       []string        `json:"diagnostics,omitempty"`
 }
 
 func (p *Plan) Result(dry bool) Result {
 	r := Result{Schema: SchemaVersion, Status: "configured", DryRun: dry}
+	if p.Action == "uninstall" {
+		r.Status = "uninstalled"
+	}
 	if len(p.Changes) == 0 {
 		r.Status = "already_configured"
+		if p.Action == "uninstall" {
+			r.Status = "already_removed"
+		}
 	}
 	for _, c := range p.Changes {
 		a := "update"
@@ -195,7 +204,10 @@ func (p *Plan) Result(dry bool) Result {
 		r.Bindings = append(r.Bindings, in.Binding)
 		r.Diagnostics = append(r.Diagnostics, in.Diagnostics...)
 		if in.ActivationPending {
-			r.Status = "activation_pending"
+			r.ActivationPending = true
+			if len(p.Changes) > 0 && p.Action != "uninstall" {
+				r.Status = "activation_pending"
+			}
 		}
 	}
 	return r
@@ -288,6 +300,7 @@ func (e *Engine) PlanInstall(ctx context.Context, installs []Installation) (*Pla
 		return nil, err
 	}
 	next := cloneCatalog(c)
+	var selected []string
 	for _, in := range installs {
 		if err := ctx.Err(); err != nil {
 			return nil, err
@@ -335,8 +348,17 @@ func (e *Engine) PlanInstall(ctx context.Context, installs []Installation) (*Pla
 			}
 		}
 		next.Installations[in.ID] = in
+		selected = append(selected, in.ID)
 	}
-	return e.build(ctx, c, next, snap)
+	p, err := e.build(ctx, c, next, snap)
+	if err != nil {
+		return nil, err
+	}
+	p.Action = "install"
+	for _, id := range selected {
+		p.Installations = append(p.Installations, next.Installations[id])
+	}
+	return p, nil
 }
 
 type Selection struct {
@@ -379,7 +401,12 @@ func (e *Engine) PlanUninstall(ctx context.Context, s Selection) (*Plan, error) 
 			}
 		}
 	}
-	return e.build(ctx, c, next, snap)
+	p, err := e.build(ctx, c, next, snap)
+	if err != nil {
+		return nil, err
+	}
+	p.Action = "uninstall"
+	return p, nil
 }
 func cloneCatalog(c catalog) catalog {
 	n := emptyCatalog()
