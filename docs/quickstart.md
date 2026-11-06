@@ -352,8 +352,14 @@ See the [MCP guide](mcp.md).
 
 ## Use the CLI with the agent skill
 
-The skill is distributed at [skills/knowledge-base/SKILL.md](../skills/knowledge-base/SKILL.md).
-Run this from the chosen agent workdir:
+For a setup-capable source build, follow [the setup lifecycle](agent-setup.md):
+select root, project/global scope, agents and learning; review dry-run, apply,
+check and observe a fresh session. Setup bundles the complete version-matched
+skill and needs no Node. **Published v1.0.0 does not include setup**; select a
+separate reviewed source build rather than assuming an upgrade supplies it.
+
+For the released binary's optional separate skill-install channel, run this
+from the chosen agent workdir:
 
 ```sh
 npx skills add matheus3301/kb --skill knowledge-base
@@ -381,5 +387,7 @@ verify that the target agent consults the intended external base, records useful
 learning and performs no write for a query without new information. Installation
 alone does not guarantee activation or universal model adherence.
 
-See [agent setup](agent-setup.md) for installation scope, consultation policy,
-MCP capabilities, and upgrading from the old `knowledge-memory` skill name.
+See [agent setup](agent-setup.md) for explicit lifecycle commands, independent
+MCP, safe uninstall and current source-versus-release availability. A customized
+or old `knowledge-memory` installation must be inspected, not overwritten by
+name; the separate Skills CLI can remove a deliberately selected old installation.

@@ -269,7 +269,7 @@
   },
   {
     "id": "A19",
-    "requirement": "Installation/init never change global configuration or register agents automatically.",
+    "requirement": "Binary installation/init never change global configuration or register agents implicitly; explicit setup is tracked separately under S01–S44.",
     "status": "verified",
     "tests": [
       "internal/core/store_test.go",

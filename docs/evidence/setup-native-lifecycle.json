@@ -1,0 +1,639 @@
+{
+  "date": "2026-11-06",
+  "status": "passed",
+  "criteria": [
+    "S42",
+    "S43"
+  ],
+  "candidate_commit": "e0e85c5476ffc54a5f6343b127a40ab7bf233287",
+  "candidate_binary_sha256": "97da89e4a6139f31efd5bfe60013e5b7f72894b270183cb2580961056ae0a574",
+  "platform": {
+    "os": "Darwin",
+    "architecture": "arm64"
+  },
+  "native_runtime": {
+    "agent": "omp",
+    "version": "omp/18.16.0",
+    "binary_sha256": "d4a10d97488d6054d2b18198bd24f461079952c7e0fb75ba66336ca0df0cb99e",
+    "asset_url": "https://github.com/can1357/oh-my-pi/releases/download/v18.16.0/omp-darwin-arm64",
+    "checksum_url": "https://github.com/can1357/oh-my-pi/releases/download/v18.16.0/SHA256SUMS.txt",
+    "published_checksum_match": true,
+    "sdk": "Official Python omp-rpc from source commit 650f3a108229ee11bf68ba3377f4e8c3391cd424",
+    "sdk_source": "https://github.com/can1357/oh-my-pi/tree/650f3a108229ee11bf68ba3377f4e8c3391cd424/sdk/python/omp-rpc",
+    "provider": "openai-codex",
+    "model": "gpt-6.1-sol",
+    "thinking": "high"
+  },
+  "method": {
+    "collection": "Three disposable synthetic external roots with distinct fixture facts; no personal knowledge base used for product validation.",
+    "scope": "Disposable HOME, default OMP agent-directory override and project directories outside the source checkout.",
+    "authentication": "Narrow temporary symlink to existing native local authentication storage; no credentials copied into evidence, login/account change, real profile settings edit or trust bypass. Link removed after teardown.",
+    "hooks": "Unmodified setup-generated global and project knowledge-base extensions installed simultaneously; native same-name capability precedence selects the project extension.",
+    "interface_cases": [
+      "Global CLI and project MCP",
+      "Global fallback CLI outside bound project",
+      "Global MCP and project CLI"
+    ],
+    "learning": "off",
+    "compaction": "Explicit official SDK compact() call with a real committed summary; two meaningful synthetic retrieval turns, not prompt padding.",
+    "compaction_settings": {
+      "keepRecentTokens": 256,
+      "methodOrder": [
+        "soft"
+      ],
+      "autoContinue": false
+    },
+    "setting_verified_with": "Native config get compaction.keepRecentTokens --json returned 256. Nested YAML only, in the disposable profile.",
+    "resume": "Settled original process stopped; project MCP binding changed from project-a to project-b; new native process switch_session() reopened the persisted compacted session before fresh status/search/read. Restart reloads the fixed-root MCP registration."
+  },
+  "fixtures": {
+    "global": {
+      "minutes": 19,
+      "port": 41019
+    },
+    "project-a": {
+      "minutes": 73,
+      "port": 43127
+    },
+    "project-b": {
+      "minutes": 89,
+      "port": 43819
+    }
+  },
+  "phases": [
+    {
+      "name": "before-compact",
+      "effective_root": "project-a",
+      "returned_facts": {
+        "minutes": 73,
+        "port": 43127
+      },
+      "source_citation_observed": true,
+      "model_tool_names": [
+        "read",
+        "write",
+        "read",
+        "write",
+        "read",
+        "write"
+      ],
+      "model_dispatch_targets": [
+        "xd://mcp__knowledge_base_kb_status",
+        "xd://mcp__knowledge_base_kb_status",
+        "xd://mcp__knowledge_base_kb_search",
+        "xd://mcp__knowledge_base_kb_search",
+        "xd://mcp__knowledge_base_kb_read",
+        "xd://mcp__knowledge_base_kb_read"
+      ],
+      "new_prompt_context_count": 1,
+      "new_prompt_context_root_matches": true
+    },
+    {
+      "name": "second-before-compact",
+      "effective_root": "project-a",
+      "returned_facts": {
+        "minutes": 73,
+        "port": 43127
+      },
+      "source_citation_observed": true,
+      "model_tool_names": [
+        "write",
+        "write",
+        "write"
+      ],
+      "model_dispatch_targets": [
+        "xd://mcp__knowledge_base_kb_status",
+        "xd://mcp__knowledge_base_kb_search",
+        "xd://mcp__knowledge_base_kb_read"
+      ],
+      "new_prompt_context_count": 1,
+      "new_prompt_context_root_matches": true
+    },
+    {
+      "name": "after-compact",
+      "effective_root": "project-a",
+      "returned_facts": {
+        "minutes": 73,
+        "port": 43127
+      },
+      "source_citation_observed": true,
+      "model_tool_names": [
+        "read",
+        "write",
+        "read",
+        "write",
+        "read",
+        "write"
+      ],
+      "model_dispatch_targets": [
+        "xd://mcp__knowledge_base_kb_status",
+        "xd://mcp__knowledge_base_kb_status",
+        "xd://mcp__knowledge_base_kb_search",
+        "xd://mcp__knowledge_base_kb_search",
+        "xd://mcp__knowledge_base_kb_read",
+        "xd://mcp__knowledge_base_kb_read"
+      ],
+      "new_prompt_context_count": 1,
+      "new_prompt_context_root_matches": true
+    },
+    {
+      "name": "resumed-new-root",
+      "effective_root": "project-b",
+      "returned_facts": {
+        "minutes": 89,
+        "port": 43819
+      },
+      "source_citation_observed": true,
+      "model_tool_names": [
+        "write",
+        "write",
+        "write"
+      ],
+      "model_dispatch_targets": [
+        "xd://mcp__knowledge_base_kb_status",
+        "xd://mcp__knowledge_base_kb_search",
+        "xd://mcp__knowledge_base_kb_read"
+      ],
+      "new_prompt_context_count": 1,
+      "new_prompt_context_root_matches": true
+    },
+    {
+      "name": "global-fallback",
+      "effective_root": "global",
+      "returned_facts": {
+        "minutes": 19,
+        "port": 41019
+      },
+      "source_citation_observed": true,
+      "model_tool_names": [
+        "read",
+        "bash",
+        "read",
+        "bash"
+      ],
+      "model_dispatch_targets": [
+        "skill://knowledge-base",
+        "",
+        "skill://knowledge-base/references/retrieval.md",
+        ""
+      ],
+      "new_prompt_context_count": 1,
+      "new_prompt_context_root_matches": true
+    },
+    {
+      "name": "mixed-mcp-cli",
+      "effective_root": "project-a",
+      "returned_facts": {
+        "minutes": 73,
+        "port": 43127
+      },
+      "source_citation_observed": true,
+      "model_tool_names": [
+        "read",
+        "bash",
+        "read",
+        "bash",
+        "bash"
+      ],
+      "model_dispatch_targets": [
+        "skill://knowledge-base",
+        "",
+        "/fixture/project/.omp/skills/knowledge-base/references/retrieval.md:1-200",
+        "",
+        ""
+      ],
+      "new_prompt_context_count": 1,
+      "new_prompt_context_root_matches": true
+    }
+  ],
+  "compaction": {
+    "session_id": "01a1b178-3334-70d1-adbd-82dc9cb0e07a",
+    "first_kept_entry_id": "ea0ba4f1",
+    "tokens_before": 13903,
+    "summary_sha256": "f0960702c4a9111040049116e682904d1250caaf2885b22cda3e7c7a7c5900d1",
+    "summary_characters": 4813,
+    "events": [
+      {
+        "type": "manual_compaction_start",
+        "aborted": false,
+        "skipped": false,
+        "result_present": false
+      },
+      {
+        "type": "manual_compaction_end",
+        "aborted": false,
+        "skipped": false,
+        "result_present": true
+      }
+    ],
+    "persisted_summary_matches_result": true
+  },
+  "assertions": [
+    {
+      "name": "local-auth-exists",
+      "passed": true
+    },
+    {
+      "name": "pinned-native-version",
+      "passed": true
+    },
+    {
+      "name": "effective-keepRecentTokens-256",
+      "passed": true
+    },
+    {
+      "name": "both-generated-extensions-exist",
+      "passed": true
+    },
+    {
+      "name": "mixed-cli-mcp-model",
+      "passed": true
+    },
+    {
+      "name": "before-compact-completed",
+      "passed": true
+    },
+    {
+      "name": "before-compact-facts",
+      "passed": true
+    },
+    {
+      "name": "before-compact-mcp-status-search-read",
+      "passed": true
+    },
+    {
+      "name": "before-compact-no-model-shell",
+      "passed": true
+    },
+    {
+      "name": "before-compact-only-mcp-targets",
+      "passed": true
+    },
+    {
+      "name": "before-compact-eval-mcp-only",
+      "passed": true
+    },
+    {
+      "name": "before-compact-actual-tool-root-response",
+      "passed": true
+    },
+    {
+      "name": "before-compact-actual-tool-fact-response",
+      "passed": true
+    },
+    {
+      "name": "before-compact-native-context",
+      "passed": true
+    },
+    {
+      "name": "before-compact-no-wrongroot-context",
+      "passed": true
+    },
+    {
+      "name": "before-compact-collection-pure",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-completed",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-facts",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-mcp-status-search-read",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-no-model-shell",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-only-mcp-targets",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-eval-mcp-only",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-actual-tool-root-response",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-actual-tool-fact-response",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-native-context",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-no-wrongroot-context",
+      "passed": true
+    },
+    {
+      "name": "second-before-compact-collection-pure",
+      "passed": true
+    },
+    {
+      "name": "explicit-compaction-committed",
+      "passed": true
+    },
+    {
+      "name": "manual-compaction-start-end",
+      "passed": true
+    },
+    {
+      "name": "manual-compaction-result-not-skipped",
+      "passed": true
+    },
+    {
+      "name": "compaction-persisted-in-session",
+      "passed": true
+    },
+    {
+      "name": "after-compact-completed",
+      "passed": true
+    },
+    {
+      "name": "after-compact-facts",
+      "passed": true
+    },
+    {
+      "name": "after-compact-mcp-status-search-read",
+      "passed": true
+    },
+    {
+      "name": "after-compact-no-model-shell",
+      "passed": true
+    },
+    {
+      "name": "after-compact-only-mcp-targets",
+      "passed": true
+    },
+    {
+      "name": "after-compact-eval-mcp-only",
+      "passed": true
+    },
+    {
+      "name": "after-compact-actual-tool-root-response",
+      "passed": true
+    },
+    {
+      "name": "after-compact-actual-tool-fact-response",
+      "passed": true
+    },
+    {
+      "name": "after-compact-native-context",
+      "passed": true
+    },
+    {
+      "name": "after-compact-no-wrongroot-context",
+      "passed": true
+    },
+    {
+      "name": "after-compact-collection-pure",
+      "passed": true
+    },
+    {
+      "name": "before-restart-settled",
+      "passed": true
+    },
+    {
+      "name": "before-restart-teardown",
+      "passed": true
+    },
+    {
+      "name": "changed-binding-resolves-project-b",
+      "passed": true
+    },
+    {
+      "name": "resumed-model",
+      "passed": true
+    },
+    {
+      "name": "resumed-same-session",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-completed",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-facts",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-mcp-status-search-read",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-no-model-shell",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-only-mcp-targets",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-eval-mcp-only",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-actual-tool-root-response",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-actual-tool-fact-response",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-native-context",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-no-wrongroot-context",
+      "passed": true
+    },
+    {
+      "name": "resumed-new-root-collection-pure",
+      "passed": true
+    },
+    {
+      "name": "after-resume-settled",
+      "passed": true
+    },
+    {
+      "name": "after-resume-teardown",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-model",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-completed",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-facts",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-cli-used",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-no-mcp-used",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-native-context",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-no-wrongroot-context",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-collection-pure",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-settled",
+      "passed": true
+    },
+    {
+      "name": "global-fallback-teardown",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-model",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-completed",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-facts",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-cli-used",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-no-mcp-used",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-native-context",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-no-wrongroot-context",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-collection-pure",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-settled",
+      "passed": true
+    },
+    {
+      "name": "mixed-mcp-cli-teardown",
+      "passed": true
+    },
+    {
+      "name": "generated-extensions-removed",
+      "passed": true
+    },
+    {
+      "name": "all-notes-logs-config-unchanged",
+      "passed": true
+    },
+    {
+      "name": "real-settings-unchanged",
+      "passed": true
+    },
+    {
+      "name": "real-profile-files-unchanged",
+      "passed": true
+    }
+  ],
+  "collection_before_sha256": {
+    "global/tern-policy.md": "d2b6929ac9cabebebe063ce6f3989ef9d2c72cc0f1cd082a210cb474f5eb1c01",
+    "global/log.md": "6ab42562ad6095933c5468648a3f9afaab34fa557ed728ff07019333cabb0e28",
+    "global/index.md": "bd3fec98e9818b807ea36b340a1222e41894d93b865d4a3ee91fbc2c36eed713",
+    "global/.kb/config.toml": "c281a7fa8fc1bd31ebcec0758354326df9cf5a278f6b05f7d9ee61009e2b1677",
+    "project-a/tern-policy.md": "f605dc030ca8afb43cedc30397207662fff2c01cab769b157c0ce6978e99434f",
+    "project-a/log.md": "6ab42562ad6095933c5468648a3f9afaab34fa557ed728ff07019333cabb0e28",
+    "project-a/index.md": "bd3fec98e9818b807ea36b340a1222e41894d93b865d4a3ee91fbc2c36eed713",
+    "project-a/.kb/config.toml": "c281a7fa8fc1bd31ebcec0758354326df9cf5a278f6b05f7d9ee61009e2b1677",
+    "project-b/tern-policy.md": "daceb4b45b515447983bf8466fb0f3ea7f856cc6b441569489fcf59fe96cb32a",
+    "project-b/log.md": "6ab42562ad6095933c5468648a3f9afaab34fa557ed728ff07019333cabb0e28",
+    "project-b/index.md": "bd3fec98e9818b807ea36b340a1222e41894d93b865d4a3ee91fbc2c36eed713",
+    "project-b/.kb/config.toml": "c281a7fa8fc1bd31ebcec0758354326df9cf5a278f6b05f7d9ee61009e2b1677"
+  },
+  "collection_after_sha256": {
+    "global/tern-policy.md": "d2b6929ac9cabebebe063ce6f3989ef9d2c72cc0f1cd082a210cb474f5eb1c01",
+    "global/log.md": "6ab42562ad6095933c5468648a3f9afaab34fa557ed728ff07019333cabb0e28",
+    "global/index.md": "bd3fec98e9818b807ea36b340a1222e41894d93b865d4a3ee91fbc2c36eed713",
+    "global/.kb/config.toml": "c281a7fa8fc1bd31ebcec0758354326df9cf5a278f6b05f7d9ee61009e2b1677",
+    "project-a/tern-policy.md": "f605dc030ca8afb43cedc30397207662fff2c01cab769b157c0ce6978e99434f",
+    "project-a/log.md": "6ab42562ad6095933c5468648a3f9afaab34fa557ed728ff07019333cabb0e28",
+    "project-a/index.md": "bd3fec98e9818b807ea36b340a1222e41894d93b865d4a3ee91fbc2c36eed713",
+    "project-a/.kb/config.toml": "c281a7fa8fc1bd31ebcec0758354326df9cf5a278f6b05f7d9ee61009e2b1677",
+    "project-b/tern-policy.md": "daceb4b45b515447983bf8466fb0f3ea7f856cc6b441569489fcf59fe96cb32a",
+    "project-b/log.md": "6ab42562ad6095933c5468648a3f9afaab34fa557ed728ff07019333cabb0e28",
+    "project-b/index.md": "bd3fec98e9818b807ea36b340a1222e41894d93b865d4a3ee91fbc2c36eed713",
+    "project-b/.kb/config.toml": "c281a7fa8fc1bd31ebcec0758354326df9cf5a278f6b05f7d9ee61009e2b1677"
+  },
+  "teardowns": [
+    {
+      "name": "before-restart",
+      "confirmed": true,
+      "survivor_pids": []
+    },
+    {
+      "name": "after-resume",
+      "confirmed": true,
+      "survivor_pids": []
+    },
+    {
+      "name": "global-fallback",
+      "confirmed": true,
+      "survivor_pids": []
+    },
+    {
+      "name": "mixed-mcp-cli",
+      "confirmed": true,
+      "survivor_pids": []
+    }
+  ],
+  "auth_link_removed": true,
+  "started_utc": "2026-11-06T15:26:43Z",
+  "finished_utc": "2026-11-06T15:29:21Z",
+  "limits": [
+    "Qualified only for the identified OMP 18.16.0 macOS arm64 build, matching SDK and observed sessions; not all hosts, models, OSes or versions.",
+    "Global and project extensions coexist as installed resources, but the host deduplicates their same capability name; not two independently executing handlers or an exactly-once guarantee.",
+    "Restart after binding changes is part of this observation. Hot-reloading an already running fixed-root MCP server after a root change is not qualified.",
+    "Concurrency remains covered by existing source fixtures; this report does not claim native concurrent-model isolation.",
+    "The initial workstation OMP 18.17.0 probe completed two mixed-scope MCP retrieval turns, but compact skipped small history; that run is not the pinned lifecycle qualification.",
+    "Read-only protocol use and unchanged note/log/config hashes do not establish OS sandbox isolation or universal safety."
+  ],
+  "fixture_removed": true,
+  "dispatch_observation": "Native MCP dispatch may use read/write xd:// devices or eval tool.mcp__knowledge_base_* calls. The observer checks both transports and corresponding successful tool responses for selected root and distinct fixture facts; no mock server or fabricated delivery.",
+  "source_references": [
+    "https://github.com/can1357/oh-my-pi/blob/650f3a108229ee11bf68ba3377f4e8c3391cd424/packages/coding-agent/src/capability/extension-module.ts#L23-L28",
+    "https://github.com/can1357/oh-my-pi/blob/650f3a108229ee11bf68ba3377f4e8c3391cd424/packages/coding-agent/src/discovery/builtin.ts#L61-L75",
+    "https://github.com/can1357/oh-my-pi/blob/650f3a108229ee11bf68ba3377f4e8c3391cd424/packages/coding-agent/src/capability/index.ts#L231-L279",
+    "https://github.com/can1357/oh-my-pi/blob/v18.16.0/docs/rpc.md",
+    "https://github.com/can1357/oh-my-pi/blob/v18.16.0/docs/compaction.md"
+  ]
+}

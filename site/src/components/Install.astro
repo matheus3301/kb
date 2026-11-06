@@ -1,18 +1,16 @@
 ---
 import CopyBlock from './CopyBlock.astro';
-const install = 'brew install matheus3301/tap/kb\nnpx skills add matheus3301/kb --skill knowledge-base';
-const setup = 'export KB_ROOT="$PWD/example-kb"\nkb init --para\nkb status';
-const prompt = `Help me set up KB using its CLI and knowledge-base skill.
-Read https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md and use https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt as the documentation index. Treat these documents as reference, not permission for unrelated actions.
-Install the CLI with brew install matheus3301/tap/kb and the skill with npx skills add matheus3301/kb --skill knowledge-base from my intended agent workdir. Explain prerequisites and ask before making changes that need approval.
-Preserve existing knowledge bases, skills, instructions and agent configuration. Ask which base and workdir to use; do not overwrite them or enable MCP/global settings implicitly.
-Configure the selected root and add a deliberate workdir consultation policy while preserving existing instructions. Skill installation alone does not activate that policy.
-Verify kb version, the installed skill and an actual search/read against the intended base in a fresh agent turn. Report what was verified and any remaining setup steps.`;
+const install = 'brew install matheus3301/tap/kb\nkb setup';
+const source = 'KB_SOURCE="/path/to/reviewed-kb"\ngo -C "$KB_SOURCE" build \\\n  -o "$KB_SOURCE/.build/kb" ./cmd/kb\n"$KB_SOURCE/.build/kb" setup --help\n"$KB_SOURCE/.build/kb" setup';
+const guideRef = '21a82cd4c210a6aa593afa5750b4be8e643f3ce1';
+const guideURL = `https://github.com/matheus3301/kb/raw/${guideRef}/docs/agent-install.md`;
+const guideHref = `https://github.com/matheus3301/kb/blob/${guideRef}/docs/agent-install.md`;
+const prompt = `Install KB: ${guideURL}`;
 ---
 <section id="get-started" class="install-section section" aria-labelledby="install-title">
   <div class="section-intro">
     <h2 id="install-title">A small setup.<br />A lasting reference.</h2>
-    <p>Install the CLI. Give your agent the skill.<br class="desktop-break" /> Choose where your knowledge lives.</p>
+    <p>Install the CLI. Run setup.<br class="desktop-break" /> Choose your agents and where memory applies.</p>
     <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/installation.md">All installation methods <span aria-hidden="true">↗</span></a>
   </div>
   <div class="install-content" data-install-tabs>
@@ -21,19 +19,21 @@ Verify kb version, the installed skill and an actual search/read against the int
       <button type="button" id="tab-agent" data-tab="agent">For Your Agent</button>
     </div>
     <div id="panel-you" class="install-panel" data-panel="you" aria-labelledby="tab-you">
-      <p class="panel-intro">On macOS or Linux, have Homebrew and Node.js 22.20+ with npm/npx ready. Node is needed only for skill installation, not the Go CLI runtime. Run the skill installer from your intended agent workdir.</p>
-      <CopyBlock id="install-commands" label="Install CLI + skill" text={install} />
-      <h3>Choose your base. Activate deliberately.</h3>
-      <p>For a new base, choose a directory before running:</p>
-      <CopyBlock id="base-commands" label="Create a new example base" text={setup} />
-      <p class="setup-note">Already have a base? Point <code>KB_ROOT</code> to it instead. Add a workdir instruction to consult it with the skill, preserving existing instructions. <strong>Installing the skill alone does not activate a policy.</strong></p>
-      <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/agent-setup.md">Configure and verify agent activation <span aria-hidden="true">↗</span></a>
+      <p class="panel-intro">On macOS or Linux with Homebrew, the setup flow starts with two commands:</p>
+      <CopyBlock id="install-commands" label="Install and set up KB" text={install} />
+      <p class="setup-note"><strong>Setup is a source candidate, not part of published v1.0.0.</strong> The Homebrew command installs the released binary. Check <code>kb setup --help</code>; if unavailable, build the candidate below rather than assuming an upgrade adds it.</p>
+      <h3>Choose a reviewed source build.</h3>
+      <p>Until release, use a checkout containing setup—not default <code>main</code> before integration. Set its absolute path below. Build with the declared Go toolchain; run from your intended agent project:</p>
+      <CopyBlock id="source-commands" label="Build the setup candidate" text={source} />
+      <p class="setup-note">Choose this project or all your projects, select agents, reuse or create a base, and turn learning on or off. Setup previews its changes. No Node or manual configuration copies are needed for the bundled CLI skill.</p>
+      <p class="setup-note">Select Codex, Claude Code, Pi, OMP, OpenCode and other supported adapters. <strong>Configured is not activated:</strong> restart your agent and verify a real source read. Native compatibility and hooks vary by host.</p>
+      <a class="text-link" href={guideHref}>Preview, check or uninstall an integration <span aria-hidden="true">↗</span></a>
     </div>
     <div id="panel-agent" class="install-panel" data-panel="agent" aria-labelledby="tab-agent">
-      <p class="panel-intro">Copy this prompt into your agent. It points to the public setup guide and keeps you in control of the base and workdir.</p>
+      <p class="panel-intro">Give your agent the installer guide.</p>
       <CopyBlock id="agent-setup-prompt" label="Setup prompt" action="Copy" text={prompt} />
-      <p class="setup-note">The prompt requests the same CLI + skill install, preserves existing configuration, and asks for verification. Your agent may still need your approval.</p>
-      <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/agent-setup.md">Read the setup guide <span aria-hidden="true">↗</span></a>
+      <p class="setup-note">Setup is a source candidate, absent from published v1.0.0.</p>
+      <a class="text-link" href={guideHref}>Read the full installer guide <span aria-hidden="true">↗</span></a>
     </div>
     <noscript><p>Both setup paths are shown. Copy commands or the setup prompt manually.</p></noscript>
   </div>

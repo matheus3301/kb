@@ -49,6 +49,19 @@ func (s *Store) Config() api.Config {
 	c.Content.Exclude = append([]string(nil), c.Content.Exclude...)
 	return c
 }
+
+// IncludesPath reports whether a clean root-relative path belongs to the
+// collection's configured content scope. Integration planners use the same
+// policy as the inventory before adding agent files inside a collection.
+func (s *Store) IncludesPath(p string) bool {
+	if validPath(p) != nil {
+		return false
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.included(p)
+}
+
 func (s *Store) Engine() api.Codec { return codec{} }
 
 // SetAsOf pins temporal diagnostics; it never supplies generated timestamps.

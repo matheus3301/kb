@@ -10,6 +10,15 @@ The default deployment base is `/kb/`, with `KB_SITE_BASE` as a build-time overr
 
 V0 has one page. Its documentation index links to canonical repository Markdown on GitHub, not a second renderer or copied documentation tree. CLI plus the `knowledge-base` skill is the primary setup path. MCP is an optional lower-page documentation link. The agent setup prompt points to the existing public setup guide and `llms.txt`, preserves existing bases/configuration, and requests explicit activation and verification. Installing a skill is not policy activation.
 
+The setup-lifecycle increment retains this static design and animation. The
+human path presents `brew install` then `kb setup` with a visible source-only
+availability warning. The agent prompt checks help/version and, only when source
+is selected, builds a reviewed checkout into a separate executable without
+changing the intended project cwd. It uses explicit root/scope/agents/learning,
+dry-run/apply/check and fresh-session activation evidence instead of manual
+configuration copies. Published v1.0.0 does not include setup; no merge or release
+is implied by this landing update.
+
 ## Dependencies
 
 Exact package versions are recorded in `site/package.json` and
@@ -42,4 +51,4 @@ Site work adds Node build dependencies but none to the CLI or MCP runtime; neith
 
 The browser suite uses `astro preview --ignore-lock` so the test runner owns a foreground server even when Astro detects an agent environment. Build-tool telemetry is disabled in the website CI job and `make site-check`, without changing global settings.
 
-Examples are labeled illustrative and do not claim benchmark results or user adoption. Source excerpts are not generated answers. No new demo corpus or automatic installer is introduced. Browser verification and screenshots establish only the exercised site behavior, not universal accessibility or agent adherence.
+Examples are labeled illustrative and do not claim benchmark results or user adoption. Source excerpts are not generated answers. The setup lifecycle is a separate explicit CLI feature; the site neither runs it nor configures agents. Browser verification and screenshots establish only the exercised site behavior, not universal accessibility or native agent adherence.

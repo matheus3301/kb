@@ -307,11 +307,16 @@ not a private base. Package upgrades remain explicit operator actions.
 ## Binary, skill, client and operator responsibilities
 
 - **Binary:** enforce scope, input limits, revisions, write permissions, recovery,
-  receipts and protocol separation. It does not install skills, register MCP,
-  edit global agent settings, select factual truth or authorize note instructions.
-- **CLI skill:** teach CLI operation only. Install/update separately and compare
-  its guidance with installed help/version. Installation alone does not activate
-  mandatory consultation; obsolete skill names are not runtime compatibility APIs.
+  receipts and protocol separation. Package installation, collection `init` and
+  data operations do not configure agents. The newer explicit setup lifecycle
+  may install selected skill/rule assets or independent MCP in a reviewed scope;
+  it is a source candidate, absent from published v1.0.0. See
+  [setup availability](agent-setup.md) and [host qualification](setup-compatibility.md).
+  The binary does not select factual truth or authorize note instructions.
+- **CLI skill:** teach CLI operation only. Setup bundles version-matched assets;
+  separate skill installation remains optional. Compare guidance with installed
+  help/version. File installation alone does not establish mandatory consultation;
+  obsolete skill names are not runtime compatibility APIs.
 - **MCP server/client:** the server supplies independent initialization/tool
   guidance without skill files or shell commands. The client registers the binary,
   selects root/access policy, negotiates protocol, uses discovery and reads

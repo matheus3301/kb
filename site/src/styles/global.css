@@ -87,7 +87,7 @@ h1 > span { color: var(--accent); }
 .copy-status { font-size: 12px; padding-inline: 18px; }
 .copy-status:not(:empty) { padding-bottom: 12px; color: var(--accent); }
 .copy-status[data-state='error'] { color: var(--text); }
-#agent-setup-prompt { white-space: pre-wrap; overflow-wrap: anywhere; }
+#agent-setup-prompt { white-space: pre-wrap; word-break: break-all; }
 .setup-note { font-size: 12px; line-height: 1.8; margin-top: 18px; }
 .setup-note code { color: var(--text); font-size: 12px; }
 .setup-note strong { font-weight: 500; color: var(--text); }

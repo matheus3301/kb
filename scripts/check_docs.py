@@ -3,9 +3,12 @@
 import argparse
 import copy
 import json
+import os
 from pathlib import Path
+import stat
 import re
 import shlex
+import shutil
 import subprocess
 import tempfile
 
@@ -132,11 +135,124 @@ def exercise(binary, docs=ROOT):
     return count
 
 
+def validate_unavailable_host_check(exit_code, envelope, root, project, agent):
+    """Require a configured binding and the deliberately absent host, not readiness."""
+    if envelope.get("schema_version") != "kb.v1" or envelope.get("ok") is not True:
+        raise AssertionError("Setup check did not return a successful inspection envelope")
+    data = envelope.get("data")
+    if not isinstance(data, dict):
+        raise AssertionError("Setup check did not return inspection data")
+    expected = {"agent": agent, "root": str(root.resolve()), "scope": "project",
+                "project": str(project.resolve()), "mode": "cli", "status": "degraded"}
+    if exit_code != 1 or any(data.get(key) != value for key, value in expected.items()):
+        raise AssertionError("Setup check did not diagnose the selected configured binding")
+    if data.get("configured") is not True or data.get("ready") is not False or data.get("activation_observed") is not False:
+        raise AssertionError("Setup check confused installed artifacts with native readiness")
+    artifacts = data.get("artifacts")
+    if not isinstance(artifacts, list) or not artifacts or any(
+            not isinstance(item, dict) or item.get("status") != "configured" for item in artifacts):
+        raise AssertionError("Setup check did not verify every installed artifact")
+    diagnosis = f"native agent executable is unavailable on PATH: {agent}"
+    if diagnosis not in data.get("diagnostics", []):
+        raise AssertionError("Setup check lacks the explicit unavailable-native-host diagnosis")
+
+
+def exercise_setup(binary, docs=ROOT):
+    """Execute the documented candidate lifecycle in an isolated synthetic home."""
+    binary = Path(binary).resolve()
+    docs = Path(docs)
+    cases = json.loads((docs / "docs/setup-acceptance.json").read_text())
+    if [case["id"] for case in cases] != [f"S{number:02}" for number in range(1, 45)]:
+        raise AssertionError("Setup acceptance must track S01–S44 exactly once in order")
+    with tempfile.TemporaryDirectory(prefix="kb-setup-docs-") as directory:
+        workspace = Path(directory)
+        home = workspace / "home"
+        home.mkdir()
+        project = workspace / "example-project"
+        project.mkdir()
+        root = workspace / "existing-knowledge"
+        # Keep every real model harness absent, even on a developer workstation.
+        # Git is real optional installer bookkeeping, never a simulated agent.
+        tools = workspace / "tools"
+        tools.mkdir()
+        git = shutil.which("git")
+        if git:
+            (tools / "git").symlink_to(git)
+        environment = dict(os.environ, HOME=str(home), XDG_CONFIG_HOME=str(home / ".config"))
+        environment["PATH"] = str(tools)
+        environment.pop("KB_ROOT", None)
+        for name in ("CLAUDE_CONFIG_DIR", "CODEX_HOME", "PI_CONFIG_DIR", "OMP_PROFILE", "PI_PROFILE",
+                     "PI_CODING_AGENT_DIR", "OPENCODE_CONFIG", "OPENCODE_CONFIG_DIR",
+                     "OPENCODE_CONFIG_CONTENT", "COPILOT_HOME"):
+            environment.pop(name, None)
+        count = 0
+
+        def run(arguments):
+            nonlocal count
+            if "setup" in arguments and "--json" not in arguments:
+                arguments = [*arguments, "--json"]
+            result = subprocess.run([str(binary), *arguments], cwd=workspace,
+                                    env=environment, capture_output=True, text=True, check=False)
+            envelope = json.loads(result.stdout)
+            if "setup" in arguments and arguments[arguments.index("setup") + 1] == "check":
+                agent = arguments[arguments.index("--agent") + 1]
+                validate_unavailable_host_check(result.returncode, envelope, root, project, agent)
+            elif result.returncode:
+                raise AssertionError(f"Documented setup {arguments}: {result.stdout} {result.stderr}")
+            if envelope.get("schema_version") != "kb.v1" or envelope.get("ok") is not True:
+                raise AssertionError(f"Documented setup returned an invalid envelope: {arguments}")
+            count += 1
+            return envelope["data"]
+
+        run(["--root", str(root), "init", "--para"])
+        before_notes = {path.relative_to(root): path.read_bytes() for path in root.rglob("*") if path.is_file()}
+        commands = []
+        for block in re.findall(r"^```sh\n(.*?)^```", (docs / "docs/cli.md").read_text(), re.M | re.S):
+            for line in block.splitlines():
+                args = shlex.split(line)
+                if "setup" in args and len(args) > 2:
+                    commands.append(args[1:])
+        if not commands:
+            raise AssertionError("CLI guide has no executable setup lifecycle")
+        def snapshot():
+            entries = {}
+            for path in workspace.rglob("*"):
+                mode = stat.S_IMODE(path.lstat().st_mode)
+                if path.is_symlink():
+                    value = ("symlink", mode, os.readlink(path))
+                elif path.is_dir():
+                    value = ("directory", mode)
+                else:
+                    value = ("file", mode, path.read_bytes())
+                entries[path.relative_to(workspace)] = value
+            return entries
+        for args in commands:
+            args = [str(root) if arg == "./existing-knowledge" else
+                    str(project) if arg == "./example-project" else arg for arg in args]
+            before = snapshot()
+            run(args)
+            if ("--dry-run" in args or "check" in args or "resolve" in args) and snapshot() != before:
+                raise AssertionError("Documented read-only setup operation changed filesystem state")
+            if ("install" in args or "uninstall" in args) and "--yes" in args:
+                installed = snapshot()
+                run(args)
+                if snapshot() != installed:
+                    raise AssertionError("Documented repeated setup operation was not a byte-pure no-op")
+        if before_notes != {path.relative_to(root): path.read_bytes() for path in root.rglob("*") if path.is_file()}:
+            raise AssertionError("Documented setup lifecycle changed the existing collection")
+    print(f"Setup documentation workflow passed: {count} real CLI requests; native harness deliberately unavailable, no readiness/activation qualification.")
+    return count
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", required=True, type=Path)
+    parser.add_argument("--setup", action="store_true",
+                        help="Also require the source-candidate setup lifecycle in a disposable home")
     args = parser.parse_args()
     exercise(args.binary)
+    if args.setup:
+        exercise_setup(args.binary)
 
 
 if __name__ == "__main__":

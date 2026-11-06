@@ -61,6 +61,69 @@ installing a skill, and registering MCP; none happens implicitly.
 paths, degraded inventory, and derived-index staleness. `version` reports build
 version and commit; Go source installs can report `dev`/`unknown`.
 
+## Agent integration lifecycle (source candidate)
+
+Published v1.0.0 does not contain `setup`. Inspect `kb setup --help` and follow
+the [explicit candidate source workflow](agent-setup.md#install-then-set-up)
+until a release includes it. Setup does not update the executable or change
+ordinary data-command root selection.
+
+```sh
+kb setup
+kb setup agents --json
+kb --root ./existing-knowledge setup install --project ./example-project --agent pi --learning on --dry-run
+kb --root ./existing-knowledge setup install --project ./example-project --agent pi --learning on --yes
+kb setup check --project ./example-project --agent pi --json
+kb setup resolve --project ./example-project --agent pi --json
+kb setup uninstall --project ./example-project --agent pi --dry-run
+kb setup uninstall --project ./example-project --agent pi --yes
+```
+
+Bare setup enters a short review-driven wizard. In automation, explicitly select
+root, scope, agents and learning. Repeat `--agent` for multiple targets; replace
+`--project PATH` with `--global` only when intended. Default integration is
+`--mode cli`; `--mode mcp` is independent and adapter-dependent. Learning is
+`on` or `off`; consultation is `always` or `relevant`. `--hooks auto|off|required`
+selects hook behavior without bypassing native trust. `--create` deliberately
+initializes a new selected root; `--para` is optional creation organization.
+`--portable` is limited to explicitly selected project/CLI integration: generated
+commands use `kb` on the host's `PATH` and an anchored relative binding.
+Global/MCP portable combinations are unsupported. Default local-only artifacts
+can contain absolute roots/executables; review them before committing a project.
+
+Install/uninstall accept repeated `--agent`; check/resolve require exactly one
+agent per invocation. `setup agents --json` lists declared capability/source
+metadata, not observed activation. For machine consumers, explicitly pass
+`--json` rather than parsing human review/status text.
+
+`setup check --json` can exit **1** with `ok: true`: the inspection succeeded but
+configuration/readiness checks did not. Inspect `data.configured`, `data.ready`,
+`data.status`, artifact statuses and diagnostics. A missing native executable
+can leave artifacts configured while readiness is false/degraded. Local
+readiness does not establish native version, trust, loaded instructions or
+activation; `activation_observed` is not inferred from installed files.
+
+`--operation-id ID` identifies an install/uninstall request for durable replay.
+Reuse it only for the unchanged request; changed inputs must conflict rather
+than silently reuse an earlier result. A dry-run does not publish a receipt.
+For an interrupted setup transaction, inspect and recover private setup state:
+
+```sh
+kb setup recover --dry-run --json
+kb setup recover --json
+```
+
+Recovery retains concurrent user edits as conflicts rather than overwriting
+them. It does not delete or repair the collection. Keep the reported journal
+when recovery remains partial; setup state is separate from collection state.
+
+Dry-run preflights without side effects; `--yes` never overrides conflicts.
+Check/resolve are read-only. Uninstall removes selected owned integration, not
+knowledge or the executable, and preserves shared or customized assets.
+See [agent setup](agent-setup.md), [design/recovery](setup-design.md),
+[adapter capabilities](setup-compatibility.md) and [acceptance](setup-acceptance.md).
+Configured files are not evidence of native activation.
+
 ## List and search
 
 ```sh

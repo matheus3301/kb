@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-06",
+  "scope": "Checked-out static setup landing candidate; not a released setup binary",
+  "command": "env -u KB_ROOT mise exec -- make site-check",
+  "result": "passed",
+  "toolchain": {"node": "22.22.3", "pnpm": "11.25.0", "astro": "7.4.1"},
+  "observations": {
+    "frozen_install": "passed",
+    "dependency_audit": "No known vulnerabilities found",
+    "astro_check": {"errors": 0, "warnings": 0, "hints": 0},
+    "static_build": "passed",
+    "playwright": {"passed": 24, "failed": 0, "workers": 1},
+    "viewports": [{"name": "desktop", "width": 1440, "height": 1000}, {"name": "mobile", "width": 390, "height": 844}],
+    "preview": "http://127.0.0.1:4321/kb/",
+    "checks": [
+      "Real clipboard contents match every complete visible command/prompt block",
+      "Agent prompt has at most three source and rendered lines at both viewports, without clipped text; content height is checked against computed line height, with at most 160 characters and a card height at most 250 CSS pixels",
+      "Copied raw Markdown URL and human-visible GitHub link address the same PR installer guide",
+      "Denied clipboard feedback never reports false success",
+      "Audience tabs support pointer and keyboard navigation with visible focus",
+      "Both setup views have no horizontal page overflow",
+      "Both setup views have no serious or critical axe findings",
+      "Built page emits no browser, console, HTTP or external runtime resource errors",
+      "Animation pause/replay/advance, reduced motion and no-JavaScript transcript remain usable",
+      "Full-page human and agent screenshots generated at both viewports"
+    ],
+    "manual_browser_review": "Final Install KB prompt opened in actual desktop/mobile browser tabs; focused screenshots and refreshed public images visually reviewed. Prompt is 1 source line, 112 characters, rendered as 2 desktop lines and 3 mobile lines. Font remains 13px with 24.7px line height; desktop/mobile content heights 49/74 CSS pixels, card heights 131.375/161.0625 CSS pixels; no clipped text or horizontal page overflow.",
+    "rendered_prompt": {
+      "source_lines": 1,
+      "characters": 112,
+      "font_size_css_px": 13,
+      "line_height_css_px": 24.7,
+      "desktop": {"rendered_lines": 2, "content_height_css_px": 49, "text_range_height_css_px": 41.6875, "card_height_css_px": 131.375},
+      "mobile": {"rendered_lines": 3, "content_height_css_px": 74, "text_range_height_css_px": 66.375, "card_height_css_px": 161.0625},
+      "regression": "The first Read-prefix-only attempt failed the retained rendered-line regression on mobile: 99px content exceeded the three-line limit of 75.1px. Targeted word-break plus the final installation request and shorter full-SHA GitHub raw URL passed all 24 tests."
+    },
+    "guide_reference": {
+      "url": "https://github.com/matheus3301/kb/raw/21a82cd4c210a6aa593afa5750b4be8e643f3ce1/docs/agent-install.md",
+      "published_commit": "21a82cd4c210a6aa593afa5750b4be8e643f3ce1",
+      "fetch": "GitHub raw URL fetched with redirects followed; SHA-256 matched the local committed guide",
+      "sha256": "9abc9f686966b2bdae8cba31e25b1b19fe4185c0af2dcac6360bf0ae82fbbac3",
+      "bytes": 10080
+    }
+  },
+  "tests": ["site/tests/landing.spec.ts"],
+  "local_artifacts": [
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-desktop/desktop.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-desktop/desktop-agent.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile-agent.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-desktop/desktop-setup.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-desktop/desktop-agent-setup.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile-setup.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile-agent-setup.png"
+  ],
+  "public_artifacts": ["docs/evidence/setup-site/manifest.json", "docs/evidence/setup-site/desktop-page.png", "docs/evidence/setup-site/desktop-human.png", "docs/evidence/setup-site/desktop-agent.png", "docs/evidence/setup-site/mobile-human.png", "docs/evidence/setup-site/mobile-agent.png"],
+  "limits": [
+    "Ignored local artifacts are supplemental; selected reviewed screenshots are committed under docs/evidence/setup-site/.",
+    "Published v1.0.0 does not include setup; these website checks do not qualify a new runtime release.",
+    "No native setup, agent activation or hook delivery claim follows from illustrative sessions or screenshots.",
+    "Serious/critical axe checks and finite Chromium scenarios do not establish complete accessibility or universal browser support.",
+    "The immutable published guide URL was fetched and hashed successfully; remote availability is not a continuous browser-suite gate."
+  ]
+}

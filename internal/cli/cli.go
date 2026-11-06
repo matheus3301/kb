@@ -18,11 +18,15 @@ import (
 
 // Dependencies keeps filesystem construction out of command parsing and tests.
 type Dependencies struct {
-	ResolveRoot func(string) (string, error)
-	Open        func(string) (mcpserver.Reader, mcpserver.Writer, error)
-	Init        func(context.Context, string, bool) (mcpserver.Reader, mcpserver.Writer, error)
-	Version     string
-	Commit      string
+	ResolveRoot     func(string) (string, error)
+	Open            func(string) (mcpserver.Reader, mcpserver.Writer, error)
+	Init            func(context.Context, string, bool) (mcpserver.Reader, mcpserver.Writer, error)
+	Version         string
+	Commit          string
+	SetupHome       string
+	SetupConfigHome string
+	SetupExecutable string
+	Interactive     func() bool
 }
 
 type reported struct{ code int }
@@ -141,6 +145,7 @@ func (r *runner) command() *cobra.Command {
 	}}
 	initCmd.Flags().BoolVar(&para, "para", false, "Create initial PARA navigation")
 	c.AddCommand(initCmd)
+	c.AddCommand(r.setupCommand())
 	for _, action := range []string{"status", "list", "search", "read", "context", "links", "create", "patch", "move", "archive", "apply", "validate", "maintain", "recover", "export", "backup", "restore"} {
 		c.AddCommand(r.dataCommand(action))
 	}

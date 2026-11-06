@@ -1,6 +1,6 @@
 # Landing surface
 
-Mode: Persuade. Audience: humans and agent operators evaluating a local Markdown knowledge base. Primary action: install the CLI plus skill. Direction is pinned by the approved Midnight blue brief; no randomized direction round.
+Mode: Persuade. Audience: humans and agent operators evaluating a local Markdown knowledge base. Primary action: install the CLI, then run explicit setup with a capable build. Source-candidate availability is visible; published v1.0.0 must not be presented as supporting setup. Direction is pinned by the approved Midnight blue brief; no randomized direction round.
 
 ## Direction contract
 
@@ -15,5 +15,13 @@ Mode: Persuade. Audience: humans and agent operators evaluating a local Markdown
 **FORM:** A source-and-result diptych, followed by two-column install instructions, a sequential CLI workflow, open typographic benefit rows, a concise two-column foundations section with primary-source links, and a useful documentation index. The signature is source lines visibly retained in the terminal's illustrative context excerpt.
 
 **REACH:** Shared spacing, colors, type, command blocks and copy feedback apply through the page. No decorative motion or runtime network. All examples are labeled illustrative. Risk: code density on phones; contain command overflow without shrinking text.
+
+**AGENT HANDOFF:** Keep the visible/copyable prompt to one short instruction and
+the raw GitHub installer-guide URL (at most three source and rendered lines,
+including at the 390px mobile viewport; no dense joined prose). Full setup policy
+lives in `docs/agent-install.md`, linked at a published immutable source commit
+so it survives PR branch deletion. Browser checks measure text content height
+against computed line height, reject clipping, cap card height and verify the
+actual clipboard.
 
 Seed: none (user-pinned direction). The page remains code-led; the shared blue-bird identity was generated under human authorization. No paid page rendering.

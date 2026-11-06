@@ -61,9 +61,15 @@ build, and browser checks. It installs Chromium; Linux hosts may also need
 for system libraries. Activating mise in the shell is an alternative to
 the `mise exec --` prefix.
 Node and pnpm are development/CI tooling only; neither they nor mise are
-required by the CLI or MCP runtime. Public `npx skills` installation commands
-remain unchanged. `mise exec -- make check` retains the Go/runtime gates;
-the separately required website job must also pass before integration.
+required by the CLI or MCP runtime. The setup candidate bundles its CLI skill
+without Node; separate optional `npx skills` installation remains available.
+The Go test suite also uses pinned Node to exercise generated Pi/OMP wrappers
+against real failing and noncooperating child processes. Both CI test runners
+install it before `make test`; missing Node fails this regression rather than
+silently skipping it. This is a development-test dependency, not a requirement
+for installing or running the KB executable.
+`mise exec -- make check` retains the Go/runtime gates; the separately required
+website job must also pass before integration.
 
 Playwright starts the **built static preview** at `http://127.0.0.1:4321/kb/`,
 never the development server or an existing listener. Desktop (1440 × 1000) and
@@ -116,6 +122,25 @@ A criterion may be marked `verified` only with existing test and evidence paths.
 The repository check verifies traceability, not whether the evidence proves the
 claim. Do not equate aggregate coverage or one green workflow with all criteria
 being satisfied.
+
+The setup candidate has a separate [S01–S44 inventory](setup-acceptance.json)
+and [evidence contract](setup-acceptance.md). `make acceptance`, and therefore
+`make check`, requires
+`python3 scripts/check_docs.py --binary .build/kb --setup` against the integrated
+setup-capable candidate. It executes documented dry-run/install/check/resolve/
+uninstall in a disposable synthetic home with `KB_ROOT` cleared, checking
+read-only filesystem purity, repeated install/uninstall no-op and preservation
+of the existing collection. The fixture deliberately removes native model
+harnesses from its isolated `PATH` while retaining real Git when available.
+`setup check` must return exit 1 with a successful inspection envelope,
+`configured: true`, `ready: false`, `status: degraded`, matching root/scope/agent,
+configured artifacts and an explicit missing-host diagnosis. This is an asserted
+unavailable-host result, not a skip or a native-ready pass. CI does not install
+model harnesses or simulate one to qualify activation.
+
+The `--setup` flag remains optional for separate old-release qualification.
+This is not native agent/hook activation evidence. Published v1.0.0 does not
+contain setup; its historical documentation results remain separate.
 
 [Performance evidence](performance.md) retains the initial v0.1 core misses:
 warm search p95 162.9 ms and peak process RSS 180.3 MiB against 150 ms/150 MiB,
