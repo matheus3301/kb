@@ -3,22 +3,23 @@
     "id": "S01",
     "scenario": "Existing executable, bare setup",
     "requirement": "Short wizard installs a usable integration without manual file editing or Node.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/cli/setup_test.go"
     ],
     "evidence": [
       "docs/evidence/setup-source-tests.json",
       "docs/evidence/setup-lifecycle.json",
-      "docs/evidence/setup-native.json"
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Wizard review/buffer and concise output fixture is mapped; compiled lifecycle and named native sessions are separate observations. Final integrated wizard/TTY qualification remains pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Actual PTY wizard passed with all answers including final confirmation pasted together, reviewed destinations, exact selected root and unchanged collection; PATH contained no Node, Git or native harness. Separate native sessions qualify the resulting integration contracts.",
     "test_names": {
       "internal/cli/setup_test.go": [
         "TestSetupCLIWizardReviewAndHumanOutput"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S02",
@@ -31,7 +32,8 @@
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-native.json"
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified for disposable external-root CLI lifecycles and the recorded native project sessions: selected canonical root and collection bytes preserved. No all-host activation claim.",
     "test_names": {
@@ -39,7 +41,7 @@
         "TestSetupCLIInstallResolveCheckAndUninstall"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S03",
@@ -51,7 +53,8 @@
       "internal/cli/setup_regression_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified for the selected create/PARA and replay fixtures in the passing integrated test/race stage on 8b1c5b6. This criterion adds no broader native-onboarding requirement; post-parser-fix full qualification remains separate.",
     "test_names": {
@@ -62,33 +65,34 @@
         "TestSetupPortableAndTildeCreation"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S04",
     "scenario": "Invalid or uninitialized existing collection",
     "requirement": "Diagnose without migration, repair or creating another base.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/cli/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Invalid collection and collection/project raw-Markdown conflicts have source fixtures. Final exact run, including uninitialized-root diagnosis, remains pending; no migration/repair is authorized. Post-parser-fix integrated qualification is pending.",
+    "notes": "Invalid/uninitialized roots are rejected without implicit migration or repair; exact final CLI preflight fixtures passed.",
     "test_names": {
       "internal/cli/setup_test.go": [
         "TestSetupCLIPureDryRunAndValidation",
         "TestSetupCLIRedactionAndCollectionRootConflict"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S05",
     "scenario": "Project installation",
     "requirement": "Only the selected activation scope and disclosed bookkeeping change.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/agentsetup/adapter_test.go",
       "internal/cli/setup_test.go",
@@ -96,9 +100,10 @@
     ],
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "All ten supported project CLI configuration rows passed. Private registry/exclusion and unrelated-file boundaries are source-mapped; native usability is limited to the named native runs. Post-parser-fix integrated qualification is pending.",
+    "notes": "Ten project adapters passed disposable install/check/resolve/removal cycles with collection preservation. This verifies configuration lifecycle, not native activation for every host.",
     "test_names": {
       "internal/agentsetup/adapter_test.go": [
         "TestHostConfigurationContracts"
@@ -110,22 +115,23 @@
         "TestPrivacyNoGitAndFatalRepositoryCommands"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S06",
     "scenario": "Global installation",
     "requirement": "Only selected user agents are configured; unrelated files remain unchanged.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/agentsetup/adapter_test.go",
       "internal/setup/routing_test.go"
     ],
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Nine supported global CLI rows passed; Cursor global is explicitly rejected. Global configuration does not establish native global activation or cross-project model behavior. Post-parser-fix integrated qualification is pending.",
+    "notes": "Nine supported global adapters passed disposable lifecycle cycles. Cursor global is explicitly unsupported and rejected without mutation; personal global agent settings were not used.",
     "test_names": {
       "internal/agentsetup/adapter_test.go": [
         "TestHostConfigurationContracts"
@@ -134,7 +140,7 @@
         "TestRoutingBoundaryWorktreeAndPortable"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S07",
@@ -147,7 +153,8 @@
     ],
     "evidence": [
       "docs/evidence/setup-source-tests.json",
-      "docs/evidence/setup-native.json"
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified within native Codex CLI/hooks-off global-plus-project scope on 8b1c5b6: the project root/value overrides the distinct global root/value, and both collections remain byte-pure. Mixed CLI/MCP and other host combinations are separately unqualified.",
     "test_names": {
@@ -158,7 +165,7 @@
         "TestSharedInstructionsKeepDistinctHostOwners"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification.",
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build.",
     "observed_scopes": [
       "Codex 0.166.0-alpha.5.1 / isolated global plus project / CLI / hooks off"
     ],
@@ -172,15 +179,16 @@
     "id": "S08",
     "scenario": "No binding or disabled binding",
     "requirement": "Deterministic diagnostic or no-op without guessing collections.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/routing_test.go",
       "internal/cli/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Disabled portable binding stops global fallback in a source fixture. Final no-binding/disabled-path execution evidence is pending; no home-directory collection guessing is supported. Post-parser-fix integrated qualification is pending.",
+    "notes": "No-binding and disabled portable-binding fixtures passed; resolution does not guess a collection or fall through a disabled project binding.",
     "test_names": {
       "internal/setup/routing_test.go": [
         "TestDisabledPortableBindingStopsGlobal"
@@ -189,7 +197,7 @@
         "TestSetupCLIPureDryRunAndValidation"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S09",
@@ -202,7 +210,8 @@
     ],
     "evidence": [
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified in the compiled Claude+Copilot shared project MCP probe: one server entry survives removal of the first consumer and disappears after the last. Shared/borrowed rule coverage is separately source-mapped.",
     "test_names": {
@@ -213,7 +222,7 @@
         "TestSetupSharedMCPEntryRemovalRetainsOtherConsumer"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S10",
@@ -227,7 +236,8 @@
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified byte-stable repeated CLI installation in all 19 supported scope rows and the executable-doc workflow. This is filesystem/configuration evidence, not repeated native activation.",
     "test_names": {
@@ -238,13 +248,13 @@
         "TestOwnedHookUpgradePreservesForeignHandler"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S11",
     "scenario": "Dry-run",
     "requirement": "Show intended changes without filesystem or network side effects.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go",
       "internal/cli/setup_test.go"
@@ -252,9 +262,10 @@
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Dry-run filesystem purity passed the CLI matrix and executable docs, including source create-dry-run coverage. Setup uses bundled assets without network downloads; exact final integrated checks remain pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Pure dry-run fixtures and all 19 supported lifecycle rows passed; selected collection and fixture files remained unchanged.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestPreflightPureAndAllOrNothing"
@@ -263,40 +274,42 @@
         "TestSetupCLIPureDryRunAndValidation"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S12",
     "scenario": "Incomplete automation",
     "requirement": "Structured error without prompting, hanging or writing.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/cli/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Incomplete automation/no-prompt argument fixtures are mapped. Final exact CLI regression execution remains pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Incomplete automation fixtures fail with structured diagnostics instead of prompting or publishing artifacts.",
     "test_names": {
       "internal/cli/setup_test.go": [
         "TestSetupCLIPureDryRunAndValidation"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S13",
     "scenario": "Conflicting flags",
     "requirement": "Reject contradictory choices before any operation.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/cli/setup_test.go",
       "internal/agentsetup/adapter_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Conflicting scope/create/PARA and unsupported option fixtures are mapped. Final exact CLI/adapter regression execution remains pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Contradictory scope/policy/agent requests fail preflight in the final CLI fixtures.",
     "test_names": {
       "internal/cli/setup_test.go": [
         "TestSetupCLIPureDryRunAndValidation"
@@ -305,41 +318,43 @@
         "TestRejectedRequestsProduceNoPartialIntents"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S14",
     "scenario": "Customized skill or rule",
     "requirement": "Preserve custom content; --yes does not authorize replacement.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Borrowed/custom owned asset preservation and conflict fixtures are mapped; --yes is not overwrite authority. Final exact source run remains pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Modified owned and borrowed content is preserved with conflict diagnostics; --yes does not authorize destructive replacement.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestBorrowedDriftAndUpgrade",
         "TestOwnedConflictAndOutsideEdit"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S15",
     "scenario": "Malformed ownership markers",
     "requirement": "Report conflict, never false success.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go",
       "internal/setup/fuzz_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Orphaned, reversed and duplicate markers plus bounded fuzz seeds are mapped. Final integrated fuzz/test evidence remains pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Malformed/duplicate ownership-marker fixtures and the marker fuzzer passed; conflicts do not publish partial changes.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestJSONCAndMarkerRejection"
@@ -348,21 +363,22 @@
         "FuzzManagedBlockParsing"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S16",
     "scenario": "Text presentation",
     "requirement": "Preserve supported LF/CRLF, BOM and final-newline forms; diagnose unsupported forms.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go",
       "internal/setup/fuzz_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "BOM, CRLF and missing-final-newline preservation fixtures are mapped. This is supported-format coverage, not arbitrary encoding compatibility; final exact run pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "LF/CRLF, BOM and supported final-newline fixtures passed with preservation of foreign bytes. Unsupported representations remain explicit conflicts.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestLifecycleSharedBorrowedAndPristine",
@@ -372,22 +388,23 @@
         "FuzzManagedBlockParsing"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S17",
     "scenario": "Shared JSON/TOML",
     "requirement": "Preserve unrelated values, comments and formatting within supported parser shapes.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go",
       "internal/setup/regression_test.go",
       "internal/setup/fuzz_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Preservation/upgrade fixtures exist, but the 8b1c5b6 full gate found a real JSONC edit-invalid-config defect (retained corpus 10c2b389efa4b531). Parser correction and post-fix regression/fuzz/full-gate rerun are pending; this criterion is not verified. Post-parser-fix integrated qualification is pending.",
+    "notes": "Final JSON/JSONC/TOML preservation fixtures passed. The retained comma-only-container fuzz regression is fixed; edited JSON/JSONC is revalidated before publication. Extended JSONC fuzz passed 9,623,675 executions.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestJSONAndTOMLPreserveForeignBytes",
@@ -400,33 +417,34 @@
         "FuzzJSONCEntryPreservation"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S18",
     "scenario": "Invalid configuration",
     "requirement": "Preflight failure does not partially install artifacts.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Malformed config and duplicate-key preflight fixtures require no artifact/state publication. Final exact regression evidence remains pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Malformed/empty JSON, invalid JSONC and conflicting shared policies are rejected before writes; final preflight fixtures passed.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestPreflightPureAndAllOrNothing",
         "TestJSONCAndMarkerRejection"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S19",
     "scenario": "Links and aliases",
     "requirement": "Reject unsupported symlink/hardlink/case traversal without escaped writes.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go",
       "internal/setup/routing_test.go",
@@ -434,9 +452,10 @@
       "internal/agentsetup/adapter_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Symlink, hardlink, case-alias and path/profile confinement fixtures are mapped. Final exact fuzz/platform run remains pending; no hostile-editor isolation guarantee follows. Post-parser-fix integrated qualification is pending.",
+    "notes": "Confined-path fuzz plus symlink/hardlink/case-collision fixtures passed for supported Unix targets. This is bounded filesystem validation, not a universal hostile-kernel guarantee.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestPreconditionRaceAndSymlinkHardlink"
@@ -451,7 +470,7 @@
         "FuzzAdapterProfilePaths"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S20",
@@ -463,7 +482,8 @@
       "internal/setup/routing_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Expected-hash lost-update rejection and competing-plan fixtures passed the integrated test/race stage on 8b1c5b6 (86.5 seconds). This is bounded conflict/concurrency evidence, not arbitrary-editor isolation or post-parser-fix full-gate qualification.",
     "test_names": {
@@ -474,21 +494,22 @@
         "TestConcurrentInstallAndLockFailure"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S21",
     "scenario": "Publication failures",
     "requirement": "Every boundary returns nonzero with precise journal state and safe recovery.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go",
       "internal/setup/routing_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Prepared/publication/commit and interrupted-recovery fixtures are mapped. Final exact run is pending; per-file publication is not globally atomic or universal power-loss proof. Post-parser-fix integrated qualification is pending.",
+    "notes": "Every instrumented publication boundary, interrupted rollback and recovery fixture passed; failures are nonzero with journal/recovery state and external edits preserved.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestRollbackAtEveryPublicationBoundary",
@@ -498,22 +519,23 @@
         "TestRecoveryUnrecordedRenameAndInterruptedRollback"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S22",
     "scenario": "Permission, disk or lock failure",
     "requirement": "No false completion or broad permission repair.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/routing_test.go",
       "internal/setup/regression_test.go",
       "internal/setup/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Lock refusal, read-only destinations, private state modes and injected publication errors have fixtures. Final exact run and any broader disk-exhaustion claim remain pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Read-only destinations, private-state permissions, competing setup locks and injected publication failures passed. No broad permission repair or universal power-loss/disk guarantee is claimed.",
     "test_names": {
       "internal/setup/routing_test.go": [
         "TestConcurrentInstallAndLockFailure"
@@ -525,60 +547,63 @@
         "TestRollbackAtEveryPublicationBoundary"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S23",
     "scenario": "CLI to MCP transition",
     "requirement": "Explicit independent mode change leaves no contradictory rules.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/cli/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "The engine checkpoint records a compiled CLI-to-MCP smoke removing unused skills. Native mixed-scope/interface transitions and final exact regression run remain pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Explicit CLI-to-MCP transition fixtures passed, removing unused CLI assets. Native OMP MCP also passed status/search/read using only deferred MCP dispatch.",
     "test_names": {
       "internal/cli/setup_test.go": [
         "TestSetupCLICreateReplayAndModePolicyInheritance"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S24",
     "scenario": "MCP to CLI transition",
     "requirement": "Preserve chosen root/policy and safely remove unused owned artifacts.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/cli/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "MCP-to-CLI removal of unused config and inherited root/policy passed the earlier source fixture. Final frozen-source execution is pending; this criterion does not require every host to perform a new model session. Post-parser-fix integrated qualification is pending.",
+    "notes": "Mode/policy inheritance and explicit MCP-to-CLI transition fixtures passed; omitted flags retain the selected prior policy.",
     "test_names": {
       "internal/cli/setup_test.go": [
         "TestSetupCLICreateReplayAndModePolicyInheritance"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S25",
     "scenario": "Selective uninstall",
     "requirement": "Remaining modes/scopes/agents continue working.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go",
       "internal/cli/setup_regression_test.go"
     ],
     "evidence": [
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Compiled selective removal preserved the shared MCP entry and remaining configured artifacts. Final exact source checks are pending; native model-adherence qualification is separate from ownership retention. Post-parser-fix integrated qualification is pending.",
+    "notes": "Shared Claude/Copilot MCP entry survives selective removal; actual Git main/worktree bindings and shared exclusions also survive removal of one installation.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestLifecycleSharedBorrowedAndPristine"
@@ -587,7 +612,7 @@
         "TestSetupSharedMCPEntryRemovalRetainsOtherConsumer"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S26",
@@ -601,7 +626,8 @@
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified byte-stable repeated uninstall in the 19 supported CLI lifecycle fixtures and executable docs; collection bytes and unrelated fixture state were preserved. Not an audit of every host credential store.",
     "test_names": {
@@ -612,27 +638,28 @@
         "TestLifecycleSharedBorrowedAndPristine"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S27",
     "scenario": "Customized uninstall target",
     "requirement": "Preserve with actionable conflict; never recursive name-based deletion.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Modified owned regions conflict; borrowed customizations and outside edits survive uninstall in source fixtures. Final exact regression run remains pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Customized removal targets and borrowed drift produce actionable preservation/conflict behavior in final lifecycle fixtures.",
     "test_names": {
       "internal/setup/setup_test.go": [
         "TestOwnedConflictAndOutsideEdit",
         "TestBorrowedDriftAndUpgrade"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S28",
@@ -644,7 +671,8 @@
     ],
     "evidence": [
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified by compiled Pi uninstall after moving the collection: integration removed without opening or changing the moved collection. Missing-root source regression is also mapped.",
     "test_names": {
@@ -652,13 +680,13 @@
         "TestSetupCLIInstallResolveCheckAndUninstall"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S29",
     "scenario": "Binary and asset upgrade",
     "requirement": "Full version-matched skill references; customization conflicts preserved.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "skills/embed_test.go",
       "internal/cli/setup_test.go",
@@ -666,9 +694,10 @@
       "internal/setup/regression_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Complete bundled references, borrowed-version conflict and owned hook upgrade fixtures are mapped. Exact final candidate/asset checks are pending; future released-package qualification is a separate distribution concern. Post-parser-fix integrated qualification is pending.",
+    "notes": "Owned asset upgrades, borrowed/customized conflicts and embedded complete skill-reference fixtures passed. No executable self-upgrade is implied.",
     "test_names": {
       "skills/embed_test.go": [
         "TestKnowledgeBaseReferenceDocumentsResolve"
@@ -683,21 +712,22 @@
         "TestOwnedHookUpgradePreservesForeignHandler"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S30",
     "scenario": "Unsupported manifest version",
     "requirement": "Actionable error without guessed destructive migration.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/routing_test.go",
       "internal/setup/regression_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Unsupported manifest and operation receipt conflicts have source fixtures. Final exact execution/version-boundary evidence remains pending; no guessed migration is promised. Post-parser-fix integrated qualification is pending.",
+    "notes": "Unknown manifest/receipt versions fail without destructive migration in final fixtures.",
     "test_names": {
       "internal/setup/routing_test.go": [
         "TestUnsupportedManifestAndCaseCollision"
@@ -706,13 +736,13 @@
         "TestOperationReceiptReplayConflictsAndPending"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S31",
     "scenario": "Shadowing and profiles",
     "requirement": "Diagnose effective instruction files and custom profiles, including Codex overrides.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/agentsetup/adapter_test.go",
       "internal/cli/setup_regression_test.go"
@@ -720,9 +750,10 @@
     "evidence": [
       "docs/evidence/setup-source-tests.json",
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-native.json"
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Custom profiles, nonempty fallbacks, new shadowing files and missing executables have source fixtures. Missing-host check behavior was exercised without claiming readiness. Final exact diagnosis regressions are pending; model-adherence qualification is separate. Post-parser-fix integrated qualification is pending.",
+    "notes": "Re-rendered profile/shadowing checks, Codex overrides, nonempty Pi/OpenCode fallback files, and Gemini/OMP custom-profile routing fixtures passed. Native loading of every profile remains separately unqualified.",
     "test_names": {
       "internal/agentsetup/adapter_test.go": [
         "TestProfileAndInstructionPrecedence"
@@ -732,7 +763,7 @@
         "TestSetupBareRerunChecksArtifactRootAndCommand"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S32",
@@ -743,7 +774,8 @@
       "internal/cli/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-native.json"
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified within initial OMP project CLI and Codex project CLI/hooks-off retrieval, plus the 8b1c5b6 native Codex global/project CLI and OMP project MCP rechecks. Claude model retrieval remains login-blocked. Other host/build qualification and post-parser-fix rechecks remain separate.",
     "test_names": {
@@ -751,7 +783,7 @@
         "TestSetupCLIInstallResolveCheckAndUninstall"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification.",
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build.",
     "observed_scopes": [
       "OMP 18.16.0 / project / CLI / hooks required",
       "Codex 0.166.0-alpha.5.1 / project / CLI / hooks off",
@@ -775,7 +807,8 @@
     ],
     "evidence": [
       "docs/evidence/setup-native.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified for repeated native OMP CLI queries on 5b75df2 and MCP queries on 8b1c5b6: full collection file bytes remain unchanged. Codex single-query/root-precedence purity also passed; no all-host repeated-query guarantee is inferred.",
     "test_names": {
@@ -786,7 +819,7 @@
         "TestGeneratedMCPLaunchUsesIndependentServer"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S34",
@@ -801,7 +834,8 @@
     "evidence": [
       "docs/evidence/setup-native.json",
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified within native OMP 18.16.0 project CLI learning on candidate 5b75df2: revision-checked patch preview/apply/readback, metadata preservation, URN provenance and byte-pure repeat retrieval. Other host/interface learning remains unqualified separately; no universal expansion of this criterion is implied.",
     "test_names": {
@@ -815,20 +849,19 @@
         "exercise"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification.",
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build.",
     "observed_scopes": [
       "OMP 18.16.0 / project / CLI / hooks required / learning on"
     ],
     "pending_scopes": [
-      "Other native host/interface learning matrix",
-      "Final integrated quality and frozen-source recheck"
+      "Other native host/interface learning matrix"
     ]
   },
   {
     "id": "S35",
     "scenario": "Read-only integration",
     "requirement": "Configured path prevents writes; no OS-isolation claim.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/write/policy_test.go",
       "internal/agentsetup/mcp_integration_test.go",
@@ -836,9 +869,10 @@
     ],
     "evidence": [
       "docs/evidence/setup-native.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Generated MCP read-only tools/direct-core no-write fixtures passed scoped tests; native OMP MCP status/search/read used only deferred MCP dispatch with no model shell/filesystem calls and preserved collection bytes. Local read-only paths are not an OS sandbox; post-parser-fix source qualification remains pending. Post-parser-fix integrated qualification is pending.",
+    "notes": "Generated MCP read-only tool exposure, direct-core no-write hooks and final native OMP MCP collection-byte purity passed. These controls are not OS isolation.",
     "test_names": {
       "internal/write/policy_test.go": [
         "TestReadOnlyCancellationAndPendingDryRun"
@@ -850,22 +884,23 @@
         "TestSetupCLIHookNativeOutputAndReadOnlyPolicy"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S36",
     "scenario": "Offline setup",
     "requirement": "Bundled assets install without network, account or runtime downloads.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "skills/embed_test.go",
       "internal/cli/setup_test.go"
     ],
     "evidence": [
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Version-matched bundled skill/reference installation has source fixtures and real CLI smoke; setup has no account/runtime download path. Final exact source checks remain pending. Native host qualification is separate from offline asset installation. Post-parser-fix integrated qualification is pending.",
+    "notes": "Bundled skill/reference assets install locally; actual PTY wizard passed with an empty tool PATH (no Node/Git/harness). Setup has no account/runtime-download prerequisite.",
     "test_names": {
       "skills/embed_test.go": [
         "TestKnowledgeBaseReferenceDocumentsResolve"
@@ -874,22 +909,23 @@
         "TestSetupCLIInstallResolveCheckAndUninstall"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S37",
     "scenario": "Portable team configuration",
     "requirement": "No personal path/secret publication; test any supported relative anchors.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/routing_test.go",
       "internal/agentsetup/adapter_test.go",
       "internal/cli/setup_regression_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Relative project binding, second-user resolution and no personal paths have source fixtures. Final exact portable regressions are pending. Portable MCP/global are explicitly unsupported; this criterion does not require every native host/team session. Post-parser-fix integrated qualification is pending.",
+    "notes": "Supported portable project CLI anchors and absence of personal root/executable paths passed. Portable MCP/global remain explicitly unsupported rather than receiving a false qualification.",
     "test_names": {
       "internal/setup/routing_test.go": [
         "TestRoutingBoundaryWorktreeAndPortable"
@@ -901,26 +937,27 @@
         "TestSetupPortableAndTildeCreation"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S38",
     "scenario": "Worktrees and nested repositories",
     "requirement": "Respect repository boundaries and select the correct binding.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/routing_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Synthetic nested-repository/copied-worktree boundaries and anchored portable resolution have source fixtures. Final exact routing run remains pending; no additional native multi-worktree session requirement is imposed. Post-parser-fix integrated qualification is pending.",
+    "notes": "Routing fixtures plus actual Git repository/worktree installation passed: independent bindings, private policy exclusion, selective removal, original shared-exclude restoration and unchanged memory.",
     "test_names": {
       "internal/setup/routing_test.go": [
         "TestRoutingBoundaryWorktreeAndPortable"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build."
   },
   {
     "id": "S39",
@@ -934,9 +971,10 @@
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
       "docs/evidence/setup-native.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Pending activation and unsupported required-hook diagnostics have source coverage. Named native runs do not cover disabled/trust-pending settings on every host; no trust or auth bypass was performed. Post-parser-fix integrated qualification is pending.",
+    "notes": "Pending activation and unsupported required-hook diagnostics have source coverage. Named native runs do not cover disabled/trust-pending settings on every host; no trust or auth bypass was performed.",
     "test_names": {
       "internal/agentsetup/adapter_test.go": [
         "TestHookRegistrationUsesHostEventAndUnits",
@@ -946,7 +984,7 @@
         "TestSetupCLIInstallResolveCheckAndUninstall"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
   },
   {
     "id": "S40",
@@ -960,7 +998,8 @@
     ],
     "evidence": [
       "docs/evidence/setup-native.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
     "notes": "Verified for native OMP session/prompt context delivery in CLI on 5b75df2 and MCP on 8b1c5b6. Claude session/prompt commands exited 0 but its model answer was login-blocked. The corrected OMP MCP observer recognizes deferred MCP dispatch, not filesystem writes; other native hosts remain separately unqualified.",
     "test_names": {
@@ -975,7 +1014,7 @@
         "TestSetupHookMCPUsesNativeContextWithoutSkill"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification.",
+    "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build.",
     "observed_scopes": [
       "OMP 18.16.0 native session reminder and per-prompt contexts",
       "Claude 2.1.212 native SessionStart/UserPromptSubmit command responses exit 0; model reply blocked",
@@ -996,9 +1035,10 @@
       "internal/cli/setup_test.go"
     ],
     "evidence": [
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Bounded input/output, no-hit, invalid input and cooperative cancellation have source fixtures. Native timeout/kill/failure behavior across hosts remains pending; no hard realtime SLA is claimed. Post-parser-fix integrated qualification is pending.",
+    "notes": "Bounded input/output, no-hit, invalid input and cooperative cancellation have source fixtures. Native timeout/kill/failure behavior across hosts remains pending; no hard realtime SLA is claimed.",
     "test_names": {
       "internal/agentsetup/hook_test.go": [
         "TestHookEmptyFailureAndCancellation",
@@ -1008,7 +1048,7 @@
         "TestSetupCLIHookNativeOutputAndReadOnlyPolicy"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
   },
   {
     "id": "S42",
@@ -1021,9 +1061,10 @@
     ],
     "evidence": [
       "docs/evidence/setup-source-tests.json",
-      "docs/evidence/setup-native.json"
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Concurrent read-only source coverage and settled native OMP teardown exist. Compaction/resume routing and exactly-once behavior are not qualified; no exactly-once guarantee is made. Post-parser-fix integrated qualification is pending.",
+    "notes": "Concurrent read-only source coverage and settled native OMP teardown exist. Compaction/resume routing and exactly-once behavior are not qualified; no exactly-once guarantee is made.",
     "test_names": {
       "internal/agentsetup/hook_test.go": [
         "TestConcurrentHookConsultationDoesNotWriteNotes"
@@ -1032,7 +1073,7 @@
         "TestRoutingBoundaryWorktreeAndPortable"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
   },
   {
     "id": "S43",
@@ -1045,9 +1086,10 @@
     ],
     "evidence": [
       "docs/evidence/setup-source-tests.json",
-      "docs/evidence/setup-native.json"
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Scope/host policy guards and resolver routing are source-mapped. Actual mixed global/project hooks and CLI/MCP precedence have not been exercised in native sessions. Post-parser-fix integrated qualification is pending.",
+    "notes": "Scope/host policy guards and resolver routing are source-mapped. Actual mixed global/project hooks and CLI/MCP precedence have not been exercised in native sessions.",
     "test_names": {
       "internal/setup/routing_test.go": [
         "TestRoutingBoundaryWorktreeAndPortable"
@@ -1056,7 +1098,7 @@
         "TestSharedInstructionsKeepDistinctHostOwners"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
   },
   {
     "id": "S44",
@@ -1071,9 +1113,10 @@
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
       "docs/evidence/setup-cli-docs.json",
-      "docs/evidence/setup-source-tests.json"
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-qualified.json"
     ],
-    "notes": "Cursor global and invalid vscode ID were explicitly rejected before mutation; missing native hosts are explicitly nonready. Unknown native versions/platforms and every harness build are not qualified by descriptors or cross-builds. Post-parser-fix integrated qualification is pending.",
+    "notes": "Cursor global and invalid vscode ID were explicitly rejected before mutation; missing native hosts are explicitly nonready. Unknown native versions/platforms and every harness build are not qualified by descriptors or cross-builds.",
     "test_names": {
       "internal/agentsetup/adapter_test.go": [
         "TestRejectedRequestsProduceNoPartialIntents"
@@ -1085,6 +1128,6 @@
         "SetupDocumentationTests.test_missing_host_must_have_the_exact_nonzero_inspection_status"
       ]
     },
-    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
+    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
   }
 ]

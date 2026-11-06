@@ -314,5 +314,6 @@
         "observer_note": "Initial observer expected direct MCP tool names and reported a false negative; actual session used native read/write dispatch at xd://mcp__knowledge_base_* targets. Corrected observer rerun passed all assertions."
       }
     ]
-  }
+  },
+  "latest_qualification": "docs/evidence/setup-qualified.json"
 }
