@@ -1,0 +1,353 @@
+{
+  "date": "2026-11-06",
+  "candidate_commit": "5b75df2",
+  "binary_sha256": "dfd8b0c0fe750a55221345a496562c9500a253de123e7f279a24ac2c5cd7fbeb",
+  "status": "bounded_candidate_observations",
+  "final_candidate_recheck": "Lifecycle rerun passed on 8b1c5b6; full gate failed JSONC fuzz and post-fix requalification is pending",
+  "fixture": "Disposable synthetic homes, projects and external collections; no personal agents or collections configured.",
+  "observations": [
+    {
+      "id": "lifecycle-cli-19",
+      "result": "passed",
+      "supported_rows": 19,
+      "assertions_per_row": [
+        "dry-run-pure",
+        "repeat-install-byte-pure",
+        "check",
+        "resolve-external-root",
+        "collection-pure",
+        "uninstall",
+        "repeat-uninstall-byte-pure"
+      ],
+      "rows": [
+        {
+          "case": "codex-project-cli-lifecycle",
+          "agent": "codex",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready"
+        },
+        {
+          "case": "codex-global-cli-lifecycle",
+          "agent": "codex",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready"
+        },
+        {
+          "case": "claude-project-cli-lifecycle",
+          "agent": "claude",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready"
+        },
+        {
+          "case": "claude-global-cli-lifecycle",
+          "agent": "claude",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready"
+        },
+        {
+          "case": "pi-project-cli-lifecycle",
+          "agent": "pi",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "pi-global-cli-lifecycle",
+          "agent": "pi",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "omp-project-cli-lifecycle",
+          "agent": "omp",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready"
+        },
+        {
+          "case": "omp-global-cli-lifecycle",
+          "agent": "omp",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready"
+        },
+        {
+          "case": "opencode-project-cli-lifecycle",
+          "agent": "opencode",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "opencode-global-cli-lifecycle",
+          "agent": "opencode",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "cursor-project-cli-lifecycle",
+          "agent": "cursor",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "gemini-project-cli-lifecycle",
+          "agent": "gemini",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "gemini-global-cli-lifecycle",
+          "agent": "gemini",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "copilot-project-cli-lifecycle",
+          "agent": "copilot",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready"
+        },
+        {
+          "case": "copilot-global-cli-lifecycle",
+          "agent": "copilot",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready"
+        },
+        {
+          "case": "antigravity-project-cli-lifecycle",
+          "agent": "antigravity",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "antigravity-global-cli-lifecycle",
+          "agent": "antigravity",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "devin-project-cli-lifecycle",
+          "agent": "devin",
+          "scope": "project",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        },
+        {
+          "case": "devin-global-cli-lifecycle",
+          "agent": "devin",
+          "scope": "global",
+          "result": "passed",
+          "native_check": "native-unavailable"
+        }
+      ]
+    },
+    {
+      "id": "unsupported-preflight-3",
+      "result": "expected_rejection",
+      "rows": [
+        {
+          "case": "cursor-global-cli-lifecycle",
+          "exit_code": 2,
+          "error_code": "INVALID_INPUT",
+          "reason": "unsupported_global_scope",
+          "filesystem_purity": "parent observed byte-pure rejection"
+        },
+        {
+          "case": "vscode-project-cli-lifecycle",
+          "exit_code": 2,
+          "error_code": "INVALID_INPUT",
+          "reason": "unknown_agent_id",
+          "filesystem_purity": "parent observed byte-pure rejection"
+        },
+        {
+          "case": "vscode-global-cli-lifecycle",
+          "exit_code": 2,
+          "error_code": "INVALID_INPUT",
+          "reason": "unknown_agent_id",
+          "filesystem_purity": "parent observed byte-pure rejection"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Local-prerequisites-ready is not native version, trust, instruction loading or model activation qualification.",
+    "Native-unavailable is an explicitly diagnosed nonready host, not a skipped check or native-ready pass.",
+    "The supported CLI lifecycle rows are not evidence of mixed-scope model behavior, authorized learning, native MCP activation or hooks on every host.",
+    "Raw configuration, personal paths, credentials and session transcripts are excluded.",
+    "This intermediate candidate does not establish final integrated quality or a released setup binary."
+  ],
+  "candidate_rechecks": [
+    {
+      "candidate_commit": "8b1c5b6",
+      "binary_sha256": "48f50ecf6415a36760b02a929e50ae474ee55f17c10c21509941fd0f45a203ba",
+      "id": "lifecycle-cli-19-8b1c5b6",
+      "result": "passed",
+      "assertions_per_row": [
+        "dry-run-pure",
+        "repeat-install-byte-pure",
+        "check",
+        "resolve-external-root",
+        "collection-pure",
+        "uninstall",
+        "repeat-uninstall-byte-pure"
+      ],
+      "rows": [
+        {
+          "case": "codex-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "codex-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "claude-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "claude-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "pi-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "pi-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "omp-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "omp-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "opencode-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "opencode-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "cursor-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "cursor-global-cli-lifecycle",
+          "result": "unsupported-or-failed-preflight",
+          "native_check": null,
+          "exit_code": 2,
+          "error_code": "INVALID_INPUT"
+        },
+        {
+          "case": "gemini-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "gemini-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "copilot-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "copilot-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "local-prerequisites-ready",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "antigravity-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "antigravity-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "devin-project-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        },
+        {
+          "case": "devin-global-cli-lifecycle",
+          "result": "passed",
+          "native_check": "native-unavailable",
+          "exit_code": null,
+          "error_code": null
+        }
+      ],
+      "gate_boundary": "CLI lifecycle observations passed; subsequent JSONC fuzz failure requires parser correction, rebuild and final integrated recheck."
+    }
+  ]
+}

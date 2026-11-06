@@ -42,8 +42,11 @@ feature's reviewed revision; do not fall back to copying configuration by hand
 and call it setup validation. Keep using the explicit source executable for
 subsequent commands, rather than accidentally invoking the released `kb` on
 `PATH`. A source build reporting `dev` / `unknown` is not released-artifact proof.
-Source builds require Git and Go; the resulting CLI does not require either to
-run. Setup does not install or update the executable itself.
+Source builds require Git and Go; ordinary collection data commands need neither.
+Project setup needs Git only when it inspects existing repository tracking and
+local exclusions. Plain non-Git directories work without Git and use disclosed
+managed `.gitignore` patterns. The executable needs no Go toolchain at runtime.
+Setup does not install or update the executable itself.
 
 ## Four choices, then review
 

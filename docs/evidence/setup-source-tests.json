@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-06",
+  "kind": "Named-source traceability and scoped run records; not final integrated qualification",
+  "reported_runs": [
+    {
+      "id": "engine-checkpoint-bfe973b",
+      "source_commit": "bfe973b",
+      "command": "go test ./internal/setup ./internal/cli ./skills ./cmd/kb -count=1",
+      "result": "passed",
+      "reported_duration_seconds": 29.6,
+      "boundary": "Engine lane recorded an actual focused package run and compiled external-root lifecycle smoke. Later regression additions and final integrated checks remain separate."
+    },
+    {
+      "id": "adapter-checkpoint-e9cf8d6",
+      "source_commit": "e9cf8d6",
+      "command": "go test ./internal/agentsetup -count=1 -cover",
+      "result": "passed",
+      "statement_coverage_percent": 94.9,
+      "boundary": "Adapter package only, including the compiled generated-MCP consumer. Not setup/CLI aggregate coverage or native model qualification."
+    },
+    {
+      "id": "adapter-mode-aware-912a884",
+      "source_commit": "912a884a6234c866d6a9fbe332c3aaab7df0a79d",
+      "command": "go test ./internal/agentsetup -count=1 -cover",
+      "result": "passed",
+      "reported_duration_seconds": 2.332,
+      "statement_coverage_percent": 95.0,
+      "boundary": "Mode-aware hook package regression and synthetic direct-core/native-response smoke, not fresh native MCP host activation."
+    }
+  ],
+  "final_integrated_gate": {
+    "status": "failed_pending_parser_fix_and_rerun",
+    "notes": [
+      "Parent owns final make check, package coverage and native rechecks.",
+      "Static/race/coverage/build stages passed on 8b1c5b6, but the subsequent JSONC fuzz failure means the full gate did not pass.",
+      "Earlier individual lifecycle/native observations remain true for their identified binaries; they are not silently relabeled as post-fix qualification.",
+      "Mapped names identify actual source fixtures, not invented individually observed final-test events."
+    ]
+  },
+  "limits": [
+    "No universal durability, all-host activation or release availability claim.",
+    "Native auth/trust changes were not requested or performed for qualification."
+  ],
+  "integrated_stage_observations": {
+    "candidate_commit": "8b1c5b6",
+    "static_analysis": "passed; 0 issues",
+    "race_test_stage": "passed",
+    "reported_race_seconds": 86.5,
+    "coverage_gate": "parent reported passed; no percentage inferred",
+    "cross_build_stage": "passed",
+    "jsonc_fuzz_stage": {
+      "status": "failed",
+      "retained_corpus": "10c2b389efa4b531",
+      "failure": "JSONC editor could produce invalid configuration",
+      "disposition": "Assigned for parser fix; rebuild and full gate rerun required"
+    }
+  }
+}

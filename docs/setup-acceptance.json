@@ -4,395 +4,1087 @@
     "scenario": "Existing executable, bare setup",
     "requirement": "Short wizard installs a usable integration without manual file editing or Node.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-native.json"
+    ],
+    "notes": "Wizard review/buffer and concise output fixture is mapped; compiled lifecycle and named native sessions are separate observations. Final integrated wizard/TTY qualification remains pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIWizardReviewAndHumanOutput"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S02",
     "scenario": "Existing collection outside project",
     "requirement": "The chosen canonical root is used and collection bytes remain unchanged.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-native.json"
+    ],
+    "notes": "Verified for disposable external-root CLI lifecycles and the recorded native project sessions: selected canonical root and collection bytes preserved. No all-host activation claim.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIInstallResolveCheckAndUninstall"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S03",
     "scenario": "Explicit new collection",
     "requirement": "Only the selected new root is initialized; PARA is optional.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/cli/setup_test.go",
+      "internal/cli/setup_regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Verified for the selected create/PARA and replay fixtures in the passing integrated test/race stage on 8b1c5b6. This criterion adds no broader native-onboarding requirement; post-parser-fix full qualification remains separate.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLICreateReplayAndModePolicyInheritance"
+      ],
+      "internal/cli/setup_regression_test.go": [
+        "TestSetupPortableAndTildeCreation"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S04",
     "scenario": "Invalid or uninitialized existing collection",
     "requirement": "Diagnose without migration, repair or creating another base.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Invalid collection and collection/project raw-Markdown conflicts have source fixtures. Final exact run, including uninitialized-root diagnosis, remains pending; no migration/repair is authorized. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIPureDryRunAndValidation",
+        "TestSetupCLIRedactionAndCollectionRootConflict"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S05",
     "scenario": "Project installation",
     "requirement": "Only the selected activation scope and disclosed bookkeeping change.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/agentsetup/adapter_test.go",
+      "internal/cli/setup_test.go",
+      "internal/setup/regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "All ten supported project CLI configuration rows passed. Private registry/exclusion and unrelated-file boundaries are source-mapped; native usability is limited to the named native runs. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/agentsetup/adapter_test.go": [
+        "TestHostConfigurationContracts"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIInstallResolveCheckAndUninstall"
+      ],
+      "internal/setup/regression_test.go": [
+        "TestPrivacyNoGitAndFatalRepositoryCommands"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S06",
     "scenario": "Global installation",
     "requirement": "Only selected user agents are configured; unrelated files remain unchanged.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/agentsetup/adapter_test.go",
+      "internal/setup/routing_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Nine supported global CLI rows passed; Cursor global is explicitly rejected. Global configuration does not establish native global activation or cross-project model behavior. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/agentsetup/adapter_test.go": [
+        "TestHostConfigurationContracts"
+      ],
+      "internal/setup/routing_test.go": [
+        "TestRoutingBoundaryWorktreeAndPortable"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S07",
     "scenario": "Project override",
     "requirement": "One effective root/interface overrides the global default; verify in a native session.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Pending integrated execution; no native activation claim."
+    "status": "verified",
+    "tests": [
+      "internal/setup/routing_test.go",
+      "internal/agentsetup/adapter_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-native.json"
+    ],
+    "notes": "Verified within native Codex CLI/hooks-off global-plus-project scope on 8b1c5b6: the project root/value overrides the distinct global root/value, and both collections remain byte-pure. Mixed CLI/MCP and other host combinations are separately unqualified.",
+    "test_names": {
+      "internal/setup/routing_test.go": [
+        "TestRoutingBoundaryWorktreeAndPortable"
+      ],
+      "internal/agentsetup/adapter_test.go": [
+        "TestSharedInstructionsKeepDistinctHostOwners"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification.",
+    "observed_scopes": [
+      "Codex 0.166.0-alpha.5.1 / isolated global plus project / CLI / hooks off"
+    ],
+    "pending_scopes": [
+      "Mixed CLI/MCP native scope matrix",
+      "Other host/build precedence matrix",
+      "Post-parser-fix qualification"
+    ]
   },
   {
     "id": "S08",
     "scenario": "No binding or disabled binding",
     "requirement": "Deterministic diagnostic or no-op without guessing collections.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/routing_test.go",
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Disabled portable binding stops global fallback in a source fixture. Final no-binding/disabled-path execution evidence is pending; no home-directory collection guessing is supported. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/routing_test.go": [
+        "TestDisabledPortableBindingStopsGlobal"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIPureDryRunAndValidation"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S09",
     "scenario": "Shared artifacts",
     "requirement": "Track consumers and preserve shared assets when removing one integration.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/cli/setup_regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Verified in the compiled Claude+Copilot shared project MCP probe: one server entry survives removal of the first consumer and disappears after the last. Shared/borrowed rule coverage is separately source-mapped.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestLifecycleSharedBorrowedAndPristine"
+      ],
+      "internal/cli/setup_regression_test.go": [
+        "TestSetupSharedMCPEntryRemovalRetainsOtherConsumer"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S10",
     "scenario": "Unchanged repeat",
     "requirement": "Byte-for-byte no-op with stable ownership and no duplicate rules/hooks.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/setup/regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Verified byte-stable repeated CLI installation in all 19 supported scope rows and the executable-doc workflow. This is filesystem/configuration evidence, not repeated native activation.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestLifecycleSharedBorrowedAndPristine"
+      ],
+      "internal/setup/regression_test.go": [
+        "TestOwnedHookUpgradePreservesForeignHandler"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S11",
     "scenario": "Dry-run",
     "requirement": "Show intended changes without filesystem or network side effects.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Dry-run filesystem purity passed the CLI matrix and executable docs, including source create-dry-run coverage. Setup uses bundled assets without network downloads; exact final integrated checks remain pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestPreflightPureAndAllOrNothing"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIPureDryRunAndValidation"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S12",
     "scenario": "Incomplete automation",
     "requirement": "Structured error without prompting, hanging or writing.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Incomplete automation/no-prompt argument fixtures are mapped. Final exact CLI regression execution remains pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIPureDryRunAndValidation"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S13",
     "scenario": "Conflicting flags",
     "requirement": "Reject contradictory choices before any operation.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/cli/setup_test.go",
+      "internal/agentsetup/adapter_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Conflicting scope/create/PARA and unsupported option fixtures are mapped. Final exact CLI/adapter regression execution remains pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIPureDryRunAndValidation"
+      ],
+      "internal/agentsetup/adapter_test.go": [
+        "TestRejectedRequestsProduceNoPartialIntents"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S14",
     "scenario": "Customized skill or rule",
     "requirement": "Preserve custom content; --yes does not authorize replacement.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Borrowed/custom owned asset preservation and conflict fixtures are mapped; --yes is not overwrite authority. Final exact source run remains pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestBorrowedDriftAndUpgrade",
+        "TestOwnedConflictAndOutsideEdit"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S15",
     "scenario": "Malformed ownership markers",
     "requirement": "Report conflict, never false success.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/setup/fuzz_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Orphaned, reversed and duplicate markers plus bounded fuzz seeds are mapped. Final integrated fuzz/test evidence remains pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestJSONCAndMarkerRejection"
+      ],
+      "internal/setup/fuzz_test.go": [
+        "FuzzManagedBlockParsing"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S16",
     "scenario": "Text presentation",
     "requirement": "Preserve supported LF/CRLF, BOM and final-newline forms; diagnose unsupported forms.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/setup/fuzz_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "BOM, CRLF and missing-final-newline preservation fixtures are mapped. This is supported-format coverage, not arbitrary encoding compatibility; final exact run pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestLifecycleSharedBorrowedAndPristine",
+        "TestJSONAndTOMLPreserveForeignBytes"
+      ],
+      "internal/setup/fuzz_test.go": [
+        "FuzzManagedBlockParsing"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S17",
     "scenario": "Shared JSON/TOML",
     "requirement": "Preserve unrelated values, comments and formatting within supported parser shapes.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/setup/regression_test.go",
+      "internal/setup/fuzz_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Preservation/upgrade fixtures exist, but the 8b1c5b6 full gate found a real JSONC edit-invalid-config defect (retained corpus 10c2b389efa4b531). Parser correction and post-fix regression/fuzz/full-gate rerun are pending; this criterion is not verified. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestJSONAndTOMLPreserveForeignBytes",
+        "TestJSONCAndMarkerRejection"
+      ],
+      "internal/setup/regression_test.go": [
+        "TestTOMLEscapedMultilineHeadersAndUpgrade"
+      ],
+      "internal/setup/fuzz_test.go": [
+        "FuzzJSONCEntryPreservation"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S18",
     "scenario": "Invalid configuration",
     "requirement": "Preflight failure does not partially install artifacts.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Malformed config and duplicate-key preflight fixtures require no artifact/state publication. Final exact regression evidence remains pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestPreflightPureAndAllOrNothing",
+        "TestJSONCAndMarkerRejection"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S19",
     "scenario": "Links and aliases",
     "requirement": "Reject unsupported symlink/hardlink/case traversal without escaped writes.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/setup/routing_test.go",
+      "internal/setup/fuzz_test.go",
+      "internal/agentsetup/adapter_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Symlink, hardlink, case-alias and path/profile confinement fixtures are mapped. Final exact fuzz/platform run remains pending; no hostile-editor isolation guarantee follows. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestPreconditionRaceAndSymlinkHardlink"
+      ],
+      "internal/setup/routing_test.go": [
+        "TestUnsupportedManifestAndCaseCollision"
+      ],
+      "internal/setup/fuzz_test.go": [
+        "FuzzConfinedSetupPath"
+      ],
+      "internal/agentsetup/adapter_test.go": [
+        "FuzzAdapterProfilePaths"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S20",
     "scenario": "Concurrent user edit",
     "requirement": "Expected-hash conflict prevents a lost update.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/setup/routing_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Expected-hash lost-update rejection and competing-plan fixtures passed the integrated test/race stage on 8b1c5b6 (86.5 seconds). This is bounded conflict/concurrency evidence, not arbitrary-editor isolation or post-parser-fix full-gate qualification.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestPreconditionRaceAndSymlinkHardlink"
+      ],
+      "internal/setup/routing_test.go": [
+        "TestConcurrentInstallAndLockFailure"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S21",
     "scenario": "Publication failures",
     "requirement": "Every boundary returns nonzero with precise journal state and safe recovery.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/setup/routing_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Prepared/publication/commit and interrupted-recovery fixtures are mapped. Final exact run is pending; per-file publication is not globally atomic or universal power-loss proof. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestRollbackAtEveryPublicationBoundary",
+        "TestRecoveryCommittedAndExternalEdit"
+      ],
+      "internal/setup/routing_test.go": [
+        "TestRecoveryUnrecordedRenameAndInterruptedRollback"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S22",
     "scenario": "Permission, disk or lock failure",
     "requirement": "No false completion or broad permission repair.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/routing_test.go",
+      "internal/setup/regression_test.go",
+      "internal/setup/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Lock refusal, read-only destinations, private state modes and injected publication errors have fixtures. Final exact run and any broader disk-exhaustion claim remain pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/routing_test.go": [
+        "TestConcurrentInstallAndLockFailure"
+      ],
+      "internal/setup/regression_test.go": [
+        "TestReadOnlyDestinationPreflightAndPrivateState"
+      ],
+      "internal/setup/setup_test.go": [
+        "TestRollbackAtEveryPublicationBoundary"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S23",
     "scenario": "CLI to MCP transition",
     "requirement": "Explicit independent mode change leaves no contradictory rules.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "The engine checkpoint records a compiled CLI-to-MCP smoke removing unused skills. Native mixed-scope/interface transitions and final exact regression run remain pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLICreateReplayAndModePolicyInheritance"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S24",
     "scenario": "MCP to CLI transition",
     "requirement": "Preserve chosen root/policy and safely remove unused owned artifacts.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "MCP-to-CLI removal of unused config and inherited root/policy passed the earlier source fixture. Final frozen-source execution is pending; this criterion does not require every host to perform a new model session. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLICreateReplayAndModePolicyInheritance"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S25",
     "scenario": "Selective uninstall",
     "requirement": "Remaining modes/scopes/agents continue working.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go",
+      "internal/cli/setup_regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Compiled selective removal preserved the shared MCP entry and remaining configured artifacts. Final exact source checks are pending; native model-adherence qualification is separate from ownership retention. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestLifecycleSharedBorrowedAndPristine"
+      ],
+      "internal/cli/setup_regression_test.go": [
+        "TestSetupSharedMCPEntryRemovalRetainsOtherConsumer"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S26",
     "scenario": "Repeated uninstall",
     "requirement": "Safe no-op preserves collection, binary, authentication and unrelated configuration.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/cli/setup_test.go",
+      "internal/setup/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Verified byte-stable repeated uninstall in the 19 supported CLI lifecycle fixtures and executable docs; collection bytes and unrelated fixture state were preserved. Not an audit of every host credential store.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIInstallResolveCheckAndUninstall"
+      ],
+      "internal/setup/setup_test.go": [
+        "TestLifecycleSharedBorrowedAndPristine"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S27",
     "scenario": "Customized uninstall target",
     "requirement": "Preserve with actionable conflict; never recursive name-based deletion.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Modified owned regions conflict; borrowed customizations and outside edits survive uninstall in source fixtures. Final exact regression run remains pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/setup_test.go": [
+        "TestOwnedConflictAndOutsideEdit",
+        "TestBorrowedDriftAndUpgrade"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S28",
     "scenario": "Missing collection on uninstall",
     "requirement": "Remove integration using its manifest without opening the collection.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Verified by compiled Pi uninstall after moving the collection: integration removed without opening or changing the moved collection. Missing-root source regression is also mapped.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIInstallResolveCheckAndUninstall"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S29",
     "scenario": "Binary and asset upgrade",
     "requirement": "Full version-matched skill references; customization conflicts preserved.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "skills/embed_test.go",
+      "internal/cli/setup_test.go",
+      "internal/setup/setup_test.go",
+      "internal/setup/regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Complete bundled references, borrowed-version conflict and owned hook upgrade fixtures are mapped. Exact final candidate/asset checks are pending; future released-package qualification is a separate distribution concern. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "skills/embed_test.go": [
+        "TestKnowledgeBaseReferenceDocumentsResolve"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIInstallResolveCheckAndUninstall"
+      ],
+      "internal/setup/setup_test.go": [
+        "TestBorrowedDriftAndUpgrade"
+      ],
+      "internal/setup/regression_test.go": [
+        "TestOwnedHookUpgradePreservesForeignHandler"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S30",
     "scenario": "Unsupported manifest version",
     "requirement": "Actionable error without guessed destructive migration.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/routing_test.go",
+      "internal/setup/regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Unsupported manifest and operation receipt conflicts have source fixtures. Final exact execution/version-boundary evidence remains pending; no guessed migration is promised. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/routing_test.go": [
+        "TestUnsupportedManifestAndCaseCollision"
+      ],
+      "internal/setup/regression_test.go": [
+        "TestOperationReceiptReplayConflictsAndPending"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S31",
     "scenario": "Shadowing and profiles",
     "requirement": "Diagnose effective instruction files and custom profiles, including Codex overrides.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/agentsetup/adapter_test.go",
+      "internal/cli/setup_regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-native.json"
+    ],
+    "notes": "Custom profiles, nonempty fallbacks, new shadowing files and missing executables have source fixtures. Missing-host check behavior was exercised without claiming readiness. Final exact diagnosis regressions are pending; model-adherence qualification is separate. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/agentsetup/adapter_test.go": [
+        "TestProfileAndInstructionPrecedence"
+      ],
+      "internal/cli/setup_regression_test.go": [
+        "TestSetupProfileChangesAndExistingFallbackInstructions",
+        "TestSetupBareRerunChecksArtifactRootAndCommand"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S32",
     "scenario": "Fresh native agent session",
     "requirement": "Observe external-root retrieval and source citations in the actual host.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Pending integrated execution; no native activation claim."
+    "status": "verified",
+    "tests": [
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-native.json"
+    ],
+    "notes": "Verified within initial OMP project CLI and Codex project CLI/hooks-off retrieval, plus the 8b1c5b6 native Codex global/project CLI and OMP project MCP rechecks. Claude model retrieval remains login-blocked. Other host/build qualification and post-parser-fix rechecks remain separate.",
+    "test_names": {
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIInstallResolveCheckAndUninstall"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification.",
+    "observed_scopes": [
+      "OMP 18.16.0 / project / CLI / hooks required",
+      "Codex 0.166.0-alpha.5.1 / project / CLI / hooks off",
+      "Codex 0.166.0-alpha.5.1 / isolated global plus project / CLI / hooks off / 8b1c5b6",
+      "OMP 18.16.0 / project / MCP / hooks required / 8b1c5b6"
+    ],
+    "pending_scopes": [
+      "Claude successful model retrieval (login blocked)",
+      "Other native host/build/mode matrix",
+      "Post-parser-fix qualification"
+    ]
   },
   {
     "id": "S33",
     "scenario": "No-learning repeat query",
     "requirement": "Notes and log remain byte-identical.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/agentsetup/hook_test.go",
+      "internal/agentsetup/mcp_integration_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Verified for repeated native OMP CLI queries on 5b75df2 and MCP queries on 8b1c5b6: full collection file bytes remain unchanged. Codex single-query/root-precedence purity also passed; no all-host repeated-query guarantee is inferred.",
+    "test_names": {
+      "internal/agentsetup/hook_test.go": [
+        "TestHookRetrievesCitableReadOnlyContext"
+      ],
+      "internal/agentsetup/mcp_integration_test.go": [
+        "TestGeneratedMCPLaunchUsesIndependentServer"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S34",
     "scenario": "Authorized learning",
     "requirement": "Exercise provenance and expected revisions on a disposable synthetic collection.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "status": "verified",
+    "tests": [
+      "internal/write/service_test.go",
+      "internal/write/policy_test.go",
+      "scripts/check_docs.py"
+    ],
+    "evidence": [
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Verified within native OMP 18.16.0 project CLI learning on candidate 5b75df2: revision-checked patch preview/apply/readback, metadata preservation, URN provenance and byte-pure repeat retrieval. Other host/interface learning remains unqualified separately; no universal expansion of this criterion is implied.",
+    "test_names": {
+      "internal/write/service_test.go": [
+        "TestCASMultiNoteConflictAndConcurrentWriters"
+      ],
+      "internal/write/policy_test.go": [
+        "TestMoveRewritesResolvedLinksProvenanceAndBasisPreservingAnchors"
+      ],
+      "scripts/check_docs.py": [
+        "exercise"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification.",
+    "observed_scopes": [
+      "OMP 18.16.0 / project / CLI / hooks required / learning on"
+    ],
+    "pending_scopes": [
+      "Other native host/interface learning matrix",
+      "Final integrated quality and frozen-source recheck"
+    ]
   },
   {
     "id": "S35",
     "scenario": "Read-only integration",
     "requirement": "Configured path prevents writes; no OS-isolation claim.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/write/policy_test.go",
+      "internal/agentsetup/mcp_integration_test.go",
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Generated MCP read-only tools/direct-core no-write fixtures passed scoped tests; native OMP MCP status/search/read used only deferred MCP dispatch with no model shell/filesystem calls and preserved collection bytes. Local read-only paths are not an OS sandbox; post-parser-fix source qualification remains pending. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/write/policy_test.go": [
+        "TestReadOnlyCancellationAndPendingDryRun"
+      ],
+      "internal/agentsetup/mcp_integration_test.go": [
+        "TestGeneratedMCPLaunchUsesIndependentServer"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIHookNativeOutputAndReadOnlyPolicy"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S36",
     "scenario": "Offline setup",
     "requirement": "Bundled assets install without network, account or runtime downloads.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "skills/embed_test.go",
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Version-matched bundled skill/reference installation has source fixtures and real CLI smoke; setup has no account/runtime download path. Final exact source checks remain pending. Native host qualification is separate from offline asset installation. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "skills/embed_test.go": [
+        "TestKnowledgeBaseReferenceDocumentsResolve"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIInstallResolveCheckAndUninstall"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S37",
     "scenario": "Portable team configuration",
     "requirement": "No personal path/secret publication; test any supported relative anchors.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/routing_test.go",
+      "internal/agentsetup/adapter_test.go",
+      "internal/cli/setup_regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Relative project binding, second-user resolution and no personal paths have source fixtures. Final exact portable regressions are pending. Portable MCP/global are explicitly unsupported; this criterion does not require every native host/team session. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/routing_test.go": [
+        "TestRoutingBoundaryWorktreeAndPortable"
+      ],
+      "internal/agentsetup/adapter_test.go": [
+        "TestPortableCLIArtifactsContainNoPersonalPaths"
+      ],
+      "internal/cli/setup_regression_test.go": [
+        "TestSetupPortableAndTildeCreation"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S38",
     "scenario": "Worktrees and nested repositories",
     "requirement": "Respect repository boundaries and select the correct binding.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/routing_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Synthetic nested-repository/copied-worktree boundaries and anchored portable resolution have source fixtures. Final exact routing run remains pending; no additional native multi-worktree session requirement is imposed. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/routing_test.go": [
+        "TestRoutingBoundaryWorktreeAndPortable"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S39",
     "scenario": "Pending or disabled hook trust",
     "requirement": "Explicit pending/fallback status without bypass or false activation.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/agentsetup/adapter_test.go",
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Pending activation and unsupported required-hook diagnostics have source coverage. Named native runs do not cover disabled/trust-pending settings on every host; no trust or auth bypass was performed. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/agentsetup/adapter_test.go": [
+        "TestHookRegistrationUsesHostEventAndUnits",
+        "TestRejectedRequestsProduceNoPartialIntents"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIInstallResolveCheckAndUninstall"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S40",
     "scenario": "Native hook delivery",
     "requirement": "Observe valid bounded JSON/context delivery for actual prompt/session events.",
-    "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Pending integrated execution; no native activation claim."
+    "status": "verified",
+    "tests": [
+      "internal/agentsetup/hook_test.go",
+      "internal/cli/setup_test.go",
+      "internal/cli/setup_regression_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-native.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Verified for native OMP session/prompt context delivery in CLI on 5b75df2 and MCP on 8b1c5b6. Claude session/prompt commands exited 0 but its model answer was login-blocked. The corrected OMP MCP observer recognizes deferred MCP dispatch, not filesystem writes; other native hosts remain separately unqualified.",
+    "test_names": {
+      "internal/agentsetup/hook_test.go": [
+        "TestHookHostProtocols",
+        "TestMCPHookRetrievesWithoutCLIContinuation"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIHookNativeOutputAndReadOnlyPolicy"
+      ],
+      "internal/cli/setup_regression_test.go": [
+        "TestSetupHookMCPUsesNativeContextWithoutSkill"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification.",
+    "observed_scopes": [
+      "OMP 18.16.0 native session reminder and per-prompt contexts",
+      "Claude 2.1.212 native SessionStart/UserPromptSubmit command responses exit 0; model reply blocked",
+      "OMP 18.16.0 / project / MCP / hooks required / 8b1c5b6"
+    ],
+    "pending_scopes": [
+      "Other native host/mode matrix (separate from observed criterion)",
+      "Post-parser-fix qualification"
+    ]
   },
   {
     "id": "S41",
     "scenario": "Hook timeout, no result or failure",
     "requirement": "Bounded documented behavior without indefinite blocking.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/agentsetup/hook_test.go",
+      "internal/cli/setup_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Bounded input/output, no-hit, invalid input and cooperative cancellation have source fixtures. Native timeout/kill/failure behavior across hosts remains pending; no hard realtime SLA is claimed. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/agentsetup/hook_test.go": [
+        "TestHookEmptyFailureAndCancellation",
+        "TestHookRejectsAmbiguousAndUnboundedInput"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIHookNativeOutputAndReadOnlyPolicy"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S42",
     "scenario": "Compaction, resume and concurrency",
     "requirement": "No stale routing or unsafe exactly-once assumption.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/agentsetup/hook_test.go",
+      "internal/setup/routing_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-native.json"
+    ],
+    "notes": "Concurrent read-only source coverage and settled native OMP teardown exist. Compaction/resume routing and exactly-once behavior are not qualified; no exactly-once guarantee is made. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/agentsetup/hook_test.go": [
+        "TestConcurrentHookConsultationDoesNotWriteNotes"
+      ],
+      "internal/setup/routing_test.go": [
+        "TestRoutingBoundaryWorktreeAndPortable"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S43",
     "scenario": "Mixed global/project hooks",
     "requirement": "One effective root with bounded duplicates or qualified deduplication.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/setup/routing_test.go",
+      "internal/agentsetup/adapter_test.go"
+    ],
+    "evidence": [
+      "docs/evidence/setup-source-tests.json",
+      "docs/evidence/setup-native.json"
+    ],
+    "notes": "Scope/host policy guards and resolver routing are source-mapped. Actual mixed global/project hooks and CLI/MCP precedence have not been exercised in native sessions. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/setup/routing_test.go": [
+        "TestRoutingBoundaryWorktreeAndPortable"
+      ],
+      "internal/agentsetup/adapter_test.go": [
+        "TestSharedInstructionsKeepDistinctHostOwners"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   },
   {
     "id": "S44",
     "scenario": "Unknown agent/version/platform",
     "requirement": "Explicit unsupported diagnostic; no silent scope promotion.",
     "status": "in_progress",
-    "tests": [],
-    "evidence": [],
-    "notes": "Acceptance requirement; execution evidence not yet recorded."
+    "tests": [
+      "internal/agentsetup/adapter_test.go",
+      "internal/cli/setup_test.go",
+      "scripts/test_docs.py"
+    ],
+    "evidence": [
+      "docs/evidence/setup-lifecycle.json",
+      "docs/evidence/setup-cli-docs.json",
+      "docs/evidence/setup-source-tests.json"
+    ],
+    "notes": "Cursor global and invalid vscode ID were explicitly rejected before mutation; missing native hosts are explicitly nonready. Unknown native versions/platforms and every harness build are not qualified by descriptors or cross-builds. Post-parser-fix integrated qualification is pending.",
+    "test_names": {
+      "internal/agentsetup/adapter_test.go": [
+        "TestRejectedRequestsProduceNoPartialIntents"
+      ],
+      "internal/cli/setup_test.go": [
+        "TestSetupCLIPureDryRunAndValidation"
+      ],
+      "scripts/test_docs.py": [
+        "SetupDocumentationTests.test_missing_host_must_have_the_exact_nonzero_inspection_status"
+      ]
+    },
+    "verification_scope": "Bounded intermediate candidate observations only; no final integrated gate or universal host qualification."
   }
 ]
