@@ -119,6 +119,64 @@
       "exit_code": 1,
       "collection_byte_pure": true,
       "limitation": "Native hook events executed successfully, but model answer blocked by missing Claude login. No successful model retrieval claimed."
+    },
+    {
+      "agent": "omp",
+      "version": "omp/18.16.0",
+      "mode": "cli",
+      "hooks": "required",
+      "learning": "on",
+      "scope": "project",
+      "status": "passed",
+      "method": "Fresh native OMP RPC session updates existing synthetic note using revision-checked CLI preview/apply/readback, preserves metadata and adds explicit source provenance, then repeats read-only retrieval.",
+      "assertions": [
+        {
+          "name": "selected-model",
+          "passed": true
+        },
+        {
+          "name": "turn-1-completed",
+          "passed": true
+        },
+        {
+          "name": "turn-1-facts",
+          "passed": true
+        },
+        {
+          "name": "authorized-note-update",
+          "passed": true
+        },
+        {
+          "name": "authorized-write-observed",
+          "passed": true
+        },
+        {
+          "name": "turn-2-completed",
+          "passed": true
+        },
+        {
+          "name": "turn-2-facts",
+          "passed": true
+        },
+        {
+          "name": "repeat-query-byte-pure",
+          "passed": true
+        },
+        {
+          "name": "native-context-delivered",
+          "passed": true
+        },
+        {
+          "name": "revision-checked-cli-patch-observed",
+          "passed": true
+        },
+        {
+          "name": "native-settled",
+          "passed": true
+        }
+      ],
+      "teardown_confirmed": true,
+      "survivor_count": 0
     }
   ],
   "limits": [
