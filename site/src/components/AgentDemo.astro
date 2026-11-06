@@ -1,0 +1,397 @@
+---
+import { agentSessions } from './agent-sessions';
+const exampleCount = agentSessions.length;
+
+function typedWords(text: string, interval: number) {
+  let elapsed = 0;
+  return text.split(' ').map(word => {
+    const duration = word.length * interval;
+    const style = `--type-delay: ${elapsed}ms; --type-duration: ${duration}ms; --characters: ${word.length}`;
+    elapsed += duration + interval;
+    return { word, style };
+  });
+}
+---
+<section class="agent-demo" aria-label="KB terminal">
+  <header class="terminal-bezel">
+    <span class="power-light" aria-hidden="true"></span>
+    <h2>KB</h2>
+  </header>
+
+  <div class="terminal-display">
+    <div class="terminal-status">
+      <span>~/knowledge-base</span>
+      <span>Session <span data-example-number>01</span> / {String(exampleCount).padStart(2, '0')}</span>
+    </div>
+    <div class="terminal-transcript" role="region" aria-label="Session transcript" tabindex="0">
+      {agentSessions.map((session, index) => (
+          <article data-story data-title={session.title} hidden={index !== 0}>
+            <p class="terminal-line terminal-prompt">
+              <span class="prompt-mark" aria-hidden="true">›</span>
+              <span>{typedWords(session.prompt, 12).map(({ word, style }) => <><span class="terminal-word" style={style}>{word}</span>{' '}</>)}</span>
+            </p>
+
+            {session.steps.map(step => (
+              <div class="demo-stage" data-duration={step.duration}>
+                {step.command ? (
+                  <>
+                    <p class="terminal-line">
+                      <span class="line-mark" aria-hidden="true">•</span>
+                      <span><span class="command-label">Ran</span> <code>{step.command}</code></span>
+                    </p>
+                    <div class="terminal-line tool-output">
+                      <span class="line-mark" aria-hidden="true">└</span>
+                      <div>
+                        <p>{step.heading}</p>
+                        {step.path && <p class="output-path"><code>{step.path}</code></p>}
+                        {step.revision && <p><code>revision: {step.revision}</code></p>}
+                        {step.text && <p class="tool-excerpt">{step.text}</p>}
+                        {step.diff && <div class="terminal-diff">
+                          <p><span>− </span>{step.diff[0]}</p>
+                          <p><span>+ </span>{step.diff[1]}</p>
+                        </div>}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div class:list={['terminal-line', step.label === 'Reply' ? 'terminal-reply' : 'terminal-plan']}>
+                    <span class="line-mark" aria-hidden="true">•</span>
+                    <div>
+                      <p>{step.label === 'Reply' && step.text
+                        ? typedWords(step.text, 8).map(({ word, style }) => <><span class="terminal-word" style={style}>{word}</span>{' '}</>)
+                        : step.text}</p>
+                      {step.path && <p class="source-line">Source <code>{step.path}</code></p>}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+            <p class="terminal-line terminal-idle" aria-hidden="true"><span>›</span><span class="block-cursor"></span></p>
+          </article>
+      ))}
+    </div>
+    <div class="terminal-mode" aria-hidden="true"><span>CLI + skill</span><span class="terminal-activity">Working<span>…</span></span></div>
+  </div>
+
+  <footer class="demo-controls">
+    <span class="terminal-vents" aria-hidden="true"></span>
+    <div data-enhanced>
+      <button type="button" data-pause data-motion>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path class="pause-icon" d="M6 4v8m4-8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path class="play-icon" d="m6 4 6 4-6 4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <span>Pause</span>
+      </button>
+      <button type="button" data-replay data-motion>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 7a5 5 0 1 1 1.3 4.5M3 3.5V7h3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Replay
+      </button>
+      <button type="button" data-next aria-label="Next example">
+        Next
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <p class="demo-announcement" role="status"></p>
+  </footer>
+</section>
+
+<script>
+  function initDemo(demo: HTMLElement) {
+    const screen = demo.querySelector<HTMLElement>('.terminal-transcript')!;
+    const stories = [...demo.querySelectorAll<HTMLElement>('[data-story]')].map(element => ({
+      element,
+      title: element.dataset.title!,
+      stages: [...element.querySelectorAll<HTMLElement>('[data-duration]')],
+    }));
+    const number = demo.querySelector('[data-example-number]')!;
+    const pause = demo.querySelector<HTMLButtonElement>('[data-pause]')!;
+    const pauseLabel = pause.querySelector('span')!;
+    const announcement = demo.querySelector('[role=status]')!;
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const storageKey = 'kb-agent-demo-example';
+
+    let previous = -1;
+    try {
+      previous = Number(sessionStorage.getItem(storageKey) ?? -1);
+    } catch {
+      // The demo also works when storage is blocked.
+    }
+    const choices = stories.map((_, index) => index).filter(index => index !== previous);
+    const initial = choices[Math.floor(Math.random() * choices.length)];
+    try {
+      sessionStorage.setItem(storageKey, String(initial));
+    } catch {
+      // A reload can select the same example without session storage.
+    }
+
+    let story = 0;
+    let phase = stories[0].stages.length - 1;
+    let paused = false;
+    let visible = false;
+    let timer: number | undefined;
+    let started = 0;
+    let remaining = 0;
+
+    function stopClock() {
+      if (timer === undefined) return;
+      window.clearTimeout(timer);
+      timer = undefined;
+      remaining = Math.max(0, remaining - (performance.now() - started));
+    }
+
+    function updatePlayback() {
+      const playing = !paused && !motion.matches && visible && !document.hidden;
+      demo.toggleAttribute('data-playing', playing);
+      demo.toggleAttribute('data-paused', paused);
+      demo.toggleAttribute('data-reduced', motion.matches);
+      pauseLabel.textContent = paused ? 'Play' : 'Pause';
+      if (!playing) {
+        stopClock();
+      } else if (timer === undefined) {
+        started = performance.now();
+        timer = window.setTimeout(() => {
+          timer = undefined;
+          if (phase < stories[story].stages.length - 1) show(story, phase + 1);
+          else show((story + 1) % stories.length, 0);
+        }, remaining);
+      }
+    }
+
+    function show(index: number, step: number, scrollToStart = false) {
+      stopClock();
+      const old = stories[story];
+      old.stages[phase].removeAttribute('data-current');
+
+      if (story !== index) {
+        old.element.hidden = true;
+      }
+      story = index;
+      phase = step;
+      const current = stories[story];
+      current.element.hidden = false;
+      current.element.toggleAttribute('data-intro', phase === 0);
+      current.stages.forEach((stage, i) => { stage.hidden = i > phase; });
+      current.stages[phase].setAttribute('data-current', '');
+      demo.toggleAttribute('data-working', phase < current.stages.length - 1);
+      screen.scrollTop = scrollToStart || phase === 0 ? 0 : screen.scrollHeight;
+      number.textContent = String(story + 1).padStart(2, '0');
+      remaining = Number(current.stages[phase].dataset.duration);
+      updatePlayback();
+    }
+
+    function showExample(index: number) {
+      const staticView = motion.matches || paused;
+      show(index, staticView ? stories[index].stages.length - 1 : 0, true);
+    }
+
+    pause.addEventListener('click', () => {
+      paused = !paused;
+      updatePlayback();
+    });
+    demo.querySelector('[data-replay]')!.addEventListener('click', () => {
+      paused = false;
+      show(story, 0);
+      for (const animation of stories[story].element.getAnimations({ subtree: true })) {
+        animation.currentTime = 0;
+      }
+    });
+    demo.querySelector('[data-next]')!.addEventListener('click', () => {
+      showExample((story + 1) % stories.length);
+      announcement.textContent = stories[story].title;
+    });
+    function pauseForReading() {
+      if (motion.matches) return;
+      paused = true;
+      updatePlayback();
+    }
+
+    screen.addEventListener('focus', pauseForReading);
+    for (const event of ['wheel', 'touchstart']) {
+      screen.addEventListener(event, () => {
+        if (screen.scrollHeight > screen.clientHeight) pauseForReading();
+      }, { passive: true });
+    }
+    motion.addEventListener('change', () => showExample(story));
+    document.addEventListener('visibilitychange', updatePlayback);
+    new IntersectionObserver(([entry]) => {
+      visible = entry.intersectionRatio >= 0.3;
+      updatePlayback();
+    }, { threshold: 0.3 }).observe(demo);
+
+    demo.setAttribute('data-ready', '');
+    showExample(initial);
+  }
+
+  const demo = document.querySelector<HTMLElement>('.agent-demo');
+  if (demo) initDemo(demo);
+</script>
+
+<style>
+  .agent-demo {
+    --bezel: #182c3f;
+    --screen: #050e17;
+    --screen-text: #dceafb;
+    --screen-muted: #97abc2;
+    --screen-rule: #253b51;
+    min-width: 0;
+    padding: 0 14px;
+    border: 1px solid #39516a;
+    border-radius: 19px;
+    background: linear-gradient(155deg, #253d54, var(--bezel) 34%, #0d1d2e);
+    box-shadow: inset 0 1px #ffffff1f, inset 0 -3px #02070e80, 0 24px 55px #0007;
+    font-family: var(--font-code);
+  }
+  .terminal-bezel, .demo-controls {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding-inline: 3px;
+  }
+  .terminal-bezel { min-height: 47px; }
+  .terminal-bezel h2 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    text-wrap: initial;
+  }
+  .power-light {
+    width: 7px;
+    height: 7px;
+    margin-right: 2px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px #a8c7ff70;
+  }
+  .terminal-display {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    block-size: clamp(22rem, 31vw, 26rem);
+    border: 2px solid #040b12;
+    border-radius: 10px;
+    background: var(--screen);
+    box-shadow: 0 1px #ffffff26, 0 -1px #0008, inset 0 0 32px #0005;
+    color: var(--screen-text);
+    font-size: clamp(12px, 1.05vw, 14px);
+    line-height: 1.58;
+  }
+  .terminal-status, .terminal-mode {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 6px 12px;
+    color: var(--screen-muted);
+    font-size: 10px;
+  }
+  .terminal-status {
+    border-bottom: 1px solid var(--screen-rule);
+    border-radius: 8px 8px 0 0;
+    background: #0d1e2e;
+  }
+  .terminal-status > span:first-child { color: var(--accent); }
+  .terminal-mode {
+    min-height: 29px;
+    border-top: 1px solid var(--screen-rule);
+  }
+  .terminal-activity { display: none; color: var(--accent); }
+  [data-playing][data-working] .terminal-activity { display: inline; }
+  .terminal-transcript {
+    overflow: auto;
+    overflow-anchor: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--screen-rule) transparent;
+    padding: 13px 12px;
+    overflow-wrap: anywhere;
+  }
+  .terminal-transcript:focus-visible { outline-offset: -3px; }
+  .terminal-line {
+    display: grid;
+    grid-template-columns: 1ch minmax(0, 1fr);
+    gap: 1ch;
+    color: inherit;
+  }
+  .terminal-prompt { font-weight: 500; }
+  .prompt-mark, .terminal-idle { color: var(--accent); }
+  .line-mark, .command-label { color: var(--screen-muted); }
+  .demo-stage { margin-top: 11px; }
+  .demo-stage code { color: inherit; }
+  .terminal-plan { color: var(--screen-muted); }
+  .tool-output {
+    margin: 2px 0 0 2ch;
+    color: var(--screen-muted);
+  }
+  .tool-output p, .terminal-reply p { color: inherit; }
+  .tool-output .output-path, .terminal-reply .source-line { color: var(--accent); }
+  .tool-excerpt { margin-top: 2px; }
+  .terminal-diff { margin-top: 3px; }
+  .terminal-diff p { padding-inline: 4px; color: #ffc0bf; background: #302029; }
+  .terminal-diff p:last-child { color: #b3e5ce; background: #122a27; }
+  .source-line { margin-top: 5px; }
+  .terminal-idle { align-items: center; margin-top: 13px; }
+  [data-working] .terminal-idle { display: none; }
+  .block-cursor { width: .6em; height: 1em; background: var(--accent); }
+  .demo-controls { min-height: 57px; justify-content: space-between; }
+  .terminal-vents {
+    width: 43px;
+    height: 10px;
+    flex: 0 0 auto;
+    background: repeating-linear-gradient(90deg, #081523 0 3px, #293e53 3px 4px, transparent 4px 7px);
+  }
+  .demo-controls > div { display: flex; gap: 5px; }
+  .demo-controls button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 44px;
+    padding-inline: 8px;
+    border: 1px solid #3d5670;
+    border-radius: 6px;
+    background: linear-gradient(#23384e, #122337);
+    box-shadow: inset 0 1px #ffffff12, inset 0 -2px #0005;
+    color: var(--screen-text);
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .demo-controls button:hover { border-color: var(--accent); }
+  .demo-controls button:active { box-shadow: inset 0 1px 4px #000b; }
+  .demo-controls button:focus-visible { outline-offset: 2px; }
+  .demo-controls [data-next] { color: var(--accent); }
+  .demo-announcement { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .agent-demo:not([data-ready]) [data-enhanced], [data-reduced] [data-motion] { display: none; }
+  .play-icon, [data-paused] .pause-icon { display: none; }
+  [data-paused] .play-icon { display: initial; }
+
+  @media (max-width: 760px) {
+    .agent-demo { padding-inline: 10px; }
+    .terminal-display { block-size: 22rem; }
+    .demo-controls button { padding-inline: 6px; }
+  }
+  @media (max-width: 355px) {
+    .terminal-vents { width: 29px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-ready] { --play-state: paused; }
+    [data-playing] { --play-state: running; }
+    [data-ready]:not([data-paused]) :is([data-intro] .terminal-prompt, [data-current] .terminal-reply) .terminal-word {
+      display: inline-block;
+      animation: type-word var(--type-duration) steps(var(--characters)) var(--type-delay) both var(--play-state);
+    }
+    [data-ready]:not([data-paused]) [data-intro] .terminal-plan {
+      animation: print-line .22s 1.35s both var(--play-state);
+    }
+    [data-ready]:not([data-paused]) [data-current] .tool-output {
+      animation: print-line .2s .65s both var(--play-state);
+    }
+    [data-ready]:not([data-paused]) [data-current] .source-line {
+      animation: print-line .3s 1.45s both var(--play-state);
+    }
+    [data-playing] .terminal-activity span { animation: pulse .85s infinite alternate; }
+  }
+  @keyframes type-word { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+  @keyframes print-line { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse { from { opacity: .45; } to { opacity: 1; } }
+</style>
