@@ -134,6 +134,14 @@ its documented `additionalContext` shape. Pi/OMP wrappers consume `{ "context":
 "..." }`, then deliver native custom messages. No `kb.v1` CLI envelope or
 progress text appears on hook stdout.
 
+The dispatcher must pass the effective binding's interface to `HookContextMode`.
+Both CLI and MCP hooks perform the same bounded direct-core retrieval; MCP mode
+is not reminder-only. Mode changes only the continuation guidance: MCP directs
+the model exclusively to the configured `knowledge-base` server tools and
+their self-contained guidance, without shell commands, CLI flags, a resolver
+invocation, or a CLI skill. The unchanged `HookContext` convenience API selects
+CLI guidance for callers that already operate in CLI mode.
+
 The Pi/OMP wrapper subscribes to `session_start` and `before_agent_start`;
 OMP revival and Pi custom-message turns are not submitted user prompts. It
 launches the selected KB executable with an argv array and JSON stdin, never a
