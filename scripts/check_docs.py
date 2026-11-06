@@ -3,7 +3,9 @@
 import argparse
 import copy
 import json
+import os
 from pathlib import Path
+import stat
 import re
 import shlex
 import subprocess
@@ -132,11 +134,87 @@ def exercise(binary, docs=ROOT):
     return count
 
 
+def exercise_setup(binary, docs=ROOT):
+    """Execute the documented candidate lifecycle in an isolated synthetic home."""
+    binary = Path(binary).resolve()
+    docs = Path(docs)
+    cases = json.loads((docs / "docs/setup-acceptance.json").read_text())
+    if [case["id"] for case in cases] != [f"S{number:02}" for number in range(1, 45)]:
+        raise AssertionError("Setup acceptance must track S01–S44 exactly once in order")
+    with tempfile.TemporaryDirectory(prefix="kb-setup-docs-") as directory:
+        workspace = Path(directory)
+        home = workspace / "home"
+        home.mkdir()
+        project = workspace / "example-project"
+        project.mkdir()
+        root = workspace / "existing-knowledge"
+        environment = dict(os.environ, HOME=str(home), XDG_CONFIG_HOME=str(home / ".config"))
+        environment.pop("KB_ROOT", None)
+        for name in ("CODEX_HOME", "CLAUDE_CONFIG_DIR", "PI_CODING_AGENT_DIR", "OMP_CODING_AGENT_DIR"):
+            environment.pop(name, None)
+        count = 0
+
+        def run(arguments):
+            nonlocal count
+            result = subprocess.run([str(binary), *arguments], cwd=workspace,
+                                    env=environment, capture_output=True, text=True, check=False)
+            if result.returncode:
+                raise AssertionError(f"Documented setup {arguments}: {result.stdout} {result.stderr}")
+            envelope = json.loads(result.stdout)
+            if envelope.get("schema_version") != "kb.v1" or not envelope.get("ok"):
+                raise AssertionError(f"Documented setup returned an invalid envelope: {arguments}")
+            count += 1
+            return envelope["data"]
+
+        run(["--root", str(root), "init", "--para"])
+        before_notes = {path.relative_to(root): path.read_bytes() for path in root.rglob("*") if path.is_file()}
+        commands = []
+        for block in re.findall(r"^```sh\n(.*?)^```", (docs / "docs/cli.md").read_text(), re.M | re.S):
+            for line in block.splitlines():
+                args = shlex.split(line)
+                if "setup" in args and len(args) > 2:
+                    commands.append(args[1:])
+        if not commands:
+            raise AssertionError("CLI guide has no executable setup lifecycle")
+        def snapshot():
+            entries = {}
+            for path in workspace.rglob("*"):
+                mode = stat.S_IMODE(path.lstat().st_mode)
+                if path.is_symlink():
+                    value = ("symlink", mode, os.readlink(path))
+                elif path.is_dir():
+                    value = ("directory", mode)
+                else:
+                    value = ("file", mode, path.read_bytes())
+                entries[path.relative_to(workspace)] = value
+            return entries
+        for args in commands:
+            args = [str(root) if arg == "./existing-knowledge" else
+                    str(project) if arg == "./example-project" else arg for arg in args]
+            before = snapshot()
+            run(args)
+            if ("--dry-run" in args or "check" in args or "resolve" in args) and snapshot() != before:
+                raise AssertionError("Documented read-only setup operation changed filesystem state")
+            if ("install" in args or "uninstall" in args) and "--yes" in args:
+                installed = snapshot()
+                run(args)
+                if snapshot() != installed:
+                    raise AssertionError("Documented repeated setup operation was not a byte-pure no-op")
+        if before_notes != {path.relative_to(root): path.read_bytes() for path in root.rglob("*") if path.is_file()}:
+            raise AssertionError("Documented setup lifecycle changed the existing collection")
+    print(f"Setup documentation workflow passed: {count} real CLI requests; no native activation claim.")
+    return count
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", required=True, type=Path)
+    parser.add_argument("--setup", action="store_true",
+                        help="Also require the source-candidate setup lifecycle in a disposable home")
     args = parser.parse_args()
     exercise(args.binary)
+    if args.setup:
+        exercise_setup(args.binary)
 
 
 if __name__ == "__main__":

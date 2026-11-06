@@ -1,6 +1,6 @@
 # Landing surface
 
-Mode: Persuade. Audience: humans and agent operators evaluating a local Markdown knowledge base. Primary action: install the CLI plus skill. Direction is pinned by the approved Midnight blue brief; no randomized direction round.
+Mode: Persuade. Audience: humans and agent operators evaluating a local Markdown knowledge base. Primary action: install the CLI, then run explicit setup with a capable build. Source-candidate availability is visible; published v1.0.0 must not be presented as supporting setup. Direction is pinned by the approved Midnight blue brief; no randomized direction round.
 
 ## Direction contract
 

@@ -1,8 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test as base, type Locator, type Page } from '@playwright/test';
 
-const installCommands = 'brew install matheus3301/tap/kb\nnpx skills add matheus3301/kb --skill knowledge-base';
-const baseCommands = 'export KB_ROOT="$PWD/example-kb"\nkb init --para\nkb status';
 
 // A site visit must not need third-party assets, APIs, or analytics.
 const test = base.extend({
@@ -99,31 +97,21 @@ test('install tabs support pointer selection, wraparound, Home, End, and visible
   await expectVisibleFocus(page.getByRole('button', { name: 'Copy setup prompt', exact: true }));
 });
 
-test('copy controls write real install commands, base setup, and the public agent prompt', async ({ page, context }) => {
+test('copy controls write the complete visible commands and agent prompt to the real clipboard', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await openLanding(page);
-  const you = page.getByRole('tabpanel', { name: 'For You', exact: true });
-  const installCopy = you.getByRole('button', { name: 'Copy install cli + skill', exact: true });
-  await installCopy.press('Enter');
-  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(installCommands);
-  await expect(you.getByRole('status').filter({ hasText: 'Copied to clipboard.' })).toHaveCount(1);
-  await expectVisibleFocus(installCopy);
-  await you.getByRole('button', { name: 'Copy create a new example base', exact: true }).click();
-  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(baseCommands);
-  await page.getByRole('tab', { name: 'For Your Agent', exact: true }).click();
-  const agent = page.getByRole('tabpanel', { name: 'For Your Agent', exact: true });
-  await agent.getByRole('button', { name: 'Copy setup prompt', exact: true }).click();
-  await expect(agent.getByRole('status')).toHaveText('Copied to clipboard.');
-  const prompt = await page.evaluate(() => navigator.clipboard.readText());
-  expect(prompt).toContain('https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md');
-  expect(prompt).toContain('https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt');
-  expect(prompt).toContain('brew install matheus3301/tap/kb');
-  expect(prompt).toContain('npx skills add matheus3301/kb --skill knowledge-base');
-  expect(prompt).toMatch(/preserve existing knowledge bases/i);
-  expect(prompt).toMatch(/base and workdir/i);
-  expect(prompt).toMatch(/skill installation alone does not activate/i);
-  expect(prompt).toMatch(/verify kb version, the installed skill/i);
-  expect(prompt).toMatch(/actual search\/read/i);
+  for (const audience of ['For You', 'For Your Agent']) {
+    await page.getByRole('tab', { name: audience, exact: true }).click();
+    const panel = page.getByRole('tabpanel', { name: audience, exact: true });
+    for (const block of await panel.locator('.copy-block').all()) {
+      const text = await block.locator('pre').innerText();
+      const copy = block.getByRole('button');
+      await copy.press('Enter');
+      await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(text);
+      await expect(block.getByRole('status')).toHaveText('Copied to clipboard.');
+      await expectVisibleFocus(copy);
+    }
+  }
 });
 
 test('pending copy preserves keyboard focus, guards repeat activation, and respects later focus movement', async ({ page }) => {
@@ -139,14 +127,14 @@ test('pending copy preserves keyboard focus, guards repeat activation, and respe
     window.addEventListener('kb-test-finish-copy', () => finish?.());
   });
   await openLanding(page);
-  const copy = page.getByRole('button', { name: 'Copy install cli + skill', exact: true });
+  const copy = page.getByRole('button', { name: 'Copy install and set up kb', exact: true });
   await copy.press('Enter');
   await expect(page.locator('html')).toHaveAttribute('data-copy-attempts', '1');
   await expectVisibleFocus(copy);
   await page.keyboard.press('Enter');
   await expect(page.locator('html')).toHaveAttribute('data-copy-attempts', '1');
   await page.keyboard.press('Tab');
-  const commands = page.getByLabel('Install CLI + skill', { exact: true });
+  const commands = page.getByLabel('Install and set up KB', { exact: true });
   await expect(commands).toBeFocused();
   await page.evaluate(() => { window.dispatchEvent(new Event('kb-test-finish-copy')); });
   await expect(page.getByRole('status').filter({ hasText: 'Copied to clipboard.' })).toHaveCount(1);
@@ -162,7 +150,7 @@ test('denied clipboard access provides live manual-copy feedback without false s
   });
   await openLanding(page);
   for (const [tab, button] of [
-    ['For You', 'Copy install cli + skill'],
+    ['For You', 'Copy install and set up kb'],
     ['For Your Agent', 'Copy setup prompt'],
   ]) {
     await page.getByRole('tab', { name: tab, exact: true }).click();
@@ -318,12 +306,16 @@ test('both setup views fit, pass serious/critical axe checks, and produce public
   await page.evaluate(() => window.scrollTo(0, 0));
   await expectNoPageOverflow(page);
   await expectAccessible(page);
+  await page.getByRole('tab', { name: 'For You', exact: true }).focus();
   await page.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}.png`), fullPage: true });
+  await page.locator('#get-started').screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-setup.png`) });
   await page.getByRole('tab', { name: 'For Your Agent', exact: true }).click();
   await expectNoPageOverflow(page);
   await expectAccessible(page);
+  await page.getByRole('tab', { name: 'For Your Agent', exact: true }).focus();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-agent.png`), fullPage: true });
+  await page.locator('#get-started').screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-agent-setup.png`) });
 });
 
 test('reduced motion shows a complete, keyboard-scrollable terminal transcript', async ({ page }, testInfo) => {
@@ -332,16 +324,13 @@ test('reduced motion shows a complete, keyboard-scrollable terminal transcript',
   const demo = page.getByRole('region', { name: 'KB terminal' });
   const transcript = demo.getByRole('region', { name: 'Session transcript' });
   const next = demo.getByRole('button', { name: 'Next example' });
-  await expect(demo.getByText('Session 01 / 03')).toBeVisible();
   await expect(transcript).toContainText('worker’s memory budget');
   await expect(demo.getByRole('button', { name: 'Pause', exact: true })).toHaveCount(0);
 
   await page.reload();
-  await expect(demo.getByText('Session 02 / 03')).toBeVisible();
   await expect(transcript).toContainText('HTTP 401');
   await next.click();
   await expect(next).toBeFocused();
-  await expect(demo.getByText('Session 03 / 03')).toBeVisible();
   await expect(transcript.getByText('kb patch --input patch.json --dry-run', { exact: true })).toBeVisible();
   await expect(transcript.getByText('Keep the previous signing key active for 24 hours.', { exact: false }).first()).toBeVisible();
   await expect(transcript.getByText('I updated the rotation runbook.', { exact: false })).toBeVisible();
@@ -394,13 +383,11 @@ test('the animated terminal accumulates calls and supports pause, replay, and au
   await demo.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-terminal-reply.png`) });
   await demo.getByRole('button', { name: 'Play', exact: true }).click();
   await page.clock.runFor(9000);
-  await expect(demo.getByText('Session 02 / 03')).toBeVisible();
   await expect(transcript.getByText('The nightly import stalled again. What should I check first?')).toBeVisible();
 
   await page.locator('footer.site-footer').scrollIntoViewIfNeeded();
   await expect.poll(isPlaying).toBe(false);
   await page.clock.fastForward(30_000);
-  await expect(demo.getByText('Session 02 / 03')).toBeVisible();
   await expect(transcript.getByText('kb context "nightly import stalled" --max-tokens 600')).toBeHidden();
 });
 

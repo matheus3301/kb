@@ -1,0 +1,398 @@
+[
+  {
+    "id": "S01",
+    "scenario": "Existing executable, bare setup",
+    "requirement": "Short wizard installs a usable integration without manual file editing or Node.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S02",
+    "scenario": "Existing collection outside project",
+    "requirement": "The chosen canonical root is used and collection bytes remain unchanged.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S03",
+    "scenario": "Explicit new collection",
+    "requirement": "Only the selected new root is initialized; PARA is optional.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S04",
+    "scenario": "Invalid or uninitialized existing collection",
+    "requirement": "Diagnose without migration, repair or creating another base.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S05",
+    "scenario": "Project installation",
+    "requirement": "Only the selected activation scope and disclosed bookkeeping change.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S06",
+    "scenario": "Global installation",
+    "requirement": "Only selected user agents are configured; unrelated files remain unchanged.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S07",
+    "scenario": "Project override",
+    "requirement": "One effective root/interface overrides the global default; verify in a native session.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Pending integrated execution; no native activation claim."
+  },
+  {
+    "id": "S08",
+    "scenario": "No binding or disabled binding",
+    "requirement": "Deterministic diagnostic or no-op without guessing collections.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S09",
+    "scenario": "Shared artifacts",
+    "requirement": "Track consumers and preserve shared assets when removing one integration.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S10",
+    "scenario": "Unchanged repeat",
+    "requirement": "Byte-for-byte no-op with stable ownership and no duplicate rules/hooks.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S11",
+    "scenario": "Dry-run",
+    "requirement": "Show intended changes without filesystem or network side effects.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S12",
+    "scenario": "Incomplete automation",
+    "requirement": "Structured error without prompting, hanging or writing.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S13",
+    "scenario": "Conflicting flags",
+    "requirement": "Reject contradictory choices before any operation.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S14",
+    "scenario": "Customized skill or rule",
+    "requirement": "Preserve custom content; --yes does not authorize replacement.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S15",
+    "scenario": "Malformed ownership markers",
+    "requirement": "Report conflict, never false success.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S16",
+    "scenario": "Text presentation",
+    "requirement": "Preserve supported LF/CRLF, BOM and final-newline forms; diagnose unsupported forms.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S17",
+    "scenario": "Shared JSON/TOML",
+    "requirement": "Preserve unrelated values, comments and formatting within supported parser shapes.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S18",
+    "scenario": "Invalid configuration",
+    "requirement": "Preflight failure does not partially install artifacts.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S19",
+    "scenario": "Links and aliases",
+    "requirement": "Reject unsupported symlink/hardlink/case traversal without escaped writes.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S20",
+    "scenario": "Concurrent user edit",
+    "requirement": "Expected-hash conflict prevents a lost update.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S21",
+    "scenario": "Publication failures",
+    "requirement": "Every boundary returns nonzero with precise journal state and safe recovery.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S22",
+    "scenario": "Permission, disk or lock failure",
+    "requirement": "No false completion or broad permission repair.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S23",
+    "scenario": "CLI to MCP transition",
+    "requirement": "Explicit independent mode change leaves no contradictory rules.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S24",
+    "scenario": "MCP to CLI transition",
+    "requirement": "Preserve chosen root/policy and safely remove unused owned artifacts.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S25",
+    "scenario": "Selective uninstall",
+    "requirement": "Remaining modes/scopes/agents continue working.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S26",
+    "scenario": "Repeated uninstall",
+    "requirement": "Safe no-op preserves collection, binary, authentication and unrelated configuration.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S27",
+    "scenario": "Customized uninstall target",
+    "requirement": "Preserve with actionable conflict; never recursive name-based deletion.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S28",
+    "scenario": "Missing collection on uninstall",
+    "requirement": "Remove integration using its manifest without opening the collection.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S29",
+    "scenario": "Binary and asset upgrade",
+    "requirement": "Full version-matched skill references; customization conflicts preserved.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S30",
+    "scenario": "Unsupported manifest version",
+    "requirement": "Actionable error without guessed destructive migration.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S31",
+    "scenario": "Shadowing and profiles",
+    "requirement": "Diagnose effective instruction files and custom profiles, including Codex overrides.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S32",
+    "scenario": "Fresh native agent session",
+    "requirement": "Observe external-root retrieval and source citations in the actual host.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Pending integrated execution; no native activation claim."
+  },
+  {
+    "id": "S33",
+    "scenario": "No-learning repeat query",
+    "requirement": "Notes and log remain byte-identical.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S34",
+    "scenario": "Authorized learning",
+    "requirement": "Exercise provenance and expected revisions on a disposable synthetic collection.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S35",
+    "scenario": "Read-only integration",
+    "requirement": "Configured path prevents writes; no OS-isolation claim.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S36",
+    "scenario": "Offline setup",
+    "requirement": "Bundled assets install without network, account or runtime downloads.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S37",
+    "scenario": "Portable team configuration",
+    "requirement": "No personal path/secret publication; test any supported relative anchors.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S38",
+    "scenario": "Worktrees and nested repositories",
+    "requirement": "Respect repository boundaries and select the correct binding.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S39",
+    "scenario": "Pending or disabled hook trust",
+    "requirement": "Explicit pending/fallback status without bypass or false activation.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S40",
+    "scenario": "Native hook delivery",
+    "requirement": "Observe valid bounded JSON/context delivery for actual prompt/session events.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Pending integrated execution; no native activation claim."
+  },
+  {
+    "id": "S41",
+    "scenario": "Hook timeout, no result or failure",
+    "requirement": "Bounded documented behavior without indefinite blocking.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S42",
+    "scenario": "Compaction, resume and concurrency",
+    "requirement": "No stale routing or unsafe exactly-once assumption.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S43",
+    "scenario": "Mixed global/project hooks",
+    "requirement": "One effective root with bounded duplicates or qualified deduplication.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  },
+  {
+    "id": "S44",
+    "scenario": "Unknown agent/version/platform",
+    "requirement": "Explicit unsupported diagnostic; no silent scope promotion.",
+    "status": "in_progress",
+    "tests": [],
+    "evidence": [],
+    "notes": "Acceptance requirement; execution evidence not yet recorded."
+  }
+]

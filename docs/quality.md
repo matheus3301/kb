@@ -61,9 +61,10 @@ build, and browser checks. It installs Chromium; Linux hosts may also need
 for system libraries. Activating mise in the shell is an alternative to
 the `mise exec --` prefix.
 Node and pnpm are development/CI tooling only; neither they nor mise are
-required by the CLI or MCP runtime. Public `npx skills` installation commands
-remain unchanged. `mise exec -- make check` retains the Go/runtime gates;
-the separately required website job must also pass before integration.
+required by the CLI or MCP runtime. The setup candidate bundles its CLI skill
+without Node; separate optional `npx skills` installation remains available.
+`mise exec -- make check` retains the Go/runtime gates; the separately required
+website job must also pass before integration.
 
 Playwright starts the **built static preview** at `http://127.0.0.1:4321/kb/`,
 never the development server or an existing listener. Desktop (1440 × 1000) and
@@ -116,6 +117,15 @@ A criterion may be marked `verified` only with existing test and evidence paths.
 The repository check verifies traceability, not whether the evidence proves the
 claim. Do not equate aggregate coverage or one green workflow with all criteria
 being satisfied.
+
+The setup candidate has a separate [S01–S44 inventory](setup-acceptance.json)
+and [evidence contract](setup-acceptance.md). Run
+`python3 scripts/check_docs.py --binary .build/kb --setup` against an integrated
+setup-capable candidate to execute documented dry-run/install/check/resolve/
+uninstall in a disposable synthetic home with `KB_ROOT` cleared. It also checks
+dry-run byte purity, unchanged-install no-op and preservation of the existing
+collection. This is not native agent/hook activation evidence. Published v1.0.0
+does not contain setup; its historical documentation results remain separate.
 
 [Performance evidence](performance.md) retains the initial v0.1 core misses:
 warm search p95 162.9 ms and peak process RSS 180.3 MiB against 150 ms/150 MiB,

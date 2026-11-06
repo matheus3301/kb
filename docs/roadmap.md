@@ -16,6 +16,18 @@ remain separate steps.
 | Larger collections | [Quiet paired 10k/50k report](performance-large-corpus.md) and [measurements](evidence/performance-large-corpus.json): streamed generation hashing and smaller inventory allocations, without weakening exact freshness or publication. | V05: exact integrated candidate paired rerun, rebuild and drift review against local D03 budgets. |
 | Stability and current documentation | This roadmap, [compatibility policy](compatibility.md), [quality policy](quality.md) and [V01–V08 checklist](stability.md) distinguish source, released and installed behavior. D01–D04 select qualification policy; they are not passing evidence. | V01/V06/V07/V08: integrated gates, upgrades, real packages/consumers and independent readiness review. |
 
+## New setup source candidate
+
+The explicit [setup lifecycle](agent-setup.md) is a newer increment, not part of
+published v1.0.0 or its readiness evidence. It connects selected agents to a
+chosen collection with reviewed project/user-global scope, bundled CLI skill or
+independent MCP, explicit learning policy, dry-run/check/resolve and owned
+uninstall. [Engine design](setup-design.md), [adapter qualification](setup-compatibility.md)
+and [S01–S44 tracking](setup-acceptance.md) define its contract and evidence.
+Native activation and hook delivery remain separate observed claims; neither
+source implementation nor a landing-page demo proves them. No merge or release
+is authorized by this roadmap.
+
 ## Released baseline and limits
 
 The local CLI and self-contained stdio MCP share native OKF parsing, lexical

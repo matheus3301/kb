@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-06",
+  "scope": "Checked-out static setup landing candidate; not a released setup binary",
+  "command": "env -u KB_ROOT mise exec -- make site-check",
+  "result": "passed",
+  "toolchain": {"node": "22.22.3", "pnpm": "11.25.0", "astro": "7.4.1"},
+  "observations": {
+    "frozen_install": "passed",
+    "dependency_audit": "No known vulnerabilities found",
+    "astro_check": {"errors": 0, "warnings": 0, "hints": 0},
+    "static_build": "passed",
+    "playwright": {"passed": 22, "failed": 0, "workers": 1},
+    "viewports": [{"name": "desktop", "width": 1440, "height": 1000}, {"name": "mobile", "width": 390, "height": 844}],
+    "preview": "http://127.0.0.1:4321/kb/",
+    "checks": [
+      "Real clipboard contents match every complete visible command/prompt block",
+      "Denied clipboard feedback never reports false success",
+      "Audience tabs support pointer and keyboard navigation with visible focus",
+      "Both setup views have no horizontal page overflow",
+      "Both setup views have no serious or critical axe findings",
+      "Built page emits no browser, console, HTTP or external runtime resource errors",
+      "Animation pause/replay/advance, reduced motion and no-JavaScript transcript remain usable",
+      "Full-page human and agent screenshots generated at both viewports"
+    ],
+    "manual_browser_review": "Desktop and mobile human/agent setup views inspected; mobile horizontal overflow observed as zero"
+  },
+  "tests": ["site/tests/landing.spec.ts"],
+  "local_artifacts": [
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-desktop/desktop.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-desktop/desktop-agent.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile-agent.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-desktop/desktop-setup.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-desktop/desktop-agent-setup.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile-setup.png",
+    ".build/site/results/landing-both-setup-views-f-b6e30--produce-public-screenshots-mobile/mobile-agent-setup.png"
+  ],
+  "limits": [
+    "Local artifacts are ignored build output, not public screenshot links until deliberately included in the review.",
+    "Published v1.0.0 does not include setup; these website checks do not qualify a new runtime release.",
+    "No native setup, agent activation or hook delivery claim follows from illustrative sessions or screenshots.",
+    "Serious/critical axe checks and finite Chromium scenarios do not establish complete accessibility or universal browser support.",
+    "Remote documentation availability is not a gate; same-document fragments are checked."
+  ]
+}

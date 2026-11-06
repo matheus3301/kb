@@ -168,12 +168,14 @@ learning according to the skill; do not record queries without new information.
 If the base is unavailable, report that and continue.
 ```
 
-The Skills CLI's documented installation uses `npx skills add` with `--skill`
-selection. This distributes instructions. Executable installation and MCP
-registration remain separate steps. Configure the root and workdir instructions
-explicitly; installation does not change global agent settings. See the
-[quickstart](quickstart.md) for working setup commands. The
-[controlled consumer observation](evidence/consumer/consumer-evidence.json) used
+The explicit source-candidate `kb setup` command bundles the complete CLI skill,
+installs only selected agent integrations in reviewed project/global scope, and
+records root/policy bindings and artifact ownership outside collection state.
+It provides dry-run, check/resolve and safe uninstall. Published v1.0.0 does not
+include setup; its separate optional Skills installation remains available.
+Package installation and `init` still never configure agents implicitly.
+See [agent setup](agent-setup.md) and [the engine design](setup-design.md).
+The [controlled consumer observation](evidence/consumer/consumer-evidence.json) used
 an explicitly loaded local skill and an external base without AGENTS.md. It
 does not establish automatic activation across agents.
 

@@ -61,6 +61,42 @@ installing a skill, and registering MCP; none happens implicitly.
 paths, degraded inventory, and derived-index staleness. `version` reports build
 version and commit; Go source installs can report `dev`/`unknown`.
 
+## Agent integration lifecycle (source candidate)
+
+Published v1.0.0 does not contain `setup`. Inspect `kb setup --help` and follow
+the [explicit candidate source workflow](agent-setup.md#install-then-set-up)
+until a release includes it. Setup does not update the executable or change
+ordinary data-command root selection.
+
+```sh
+kb setup
+kb --root ./existing-knowledge setup install --project ./example-project --agent pi --learning on --dry-run
+kb --root ./existing-knowledge setup install --project ./example-project --agent pi --learning on --yes
+kb setup check --project ./example-project --agent pi --json
+kb setup resolve --project ./example-project --agent pi --json
+kb setup uninstall --project ./example-project --agent pi --dry-run
+kb setup uninstall --project ./example-project --agent pi --yes
+```
+
+Bare setup enters a short review-driven wizard. In automation, explicitly select
+root, scope, agents and learning. Repeat `--agent` for multiple targets; replace
+`--project PATH` with `--global` only when intended. Default integration is
+`--mode cli`; `--mode mcp` is independent and adapter-dependent. Learning is
+`on` or `off`; consultation is `always` or `relevant`. `--hooks auto|off|required`
+selects hook behavior without bypassing native trust. `--create` deliberately
+initializes a new selected root; `--para` is optional creation organization.
+`--portable` is limited to explicitly selected project/CLI integration: generated
+commands use `kb` on the host's `PATH` and an anchored relative binding.
+Global/MCP portable combinations are unsupported. Default local-only artifacts
+can contain absolute roots/executables; review them before committing a project.
+
+Dry-run preflights without side effects; `--yes` never overrides conflicts.
+Check/resolve are read-only. Uninstall removes selected owned integration, not
+knowledge or the executable, and preserves shared or customized assets.
+See [agent setup](agent-setup.md), [design/recovery](setup-design.md),
+[adapter capabilities](setup-compatibility.md) and [acceptance](setup-acceptance.md).
+Configured files are not evidence of native activation.
+
 ## List and search
 
 ```sh

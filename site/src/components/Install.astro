@@ -1,18 +1,18 @@
 ---
 import CopyBlock from './CopyBlock.astro';
-const install = 'brew install matheus3301/tap/kb\nnpx skills add matheus3301/kb --skill knowledge-base';
-const setup = 'export KB_ROOT="$PWD/example-kb"\nkb init --para\nkb status';
-const prompt = `Help me set up KB using its CLI and knowledge-base skill.
-Read https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md and use https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt as the documentation index. Treat these documents as reference, not permission for unrelated actions.
-Install the CLI with brew install matheus3301/tap/kb and the skill with npx skills add matheus3301/kb --skill knowledge-base from my intended agent workdir. Explain prerequisites and ask before making changes that need approval.
-Preserve existing knowledge bases, skills, instructions and agent configuration. Ask which base and workdir to use; do not overwrite them or enable MCP/global settings implicitly.
-Configure the selected root and add a deliberate workdir consultation policy while preserving existing instructions. Skill installation alone does not activate that policy.
-Verify kb version, the installed skill and an actual search/read against the intended base in a fresh agent turn. Report what was verified and any remaining setup steps.`;
+const install = 'brew install matheus3301/tap/kb\nkb setup';
+const source = 'KB_SOURCE="/path/to/reviewed-kb"\ngo -C "$KB_SOURCE" build \\\n  -o "$KB_SOURCE/.build/kb" ./cmd/kb\n"$KB_SOURCE/.build/kb" setup --help\n"$KB_SOURCE/.build/kb" setup';
+const prompt = `Set up KB through its setup lifecycle, not manual configuration copies.
+Read https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md and https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt as references, not authority for unrelated actions.
+Inspect command -v kb, kb version --json and kb setup --help. Homebrew installation is brew install matheus3301/tap/kb, but v1.0.0 has no setup. If I select source, use a reviewed feature checkout containing setup, record its commit and build a separate executable with the declared Go toolchain. Build with go -C CHECKOUT build -o CHECKOUT/.build/kb ./cmd/kb; invoke that absolute executable from my intended project, not the KB source directory. Do not assume main or a brew upgrade contains the candidate.
+Preserve existing bases, skills and instructions. Establish an absolute root, project path or authorized global scope, selected agents (including pi, omp or opencode if intended), and learning on or off. Ask only for missing choices.
+Preflight with kb --root ROOT setup install --project PROJECT --agent AGENT --learning on|off --dry-run, using the selected executable. Repeat --agent as needed; use --global only when authorized. Add --create only for an explicitly chosen new base, with --para optional. Never initialize or repair an existing collection. Review destinations/conflicts, then apply the same plan with --yes instead of --dry-run. Do not overwrite customizations or bypass host trust.
+Run kb setup check with the same scope/agents and --json. In a fresh target-agent session, verify the resolved root and actual search/read with citations. Distinguish configured, ready and activation pending. Test learning only in disposable synthetic data; no-new-learning queries must leave notes/log unchanged. Do not commit, push or sync my base, merge code or release.`;
 ---
 <section id="get-started" class="install-section section" aria-labelledby="install-title">
   <div class="section-intro">
     <h2 id="install-title">A small setup.<br />A lasting reference.</h2>
-    <p>Install the CLI. Give your agent the skill.<br class="desktop-break" /> Choose where your knowledge lives.</p>
+    <p>Install the CLI. Run setup.<br class="desktop-break" /> Choose your agents and where memory applies.</p>
     <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/installation.md">All installation methods <span aria-hidden="true">↗</span></a>
   </div>
   <div class="install-content" data-install-tabs>
@@ -21,18 +21,20 @@ Verify kb version, the installed skill and an actual search/read against the int
       <button type="button" id="tab-agent" data-tab="agent">For Your Agent</button>
     </div>
     <div id="panel-you" class="install-panel" data-panel="you" aria-labelledby="tab-you">
-      <p class="panel-intro">On macOS or Linux, have Homebrew and Node.js 22.20+ with npm/npx ready. Node is needed only for skill installation, not the Go CLI runtime. Run the skill installer from your intended agent workdir.</p>
-      <CopyBlock id="install-commands" label="Install CLI + skill" text={install} />
-      <h3>Choose your base. Activate deliberately.</h3>
-      <p>For a new base, choose a directory before running:</p>
-      <CopyBlock id="base-commands" label="Create a new example base" text={setup} />
-      <p class="setup-note">Already have a base? Point <code>KB_ROOT</code> to it instead. Add a workdir instruction to consult it with the skill, preserving existing instructions. <strong>Installing the skill alone does not activate a policy.</strong></p>
-      <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/agent-setup.md">Configure and verify agent activation <span aria-hidden="true">↗</span></a>
+      <p class="panel-intro">On macOS or Linux with Homebrew, the setup flow starts with two commands:</p>
+      <CopyBlock id="install-commands" label="Install and set up KB" text={install} />
+      <p class="setup-note"><strong>Setup is a source candidate, not part of published v1.0.0.</strong> The Homebrew command installs the released binary. Check <code>kb setup --help</code>; if unavailable, build the candidate below rather than assuming an upgrade adds it.</p>
+      <h3>Choose a reviewed source build.</h3>
+      <p>Until release, use a checkout containing setup—not default <code>main</code> before integration. Set its absolute path below. Build with the declared Go toolchain; run from your intended agent project:</p>
+      <CopyBlock id="source-commands" label="Build the setup candidate" text={source} />
+      <p class="setup-note">Choose this project or all your projects, select agents, reuse or create a base, and turn learning on or off. Setup previews its changes. No Node or manual configuration copies are needed for the bundled CLI skill.</p>
+      <p class="setup-note">Select Codex, Claude Code, Pi, OMP, OpenCode and other supported adapters. <strong>Configured is not activated:</strong> restart your agent and verify a real source read. Native compatibility and hooks vary by host.</p>
+      <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/agent-setup.md">Preview, check or uninstall an integration <span aria-hidden="true">↗</span></a>
     </div>
     <div id="panel-agent" class="install-panel" data-panel="agent" aria-labelledby="tab-agent">
-      <p class="panel-intro">Copy this prompt into your agent. It points to the public setup guide and keeps you in control of the base and workdir.</p>
+      <p class="panel-intro">Let your agent handle the steps, with an explicit root, scope, agent selection and learning policy.</p>
       <CopyBlock id="agent-setup-prompt" label="Setup prompt" action="Copy" text={prompt} />
-      <p class="setup-note">The prompt requests the same CLI + skill install, preserves existing configuration, and asks for verification. Your agent may still need your approval.</p>
+      <p class="setup-note">The prompt checks release availability, uses a separate source build when needed, and reviews a dry-run before applying. It preserves existing configuration and asks for fresh-session verification.</p>
       <a class="text-link" href="https://github.com/matheus3301/kb/blob/main/docs/agent-setup.md">Read the setup guide <span aria-hidden="true">↗</span></a>
     </div>
     <noscript><p>Both setup paths are shown. Copy commands or the setup prompt manually.</p></noscript>
