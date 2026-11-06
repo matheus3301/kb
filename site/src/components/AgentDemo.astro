@@ -12,16 +12,15 @@ function typedWords(text: string, interval: number) {
   });
 }
 ---
-<section class="agent-demo" aria-labelledby="demo-title">
+<section class="agent-demo" aria-label="KB terminal">
   <header class="terminal-bezel">
     <span class="power-light" aria-hidden="true"></span>
-    <h2 id="demo-title">Agent terminal</h2>
-    <span class="demo-tag">Scripted demo</span>
+    <h2>KB</h2>
   </header>
 
   <div class="terminal-display">
     <div class="terminal-status">
-      <span>~/example-kb</span>
+      <span>~/knowledge-base</span>
       <span>Session <span data-example-number>01</span> / {String(exampleCount).padStart(2, '0')}</span>
     </div>
     <div class="terminal-transcript" role="region" aria-label="Session transcript" tabindex="0">
@@ -256,11 +255,6 @@ function typedWords(text: string, interval: number) {
     letter-spacing: .09em;
     text-transform: uppercase;
     text-wrap: initial;
-  }
-  .demo-tag {
-    margin-left: auto;
-    color: #b3c4d8;
-    font-size: 10px;
   }
   .power-light {
     width: 7px;

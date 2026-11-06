@@ -329,7 +329,7 @@ test('both setup views fit, pass serious/critical axe checks, and produce public
 test('reduced motion shows a complete, keyboard-scrollable terminal transcript', async ({ page }, testInfo) => {
   await page.addInitScript(() => { Math.random = () => 0; });
   await openLanding(page);
-  const demo = page.getByRole('region', { name: 'Agent terminal' });
+  const demo = page.getByRole('region', { name: 'KB terminal' });
   const transcript = demo.getByRole('region', { name: 'Session transcript' });
   const next = demo.getByRole('button', { name: 'Next example' });
   await expect(demo.getByText('Session 01 / 03')).toBeVisible();
@@ -358,7 +358,7 @@ test('the animated terminal accumulates calls and supports pause, replay, and au
   await page.addInitScript(() => { Math.random = () => 0; });
   await page.clock.install();
   await openLanding(page);
-  const demo = page.getByRole('region', { name: 'Agent terminal' });
+  const demo = page.getByRole('region', { name: 'KB terminal' });
   const transcript = demo.getByRole('region', { name: 'Session transcript' });
   const search = transcript.getByText('kb search "export batches" --limit 3', { exact: true });
   const read = transcript.getByText('kb read 01_Projects/exports/batching.md', { exact: true });
@@ -409,7 +409,7 @@ test.describe('without JavaScript', () => {
 
   test('the initial prompt, commands, answer, and source remain readable', async ({ page }) => {
     await page.goto('./');
-    const demo = page.getByRole('region', { name: 'Agent terminal' });
+    const demo = page.getByRole('region', { name: 'KB terminal' });
     const transcript = demo.getByRole('region', { name: 'Session transcript' });
     await expect(transcript.getByText('Why did we cap export batches at 500 rows?')).toBeVisible();
     await expect(transcript.getByText('kb read 01_Projects/exports/batching.md')).toBeVisible();
