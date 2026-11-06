@@ -206,9 +206,9 @@ native qualification. Test sources are synthetic/disposable and clear `KB_ROOT`.
 | S33–S35 | Compiled CLI collection-byte smoke and hook read-only regression; independent MCP generated-command tests exercise read-only tools. Authorized learning uses existing revision/provenance transaction coverage, not a new setup guarantee. |
 | S36 | Embedded offline assets; setup has no network dependency. |
 | S37–S38 | Portable relative registry, copied-worktree/nested-repository routing tests. Portable MCP remains unsupported, explicitly rejected. |
-| S39 | Activation-pending diagnostics and unsupported-required-hook preflight; no trust approval is automated. |
-| S40–S43 | Native schema and bounded hook tests plus compiled CLI event smoke; host delivery, resume/compaction, duplicate native events and mixed-version behavior need target-session evidence. |
-| S44 | Unknown-agent/scope/required-hook rejections and capability descriptors; native version qualification remains explicit. |
+| S39 | Activation-pending diagnostics, unsupported-required-hook preflight and actual OMP disabled-extension observation; no trust approval is automated. |
+| S40–S43 | Native schema/concurrent read-only tests, real-process timeout regression, and identified OMP delivery/compaction/resume/mixed-scope observations in [native lifecycle evidence](evidence/setup-native-lifecycle.json) and [hook evidence](evidence/setup-hook-qualification.json). No universal or exactly-once claim. |
+| S44 | Unknown-agent/scope/required-hook rejections and unknown-build inspection regression; version/platform remain explicitly unobserved by local inspection. |
 
 Existing source tests and source-derived adapters do not prove native activation.
 Full repository gates and fresh-host observations are integration evidence and

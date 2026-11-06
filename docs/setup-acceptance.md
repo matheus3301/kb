@@ -8,12 +8,15 @@ fixtures, observed scopes and evidence references are in
 
 ## Status and verification boundary
 
-**39 criteria have bounded verified observations; 5 native lifecycle criteria remain in progress.**
+**All 44 criteria have bounded verified observations.**
+The five review gaps were closed with the identified native and process checks below.
 `verified` applies to the identified fixtures and observed scopes, not every host/build.
-The complete integrated `make check` passed on **bfcd143**, including race/shuffle,
+The review `make check` passed again with **220 named top-level Go tests**,
+including race/shuffle,
 **86.5% aggregate statement coverage**, all **17 fuzz targets**, four cross-build
 platforms, security scans, executable docs, retrieval checks and concurrent soak.
-See [final qualification](evidence/setup-qualified.json) for the executable hash,
+See [review qualification](evidence/setup-review.json) for the current gate and
+[earlier qualification](evidence/setup-qualified.json) for the executable hash,
 actual PTY wizard, real Git worktrees, 19 lifecycle rows and post-fix native MCP run.
 
 The JSONC comma-only-container defect discovered during fuzzing is fixed by
@@ -26,8 +29,19 @@ No original criterion is expanded into universal native qualification: S03
 requires the explicitly selected create/PARA behavior, S20 the expected-hash
 conflict behavior, S32 the named actual-host retrieval and S34 the observed
 disposable revision/provenance exercise. Other-host capability qualification is
-tracked separately. Conversely, untested compaction/resume and mixed-scope hooks
-remain genuine gaps, not inferred passes from a resolver or package test.
+tracked separately. Compaction/resume and mixed-scope hooks now have actual
+OMP 18.16.0 observations; they are not inferred from resolver or package tests.
+
+## Review qualification
+
+- [Hook qualification](evidence/setup-hook-qualification.json): OMP 18.16.0
+  and 18.17.0 disabled hooks, no-hit, failure and timeout delivery; retained
+  real-process regression and explicit unknown-build inspection boundary.
+- [Native lifecycle](evidence/setup-native-lifecycle.json): actual committed
+  compaction, same-session resume after changing roots, both mixed CLI/MCP scope
+  directions, global fallback, byte-pure collections and confirmed teardown.
+- [Compact site prompt](evidence/setup-site.json): complete GitHub Markdown guide,
+  short copyable handoff and desktop/mobile browser evidence.
 
 ## Evidence index
 
@@ -74,7 +88,7 @@ presentation evidence, not installer or native activation proof.
 ## Limits and safety
 
 Named native observations do not qualify every other host/build, global/project
-combination, mixed CLI/MCP scope, compaction/resume or failure transition. OMP
+combination or failure transition beyond the exact recorded runs. OMP
 learning does not establish every host/interface's learning behavior. Source
 inspection, generated files and `setup check` do not establish activation.
 `activation_observed` is never inferred from installed artifacts. Unsupported
@@ -102,7 +116,7 @@ refer to the linked evidence records above.
 | S04 / verified | Invalid or uninitialized existing collection | [TestSetupCLIPureDryRunAndValidation](../internal/cli/setup_test.go)<br>[TestSetupCLIRedactionAndCollectionRootConflict](../internal/cli/setup_test.go) | Invalid/uninitialized roots are rejected without implicit migration or repair; exact final CLI preflight fixtures passed. |
 | S05 / verified | Project installation | [TestHostConfigurationContracts](../internal/agentsetup/adapter_test.go)<br>[TestSetupCLIInstallResolveCheckAndUninstall](../internal/cli/setup_test.go)<br>[TestPrivacyNoGitAndFatalRepositoryCommands](../internal/setup/regression_test.go) | Ten project adapters passed disposable install/check/resolve/removal cycles with collection preservation. This verifies configuration lifecycle, not native activation for every host. |
 | S06 / verified | Global installation | [TestHostConfigurationContracts](../internal/agentsetup/adapter_test.go)<br>[TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go) | Nine supported global adapters passed disposable lifecycle cycles. Cursor global is explicitly unsupported and rejected without mutation; personal global agent settings were not used. |
-| S07 / verified | Project override | [TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go)<br>[TestSharedInstructionsKeepDistinctHostOwners](../internal/agentsetup/adapter_test.go) | Verified within native Codex CLI/hooks-off global-plus-project scope on 8b1c5b6: the project root/value overrides the distinct global root/value, and both collections remain byte-pure. Mixed CLI/MCP and other host combinations are separately unqualified. |
+| S07 / verified | Project override | [TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go)<br>[TestSharedInstructionsKeepDistinctHostOwners](../internal/agentsetup/adapter_test.go) | Native Codex CLI/hooks-off project-over-global precedence passed on 8b1c5b6. Review qualification additionally passed actual OMP 18.16.0 global CLI/project MCP, inverse mixed mode and global fallback with correct effective roots and byte-pure collections. |
 | S08 / verified | No binding or disabled binding | [TestDisabledPortableBindingStopsGlobal](../internal/setup/routing_test.go)<br>[TestSetupCLIPureDryRunAndValidation](../internal/cli/setup_test.go) | No-binding and disabled portable-binding fixtures passed; resolution does not guess a collection or fall through a disabled project binding. |
 | S09 / verified | Shared artifacts | [TestLifecycleSharedBorrowedAndPristine](../internal/setup/setup_test.go)<br>[TestSetupSharedMCPEntryRemovalRetainsOtherConsumer](../internal/cli/setup_regression_test.go) | Verified in the compiled Claude+Copilot shared project MCP probe: one server entry survives removal of the first consumer and disappears after the last. Shared/borrowed rule coverage is separately source-mapped. |
 | S10 / verified | Unchanged repeat | [TestLifecycleSharedBorrowedAndPristine](../internal/setup/setup_test.go)<br>[TestOwnedHookUpgradePreservesForeignHandler](../internal/setup/regression_test.go) | Verified byte-stable repeated CLI installation in all 19 supported scope rows and the executable-doc workflow. This is filesystem/configuration evidence, not repeated native activation. |
@@ -134,9 +148,9 @@ refer to the linked evidence records above.
 | S36 / verified | Offline setup | [TestKnowledgeBaseReferenceDocumentsResolve](../skills/embed_test.go)<br>[TestSetupCLIInstallResolveCheckAndUninstall](../internal/cli/setup_test.go) | Bundled skill/reference assets install locally; actual PTY wizard passed with an empty tool PATH (no Node/Git/harness). Setup has no account/runtime-download prerequisite. |
 | S37 / verified | Portable team configuration | [TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go)<br>[TestPortableCLIArtifactsContainNoPersonalPaths](../internal/agentsetup/adapter_test.go)<br>[TestSetupPortableAndTildeCreation](../internal/cli/setup_regression_test.go) | Supported portable project CLI anchors and absence of personal root/executable paths passed. Portable MCP/global remain explicitly unsupported rather than receiving a false qualification. |
 | S38 / verified | Worktrees and nested repositories | [TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go) | Routing fixtures plus actual Git repository/worktree installation passed: independent bindings, private policy exclusion, selective removal, original shared-exclude restoration and unchanged memory. |
-| S39 / in_progress | Pending or disabled hook trust | [TestHookRegistrationUsesHostEventAndUnits](../internal/agentsetup/adapter_test.go)<br>[TestRejectedRequestsProduceNoPartialIntents](../internal/agentsetup/adapter_test.go)<br>[TestSetupCLIInstallResolveCheckAndUninstall](../internal/cli/setup_test.go) | Pending activation and unsupported required-hook diagnostics have source coverage. Named native runs do not cover disabled/trust-pending settings on every host; no trust or auth bypass was performed. |
+| S39 / verified | Pending or disabled hook trust | [TestHookRegistrationUsesHostEventAndUnits](../internal/agentsetup/adapter_test.go)<br>[TestRejectedRequestsProduceNoPartialIntents](../internal/agentsetup/adapter_test.go)<br>[TestSetupCLIInstallResolveCheckAndUninstall](../internal/cli/setup_test.go) | Actual OMP 18.16.0 and 18.17.0 with native --no-extensions completed and settled with zero KB helper invocations or context messages; collection bytes remained unchanged. Local inspection stayed activation_pending with activation_observed=false. No trust or authentication bypass was performed. |
 | S40 / verified | Native hook delivery | [TestHookHostProtocols](../internal/agentsetup/hook_test.go)<br>[TestSetupCLIHookNativeOutputAndReadOnlyPolicy](../internal/cli/setup_test.go)<br>[TestSetupHookMCPUsesNativeContextWithoutSkill](../internal/cli/setup_regression_test.go)<br>[TestMCPHookRetrievesWithoutCLIContinuation](../internal/agentsetup/hook_test.go) | Verified for native OMP session/prompt context delivery in CLI on 5b75df2 and MCP on 8b1c5b6. Claude session/prompt commands exited 0 but its model answer was login-blocked. The corrected OMP MCP observer recognizes deferred MCP dispatch, not filesystem writes; other native hosts remain separately unqualified. |
-| S41 / in_progress | Hook timeout, no result or failure | [TestHookEmptyFailureAndCancellation](../internal/agentsetup/hook_test.go)<br>[TestHookRejectsAmbiguousAndUnboundedInput](../internal/agentsetup/hook_test.go)<br>[TestSetupCLIHookNativeOutputAndReadOnlyPolicy](../internal/cli/setup_test.go) | Bounded input/output, no-hit, invalid input and cooperative cancellation have source fixtures. Native timeout/kill/failure behavior across hosts remains pending; no hard realtime SLA is claimed. |
-| S42 / in_progress | Compaction, resume and concurrency | [TestConcurrentHookConsultationDoesNotWriteNotes](../internal/agentsetup/hook_test.go)<br>[TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go) | Concurrent read-only source coverage and settled native OMP teardown exist. Compaction/resume routing and exactly-once behavior are not qualified; no exactly-once guarantee is made. |
-| S43 / in_progress | Mixed global/project hooks | [TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go)<br>[TestSharedInstructionsKeepDistinctHostOwners](../internal/agentsetup/adapter_test.go) | Scope/host policy guards and resolver routing are source-mapped. Actual mixed global/project hooks and CLI/MCP precedence have not been exercised in native sessions. |
-| S44 / in_progress | Unknown agent/version/platform | [TestRejectedRequestsProduceNoPartialIntents](../internal/agentsetup/adapter_test.go)<br>[TestSetupCLIPureDryRunAndValidation](../internal/cli/setup_test.go)<br>[SetupDocumentationTests.test_missing_host_must_have_the_exact_nonzero_inspection_status](../scripts/test_docs.py) | Cursor global and invalid vscode ID were explicitly rejected before mutation; missing native hosts are explicitly nonready. Unknown native versions/platforms and every harness build are not qualified by descriptors or cross-builds. |
+| S41 / verified | Hook timeout, no result or failure | [TestHookEmptyFailureAndCancellation](../internal/agentsetup/hook_test.go)<br>[TestHookRejectsAmbiguousAndUnboundedInput](../internal/agentsetup/hook_test.go)<br>[TestSetupCLIHookNativeOutputAndReadOnlyPolicy](../internal/cli/setup_test.go)<br>[TestNativeExtensionProcessFailures](../internal/agentsetup/extension_test.go) | Generated Pi/OMP wrapper regression reproduced ignored-SIGTERM blocking, then passed after SIGKILL termination at the existing 3.5-second timeout. Actual OMP 18.16.0 and 18.17.0 delivered bounded no-hit or unavailable contexts for no-hit, failed-valid-stdout and timeout cases, with unchanged collections and confirmed teardown. No hard real-time or descendant-supervisor guarantee. |
+| S42 / verified | Compaction, resume and concurrency | [TestConcurrentHookConsultationDoesNotWriteNotes](../internal/agentsetup/hook_test.go)<br>[TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go) | Actual OMP 18.16.0 committed real compaction, retrieved fresh MCP evidence afterwards, stopped and resumed the same session in a new process after changing the project binding, then read the new root and distinct facts. Collection bytes stayed unchanged and all processes settled with confirmed teardown. Concurrent read-only source regression is retained; no exactly-once guarantee. |
+| S43 / verified | Mixed global/project hooks | [TestRoutingBoundaryWorktreeAndPortable](../internal/setup/routing_test.go)<br>[TestSharedInstructionsKeepDistinctHostOwners](../internal/agentsetup/adapter_test.go) | Actual OMP 18.16.0 exercised global CLI/project MCP, inverse global MCP/project CLI and global CLI fallback, with fresh evidence from the effective root and one observed project context per prompt. Bounded read-only duplicates remain permitted by contract; observed deduplication is not a cross-host guarantee. |
+| S44 / verified | Unknown agent/version/platform | [TestRejectedRequestsProduceNoPartialIntents](../internal/agentsetup/adapter_test.go)<br>[TestSetupCLIPureDryRunAndValidation](../internal/cli/setup_test.go)<br>[SetupDocumentationTests.test_missing_host_must_have_the_exact_nonzero_inspection_status](../scripts/test_docs.py)<br>[TestSetupCheckDoesNotQualifyUnknownNativeBuild](../internal/cli/setup_qualification_test.go) | Compiled CLI rejected unknown agent and unsupported Cursor global before mutation or scope promotion. Unknown-build executable inspection did not execute the host, left activation unobserved and explicitly diagnosed unobserved native version/platform. Native support remains limited to identified observations; cross-builds do not qualify other host versions. |

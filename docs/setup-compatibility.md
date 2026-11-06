@@ -165,8 +165,9 @@ Bounds and behavior:
 - Whole encoded response: at most 16 KiB. Oversize fails rather than silently
   dropping citations. Diagnostics include invalid/degraded/stale-index state.
 - Core retrieval: cooperative two-second context deadline; native wrapper process
-  timeout 3.5 seconds; command-hook timeout five seconds (5,000 ms for Gemini).
-  These are configured bounds, not measured portable latency SLAs.
+  timeout 3.5 seconds with `SIGKILL` for an uncooperative immediate child;
+  command-hook timeout five seconds (5,000 ms for Gemini). These are configured
+  bounds, not portable latency SLAs or general descendant-process supervision.
 - Empty/no-hit queries are reported honestly. Missing root, pending recovery,
   invalid input, timeout and unsupported capability remain failures. Ordinary
   policy directs manual consultation; no stop-hook loop or permission bypass.
@@ -226,6 +227,15 @@ synthetic collection, never real personal configuration:
    binding, mixed CLI/MCP scopes, and two agents sharing assets. Remove one
    integration and observe the other still works; then uninstall and inspect
    fixture teardown. Never configure production agents merely to qualify them.
+
+The review qualification records actual OMP 18.16.0 compaction, changed-root
+session resume and both CLI/MCP scope directions in
+[evidence/setup-native-lifecycle.json](evidence/setup-native-lifecycle.json).
+Disabled hooks, no-hit, failed subprocesses and ignored-SIGTERM timeouts were
+observed in OMP 18.16.0 and 18.17.0; see
+[hook qualification](setup-hook-qualification.md). These identified native
+observations do not extend to untested hosts or versions. Local `setup check`
+explicitly leaves version/platform, trust and activation unobserved.
 
 ## Primary sources
 

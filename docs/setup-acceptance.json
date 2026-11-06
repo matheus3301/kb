@@ -154,9 +154,10 @@
     "evidence": [
       "docs/evidence/setup-source-tests.json",
       "docs/evidence/setup-native.json",
-      "docs/evidence/setup-qualified.json"
+      "docs/evidence/setup-qualified.json",
+      "docs/evidence/setup-native-lifecycle.json"
     ],
-    "notes": "Verified within native Codex CLI/hooks-off global-plus-project scope on 8b1c5b6: the project root/value overrides the distinct global root/value, and both collections remain byte-pure. Mixed CLI/MCP and other host combinations are separately unqualified.",
+    "notes": "Native Codex CLI/hooks-off project-over-global precedence passed on 8b1c5b6. Review qualification additionally passed actual OMP 18.16.0 global CLI/project MCP, inverse mixed mode and global fallback with correct effective roots and byte-pure collections.",
     "test_names": {
       "internal/setup/routing_test.go": [
         "TestRoutingBoundaryWorktreeAndPortable"
@@ -167,12 +168,11 @@
     },
     "verification_scope": "Final integrated source fixtures on bfcd143 and explicitly identified native observations; verified does not mean every native host/build.",
     "observed_scopes": [
-      "Codex 0.166.0-alpha.5.1 / isolated global plus project / CLI / hooks off"
+      "Codex 0.166.0-alpha.5.1 / isolated global plus project / CLI / hooks off",
+      "OMP 18.16.0 / isolated global plus project / both mixed CLI-MCP directions / hooks required"
     ],
     "pending_scopes": [
-      "Mixed CLI/MCP native scope matrix",
-      "Other host/build precedence matrix",
-      "Post-parser-fix qualification"
+      "Other host/build precedence combinations outside the observed qualification"
     ]
   },
   {
@@ -963,7 +963,7 @@
     "id": "S39",
     "scenario": "Pending or disabled hook trust",
     "requirement": "Explicit pending/fallback status without bypass or false activation.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/agentsetup/adapter_test.go",
       "internal/cli/setup_test.go"
@@ -972,9 +972,10 @@
       "docs/evidence/setup-lifecycle.json",
       "docs/evidence/setup-native.json",
       "docs/evidence/setup-source-tests.json",
-      "docs/evidence/setup-qualified.json"
+      "docs/evidence/setup-qualified.json",
+      "docs/evidence/setup-hook-qualification.json"
     ],
-    "notes": "Pending activation and unsupported required-hook diagnostics have source coverage. Named native runs do not cover disabled/trust-pending settings on every host; no trust or auth bypass was performed.",
+    "notes": "Actual OMP 18.16.0 and 18.17.0 with native --no-extensions completed and settled with zero KB helper invocations or context messages; collection bytes remained unchanged. Local inspection stayed activation_pending with activation_observed=false. No trust or authentication bypass was performed.",
     "test_names": {
       "internal/agentsetup/adapter_test.go": [
         "TestHookRegistrationUsesHostEventAndUnits",
@@ -984,7 +985,7 @@
         "TestSetupCLIInstallResolveCheckAndUninstall"
       ]
     },
-    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
+    "verification_scope": "Bounded review qualification on identified source builds and native versions; not universal host/build/platform support."
   },
   {
     "id": "S40",
@@ -1029,16 +1030,18 @@
     "id": "S41",
     "scenario": "Hook timeout, no result or failure",
     "requirement": "Bounded documented behavior without indefinite blocking.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/agentsetup/hook_test.go",
-      "internal/cli/setup_test.go"
+      "internal/cli/setup_test.go",
+      "internal/agentsetup/extension_test.go"
     ],
     "evidence": [
       "docs/evidence/setup-source-tests.json",
-      "docs/evidence/setup-qualified.json"
+      "docs/evidence/setup-qualified.json",
+      "docs/evidence/setup-hook-qualification.json"
     ],
-    "notes": "Bounded input/output, no-hit, invalid input and cooperative cancellation have source fixtures. Native timeout/kill/failure behavior across hosts remains pending; no hard realtime SLA is claimed.",
+    "notes": "Generated Pi/OMP wrapper regression reproduced ignored-SIGTERM blocking, then passed after SIGKILL termination at the existing 3.5-second timeout. Actual OMP 18.16.0 and 18.17.0 delivered bounded no-hit or unavailable contexts for no-hit, failed-valid-stdout and timeout cases, with unchanged collections and confirmed teardown. No hard real-time or descendant-supervisor guarantee.",
     "test_names": {
       "internal/agentsetup/hook_test.go": [
         "TestHookEmptyFailureAndCancellation",
@@ -1046,15 +1049,18 @@
       ],
       "internal/cli/setup_test.go": [
         "TestSetupCLIHookNativeOutputAndReadOnlyPolicy"
+      ],
+      "internal/agentsetup/extension_test.go": [
+        "TestNativeExtensionProcessFailures"
       ]
     },
-    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
+    "verification_scope": "Bounded review qualification on identified source builds and native versions; not universal host/build/platform support."
   },
   {
     "id": "S42",
     "scenario": "Compaction, resume and concurrency",
     "requirement": "No stale routing or unsafe exactly-once assumption.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/agentsetup/hook_test.go",
       "internal/setup/routing_test.go"
@@ -1062,9 +1068,10 @@
     "evidence": [
       "docs/evidence/setup-source-tests.json",
       "docs/evidence/setup-native.json",
-      "docs/evidence/setup-qualified.json"
+      "docs/evidence/setup-qualified.json",
+      "docs/evidence/setup-native-lifecycle.json"
     ],
-    "notes": "Concurrent read-only source coverage and settled native OMP teardown exist. Compaction/resume routing and exactly-once behavior are not qualified; no exactly-once guarantee is made.",
+    "notes": "Actual OMP 18.16.0 committed real compaction, retrieved fresh MCP evidence afterwards, stopped and resumed the same session in a new process after changing the project binding, then read the new root and distinct facts. Collection bytes stayed unchanged and all processes settled with confirmed teardown. Concurrent read-only source regression is retained; no exactly-once guarantee.",
     "test_names": {
       "internal/agentsetup/hook_test.go": [
         "TestConcurrentHookConsultationDoesNotWriteNotes"
@@ -1073,13 +1080,13 @@
         "TestRoutingBoundaryWorktreeAndPortable"
       ]
     },
-    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
+    "verification_scope": "Bounded review qualification on identified source builds and native versions; not universal host/build/platform support."
   },
   {
     "id": "S43",
     "scenario": "Mixed global/project hooks",
     "requirement": "One effective root with bounded duplicates or qualified deduplication.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/setup/routing_test.go",
       "internal/agentsetup/adapter_test.go"
@@ -1087,9 +1094,10 @@
     "evidence": [
       "docs/evidence/setup-source-tests.json",
       "docs/evidence/setup-native.json",
-      "docs/evidence/setup-qualified.json"
+      "docs/evidence/setup-qualified.json",
+      "docs/evidence/setup-native-lifecycle.json"
     ],
-    "notes": "Scope/host policy guards and resolver routing are source-mapped. Actual mixed global/project hooks and CLI/MCP precedence have not been exercised in native sessions.",
+    "notes": "Actual OMP 18.16.0 exercised global CLI/project MCP, inverse global MCP/project CLI and global CLI fallback, with fresh evidence from the effective root and one observed project context per prompt. Bounded read-only duplicates remain permitted by contract; observed deduplication is not a cross-host guarantee.",
     "test_names": {
       "internal/setup/routing_test.go": [
         "TestRoutingBoundaryWorktreeAndPortable"
@@ -1098,25 +1106,27 @@
         "TestSharedInstructionsKeepDistinctHostOwners"
       ]
     },
-    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
+    "verification_scope": "Bounded review qualification on identified source builds and native versions; not universal host/build/platform support."
   },
   {
     "id": "S44",
     "scenario": "Unknown agent/version/platform",
     "requirement": "Explicit unsupported diagnostic; no silent scope promotion.",
-    "status": "in_progress",
+    "status": "verified",
     "tests": [
       "internal/agentsetup/adapter_test.go",
       "internal/cli/setup_test.go",
-      "scripts/test_docs.py"
+      "scripts/test_docs.py",
+      "internal/cli/setup_qualification_test.go"
     ],
     "evidence": [
       "docs/evidence/setup-lifecycle.json",
       "docs/evidence/setup-cli-docs.json",
       "docs/evidence/setup-source-tests.json",
-      "docs/evidence/setup-qualified.json"
+      "docs/evidence/setup-qualified.json",
+      "docs/evidence/setup-hook-qualification.json"
     ],
-    "notes": "Cursor global and invalid vscode ID were explicitly rejected before mutation; missing native hosts are explicitly nonready. Unknown native versions/platforms and every harness build are not qualified by descriptors or cross-builds.",
+    "notes": "Compiled CLI rejected unknown agent and unsupported Cursor global before mutation or scope promotion. Unknown-build executable inspection did not execute the host, left activation unobserved and explicitly diagnosed unobserved native version/platform. Native support remains limited to identified observations; cross-builds do not qualify other host versions.",
     "test_names": {
       "internal/agentsetup/adapter_test.go": [
         "TestRejectedRequestsProduceNoPartialIntents"
@@ -1126,8 +1136,11 @@
       ],
       "scripts/test_docs.py": [
         "SetupDocumentationTests.test_missing_host_must_have_the_exact_nonzero_inspection_status"
+      ],
+      "internal/cli/setup_qualification_test.go": [
+        "TestSetupCheckDoesNotQualifyUnknownNativeBuild"
       ]
     },
-    "verification_scope": "Source fixtures passed final integrated gate; native lifecycle qualification described in notes remains open."
+    "verification_scope": "Bounded review qualification on identified source builds and native versions; not universal host/build/platform support."
   }
 ]

@@ -460,5 +460,6 @@
     "Native observations remain scoped to identified builds/modes, not every configured host.",
     "Codex hook trust, native compaction/resume and mixed global/project hooks remain unqualified.",
     "Published v1.0.0 lacks setup; no release or deployment is implied."
-  ]
+  ],
+  "historical_record": "This record identifies the earlier bfcd143 qualification. Review follow-up, timeout fix, refreshed site and closed native gaps are recorded in setup-review.json; earlier observations are not relabeled as later runs."
 }

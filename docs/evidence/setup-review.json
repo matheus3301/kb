@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-06",
+  "scope": "PR 31 review follow-up; bounded identified observations, not a release or all-host qualification",
+  "runtime_source_commit": "e0e85c5476ffc54a5f6343b127a40ab7bf233287",
+  "native_candidate_sha256": "97da89e4a6139f31efd5bfe60013e5b7f72894b270183cb2580961056ae0a574",
+  "full_gate": {
+    "command": "mise exec -- make check",
+    "status": "passed",
+    "source_at_start": "7b4c175",
+    "runtime_changes_after_gate_start": false,
+    "aggregate_statement_coverage_percent": 86.5,
+    "named_top_level_go_tests_passed": 220,
+    "fuzz_targets": 17,
+    "stages": [
+      "repository/tooling regressions",
+      "static analysis: zero issues",
+      "race/shuffle/coverage",
+      "linux/darwin amd64/arm64 cross-builds",
+      "fuzz",
+      "secret and vulnerability scans",
+      "CLI acceptance and executable docs",
+      "benchmark smoke",
+      "retrieval quality",
+      "concurrent soak"
+    ]
+  },
+  "acceptance": {
+    "verified": 44,
+    "total": 44,
+    "closed_review_gaps": [
+      "S39",
+      "S41",
+      "S42",
+      "S43",
+      "S44"
+    ],
+    "boundary": "Each criterion retains exact tests and observed scopes; unsupported capabilities and unobserved native builds remain explicit."
+  },
+  "evidence": {
+    "hook_failures": "docs/evidence/setup-hook-qualification.json",
+    "native_lifecycle": "docs/evidence/setup-native-lifecycle.json",
+    "site": "docs/evidence/setup-site.json",
+    "earlier_full_qualification": "docs/evidence/setup-qualified.json"
+  },
+  "runtime_source_hashes": {
+    "internal/agentsetup/extension.go": "4894bfc618a96690efb5bc31c1482723994c9d120cd456b5bab0fc51e9f56fcd",
+    "internal/cli/setup_readiness.go": "4a59b684b8cea66d298d5eb10ef27f29740f4744b592521e2be97084626ae184"
+  },
+  "limits": [
+    "Native lifecycle: OMP 18.16.0 Darwin arm64 with matching SDK; hook failure observations additionally identify OMP 18.17.0 and its SDK boundary.",
+    "Local inspection leaves native version/platform/trust/activation explicitly unobserved; unknown agent and unsupported scope rejection do not establish support.",
+    "No exactly-once, hard real-time, hot reload of fixed-root MCP, native concurrent-model isolation or universal model adherence guarantee.",
+    "No release, merge or website deployment performed."
+  ]
+}
