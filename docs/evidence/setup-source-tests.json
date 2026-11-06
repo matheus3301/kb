@@ -45,14 +45,14 @@
     "candidate_commit": "8b1c5b6",
     "static_analysis": "passed; 0 issues",
     "race_test_stage": "passed",
-    "reported_race_seconds": 86.5,
-    "coverage_gate": "parent reported passed; no percentage inferred",
+    "coverage_gate": "passed; aggregate statement coverage 86.5%",
     "cross_build_stage": "passed",
     "jsonc_fuzz_stage": {
       "status": "failed",
       "retained_corpus": "10c2b389efa4b531",
       "failure": "JSONC editor could produce invalid configuration",
       "disposition": "Assigned for parser fix; rebuild and full gate rerun required"
-    }
+    },
+    "statement_coverage_percent": 86.5
   }
 }
