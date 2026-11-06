@@ -11,9 +11,11 @@ These images show public onboarding, not proof of native agent activation.
 - [Human setup, mobile](mobile-human.png)
 - [Agent setup, mobile](mobile-agent.png)
 
-The prompt is two source lines (140 characters), not a joined instruction block.
-Actual desktop/mobile browser review measured prompt cards at approximately
-156/186 CSS pixels high, with no horizontal page overflow. The full installer
-policy lives in the linked Markdown guide; its fetched bytes matched the
-committed guide at its immutable published commit. Human screenshots were freshly
-captured and remain byte-identical because their rendered content did not change.
+The installation prompt is one source line (112 characters), rendered as two
+desktop lines and three mobile lines at 390px. Text remains complete and uses
+the unchanged 13px font with a 24.7px line height; no clipping or truncation.
+Actual desktop/mobile prompt cards measured approximately 131/161 CSS pixels,
+with zero horizontal page overflow. The full installer policy lives in the
+linked Markdown guide; its redirected raw bytes matched the immutable committed
+guide. Human screenshots were freshly captured and remain byte-identical because
+their rendered content did not change.

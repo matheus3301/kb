@@ -1,14 +1,15 @@
 {
   "date": "2026-11-06",
-  "site_source_commit": "f3de84162c43e92927fd34658f61c80fb416166c",
-  "site_source_tree": "ab0b13c88315702f8f14d31372597172709246f8",
+  "site_source_commit": "a5153261ac44d72e876b22ee8a9dc69a8283acec",
+  "site_source_tree": "4b549433ef5cd8a7007e717b27a9b6f70deb6316",
   "source_identity_note": "Source commit identifies the site lane before integration; cherry-picks may change commit identity. Tree and file hashes identify captured content.",
   "source_sha256": {
-    "site/src/components/Install.astro": "eca521377dba3e778eda1d2cfa3978182c4f43dab2278ef9476a59a2cfc119b1",
-    "site/tests/landing.spec.ts": "3d88c3c0bfae567725547de2ef5552ec367ab90b374535c64d9a8daef0b7f77b",
+    "site/src/components/Install.astro": "555105e7d39ec66e706da0d9c6279e8078a415f274c8f98c35cfa39735779bec",
+    "site/tests/landing.spec.ts": "b1008dbcbc8f526cd38e5cdac1e382fc9ffbe471932a919239d0e16fe1924473",
+    "site/src/styles/global.css": "a23146e40a23ade3e237654bf213a3a49b96e46364b875c399400f82b999d1e2",
     "docs/agent-install.md": "9abc9f686966b2bdae8cba31e25b1b19fe4185c0af2dcac6360bf0ae82fbbac3"
   },
-  "method": "Fresh actual Chromium screenshots of the final immutable-guide built Astro preview at /kb/, produced by the passing 24-test Playwright suite and visually reviewed. Focused images capture the installation section. Human captures are byte-identical to the prior images because their rendered pixels did not change.",
+  "method": "Fresh actual Chromium screenshots of the final Install KB prompt with immutable GitHub raw URL and targeted word wrapping, produced by the passing 24-test Playwright suite and visually reviewed. Actual desktop/mobile preview text occupies two/three rendered lines. Human captures are byte-identical to the prior images because their rendered pixels did not change.",
   "viewports": {
     "desktop": {
       "width": 1440,
@@ -21,24 +22,24 @@
   },
   "files": {
     "desktop-page.png": {
-      "sha256": "450396b10ddc2eaad713e5bbf94e74b5f34d31d51e0226fbab587aed8cdde345",
-      "bytes": 629149
+      "sha256": "8f28d50b2b8d6bea1eb6c2673595f9c0707be77dc4aa611b4275130afe2ded11",
+      "bytes": 622522
     },
     "desktop-human.png": {
       "sha256": "e8d3f641362fa31b208d77f16f9a1b35aa39e77d1627ff0353cc052fe950c9c2",
       "bytes": 128708
     },
     "desktop-agent.png": {
-      "sha256": "a3ab4b2417c2f403d179e3e9b4044d6eab880b5aee85db1a82a408b5715df243",
-      "bytes": 58165
+      "sha256": "edc9766542ab93909b436419c4c3637fd260d22b036dc5fb8455c02f34ec6943",
+      "bytes": 55116
     },
     "mobile-human.png": {
       "sha256": "54b312f1915fb014f97eeffcd975e8776f074ac54e4c517a207521bdfda61b59",
       "bytes": 109770
     },
     "mobile-agent.png": {
-      "sha256": "03f2c7ae7040782b370ae4bc7912e9ea7b6833ad10c846a5702bff2aa30319a9",
-      "bytes": 49744
+      "sha256": "90a7c37862e2fc47ca6ed83e81ef963586c23f730813ed0143c4d4e392e21ab7",
+      "bytes": 47582
     }
   },
   "limitations": [
