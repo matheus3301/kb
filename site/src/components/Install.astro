@@ -3,9 +3,9 @@ import CopyBlock from './CopyBlock.astro';
 const install = 'brew install matheus3301/tap/kb\nkb setup';
 const source = 'KB_SOURCE="/path/to/reviewed-kb"\ngo -C "$KB_SOURCE" build \\\n  -o "$KB_SOURCE/.build/kb" ./cmd/kb\n"$KB_SOURCE/.build/kb" setup --help\n"$KB_SOURCE/.build/kb" setup';
 const guideRef = '21a82cd4c210a6aa593afa5750b4be8e643f3ce1';
-const guideURL = `https://raw.githubusercontent.com/matheus3301/kb/${guideRef}/docs/agent-install.md`;
+const guideURL = `https://github.com/matheus3301/kb/raw/${guideRef}/docs/agent-install.md`;
 const guideHref = `https://github.com/matheus3301/kb/blob/${guideRef}/docs/agent-install.md`;
-const prompt = `Read ${guideURL}`;
+const prompt = `Install KB: ${guideURL}`;
 ---
 <section id="get-started" class="install-section section" aria-labelledby="install-title">
   <div class="section-intro">

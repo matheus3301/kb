@@ -123,9 +123,9 @@ test('the agent prompt fits three visible lines and references the complete immu
   expect(prompt.length, 'Line joining must not hide a long instruction block').toBeLessThanOrEqual(160);
   const reference = prompt.match(/https:\/\/\S+/)?.[0];
   expect(reference, 'The installer guide must survive PR branch deletion')
-    .toMatch(/^https:\/\/raw\.githubusercontent\.com\/matheus3301\/kb\/[0-9a-f]{40}\/docs\/agent-install\.md$/);
+    .toMatch(/^https:\/\/github\.com\/matheus3301\/kb\/raw\/[0-9a-f]{40}\/docs\/agent-install\.md$/);
   await expect(panel.getByRole('link')).toHaveAttribute(
-    'href', reference!.replace('raw.githubusercontent.com/matheus3301/kb/', 'github.com/matheus3301/kb/blob/'),
+    'href', reference!.replace('/kb/raw/', '/kb/blob/'),
   );
   const textLayout = await panel.locator('pre').evaluate(pre => {
     const style = getComputedStyle(pre);
