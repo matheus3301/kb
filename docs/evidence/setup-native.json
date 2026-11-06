@@ -180,9 +180,139 @@
     }
   ],
   "limits": [
-    "These runs qualify the named candidate and installed host builds only; final candidate recheck is recorded separately.",
+    "Initial CLI/learning observations identify their candidate above; final native scope/MCP rechecks identify the frozen runtime candidate separately.",
     "Rendered configuration and setup check are not evidence of native activation.",
-    "Other host builds and native global/project precedence have not been observed.",
+    "Other host builds, native mixed-mode global/project hooks and compaction/resume have not been observed.",
     "No authentication, hook-trust bypass, personal global setup, deployment, release or merge performed."
-  ]
+  ],
+  "final_candidate_recheck": {
+    "candidate_commit": "8b1c5b6",
+    "binary_sha256": "48f50ecf6415a36760b02a929e50ae474ee55f17c10c21509941fd0f45a203ba",
+    "native_runs": [
+      {
+        "agent": "codex",
+        "version": "codex-cli 0.166.0-alpha.5.1",
+        "mode": "cli",
+        "hooks": "off",
+        "learning": "off",
+        "scope": "isolated global plus project",
+        "status": "passed",
+        "method": "Fresh native Codex session with isolated profile and independent global/project synthetic roots; project-specific value overrides distinct global value. Both collections compared before/after.",
+        "assertions": [
+          {
+            "name": "native-turn-completed",
+            "passed": true
+          },
+          {
+            "name": "project-root-overrides-global",
+            "passed": true
+          },
+          {
+            "name": "both-collections-byte-pure",
+            "passed": true
+          }
+        ],
+        "temporary_auth_link_removed": true
+      },
+      {
+        "agent": "omp",
+        "version": "omp/18.16.0",
+        "mode": "mcp",
+        "hooks": "required",
+        "learning": "off",
+        "scope": "project",
+        "status": "passed",
+        "method": "Fresh official OMP RPC session, repeated prompts, native knowledge-base status/search/read through OMP xd:// deferred-tool dispatch. Hooks perform direct-core retrieval; model uses MCP only.",
+        "assertions": [
+          {
+            "name": "selected-model",
+            "passed": true
+          },
+          {
+            "name": "turn-1-completed",
+            "passed": true
+          },
+          {
+            "name": "turn-1-facts",
+            "passed": true
+          },
+          {
+            "name": "turn-1-collection-byte-pure",
+            "passed": true
+          },
+          {
+            "name": "turn-2-completed",
+            "passed": true
+          },
+          {
+            "name": "turn-2-facts",
+            "passed": true
+          },
+          {
+            "name": "turn-2-collection-byte-pure",
+            "passed": true
+          },
+          {
+            "name": "native-context-delivered",
+            "passed": true
+          },
+          {
+            "name": "native-mcp-tools-used",
+            "passed": true
+          },
+          {
+            "name": "only-native-mcp-dispatch",
+            "passed": true
+          },
+          {
+            "name": "no-model-shell",
+            "passed": true
+          },
+          {
+            "name": "native-settled",
+            "passed": true
+          }
+        ],
+        "native_events": [
+          {
+            "type": "kb-session",
+            "has_fact": false
+          },
+          {
+            "type": "kb-context",
+            "has_fact": true
+          },
+          {
+            "type": "kb-context",
+            "has_fact": true
+          }
+        ],
+        "native_tool_names": [
+          "read",
+          "write",
+          "read",
+          "write",
+          "read",
+          "write",
+          "write",
+          "write",
+          "write"
+        ],
+        "native_mcp_dispatch_targets": [
+          "xd://mcp__knowledge_base_kb_status",
+          "xd://mcp__knowledge_base_kb_status",
+          "xd://mcp__knowledge_base_kb_search",
+          "xd://mcp__knowledge_base_kb_search",
+          "xd://mcp__knowledge_base_kb_read",
+          "xd://mcp__knowledge_base_kb_read",
+          "xd://mcp__knowledge_base_kb_status",
+          "xd://mcp__knowledge_base_kb_search",
+          "xd://mcp__knowledge_base_kb_read"
+        ],
+        "teardown_confirmed": true,
+        "survivor_count": 0,
+        "observer_note": "Initial observer expected direct MCP tool names and reported a false negative; actual session used native read/write dispatch at xd://mcp__knowledge_base_* targets. Corrected observer rerun passed all assertions."
+      }
+    ]
+  }
 }
