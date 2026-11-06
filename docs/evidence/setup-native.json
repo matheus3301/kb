@@ -1,0 +1,130 @@
+{
+  "date": "2026-11-06",
+  "candidate_commit": "5b75df2",
+  "binary_sha256": "dfd8b0c0fe750a55221345a496562c9500a253de123e7f279a24ac2c5cd7fbeb",
+  "os": "Darwin",
+  "architecture": "arm64",
+  "collection": "Disposable synthetic external collection; no personal notes queried or published.",
+  "scope": "project",
+  "native_runs": [
+    {
+      "agent": "omp",
+      "version": "omp/18.16.0",
+      "mode": "cli",
+      "hooks": "required",
+      "learning": "off",
+      "status": "passed",
+      "method": "Official matching OMP Python RPC client; fresh project, gpt-6.1-sol/high, two identical read-only prompts.",
+      "assertions": [
+        {
+          "name": "selected-model",
+          "passed": true
+        },
+        {
+          "name": "turn-1-completed",
+          "passed": true
+        },
+        {
+          "name": "turn-1-facts",
+          "passed": true
+        },
+        {
+          "name": "turn-1-collection-byte-pure",
+          "passed": true
+        },
+        {
+          "name": "turn-2-completed",
+          "passed": true
+        },
+        {
+          "name": "turn-2-facts",
+          "passed": true
+        },
+        {
+          "name": "turn-2-collection-byte-pure",
+          "passed": true
+        },
+        {
+          "name": "native-context-delivered",
+          "passed": true
+        },
+        {
+          "name": "native-settled",
+          "passed": true
+        }
+      ],
+      "events": [
+        {
+          "type": "kb-session",
+          "has_fact": false
+        },
+        {
+          "type": "kb-context",
+          "has_fact": true
+        },
+        {
+          "type": "kb-context",
+          "has_fact": true
+        }
+      ],
+      "teardown_confirmed": true,
+      "survivor_count": 0
+    },
+    {
+      "agent": "codex",
+      "version": "codex-cli 0.166.0-alpha.5.1",
+      "mode": "cli",
+      "hooks": "off",
+      "learning": "off",
+      "status": "passed",
+      "method": "codex exec --ignore-user-config --ephemeral --skip-git-repo-check --sandbox workspace-write; selected fixture writable, hooks off.",
+      "exit_code": 0,
+      "facts_and_citation": true,
+      "collection_byte_pure": true
+    },
+    {
+      "agent": "claude",
+      "version": "2.1.212 (Claude Code)",
+      "mode": "cli",
+      "hooks": "required",
+      "learning": "off",
+      "status": "partial",
+      "method": "claude --print --setting-sources project --no-session-persistence --strict-mcp-config --tools empty --permission-mode dontAsk --include-hook-events",
+      "events": [
+        {
+          "type": "system",
+          "subtype": "hook_started",
+          "hook_name": "SessionStart:startup",
+          "exit_code": null
+        },
+        {
+          "type": "system",
+          "subtype": "hook_response",
+          "hook_name": "SessionStart:startup",
+          "exit_code": 0
+        },
+        {
+          "type": "system",
+          "subtype": "hook_started",
+          "hook_name": "UserPromptSubmit",
+          "exit_code": null
+        },
+        {
+          "type": "system",
+          "subtype": "hook_response",
+          "hook_name": "UserPromptSubmit",
+          "exit_code": 0
+        }
+      ],
+      "exit_code": 1,
+      "collection_byte_pure": true,
+      "limitation": "Native hook events executed successfully, but model answer blocked by missing Claude login. No successful model retrieval claimed."
+    }
+  ],
+  "limits": [
+    "These runs qualify the named candidate and installed host builds only; final candidate recheck is recorded separately.",
+    "Rendered configuration and setup check are not evidence of native activation.",
+    "Other host builds and native global/project precedence have not been observed.",
+    "No authentication, hook-trust bypass, personal global setup, deployment, release or merge performed."
+  ]
+}
