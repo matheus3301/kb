@@ -1,60 +1,82 @@
 ---
 import { agentSessions } from './agent-sessions';
 const exampleCount = agentSessions.length;
+
+function typedWords(text: string, interval: number) {
+  let elapsed = 0;
+  return text.split(' ').map(word => {
+    const duration = word.length * interval;
+    const style = `--type-delay: ${elapsed}ms; --type-duration: ${duration}ms; --characters: ${word.length}`;
+    elapsed += duration + interval;
+    return { word, style };
+  });
+}
 ---
 <section class="agent-demo" aria-labelledby="demo-title">
-  <header class="demo-header">
-    <span class="demo-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="m4 5 5 5-5 5m7 0h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    <h2 id="demo-title">Agent session</h2>
-    <span class="demo-number">Example <span data-example-number>1</span> / {exampleCount}</span>
+  <header class="terminal-bezel">
+    <span class="power-light" aria-hidden="true"></span>
+    <h2 id="demo-title">Agent terminal</h2>
+    <span class="demo-tag">Scripted demo</span>
   </header>
 
-  <div class="demo-stories">
-    {agentSessions.map((session, index) => (
-      <article class="demo-story" data-story data-active={index === 0 ? '' : undefined} inert={index !== 0}>
-        <div class="demo-prompt">
-          <p class="demo-label">You <span>{session.title}</span></p>
-          <p class="prompt-text">{session.prompt.split(' ').map((word, i) => <span style={`--word-delay: ${i * 35}ms`}>{word}{' '}</span>)}</p>
-        </div>
+  <div class="terminal-display">
+    <div class="terminal-status">
+      <span>~/example-kb</span>
+      <span>Session <span data-example-number>01</span> / {String(exampleCount).padStart(2, '0')}</span>
+    </div>
+    <div class="terminal-transcript" role="region" aria-label="Session transcript" tabindex="0">
+      {agentSessions.map((session, index) => (
+          <article data-story data-title={session.title} hidden={index !== 0}>
+            <p class="terminal-line terminal-prompt">
+              <span class="prompt-mark" aria-hidden="true">›</span>
+              <span>{typedWords(session.prompt, 12).map(({ word, style }) => <><span class="terminal-word" style={style}>{word}</span>{' '}</>)}</span>
+            </p>
 
-        <div class="step-rail" role="group" aria-label="Session steps" data-enhanced>
-          {session.steps.map((step, i) => (
-            <button type="button" style={`--step-duration: ${step.duration}ms`} aria-current={index === 0 && i === session.steps.length - 1 ? 'step' : undefined}>
-              {step.label}
-            </button>
-          ))}
-        </div>
-
-        <div class="demo-stages">
-          {session.steps.map((step, i) => (
-            <div class="demo-stage" data-duration={step.duration} data-current={index === 0 && i === session.steps.length - 1 ? '' : undefined}>
-              {step.command && <p class="demo-command"><span aria-hidden="true">$</span><code>{step.command}</code></p>}
-              <div class="stage-result">
-                <p class="demo-label stage-heading">
-                  {step.heading}
-                  {i === 0 && <span class="thinking-dots" aria-hidden="true"><i></i><i></i><i></i></span>}
-                </p>
-                {step.text && <p class="stage-text">
-                  {step.label === 'Reply' ? step.text.split(' ').map((word, i) => (
-                    <span class="reply-word" style={`--word-delay: ${i * 22 + 380}ms`}>{word}{' '}</span>
-                  )) : step.text}
-                </p>}
-                {step.diff && <div class="demo-diff">
-                  <p><span aria-label="Remove">−</span><code>{step.diff[0]}</code></p>
-                  <p><span aria-label="Add">+</span><code>{step.diff[1]}</code></p>
-                </div>}
-                {step.path && <p class="demo-source"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" aria-hidden="true"><path d="M2.5 1.5h5l3 3v9h-8zM7.5 1.5v3h3M5 8h3m-3 2.5h3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg><code>{step.path}</code></p>}
+            {session.steps.map(step => (
+              <div class="demo-stage" data-duration={step.duration}>
+                {step.command ? (
+                  <>
+                    <p class="terminal-line">
+                      <span class="line-mark" aria-hidden="true">•</span>
+                      <span><span class="command-label">Ran</span> <code>{step.command}</code></span>
+                    </p>
+                    <div class="terminal-line tool-output">
+                      <span class="line-mark" aria-hidden="true">└</span>
+                      <div>
+                        <p>{step.heading}</p>
+                        {step.path && <p class="output-path"><code>{step.path}</code></p>}
+                        {step.revision && <p><code>revision: {step.revision}</code></p>}
+                        {step.text && <p class="tool-excerpt">{step.text}</p>}
+                        {step.diff && <div class="terminal-diff">
+                          <p><span>− </span>{step.diff[0]}</p>
+                          <p><span>+ </span>{step.diff[1]}</p>
+                        </div>}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div class:list={['terminal-line', step.label === 'Reply' ? 'terminal-reply' : 'terminal-plan']}>
+                    <span class="line-mark" aria-hidden="true">•</span>
+                    <div>
+                      <p>{step.label === 'Reply' && step.text
+                        ? typedWords(step.text, 8).map(({ word, style }) => <><span class="terminal-word" style={style}>{word}</span>{' '}</>)
+                        : step.text}</p>
+                      {step.path && <p class="source-line">Source <code>{step.path}</code></p>}
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
-      </article>
-    ))}
+            ))}
+            <p class="terminal-line terminal-idle" aria-hidden="true"><span>›</span><span class="block-cursor"></span></p>
+          </article>
+      ))}
+    </div>
+    <div class="terminal-mode" aria-hidden="true"><span>CLI + skill</span><span class="terminal-activity">Working<span>…</span></span></div>
   </div>
 
-  <footer class="demo-controls" data-enhanced>
-    <span class="demo-mode">CLI + skill</span>
-    <div>
+  <footer class="demo-controls">
+    <span class="terminal-vents" aria-hidden="true"></span>
+    <div data-enhanced>
       <button type="button" data-pause data-motion>
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path class="pause-icon" d="M6 4v8m4-8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -77,11 +99,11 @@ const exampleCount = agentSessions.length;
 
 <script>
   function initDemo(demo: HTMLElement) {
+    const screen = demo.querySelector<HTMLElement>('.terminal-transcript')!;
     const stories = [...demo.querySelectorAll<HTMLElement>('[data-story]')].map(element => ({
       element,
-      title: element.querySelector('.demo-label span')!.textContent!,
+      title: element.dataset.title!,
       stages: [...element.querySelectorAll<HTMLElement>('[data-duration]')],
-      buttons: [...element.querySelectorAll<HTMLButtonElement>('.step-rail button')],
     }));
     const number = demo.querySelector('[data-example-number]')!;
     const pause = demo.querySelector<HTMLButtonElement>('[data-pause]')!;
@@ -137,31 +159,31 @@ const exampleCount = agentSessions.length;
       }
     }
 
-    function show(index: number, step: number) {
+    function show(index: number, step: number, scrollToStart = false) {
       stopClock();
       const old = stories[story];
       old.stages[phase].removeAttribute('data-current');
-      old.buttons[phase].removeAttribute('aria-current');
 
       if (story !== index) {
-        old.element.removeAttribute('data-active');
-        old.element.inert = true;
+        old.element.hidden = true;
       }
       story = index;
       phase = step;
       const current = stories[story];
-      current.element.setAttribute('data-active', '');
-      current.element.inert = false;
+      current.element.hidden = false;
+      current.element.toggleAttribute('data-intro', phase === 0);
+      current.stages.forEach((stage, i) => { stage.hidden = i > phase; });
       current.stages[phase].setAttribute('data-current', '');
-      current.buttons[phase].setAttribute('aria-current', 'step');
-      number.textContent = String(story + 1);
+      demo.toggleAttribute('data-working', phase < current.stages.length - 1);
+      screen.scrollTop = scrollToStart || phase === 0 ? 0 : screen.scrollHeight;
+      number.textContent = String(story + 1).padStart(2, '0');
       remaining = Number(current.stages[phase].dataset.duration);
       updatePlayback();
     }
 
     function showExample(index: number) {
       const staticView = motion.matches || paused;
-      show(index, staticView ? stories[index].stages.length - 1 : 0);
+      show(index, staticView ? stories[index].stages.length - 1 : 0, true);
     }
 
     pause.addEventListener('click', () => {
@@ -171,19 +193,26 @@ const exampleCount = agentSessions.length;
     demo.querySelector('[data-replay]')!.addEventListener('click', () => {
       paused = false;
       show(story, 0);
+      for (const animation of stories[story].element.getAnimations({ subtree: true })) {
+        animation.currentTime = 0;
+      }
     });
     demo.querySelector('[data-next]')!.addEventListener('click', () => {
       showExample((story + 1) % stories.length);
       announcement.textContent = stories[story].title;
     });
-    stories.forEach(({ buttons }, index) => buttons.forEach((button, step) => {
-      button.addEventListener('focus', () => {
-        if (motion.matches) return;
-        paused = true;
-        updatePlayback();
-      });
-      button.addEventListener('click', () => show(index, step));
-    }));
+    function pauseForReading() {
+      if (motion.matches) return;
+      paused = true;
+      updatePlayback();
+    }
+
+    screen.addEventListener('focus', pauseForReading);
+    for (const event of ['wheel', 'touchstart']) {
+      screen.addEventListener(event, () => {
+        if (screen.scrollHeight > screen.clientHeight) pauseForReading();
+      }, { passive: true });
+    }
     motion.addEventListener('change', () => showExample(story));
     document.addEventListener('visibilitychange', updatePlayback);
     new IntersectionObserver(([entry]) => {
@@ -201,151 +230,174 @@ const exampleCount = agentSessions.length;
 
 <style>
   .agent-demo {
-    --demo-inset: clamp(13px, 2vw, 23px);
-    --demo-panel: #0b2032;
+    --bezel: #182c3f;
+    --screen: #050e17;
+    --screen-text: #dceafb;
+    --screen-muted: #97abc2;
+    --screen-rule: #253b51;
     min-width: 0;
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--demo-panel);
-    box-shadow: 0 20px 65px #020b1570;
-    overflow-wrap: anywhere;
+    padding: 0 14px;
+    border: 1px solid #39516a;
+    border-radius: 19px;
+    background: linear-gradient(155deg, #253d54, var(--bezel) 34%, #0d1d2e);
+    box-shadow: inset 0 1px #ffffff1f, inset 0 -3px #02070e80, 0 24px 55px #0007;
+    font-family: var(--font-code);
   }
-  .demo-header, .demo-controls {
+  .terminal-bezel, .demo-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding-inline: var(--demo-inset);
+    gap: 9px;
+    padding-inline: 3px;
   }
-  .demo-header { padding-block: 13px; border-bottom: 1px solid var(--border); }
-  .demo-icon {
+  .terminal-bezel { min-height: 47px; }
+  .terminal-bezel h2 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    text-wrap: initial;
+  }
+  .demo-tag {
+    margin-left: auto;
+    color: #b3c4d8;
+    font-size: 10px;
+  }
+  .power-light {
+    width: 7px;
+    height: 7px;
+    margin-right: 2px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px #a8c7ff70;
+  }
+  .terminal-display {
     display: grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 7px;
-    background: var(--surface);
-    color: var(--accent);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    block-size: clamp(22rem, 31vw, 26rem);
+    border: 2px solid #040b12;
+    border-radius: 10px;
+    background: var(--screen);
+    box-shadow: 0 1px #ffffff26, 0 -1px #0008, inset 0 0 32px #0005;
+    color: var(--screen-text);
+    font-size: clamp(12px, 1.05vw, 14px);
+    line-height: 1.58;
   }
-  .demo-header h2 { font-size: 16px; letter-spacing: -.02em; text-wrap: initial; }
-  .demo-number, .demo-mode, .demo-label {
-    color: var(--muted);
-    font: 500 11px/1.45 var(--font-code);
-  }
-  .demo-number { margin-left: auto; white-space: nowrap; }
-  .demo-stories, .demo-stages { display: grid; grid-template-columns: minmax(0, 1fr); }
-  .demo-story, .demo-stage { grid-area: 1 / 1; visibility: hidden; min-width: 0; }
-  .demo-story { display: grid; grid-template-rows: auto auto 1fr; padding: var(--demo-inset); }
-  .demo-story[data-active], .demo-story[data-active] .demo-stage[data-current] { visibility: visible; }
-  .demo-prompt {
-    min-height: 100px;
-    padding: 13px 15px;
-    border-left: 2px solid var(--accent);
-    border-radius: 0 7px 7px 0;
-    background: linear-gradient(105deg, #183550, var(--surface));
-  }
-  .demo-label { color: var(--accent); }
-  .demo-label span { margin-left: 10px; color: var(--muted); }
-  .prompt-text { margin-top: 7px; font-size: clamp(14px, 1.3vw, 16px); color: var(--text); line-height: 1.45; }
-  .step-rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 5px; margin: 10px 0 13px; }
-  .step-rail button {
-    padding: 6px 0 0;
-    min-height: 44px;
-    border: 0;
-    border-radius: 4px;
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 11px;
-    white-space: nowrap;
-  }
-  .step-rail button::before {
-    content: '';
-    display: block;
-    height: 3px;
-    margin: 0 0 5px;
-    border-radius: 3px;
-    background: var(--border);
-  }
-  .step-rail button[aria-current] { color: var(--text); }
-  .step-rail button[aria-current]::before { background: var(--accent); }
-  .step-rail button:hover, .demo-controls button:hover { color: var(--text); background: var(--surface); }
-  .step-rail button:focus-visible, .demo-controls button:focus-visible { outline-offset: -2px; }
-  .demo-stage {
-    min-height: 149px;
-    padding: 13px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--background);
-  }
-  .demo-command { display: flex; align-items: baseline; gap: 9px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 12px; }
-  .demo-command span { font: 500 12px var(--font-code); color: var(--accent); }
-  .stage-text { margin-top: 6px; color: var(--text); font-size: 14px; line-height: 1.55; }
-  .thinking-dots { display: inline-flex; gap: 4px; vertical-align: middle; }
-  .thinking-dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
-  .demo-source {
+  .terminal-status, .terminal-mode {
     display: flex;
-    align-items: baseline;
-    gap: 7px;
-    margin-top: 10px;
-    color: var(--accent);
-    font-size: 11px;
-    line-height: 1.5;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 6px 12px;
+    color: var(--screen-muted);
+    font-size: 10px;
   }
-  .demo-source svg { align-self: flex-start; }
-  .demo-diff { display: grid; gap: 5px; margin-top: 7px; }
-  .demo-diff p { display: flex; gap: 8px; padding: 4px 7px; color: #ffc0bf; background: #442732; font-size: 11px; border-radius: 4px; }
-  .demo-diff p:last-child { color: #aee7c6; background: #17392e; }
-  .demo-controls { justify-content: space-between; border-top: 1px solid var(--border); padding-block: 4px; }
-  .demo-controls > div { display: flex; gap: 4px; }
+  .terminal-status {
+    border-bottom: 1px solid var(--screen-rule);
+    border-radius: 8px 8px 0 0;
+    background: #0d1e2e;
+  }
+  .terminal-status > span:first-child { color: var(--accent); }
+  .terminal-mode {
+    min-height: 29px;
+    border-top: 1px solid var(--screen-rule);
+  }
+  .terminal-activity { display: none; color: var(--accent); }
+  [data-playing][data-working] .terminal-activity { display: inline; }
+  .terminal-transcript {
+    overflow: auto;
+    overflow-anchor: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--screen-rule) transparent;
+    padding: 13px 12px;
+    overflow-wrap: anywhere;
+  }
+  .terminal-transcript:focus-visible { outline-offset: -3px; }
+  .terminal-line {
+    display: grid;
+    grid-template-columns: 1ch minmax(0, 1fr);
+    gap: 1ch;
+    color: inherit;
+  }
+  .terminal-prompt { font-weight: 500; }
+  .prompt-mark, .terminal-idle { color: var(--accent); }
+  .line-mark, .command-label { color: var(--screen-muted); }
+  .demo-stage { margin-top: 11px; }
+  .demo-stage code { color: inherit; }
+  .terminal-plan { color: var(--screen-muted); }
+  .tool-output {
+    margin: 2px 0 0 2ch;
+    color: var(--screen-muted);
+  }
+  .tool-output p, .terminal-reply p { color: inherit; }
+  .tool-output .output-path, .terminal-reply .source-line { color: var(--accent); }
+  .tool-excerpt { margin-top: 2px; }
+  .terminal-diff { margin-top: 3px; }
+  .terminal-diff p { padding-inline: 4px; color: #ffc0bf; background: #302029; }
+  .terminal-diff p:last-child { color: #b3e5ce; background: #122a27; }
+  .source-line { margin-top: 5px; }
+  .terminal-idle { align-items: center; margin-top: 13px; }
+  [data-working] .terminal-idle { display: none; }
+  .block-cursor { width: .6em; height: 1em; background: var(--accent); }
+  .demo-controls { min-height: 57px; justify-content: space-between; }
+  .terminal-vents {
+    width: 43px;
+    height: 10px;
+    flex: 0 0 auto;
+    background: repeating-linear-gradient(90deg, #081523 0 3px, #293e53 3px 4px, transparent 4px 7px);
+  }
+  .demo-controls > div { display: flex; gap: 5px; }
   .demo-controls button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 4px;
     min-height: 44px;
-    padding-inline: 7px;
-    border: 0;
-    border-radius: 5px;
-    background: transparent;
-    color: var(--muted);
-    font-size: 12px;
+    padding-inline: 8px;
+    border: 1px solid #3d5670;
+    border-radius: 6px;
+    background: linear-gradient(#23384e, #122337);
+    box-shadow: inset 0 1px #ffffff12, inset 0 -2px #0005;
+    color: var(--screen-text);
+    font-size: 11px;
     cursor: pointer;
   }
+  .demo-controls button:hover { border-color: var(--accent); }
+  .demo-controls button:active { box-shadow: inset 0 1px 4px #000b; }
+  .demo-controls button:focus-visible { outline-offset: 2px; }
   .demo-controls [data-next] { color: var(--accent); }
   .demo-announcement { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .agent-demo:not([data-ready]) [data-enhanced], [data-reduced] [data-motion] { display: none; }
-  .agent-demo:not([data-ready]) .demo-prompt { margin-bottom: 13px; }
   .play-icon, [data-paused] .pause-icon { display: none; }
   [data-paused] .play-icon { display: initial; }
 
+  @media (max-width: 760px) {
+    .agent-demo { padding-inline: 10px; }
+    .terminal-display { block-size: 22rem; }
+    .demo-controls button { padding-inline: 6px; }
+  }
+  @media (max-width: 355px) {
+    .terminal-vents { width: 29px; }
+  }
   @media (prefers-reduced-motion: no-preference) {
     [data-ready] { --play-state: paused; }
     [data-playing] { --play-state: running; }
-    [data-ready]:not([data-paused]) .demo-story[data-active] {
-      & :is(.prompt-text span, [data-current] .reply-word) {
-        animation: word-in .27s var(--word-delay) both var(--play-state);
-      }
-      & .demo-stage[data-current] {
-        animation: stage-slide .45s ease-out both var(--play-state);
-      }
-      & .demo-stage[data-current] .stage-result {
-        animation: stage-in .4s .45s ease-out both var(--play-state);
-      }
-      & .step-rail button[aria-current]::before {
-        background: linear-gradient(var(--accent), var(--accent)) left / 100% 100% no-repeat var(--border);
-        animation: step-progress var(--step-duration) linear both var(--play-state);
-      }
-      & [data-current] .thinking-dots i {
-        animation: dot-pulse 1s var(--dot-delay, 0s) infinite alternate var(--play-state);
-      }
+    [data-ready]:not([data-paused]) :is([data-intro] .terminal-prompt, [data-current] .terminal-reply) .terminal-word {
+      display: inline-block;
+      animation: type-word var(--type-duration) steps(var(--characters)) var(--type-delay) both var(--play-state);
     }
-    .thinking-dots i:nth-child(2) { --dot-delay: .14s; }
-    .thinking-dots i:nth-child(3) { --dot-delay: .28s; }
+    [data-ready]:not([data-paused]) [data-intro] .terminal-plan {
+      animation: print-line .22s 1.35s both var(--play-state);
+    }
+    [data-ready]:not([data-paused]) [data-current] .tool-output {
+      animation: print-line .2s .65s both var(--play-state);
+    }
+    [data-ready]:not([data-paused]) [data-current] .source-line {
+      animation: print-line .3s 1.45s both var(--play-state);
+    }
+    [data-playing] .terminal-activity span { animation: pulse .85s infinite alternate; }
   }
-  @keyframes word-in { from { opacity: .48; } to { opacity: 1; } }
-  @keyframes stage-slide { from { transform: translateY(5px); } to { transform: translateY(0); } }
-  @keyframes stage-in { from { opacity: .65; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes step-progress { from { background-size: 8% 100%; } to { background-size: 100% 100%; } }
-  @keyframes dot-pulse { from { opacity: .35; transform: translateY(1px); } to { opacity: 1; transform: translateY(-2px); } }
-  @media (max-width: 370px) { .demo-mode { font-size: 10px; } }
+  @keyframes type-word { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+  @keyframes print-line { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse { from { opacity: .45; } to { opacity: 1; } }
 </style>

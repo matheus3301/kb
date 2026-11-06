@@ -326,87 +326,95 @@ test('both setup views fit, pass serious/critical axe checks, and produce public
   await page.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-agent.png`), fullPage: true });
 });
 
-test('reduced motion shows a complete example and lets readers inspect the write preview', async ({ page }, testInfo) => {
+test('reduced motion shows a complete, keyboard-scrollable terminal transcript', async ({ page }, testInfo) => {
   await page.addInitScript(() => { Math.random = () => 0; });
   await openLanding(page);
-  const demo = page.getByRole('region', { name: 'Agent session' });
-  const stage = demo.locator('.demo-stage:visible');
+  const demo = page.getByRole('region', { name: 'Agent terminal' });
+  const transcript = demo.getByRole('region', { name: 'Session transcript' });
   const next = demo.getByRole('button', { name: 'Next example' });
-  await expect(demo.getByText('Example 1 / 3')).toBeVisible();
-  await expect(stage).toHaveCount(1);
-  await expect(stage).toContainText('worker’s memory budget');
+  await expect(demo.getByText('Session 01 / 03')).toBeVisible();
+  await expect(transcript).toContainText('worker’s memory budget');
   await expect(demo.getByRole('button', { name: 'Pause', exact: true })).toHaveCount(0);
 
   await page.reload();
-  await expect(demo.getByText('Example 2 / 3')).toBeVisible();
-  await expect(stage).toHaveCount(1);
-  await expect(stage).toContainText('HTTP 401');
+  await expect(demo.getByText('Session 02 / 03')).toBeVisible();
+  await expect(transcript).toContainText('HTTP 401');
   await next.click();
   await expect(next).toBeFocused();
-  await expect(demo.getByText('Example 3 / 3')).toBeVisible();
-  await expect(stage).toHaveCount(1);
-  await expect(stage).toContainText('I updated the rotation runbook.');
-  await expect(stage).toContainText('03_Resources/webhook-rotation.md:11');
-  await demo.getByRole('button', { name: 'Preview', exact: true }).press('Enter');
-  await expect(demo.getByRole('button', { name: 'Preview', exact: true })).toHaveAttribute('aria-current', 'step');
-  await expect(stage).toHaveCount(1);
-  await expect(stage).toContainText('kb patch --input patch.json --dry-run');
-  await expect(stage).toContainText('Keep the previous signing key active for 24 hours.');
+  await expect(demo.getByText('Session 03 / 03')).toBeVisible();
+  await expect(transcript.getByText('kb patch --input patch.json --dry-run', { exact: true })).toBeVisible();
+  await expect(transcript.getByText('Keep the previous signing key active for 24 hours.', { exact: false }).first()).toBeVisible();
+  await expect(transcript.getByText('I updated the rotation runbook.', { exact: false })).toBeVisible();
+  const citation = transcript.getByText('03_Resources/webhook-rotation.md:11', { exact: true });
+  await transcript.press('End');
+  await expect(citation).toBeInViewport();
   await expectNoPageOverflow(page);
   await expectAccessible(page);
-  await demo.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-write-preview.png`) });
+  await demo.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-terminal-write.png`) });
 });
 
-test('animated sessions pause, replay, finish, and advance to a different example', async ({ page }, testInfo) => {
+test('the animated terminal accumulates calls and supports pause, replay, and automatic advance', async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.addInitScript(() => { Math.random = () => 0; });
   await page.clock.install();
   await openLanding(page);
-  const demo = page.getByRole('region', { name: 'Agent session' });
-  const stage = demo.locator('.demo-stage:visible');
+  const demo = page.getByRole('region', { name: 'Agent terminal' });
+  const transcript = demo.getByRole('region', { name: 'Session transcript' });
+  const search = transcript.getByText('kb search "export batches" --limit 3', { exact: true });
+  const read = transcript.getByText('kb read 01_Projects/exports/batching.md', { exact: true });
   const isPlaying = () => demo.evaluate(element => element.hasAttribute('data-playing'));
   await demo.scrollIntoViewIfNeeded();
   await expect.poll(isPlaying).toBe(true);
-  await expect(stage).toContainText('Find the original decision');
+  await expect(transcript.getByText('Why did we cap export batches at 500 rows?')).toBeVisible();
+  await expect(search).toBeHidden();
 
   await page.clock.runFor(2400);
-  await expect(stage).toContainText('kb search "export batches" --limit 3');
+  await expect(search).toBeVisible();
   await demo.getByRole('button', { name: 'Pause', exact: true }).click();
   await page.clock.fastForward(30_000);
-  await expect(stage).toContainText('kb search "export batches" --limit 3');
+  await expect(read).toBeHidden();
 
   await demo.getByRole('button', { name: 'Play', exact: true }).click();
   await page.clock.runFor(3300);
-  await expect(stage).toContainText('kb read 01_Projects/exports/batching.md');
+  await expect(search).toBeVisible();
+  await expect(read).toBeVisible();
   await demo.getByRole('button', { name: 'Replay', exact: true }).click();
-  await expect(stage).toContainText('Find the original decision');
+  await expect(read).toBeHidden();
+  await expect(search).toBeHidden();
   await page.clock.runFor(10_000);
-  await expect(stage).toHaveCount(1);
-  await expect(stage).toContainText('The 500-row cap keeps retries within the worker’s memory budget.');
-  await expect(stage).toContainText('01_Projects/exports/batching.md:8');
-  await demo.getByRole('button', { name: 'Pause', exact: true }).click();
-  await demo.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-agent-reply.png`) });
+  await expect(search).toBeVisible();
+  await expect(read).toBeVisible();
+  await expect(transcript).toContainText('The 500-row cap keeps retries within the worker’s memory budget.');
+  await expect(transcript.getByText('01_Projects/exports/batching.md:8').last()).toBeInViewport();
+  await transcript.press('Home');
+  await expect(demo.getByRole('button', { name: 'Play', exact: true })).toBeVisible();
+  await expect(transcript.getByText('Why did we cap export batches at 500 rows?')).toBeInViewport();
+  await transcript.press('End');
+  await expect(transcript.getByText('01_Projects/exports/batching.md:8').last()).toBeInViewport();
+  await demo.screenshot({ path: testInfo.outputPath(`${testInfo.project.name}-terminal-reply.png`) });
   await demo.getByRole('button', { name: 'Play', exact: true }).click();
   await page.clock.runFor(9000);
-  await expect(demo.getByText('Example 2 / 3')).toBeVisible();
-  await expect(stage).toContainText('Check the last incident');
+  await expect(demo.getByText('Session 02 / 03')).toBeVisible();
+  await expect(transcript.getByText('The nightly import stalled again. What should I check first?')).toBeVisible();
 
   await page.locator('footer.site-footer').scrollIntoViewIfNeeded();
   await expect.poll(isPlaying).toBe(false);
   await page.clock.fastForward(30_000);
-  await expect(stage).toContainText('Check the last incident');
+  await expect(demo.getByText('Session 02 / 03')).toBeVisible();
+  await expect(transcript.getByText('kb context "nightly import stalled" --max-tokens 600')).toBeHidden();
 });
 
 test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
-  test('the initial question, answer, and source remain readable', async ({ page }) => {
+  test('the initial prompt, commands, answer, and source remain readable', async ({ page }) => {
     await page.goto('./');
-    const demo = page.getByRole('region', { name: 'Agent session' });
-    await expect(demo.getByText('Why did we cap export batches at 500 rows?')).toBeVisible();
-    await expect(demo.locator('.demo-stage:visible')).toHaveCount(1);
-    await expect(demo.getByText('The 500-row cap keeps retries within the worker’s memory budget.', { exact: false })).toBeVisible();
-    await expect(demo.getByText('01_Projects/exports/batching.md:8').last()).toBeVisible();
+    const demo = page.getByRole('region', { name: 'Agent terminal' });
+    const transcript = demo.getByRole('region', { name: 'Session transcript' });
+    await expect(transcript.getByText('Why did we cap export batches at 500 rows?')).toBeVisible();
+    await expect(transcript.getByText('kb read 01_Projects/exports/batching.md')).toBeVisible();
+    await expect(transcript.getByText('The 500-row cap keeps retries within the worker’s memory budget.', { exact: false })).toBeVisible();
+    await expect(transcript.getByText('01_Projects/exports/batching.md:8').last()).toBeVisible();
     await expect(demo.getByRole('button')).toHaveCount(0);
     await expectNoPageOverflow(page);
   });

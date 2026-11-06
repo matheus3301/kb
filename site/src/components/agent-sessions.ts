@@ -4,6 +4,7 @@ type Step = {
   text?: string;
   command?: string;
   path?: string;
+  revision?: string;
   diff?: [string, string];
   duration: number;
 };
@@ -24,7 +25,7 @@ export const agentSessions: Session[] = [
       {
         label: 'Read', heading: 'Read the rationale',
         command: 'kb read 01_Projects/exports/batching.md',
-        text: '“Split large exports into 500-row batches so retries stay within the worker’s memory budget.”',
+        text: 'Split large exports into 500-row batches so retries stay within the worker’s memory budget.',
         path: '01_Projects/exports/batching.md:8', duration: 4000,
       },
       {
@@ -42,13 +43,13 @@ export const agentSessions: Session[] = [
       {
         label: 'Context', heading: 'Found a handoff excerpt',
         command: 'kb context "nightly import stalled" --max-tokens 600',
-        text: '“If the queue grows while processed jobs stay flat, check the worker logs for an expired API token.”',
+        text: 'If the queue grows while processed jobs stay flat, check the worker logs for an expired API token.',
         path: '01_Projects/imports/handoff.md:8', duration: 4000,
       },
       {
         label: 'Read', heading: 'Check the recovery instructions',
         command: 'kb read 01_Projects/imports/handoff.md',
-        text: '“If the logs show HTTP 401, renew the token and retry the stalled job.”',
+        text: 'If the logs show HTTP 401, renew the token and retry the stalled job.',
         path: '01_Projects/imports/handoff.md:9', duration: 4200,
       },
       {
@@ -67,7 +68,8 @@ export const agentSessions: Session[] = [
       {
         label: 'Read', heading: 'Read the note and its current revision',
         command: 'kb read 03_Resources/webhook-rotation.md',
-        text: '“Retire the previous signing key immediately.”',
+        text: 'Retire the previous signing key immediately.',
+        revision: 'sha256:0ae64a46ba3c…',
         path: '03_Resources/webhook-rotation.md:8', duration: 3600,
       },
       {
