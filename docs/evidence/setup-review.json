@@ -51,5 +51,16 @@
     "Local inspection leaves native version/platform/trust/activation explicitly unobserved; unknown agent and unsupported scope rejection do not establish support.",
     "No exactly-once, hard real-time, hot reload of fixed-root MCP, native concurrent-model isolation or universal model adherence guarantee.",
     "No release, merge or website deployment performed."
-  ]
+  ],
+  "site_gate": {
+    "command": "mise exec -- make site-check",
+    "status": "passed",
+    "browser_tests": 24,
+    "source_tree": "4b549433ef5cd8a7007e717b27a9b6f70deb6316",
+    "prompt": "Install KB: <immutable GitHub raw Markdown URL>",
+    "source_lines": 1,
+    "rendered_mobile_lines": 3,
+    "rendered_text_unclipped": true,
+    "remote_guide_sha256": "9abc9f686966b2bdae8cba31e25b1b19fe4185c0af2dcac6360bf0ae82fbbac3"
+  }
 }
