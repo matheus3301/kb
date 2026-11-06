@@ -150,12 +150,16 @@ def exercise_setup(binary, docs=ROOT):
         root = workspace / "existing-knowledge"
         environment = dict(os.environ, HOME=str(home), XDG_CONFIG_HOME=str(home / ".config"))
         environment.pop("KB_ROOT", None)
-        for name in ("CODEX_HOME", "CLAUDE_CONFIG_DIR", "PI_CODING_AGENT_DIR", "OMP_CODING_AGENT_DIR"):
+        for name in ("CLAUDE_CONFIG_DIR", "CODEX_HOME", "PI_CONFIG_DIR", "OMP_PROFILE", "PI_PROFILE",
+                     "PI_CODING_AGENT_DIR", "OPENCODE_CONFIG", "OPENCODE_CONFIG_DIR",
+                     "OPENCODE_CONFIG_CONTENT", "COPILOT_HOME"):
             environment.pop(name, None)
         count = 0
 
         def run(arguments):
             nonlocal count
+            if "setup" in arguments and "--json" not in arguments:
+                arguments = [*arguments, "--json"]
             result = subprocess.run([str(binary), *arguments], cwd=workspace,
                                     env=environment, capture_output=True, text=True, check=False)
             if result.returncode:

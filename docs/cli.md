@@ -70,6 +70,7 @@ ordinary data-command root selection.
 
 ```sh
 kb setup
+kb setup agents --json
 kb --root ./existing-knowledge setup install --project ./example-project --agent pi --learning on --dry-run
 kb --root ./existing-knowledge setup install --project ./example-project --agent pi --learning on --yes
 kb setup check --project ./example-project --agent pi --json
@@ -89,6 +90,25 @@ initializes a new selected root; `--para` is optional creation organization.
 commands use `kb` on the host's `PATH` and an anchored relative binding.
 Global/MCP portable combinations are unsupported. Default local-only artifacts
 can contain absolute roots/executables; review them before committing a project.
+
+Install/uninstall accept repeated `--agent`; check/resolve require exactly one
+agent per invocation. `setup agents --json` lists declared capability/source
+metadata, not observed activation. For machine consumers, explicitly pass
+`--json` rather than parsing human review/status text.
+
+`--operation-id ID` identifies an install/uninstall request for durable replay.
+Reuse it only for the unchanged request; changed inputs must conflict rather
+than silently reuse an earlier result. A dry-run does not publish a receipt.
+For an interrupted setup transaction, inspect and recover private setup state:
+
+```sh
+kb setup recover --dry-run --json
+kb setup recover --json
+```
+
+Recovery retains concurrent user edits as conflicts rather than overwriting
+them. It does not delete or repair the collection. Keep the reported journal
+when recovery remains partial; setup state is separate from collection state.
 
 Dry-run preflights without side effects; `--yes` never overrides conflicts.
 Check/resolve are read-only. Uninstall removes selected owned integration, not

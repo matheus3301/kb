@@ -107,7 +107,8 @@ Use the source executable's explicit path if setup is not yet released.
 ```sh
 kb --root ./existing-knowledge setup install --project ./example-project --agent codex --agent pi --learning on --dry-run
 kb --root ./existing-knowledge setup install --project ./example-project --agent codex --agent pi --learning on --yes
-kb setup check --project ./example-project --agent codex --agent pi --json
+kb setup check --project ./example-project --agent codex --json
+kb setup check --project ./example-project --agent pi --json
 kb setup resolve --project ./example-project --agent codex --json
 ```
 
@@ -132,7 +133,8 @@ Only when all-project activation is intended:
 ```sh
 kb --root ./existing-knowledge setup install --global --agent omp --agent opencode --learning off --dry-run
 kb --root ./existing-knowledge setup install --global --agent omp --agent opencode --learning off --yes
-kb setup check --global --agent omp --agent opencode --json
+kb setup check --global --agent omp --json
+kb setup check --global --agent opencode --json
 ```
 
 The project and collection are different scopes. Multiple projects can share
@@ -216,9 +218,11 @@ kb setup uninstall --project ./example-project --agent codex --yes
 
 For a selected global integration, replace `--project ./example-project` with
 `--global`. Explicitly select agents; omission is not authorization to remove
-all installations. Where modes coexist, `--mode cli` or `--mode mcp` selects the
-owned mode to remove. Removing one consumer must preserve assets still used by
-another. Customized artifacts are preserved with a conflict, not recursively
+all installations. Each agent/scope binding has one current interface.
+`--mode cli` or `--mode mcp` filters removal to a matching current mode; it does
+not imply both modes coexist in one binding. Removing one consumer must preserve
+assets still used by another. Customized artifacts are preserved with a conflict,
+not recursively
 deleted by directory name. Uninstall uses ownership metadata even if the
 collection has moved or disappeared. Repeated removal is safe.
 
