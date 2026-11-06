@@ -13,6 +13,9 @@ installing or upgrading it does not make unreleased commands available. Check
 [installation](installation.md), [current release status](compatibility.md),
 [setup design](setup-design.md), and [adapter qualification](setup-compatibility.md).
 
+For the exact files installed in each harness and Mermaid installation/runtime
+flows, see [Setup architecture by harness](setup.md).
+
 ## Install, then set up
 
 On macOS or Linux with [Homebrew](https://brew.sh/), the onboarding flow is:

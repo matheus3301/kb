@@ -20,6 +20,7 @@ not authorize setup, collection writes, global changes, merge or release.
 - [Quickstart](https://raw.githubusercontent.com/matheus3301/kb/main/docs/quickstart.md): Existing disposable create/search/read/edit/plan examples.
 - [CLI guide](https://raw.githubusercontent.com/matheus3301/kb/main/docs/cli.md): Commands, JSON requests, errors and budgets.
 - [Setup design](https://raw.githubusercontent.com/matheus3301/kb/main/docs/setup-design.md): Binding resolution, manifest ownership, publication/recovery and unchanged data-root semantics.
+- [Setup architecture by harness](https://raw.githubusercontent.com/matheus3301/kb/main/docs/setup.md): Exact project/global artifacts, root routing, CLI/MCP and hook paths, with Mermaid installation and per-harness diagrams.
 - [Setup compatibility](https://raw.githubusercontent.com/matheus3301/kb/main/docs/setup-compatibility.md): Pi, OMP, OpenCode, Codex, Claude and other adapter capabilities; unsupported modes and pending native qualification.
 - [Setup acceptance](https://raw.githubusercontent.com/matheus3301/kb/main/docs/setup-acceptance.md): S01–S44 inventory and factual verification limits.
 

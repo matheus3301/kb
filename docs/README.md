@@ -18,6 +18,9 @@ browser UI for a collection. These Markdown guides remain canonical.
   dry-run, check, fresh-session activation and safe uninstall.
 - [Setup design](setup-design.md) and [host compatibility](setup-compatibility.md):
   binding/ownership/recovery contract, supported adapters and native limits.
+- [Setup architecture by harness](setup.md): installed files, root routing,
+  CLI/MCP alternatives, hooks and Mermaid installation/runtime diagrams for all
+  ten adapters.
 - [CLI guide](cli.md): command syntax, JSON requests, root selection, errors,
   budgets, and operating limits. Check installed command help for your version.
 - [llms.txt](../llms.txt): concise public Markdown discovery index for agents.

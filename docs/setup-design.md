@@ -5,6 +5,9 @@ not an extension of collection initialization or ordinary root discovery. Instal
 the binary, `kb init`, and data commands never configure agents. Only a requested
 `kb setup install` changes the selected project or user-global agent profile.
 
+[Setup architecture by harness](setup.md) maps these mechanisms to each host's
+project/global files, with diagrams of installation, routing and runtime use.
+
 ## Commands and onboarding
 
 `kb setup` and `kb setup install` share the same installer. The interactive path

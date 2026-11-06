@@ -165,7 +165,9 @@ Bounds and behavior:
 - Whole encoded response: at most 16 KiB. Oversize fails rather than silently
   dropping citations. Diagnostics include invalid/degraded/stale-index state.
 - Core retrieval: cooperative two-second context deadline; native wrapper process
-  timeout 3.5 seconds with `SIGKILL` for an uncooperative immediate child;
+  the CLI hook dispatcher supplies an earlier 1.5-second deadline, which wins
+  in that invocation path. Native wrapper process timeout is 3.5 seconds with
+  `SIGKILL` for an uncooperative immediate child;
   command-hook timeout five seconds (5,000 ms for Gemini). These are configured
   bounds, not portable latency SLAs or general descendant-process supervision.
 - Empty/no-hit queries are reported honestly. Missing root, pending recovery,
