@@ -96,6 +96,13 @@ agent per invocation. `setup agents --json` lists declared capability/source
 metadata, not observed activation. For machine consumers, explicitly pass
 `--json` rather than parsing human review/status text.
 
+`setup check --json` can exit **1** with `ok: true`: the inspection succeeded but
+configuration/readiness checks did not. Inspect `data.configured`, `data.ready`,
+`data.status`, artifact statuses and diagnostics. A missing native executable
+can leave artifacts configured while readiness is false/degraded. Local
+readiness does not establish native version, trust, loaded instructions or
+activation; `activation_observed` is not inferred from installed files.
+
 `--operation-id ID` identifies an install/uninstall request for durable replay.
 Reuse it only for the unchanged request; changed inputs must conflict rather
 than silently reuse an earlier result. A dry-run does not publish a receipt.

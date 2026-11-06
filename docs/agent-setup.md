@@ -185,8 +185,9 @@ privacy are covered by [S37](setup-acceptance.md) and the
 These are different claims:
 
 - **Configured:** owned artifacts exist, match the manifest and parse correctly.
-- **Ready:** the selected executable, collection and host prerequisites pass the
-  reported checks.
+- **Ready:** local artifacts, the selected collection and the configured KB/native
+  executables pass the reported local checks. Native version compatibility, trust,
+  instruction loading and session behavior are not established by this flag.
 - **Activation pending:** restart, native trust or a fresh session is still needed.
 - **Activation observed:** a fresh target-agent session actually used the selected
   external root, retrieved sources and cited them. Installing files alone cannot
@@ -198,6 +199,12 @@ These are different claims:
 note or modify a personal collection. Inspect root, policy, complete versioned
 skill references, shadowing/duplicate skills, host profile, manifest version and
 hook prerequisites. It can diagnose missing artifacts without repairing them.
+
+A completed inspection can return exit **1** with `ok: true` when the integration
+is configured but not ready. For example, a native agent missing from `PATH`
+produces `configured: true`, `ready: false`, `status: degraded` and an explicit
+diagnosis. Inspect those fields and artifact statuses; do not interpret `ok`
+alone as readiness, or suppress unrelated failures as expected host absence.
 
 Start a fresh session in the intended project and ask a question the selected
 base can answer. Observe actual search/read (or independent MCP tools), scoped
