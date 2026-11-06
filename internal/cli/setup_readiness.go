@@ -89,5 +89,5 @@ func (r *runner) setupReadiness(ctx context.Context, result *setup.CheckResult) 
 			}
 		}
 	}
-	result.Diagnostics = append(result.Diagnostics, "ready checks local artifacts/root/executable only; native version, trust and session activation remain unobserved")
+	result.Diagnostics = append(result.Diagnostics, "ready checks local artifacts/root/executable only; native version/platform compatibility, trust and session activation remain unobserved")
 }

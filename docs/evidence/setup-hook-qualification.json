@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-06",
+  "source_base": "ccff82ee50b28d1e8b52bdea272fb651f31e6efe",
+  "scope": "S39/S41/S44 bounded hook qualification; not universal host/version/platform support",
+  "regression": {
+    "test": "internal/agentsetup/extension_test.go:TestNativeExtensionProcessFailures",
+    "runtime": "Node v22.22.3",
+    "platform": "Darwin arm64",
+    "before": {
+      "timeout_case": "failed: ignored SIGTERM left the generated wrapper pending until the independent 8-second test deadline"
+    },
+    "after": {
+      "timeout_ms": 3510,
+      "child_gone_before_return": true,
+      "nonzero_exit_with_success_shaped_stdout": "unavailable context, not false success",
+      "empty_stdout": "unavailable context",
+      "malformed_json": "unavailable context",
+      "output_over_16_kib": "unavailable context",
+      "valid_no_hit": "preserved as empty retrieval, not infrastructure failure"
+    },
+    "fix": "Use SIGKILL for the existing execFile timeout and maxBuffer termination; no shell, retry, or permission bypass.",
+    "targeted_check": {
+      "command": "go test ./internal/agentsetup ./internal/cli -run 'TestNativeExtensionProcessFailures|TestSetupCheckDoesNotQualifyUnknownNativeBuild|TestHookEmptyFailureAndCancellation|TestHookRejectsAmbiguousAndUnboundedInput|TestSetupCLIPureDryRunAndValidation' -count=1 -v",
+      "result": "passed",
+      "go": "1.27.3",
+      "final_timeout_ms": 3507
+    }
+  },
+  "qualification_boundary": {
+    "inspection": "ready checks local prerequisites only; activation_observed remains false and status remains activation_pending even with a discoverable executable of unknown version",
+    "platform": "Native version/platform compatibility, trust and session activation are explicitly unobserved by setup check; no other platform or untested host build is qualified by these fixtures.",
+    "native_event_delivery": "Recorded separately after native process observation; Node callback fixtures alone are not native-host activation evidence.",
+    "timeout": "Bounded observed immediate subprocess termination, not hard real-time or a general descendant-process supervisor."
+  },
+  "primary_sources": [
+    "https://nodejs.org/docs/latest-v22.x/api/child_process.html#child_processexecfilefile-args-options-callback",
+    "https://github.com/can1357/oh-my-pi/blob/650f3a108229ee11bf68ba3377f4e8c3391cd424/packages/coding-agent/src/cli/args.ts"
+  ]
+}

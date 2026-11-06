@@ -19,7 +19,7 @@ function retrieve(event, ctx, prompt = "") {
   if (Buffer.byteLength(payload, "utf8") > 65536) return Promise.resolve(unavailable);
   return new Promise((resolve) => {
     const child = execFile(executable, ["setup", "hook", "--agent", agent, "--event", event],
-      { cwd: ctx.cwd, timeout: 3500, maxBuffer: 16384, encoding: "utf8", shell: false },
+      { cwd: ctx.cwd, timeout: 3500, killSignal: "SIGKILL", maxBuffer: 16384, encoding: "utf8", shell: false },
       (error, stdout) => {
         if (error) { resolve(unavailable); return; }
         try {
