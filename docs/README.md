@@ -11,6 +11,8 @@ browser UI for a collection. These Markdown guides remain canonical.
   installs, upgrades, and prerequisites.
 - [Quickstart](quickstart.md): create, search, read, edit, and preview a coordinated
   plan using a disposable example base.
+- [Agent installer guide](agent-install.md): self-contained instructions for an
+  agent handling availability, choices, preview/apply and fresh-session checks.
 - [Agent setup](agent-setup.md): source-candidate availability, explicit root,
   project/global scope, agents and learning, bundled skill or independent MCP,
   dry-run, check, fresh-session activation and safe uninstall.
