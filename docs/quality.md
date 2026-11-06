@@ -125,10 +125,17 @@ and [evidence contract](setup-acceptance.md). `make acceptance`, and therefore
 setup-capable candidate. It executes documented dry-run/install/check/resolve/
 uninstall in a disposable synthetic home with `KB_ROOT` cleared, checking
 read-only filesystem purity, repeated install/uninstall no-op and preservation
-of the existing collection. The `--setup` flag remains optional for separate
-old-release qualification. This is not native agent/hook activation evidence.
-Published v1.0.0
-does not contain setup; its historical documentation results remain separate.
+of the existing collection. The fixture deliberately removes native model
+harnesses from its isolated `PATH` while retaining real Git when available.
+`setup check` must return exit 1 with a successful inspection envelope,
+`configured: true`, `ready: false`, `status: degraded`, matching root/scope/agent,
+configured artifacts and an explicit missing-host diagnosis. This is an asserted
+unavailable-host result, not a skip or a native-ready pass. CI does not install
+model harnesses or simulate one to qualify activation.
+
+The `--setup` flag remains optional for separate old-release qualification.
+This is not native agent/hook activation evidence. Published v1.0.0 does not
+contain setup; its historical documentation results remain separate.
 
 [Performance evidence](performance.md) retains the initial v0.1 core misses:
 warm search p95 162.9 ms and peak process RSS 180.3 MiB against 150 ms/150 MiB,

@@ -8,6 +8,7 @@ from pathlib import Path
 import stat
 import re
 import shlex
+import shutil
 import subprocess
 import tempfile
 
@@ -134,6 +135,28 @@ def exercise(binary, docs=ROOT):
     return count
 
 
+def validate_unavailable_host_check(exit_code, envelope, root, project, agent):
+    """Require a configured binding and the deliberately absent host, not readiness."""
+    if envelope.get("schema_version") != "kb.v1" or envelope.get("ok") is not True:
+        raise AssertionError("Setup check did not return a successful inspection envelope")
+    data = envelope.get("data")
+    if not isinstance(data, dict):
+        raise AssertionError("Setup check did not return inspection data")
+    expected = {"agent": agent, "root": str(root.resolve()), "scope": "project",
+                "project": str(project.resolve()), "mode": "cli", "status": "degraded"}
+    if exit_code != 1 or any(data.get(key) != value for key, value in expected.items()):
+        raise AssertionError("Setup check did not diagnose the selected configured binding")
+    if data.get("configured") is not True or data.get("ready") is not False or data.get("activation_observed") is not False:
+        raise AssertionError("Setup check confused installed artifacts with native readiness")
+    artifacts = data.get("artifacts")
+    if not isinstance(artifacts, list) or not artifacts or any(
+            not isinstance(item, dict) or item.get("status") != "configured" for item in artifacts):
+        raise AssertionError("Setup check did not verify every installed artifact")
+    diagnosis = f"native agent executable is unavailable on PATH: {agent}"
+    if diagnosis not in data.get("diagnostics", []):
+        raise AssertionError("Setup check lacks the explicit unavailable-native-host diagnosis")
+
+
 def exercise_setup(binary, docs=ROOT):
     """Execute the documented candidate lifecycle in an isolated synthetic home."""
     binary = Path(binary).resolve()
@@ -148,7 +171,15 @@ def exercise_setup(binary, docs=ROOT):
         project = workspace / "example-project"
         project.mkdir()
         root = workspace / "existing-knowledge"
+        # Keep every real model harness absent, even on a developer workstation.
+        # Git is real optional installer bookkeeping, never a simulated agent.
+        tools = workspace / "tools"
+        tools.mkdir()
+        git = shutil.which("git")
+        if git:
+            (tools / "git").symlink_to(git)
         environment = dict(os.environ, HOME=str(home), XDG_CONFIG_HOME=str(home / ".config"))
+        environment["PATH"] = str(tools)
         environment.pop("KB_ROOT", None)
         for name in ("CLAUDE_CONFIG_DIR", "CODEX_HOME", "PI_CONFIG_DIR", "OMP_PROFILE", "PI_PROFILE",
                      "PI_CODING_AGENT_DIR", "OPENCODE_CONFIG", "OPENCODE_CONFIG_DIR",
@@ -162,10 +193,13 @@ def exercise_setup(binary, docs=ROOT):
                 arguments = [*arguments, "--json"]
             result = subprocess.run([str(binary), *arguments], cwd=workspace,
                                     env=environment, capture_output=True, text=True, check=False)
-            if result.returncode:
-                raise AssertionError(f"Documented setup {arguments}: {result.stdout} {result.stderr}")
             envelope = json.loads(result.stdout)
-            if envelope.get("schema_version") != "kb.v1" or not envelope.get("ok"):
+            if "setup" in arguments and arguments[arguments.index("setup") + 1] == "check":
+                agent = arguments[arguments.index("--agent") + 1]
+                validate_unavailable_host_check(result.returncode, envelope, root, project, agent)
+            elif result.returncode:
+                raise AssertionError(f"Documented setup {arguments}: {result.stdout} {result.stderr}")
+            if envelope.get("schema_version") != "kb.v1" or envelope.get("ok") is not True:
                 raise AssertionError(f"Documented setup returned an invalid envelope: {arguments}")
             count += 1
             return envelope["data"]
@@ -206,7 +240,7 @@ def exercise_setup(binary, docs=ROOT):
                     raise AssertionError("Documented repeated setup operation was not a byte-pure no-op")
         if before_notes != {path.relative_to(root): path.read_bytes() for path in root.rglob("*") if path.is_file()}:
             raise AssertionError("Documented setup lifecycle changed the existing collection")
-    print(f"Setup documentation workflow passed: {count} real CLI requests; no native activation claim.")
+    print(f"Setup documentation workflow passed: {count} real CLI requests; native harness deliberately unavailable, no readiness/activation qualification.")
     return count
 
 
