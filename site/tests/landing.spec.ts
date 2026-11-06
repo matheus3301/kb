@@ -114,6 +114,23 @@ test('copy controls write the complete visible commands and agent prompt to the 
   }
 });
 
+test('the agent prompt stays compact and references the complete PR guide', async ({ page }) => {
+  await openLanding(page);
+  await page.getByRole('tab', { name: 'For Your Agent', exact: true }).click();
+  const panel = page.getByRole('tabpanel', { name: 'For Your Agent', exact: true });
+  const prompt = await panel.locator('#agent-setup-prompt').innerText();
+  expect(prompt.split('\n').length, 'The copied source must have at most three lines').toBeLessThanOrEqual(3);
+  expect(prompt.length, 'Line joining must not hide a long instruction block').toBeLessThanOrEqual(160);
+  const reference = prompt.match(/https:\/\/\S+/)?.[0];
+  expect(reference).toBe('https://raw.githubusercontent.com/matheus3301/kb/feat/agent-setup/docs/agent-install.md');
+  await expect(panel.getByRole('link')).toHaveAttribute(
+    'href', reference!.replace('raw.githubusercontent.com/matheus3301/kb/', 'github.com/matheus3301/kb/blob/'),
+  );
+  const card = await panel.locator('.copy-block').boundingBox();
+  expect(card!.height, 'The rendered prompt card must stay compact, including on mobile').toBeLessThanOrEqual(250);
+  await expectNoPageOverflow(page);
+});
+
 test('pending copy preserves keyboard focus, guards repeat activation, and respects later focus movement', async ({ page }) => {
   await page.addInitScript(() => {
     let attempts = 0;
