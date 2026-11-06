@@ -183,7 +183,7 @@
     "Initial CLI/learning observations identify their candidate above; final native scope/MCP rechecks identify the frozen runtime candidate separately.",
     "Rendered configuration and setup check are not evidence of native activation.",
     "Other host builds, native mixed-mode global/project hooks and compaction/resume have not been observed.",
-    "No authentication, hook-trust bypass, personal global setup, deployment, release or merge performed."
+    "No login setup, credential reconfiguration, hook-trust bypass, personal global setup, deployment, release or merge performed. Native sessions used existing authentication."
   ],
   "final_candidate_recheck": {
     "candidate_commit": "8b1c5b6",
