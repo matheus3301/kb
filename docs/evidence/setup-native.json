@@ -1,0 +1,319 @@
+{
+  "date": "2026-11-06",
+  "candidate_commit": "5b75df2",
+  "binary_sha256": "dfd8b0c0fe750a55221345a496562c9500a253de123e7f279a24ac2c5cd7fbeb",
+  "os": "Darwin",
+  "architecture": "arm64",
+  "collection": "Disposable synthetic external collection; no personal notes queried or published.",
+  "scope": "project",
+  "native_runs": [
+    {
+      "agent": "omp",
+      "version": "omp/18.16.0",
+      "mode": "cli",
+      "hooks": "required",
+      "learning": "off",
+      "status": "passed",
+      "method": "Official matching OMP Python RPC client; fresh project, gpt-6.1-sol/high, two identical read-only prompts.",
+      "assertions": [
+        {
+          "name": "selected-model",
+          "passed": true
+        },
+        {
+          "name": "turn-1-completed",
+          "passed": true
+        },
+        {
+          "name": "turn-1-facts",
+          "passed": true
+        },
+        {
+          "name": "turn-1-collection-byte-pure",
+          "passed": true
+        },
+        {
+          "name": "turn-2-completed",
+          "passed": true
+        },
+        {
+          "name": "turn-2-facts",
+          "passed": true
+        },
+        {
+          "name": "turn-2-collection-byte-pure",
+          "passed": true
+        },
+        {
+          "name": "native-context-delivered",
+          "passed": true
+        },
+        {
+          "name": "native-settled",
+          "passed": true
+        }
+      ],
+      "events": [
+        {
+          "type": "kb-session",
+          "has_fact": false
+        },
+        {
+          "type": "kb-context",
+          "has_fact": true
+        },
+        {
+          "type": "kb-context",
+          "has_fact": true
+        }
+      ],
+      "teardown_confirmed": true,
+      "survivor_count": 0
+    },
+    {
+      "agent": "codex",
+      "version": "codex-cli 0.166.0-alpha.5.1",
+      "mode": "cli",
+      "hooks": "off",
+      "learning": "off",
+      "status": "passed",
+      "method": "codex exec --ignore-user-config --ephemeral --skip-git-repo-check --sandbox workspace-write; selected fixture writable, hooks off.",
+      "exit_code": 0,
+      "facts_and_citation": true,
+      "collection_byte_pure": true
+    },
+    {
+      "agent": "claude",
+      "version": "2.1.212 (Claude Code)",
+      "mode": "cli",
+      "hooks": "required",
+      "learning": "off",
+      "status": "partial",
+      "method": "claude --print --setting-sources project --no-session-persistence --strict-mcp-config --tools empty --permission-mode dontAsk --include-hook-events",
+      "events": [
+        {
+          "type": "system",
+          "subtype": "hook_started",
+          "hook_name": "SessionStart:startup",
+          "exit_code": null
+        },
+        {
+          "type": "system",
+          "subtype": "hook_response",
+          "hook_name": "SessionStart:startup",
+          "exit_code": 0
+        },
+        {
+          "type": "system",
+          "subtype": "hook_started",
+          "hook_name": "UserPromptSubmit",
+          "exit_code": null
+        },
+        {
+          "type": "system",
+          "subtype": "hook_response",
+          "hook_name": "UserPromptSubmit",
+          "exit_code": 0
+        }
+      ],
+      "exit_code": 1,
+      "collection_byte_pure": true,
+      "limitation": "Native hook events executed successfully, but model answer blocked by missing Claude login. No successful model retrieval claimed."
+    },
+    {
+      "agent": "omp",
+      "version": "omp/18.16.0",
+      "mode": "cli",
+      "hooks": "required",
+      "learning": "on",
+      "scope": "project",
+      "status": "passed",
+      "method": "Fresh native OMP RPC session updates existing synthetic note using revision-checked CLI preview/apply/readback, preserves metadata and adds explicit source provenance, then repeats read-only retrieval.",
+      "assertions": [
+        {
+          "name": "selected-model",
+          "passed": true
+        },
+        {
+          "name": "turn-1-completed",
+          "passed": true
+        },
+        {
+          "name": "turn-1-facts",
+          "passed": true
+        },
+        {
+          "name": "authorized-note-update",
+          "passed": true
+        },
+        {
+          "name": "authorized-write-observed",
+          "passed": true
+        },
+        {
+          "name": "turn-2-completed",
+          "passed": true
+        },
+        {
+          "name": "turn-2-facts",
+          "passed": true
+        },
+        {
+          "name": "repeat-query-byte-pure",
+          "passed": true
+        },
+        {
+          "name": "native-context-delivered",
+          "passed": true
+        },
+        {
+          "name": "revision-checked-cli-patch-observed",
+          "passed": true
+        },
+        {
+          "name": "native-settled",
+          "passed": true
+        }
+      ],
+      "teardown_confirmed": true,
+      "survivor_count": 0
+    }
+  ],
+  "limits": [
+    "Initial CLI/learning observations identify their candidate above; final native scope/MCP rechecks identify the frozen runtime candidate separately.",
+    "Rendered configuration and setup check are not evidence of native activation.",
+    "Other host builds, native mixed-mode global/project hooks and compaction/resume have not been observed.",
+    "No login setup, credential reconfiguration, hook-trust bypass, personal global setup, deployment, release or merge performed. Native sessions used existing authentication."
+  ],
+  "final_candidate_recheck": {
+    "candidate_commit": "8b1c5b6",
+    "binary_sha256": "48f50ecf6415a36760b02a929e50ae474ee55f17c10c21509941fd0f45a203ba",
+    "native_runs": [
+      {
+        "agent": "codex",
+        "version": "codex-cli 0.166.0-alpha.5.1",
+        "mode": "cli",
+        "hooks": "off",
+        "learning": "off",
+        "scope": "isolated global plus project",
+        "status": "passed",
+        "method": "Fresh native Codex session with isolated profile and independent global/project synthetic roots; project-specific value overrides distinct global value. Both collections compared before/after.",
+        "assertions": [
+          {
+            "name": "native-turn-completed",
+            "passed": true
+          },
+          {
+            "name": "project-root-overrides-global",
+            "passed": true
+          },
+          {
+            "name": "both-collections-byte-pure",
+            "passed": true
+          }
+        ],
+        "temporary_auth_link_removed": true
+      },
+      {
+        "agent": "omp",
+        "version": "omp/18.16.0",
+        "mode": "mcp",
+        "hooks": "required",
+        "learning": "off",
+        "scope": "project",
+        "status": "passed",
+        "method": "Fresh official OMP RPC session, repeated prompts, native knowledge-base status/search/read through OMP xd:// deferred-tool dispatch. Hooks perform direct-core retrieval; model uses MCP only.",
+        "assertions": [
+          {
+            "name": "selected-model",
+            "passed": true
+          },
+          {
+            "name": "turn-1-completed",
+            "passed": true
+          },
+          {
+            "name": "turn-1-facts",
+            "passed": true
+          },
+          {
+            "name": "turn-1-collection-byte-pure",
+            "passed": true
+          },
+          {
+            "name": "turn-2-completed",
+            "passed": true
+          },
+          {
+            "name": "turn-2-facts",
+            "passed": true
+          },
+          {
+            "name": "turn-2-collection-byte-pure",
+            "passed": true
+          },
+          {
+            "name": "native-context-delivered",
+            "passed": true
+          },
+          {
+            "name": "native-mcp-tools-used",
+            "passed": true
+          },
+          {
+            "name": "only-native-mcp-dispatch",
+            "passed": true
+          },
+          {
+            "name": "no-model-shell",
+            "passed": true
+          },
+          {
+            "name": "native-settled",
+            "passed": true
+          }
+        ],
+        "native_events": [
+          {
+            "type": "kb-session",
+            "has_fact": false
+          },
+          {
+            "type": "kb-context",
+            "has_fact": true
+          },
+          {
+            "type": "kb-context",
+            "has_fact": true
+          }
+        ],
+        "native_tool_names": [
+          "read",
+          "write",
+          "read",
+          "write",
+          "read",
+          "write",
+          "write",
+          "write",
+          "write"
+        ],
+        "native_mcp_dispatch_targets": [
+          "xd://mcp__knowledge_base_kb_status",
+          "xd://mcp__knowledge_base_kb_status",
+          "xd://mcp__knowledge_base_kb_search",
+          "xd://mcp__knowledge_base_kb_search",
+          "xd://mcp__knowledge_base_kb_read",
+          "xd://mcp__knowledge_base_kb_read",
+          "xd://mcp__knowledge_base_kb_status",
+          "xd://mcp__knowledge_base_kb_search",
+          "xd://mcp__knowledge_base_kb_read"
+        ],
+        "teardown_confirmed": true,
+        "survivor_count": 0,
+        "observer_note": "Initial observer expected direct MCP tool names and reported a false negative; actual session used native read/write dispatch at xd://mcp__knowledge_base_* targets. Corrected observer rerun passed all assertions."
+      }
+    ]
+  },
+  "latest_qualification": "docs/evidence/setup-qualified.json"
+}

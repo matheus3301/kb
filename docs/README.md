@@ -11,9 +11,16 @@ browser UI for a collection. These Markdown guides remain canonical.
   installs, upgrades, and prerequisites.
 - [Quickstart](quickstart.md): create, search, read, edit, and preview a coordinated
   plan using a disposable example base.
-- [Agent setup](agent-setup.md): install the CLI and skill, deliberately select
-  agent/project/global scope and a root, preserve existing collections and
-  instructions, activate a workdir policy, and verify actual use.
+- [Agent installer guide](agent-install.md): self-contained instructions for an
+  agent handling availability, choices, preview/apply and fresh-session checks.
+- [Agent setup](agent-setup.md): source-candidate availability, explicit root,
+  project/global scope, agents and learning, bundled skill or independent MCP,
+  dry-run, check, fresh-session activation and safe uninstall.
+- [Setup design](setup-design.md) and [host compatibility](setup-compatibility.md):
+  binding/ownership/recovery contract, supported adapters and native limits.
+- [Setup architecture by harness](setup.md): installed files, root routing,
+  CLI/MCP alternatives, hooks and Mermaid installation/runtime diagrams for all
+  ten adapters.
 - [CLI guide](cli.md): command syntax, JSON requests, root selection, errors,
   budgets, and operating limits. Check installed command help for your version.
 - [llms.txt](../llms.txt): concise public Markdown discovery index for agents.
@@ -51,6 +58,8 @@ browser UI for a collection. These Markdown guides remain canonical.
   publication authorization; merging code does not publish a release.
 - [Quality gates](quality.md) and [acceptance inventory](acceptance.json): enforced
   checks, observable criteria, evidence paths, and limitations.
+- [Setup acceptance](setup-acceptance.md) and [S01–S44 inventory](setup-acceptance.json):
+  installer criteria, factual source/native evidence and remaining qualification.
 - [Retrieval evaluation](qa/retrieval-quality.md): synthetic lexical judgments,
   citations, budgets, read purity, and CLI/MCP parity.
 - [Performance](performance.md) and [large-corpus results](performance-large-corpus.md):

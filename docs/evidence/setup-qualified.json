@@ -1,0 +1,465 @@
+{
+  "date": "2026-11-06",
+  "candidate_commit": "bfcd143",
+  "runtime_fix_commit": "b9883e6",
+  "binary_sha256": "f2865c84f348bb28e1868da97846977f5cd3b1581fe23e98fb07788a9b168a23",
+  "full_gate": {
+    "command": "env -u KB_ROOT mise exec -- make check",
+    "status": "passed",
+    "aggregate_statement_coverage_percent": 86.5,
+    "named_top_level_go_tests_passed": 218,
+    "fuzz_targets": 17,
+    "stages": [
+      "repository and tooling regressions",
+      "static analysis: zero issues",
+      "race/shuffle/coverage tests",
+      "linux/darwin amd64/arm64 cross-build",
+      "fuzz",
+      "secret and dependency vulnerability scans",
+      "CLI acceptance and executable docs",
+      "benchmark smoke",
+      "retrieval quality",
+      "concurrent writer/backup soak"
+    ]
+  },
+  "jsonc_regression": {
+    "corpus": "10c2b389efa4b531",
+    "extended_fuzz_seconds": 120,
+    "extended_fuzz_executions": 9623675,
+    "status": "passed",
+    "scope": "Invalid comma-only containers rejected before publication; valid JSONC/comments preserved; whole edited output revalidated."
+  },
+  "site_gate": {
+    "status": "passed",
+    "command": "env -u KB_ROOT mise exec -- make site-check",
+    "browser_tests": 22,
+    "site_source_commit": "7b08e94b345c440668b52ce5566ca53b0af2b82b",
+    "scope": "Site source unchanged since this passing browser/build/audit gate and reviewed screenshots."
+  },
+  "wizard_pty": {
+    "status": "passed",
+    "candidate_commit": "bfcd143",
+    "assertions": {
+      "actual_pty": true,
+      "pasted_answers_including_confirmation": true,
+      "reviewed_destinations": true,
+      "review_before_apply": true,
+      "selected_root": true,
+      "collection_byte_pure": true,
+      "path_has_no_node_git_or_native_harness": true
+    },
+    "exit_code": 0
+  },
+  "real_git_worktrees": {
+    "candidate_commit": "bfcd143",
+    "assertions": [
+      {
+        "name": "personal-policy-excluded-repo",
+        "passed": true
+      },
+      {
+        "name": "personal-policy-excluded-worktree",
+        "passed": true
+      },
+      {
+        "name": "independent-binding-repo",
+        "passed": true
+      },
+      {
+        "name": "independent-binding-worktree",
+        "passed": true
+      },
+      {
+        "name": "worktree-survives-main-uninstall",
+        "passed": true
+      },
+      {
+        "name": "shared-exclude-restored",
+        "passed": true
+      },
+      {
+        "name": "memory-byte-pure",
+        "passed": true
+      }
+    ],
+    "status": "passed"
+  },
+  "lifecycle_matrix": {
+    "passed_supported_rows": 19,
+    "rows": [
+      {
+        "case": "codex-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "local-prerequisites-ready",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "codex-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "local-prerequisites-ready",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "claude-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "local-prerequisites-ready",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "claude-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "local-prerequisites-ready",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "pi-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "pi-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "omp-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "local-prerequisites-ready",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "omp-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "local-prerequisites-ready",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "opencode-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "opencode-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "cursor-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "cursor-global-cli-lifecycle",
+        "status": "unsupported-or-failed-preflight"
+      },
+      {
+        "case": "gemini-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "gemini-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "copilot-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "local-prerequisites-ready",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "copilot-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "local-prerequisites-ready",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "antigravity-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "antigravity-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "devin-project-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      },
+      {
+        "case": "devin-global-cli-lifecycle",
+        "status": "passed",
+        "native_check": "native-unavailable",
+        "assertions": [
+          "dry-run-pure",
+          "repeat-install-byte-pure",
+          "check",
+          "resolve-external-root",
+          "collection-pure",
+          "uninstall",
+          "repeat-uninstall-byte-pure"
+        ]
+      }
+    ]
+  },
+  "native_mcp_recheck": {
+    "agent": "omp",
+    "agent_version": "omp/18.16.0",
+    "status": "passed",
+    "assertions": [
+      {
+        "name": "selected-model",
+        "passed": true
+      },
+      {
+        "name": "turn-1-completed",
+        "passed": true
+      },
+      {
+        "name": "turn-1-facts",
+        "passed": true
+      },
+      {
+        "name": "turn-1-collection-byte-pure",
+        "passed": true
+      },
+      {
+        "name": "turn-2-completed",
+        "passed": true
+      },
+      {
+        "name": "turn-2-facts",
+        "passed": true
+      },
+      {
+        "name": "turn-2-collection-byte-pure",
+        "passed": true
+      },
+      {
+        "name": "native-context-delivered",
+        "passed": true
+      },
+      {
+        "name": "native-mcp-tools-used",
+        "passed": true
+      },
+      {
+        "name": "only-native-mcp-dispatch",
+        "passed": true
+      },
+      {
+        "name": "no-model-shell",
+        "passed": true
+      },
+      {
+        "name": "native-settled",
+        "passed": true
+      }
+    ],
+    "native_custom_messages": [
+      {
+        "type": "kb-session",
+        "has_fact": false
+      },
+      {
+        "type": "kb-context",
+        "has_fact": true
+      },
+      {
+        "type": "kb-context",
+        "has_fact": true
+      }
+    ],
+    "tool_names": [
+      "read",
+      "read",
+      "read",
+      "write",
+      "write",
+      "write",
+      "write",
+      "write",
+      "write"
+    ],
+    "mcp_dispatch_targets": [
+      "xd://mcp__knowledge_base_kb_status",
+      "xd://mcp__knowledge_base_kb_search",
+      "xd://mcp__knowledge_base_kb_read",
+      "xd://mcp__knowledge_base_kb_status",
+      "xd://mcp__knowledge_base_kb_search",
+      "xd://mcp__knowledge_base_kb_read",
+      "xd://mcp__knowledge_base_kb_status",
+      "xd://mcp__knowledge_base_kb_search",
+      "xd://mcp__knowledge_base_kb_read"
+    ],
+    "teardown_confirmed": true,
+    "survivor_pids": [],
+    "mode": "mcp",
+    "scope": "project",
+    "learning": "off",
+    "hooks": "required"
+  },
+  "limits": [
+    "Native observations remain scoped to identified builds/modes, not every configured host.",
+    "Codex hook trust, native compaction/resume and mixed global/project hooks remain unqualified.",
+    "Published v1.0.0 lacks setup; no release or deployment is implied."
+  ],
+  "historical_record": "This record identifies the earlier bfcd143 qualification. Review follow-up, timeout fix, refreshed site and closed native gaps are recorded in setup-review.json; earlier observations are not relabeled as later runs."
+}

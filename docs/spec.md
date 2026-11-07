@@ -82,7 +82,9 @@ Embeddings, remote HTTP, and multiple simultaneous bases are future extensions.
 
 1. Markdown files are the source of truth. Deleting the cache does not lose memory.
 2. Reading, searching, and validating never modify notes, Git, or agent configuration.
-3. Installation and initialization do not register MCP, skills, or global configuration.
+3. Binary installation and collection initialization do not register MCP, skills,
+   or global configuration. Only the explicit `kb setup` lifecycle may configure
+   selected agents within a reviewed project or authorized user-global scope.
 4. The tool does not select facts or invent sources or human review.
 5. Note content is data; instructions within it do not grant permission.
 6. The agent remains responsible for consulting and updating memory according to
@@ -175,16 +177,27 @@ scoped to the project by default. Its [documented layout](https://github.com/ver
 recognizes `skills/<name>/SKILL.md`. The skill is included in this repository;
 installation still does not activate it automatically for every agent.
 
-Documented setup separates installing the binary, installing the skill,
-configuring the root, registering MCP if desired, and adding instructions to
-the selected workdir. Node/npx is needed only for that installation channel,
-not to run the CLI/MCP. The CLI can also be used without MCP. `kb init` remains
-limited to the base. Integration setup is a separate, explicit action: preserve
-existing instructions, show changes, and never implicitly register agents or
-edit global configuration. Do not implement a custom skill installer in the
-core. The [quickstart](quickstart.md) documents explicit binary and
-skill installation, root selection, MCP configuration, and workdir instructions;
-there is no combined automatic integration installer.
+The explicit `kb setup` lifecycle orchestrates agent integration outside the
+knowledge core. It bundles the version-matched CLI skill and references, records
+an external-root binding and ownership, plans changes, and installs only selected
+agent assets after review. Project scope is the default; user-global scope must
+be explicitly selected. Existing collections and customized configuration are
+preserved. `init`, package installation and data operations retain their
+no-agent-configuration guarantee.
+
+Setup supports install, read-only check/resolve, safe uninstall, and qualified
+host-specific hook adapters. CLI + skill remains the default; MCP is an explicit
+independent mode and does not require the CLI skill. Dry-run is side-effect-free.
+No-op repeats, expected-byte conflicts, shared ownership and recoverable
+cross-file publication are part of the integration contract, not claims of
+globally atomic filesystem changes or universal agent adherence.
+
+See [agent setup](agent-setup.md), [setup design](setup-design.md),
+[adapter capabilities](setup-compatibility.md) and [S01–S44 acceptance](setup-acceptance.md).
+This increment is a source candidate, absent from published v1.0.0; release
+availability and native activation evidence must not be inferred from source.
+The optional separate Node/npx skill-install channel remains available, but
+is not required for bundled setup or normal CLI/MCP operation.
 
 ### Human organization and concept hierarchy
 
@@ -768,7 +781,7 @@ base binary.
 | A16 | Context respects the global ceiling, reports truncation, and provides source lines/revisions. |
 | A17 | External-editor changes invalidate cache and revision at the next relevant operation. |
 | A18 | Export includes a report and exclusion list; it never claims conformance for unexamined files. |
-| A19 | Installation/init never change global configuration or register agents automatically. |
+| A19 | Binary installation/init never change global configuration or register agents; explicit setup requires reviewed scope and selected agents. |
 | A20 | Replacing PARA navigation with another hierarchy does not change parsing, identity, or OKF validity of the same files. |
 | A21 | A synthetic ingestion creates a source note and updates two existing notes through apply; a conflict in either publishes no changes. |
 | A22 | Original snapshot hashes remain unchanged after wiki creation, editing, moving, and plan application. |

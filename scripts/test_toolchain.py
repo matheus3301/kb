@@ -118,6 +118,18 @@ class ToolchainTests(unittest.TestCase):
             self.assertTrue(toolchain.workflow_findings(named.replace(
                 "${{ steps.toolchain.outputs.go }}", '"99.98.97"')))
 
+    def test_native_extension_test_runtime_cannot_be_missing_late_or_conditional(self):
+        workflow = (self.root / ".github/workflows/ci.yml").read_text()
+        setup = ("      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6\n"
+                 "        with:\n"
+                 "          node-version: ${{ steps.toolchain.outputs.node }}\n")
+        command = "      - run: make test fuzz acceptance\n"
+        self.assertIn(setup + command, workflow)
+        for replacement in (command, command + setup,
+                            setup.replace("        with:\n", "        if: false\n        with:\n") + command):
+            with self.subTest(replacement=replacement):
+                self.assertTrue(toolchain.workflow_findings(workflow.replace(setup + command, replacement)))
+
     def test_local_website_gate_removal_and_weakening_are_rejected(self):
         path = self.root / "Makefile"
         original = path.read_text()

@@ -21,6 +21,30 @@ areas, resources, and archives easy to navigate.
 
 ## Getting started
 
+### Set up your agents
+
+The onboarding flow for a binary containing setup is two commands:
+
+```sh
+brew install matheus3301/tap/kb
+kb setup
+```
+
+**Setup is currently a source candidate; published v1.0.0 does not include it.**
+Check `kb version --json` and `kb setup --help`. Until release, choose the
+[separate source-build workflow](docs/agent-setup.md#install-then-set-up)
+rather than assuming Homebrew has acquired the feature.
+
+Setup asks where memory applies (project or user-global), which agents to
+configure, which collection to reuse or deliberately create, and whether to
+record reusable learning. Select Pi, OMP, OpenCode, Codex, Claude Code and other
+available adapters; see [capabilities and native qualification](docs/setup-compatibility.md)
+before relying on a host mode or hook. Review a dry-run, apply, run
+`kb setup check`, then observe actual retrieval in a fresh agent session.
+Use `kb setup uninstall` to remove owned integration without deleting knowledge.
+
+### Try the released CLI
+
 With [Homebrew](https://brew.sh/) installed on macOS or Linux, choose a new
 directory for this example. Do not replace an existing `KB_ROOT` selection
 without checking which collection it identifies:
@@ -72,46 +96,55 @@ with an explicitly reviewed `kb apply --repair --incremental` plan.
   recovery journal.
 - **Maintain:** inspect links, validate format/health, update managed navigation,
   export validated knowledge snapshots, and stage operational backup/restore.
-- **Work with your agent:** install the CLI + `knowledge-base` skill and choose
-  a workdir consultation policy. The binary needs no model, Node, Git, or network
-  at runtime.
+- **Work with your agent:** use the explicit setup candidate to install a bundled
+  CLI skill and consultation policy, or an independent MCP integration. Released
+  v1.0.0 still uses separate setup steps. The runtime needs no model, Node, Git or network.
 
 ## CLI + skill
 
-With Node.js 22.20+ and npm/npx available, install the
-[knowledge-base skill](skills/knowledge-base/SKILL.md) from the agent's workdir
-using [Skills](https://skills.sh):
+`kb setup` is the default source-candidate integration workflow. It bundles the
+complete version-matched [knowledge-base skill](skills/knowledge-base/SKILL.md),
+so normal setup needs no Node or mutable network-fetched skill templates.
+Project and global scope are explicit; installing assets is not proof that a
+fresh target-agent session has activated them.
+
+For released v1.0.0, the separate optional
+[Skills installer](https://skills.sh) remains available:
 
 ```sh
 npx skills add matheus3301/kb --skill knowledge-base
 ```
 
-The skill teaches agents how to use the CLI to consult the Knowledge Base, record
-reusable learning, and handle revisions, retries, and recovery. Its
-references travel with the installed skill. Configure `KB_ROOT` for CLI access
-and add a deliberate workdir instruction to use the skill. Start a new agent
-turn/session after setup and verify consultation of the intended root.
-Installation alone does not guarantee consultation on every question.
-
-The installer defaults to project scope; choose the intended agent. Use global
-scope only deliberately. Follow the complete [agent setup guide](docs/agent-setup.md)
-for prerequisites, preserving an existing collection and workdir policy,
-verification, and upgrading the old `knowledge-memory` skill name.
+That channel requires Node/npm and does not activate a consultation policy.
+Preserve existing custom skills and instructions. Follow the
+[setup lifecycle guide](docs/agent-setup.md) for candidate availability,
+root/scope/agent/learning selection, preflight, checks and safe uninstall.
 
 ### Let your agent set it up
 
 Copy this prompt into your agent:
 
 ```text
-Set up KB using the CLI + knowledge-base skill. Read
+Set up KB through its setup lifecycle. Read
 https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md
-and use https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt
-as the documentation index. Follow the setup guide within my permissions.
-Preserve existing knowledge bases and agent instructions. Confirm the intended
-agent, workdir, installation scope, base root, and consultation/write policy
-before changing configuration; do not make global changes by default.
-Verify the binary, installed skill, selected root, and activation in a fresh
-agent turn. Report actual checks and anything you could not verify.
+and https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt as references.
+Inspect command -v kb, kb version --json and kb setup --help first.
+Published v1.0.0 does not include setup. If I select the source workflow,
+use a reviewed checkout containing setup, record its commit, and build
+go -C CHECKOUT build -o CHECKOUT/.build/kb ./cmd/kb with the declared Go toolchain.
+Use that absolute executable from my intended project, without replacing the
+released binary or configuring the KB source directory by accident.
+Preserve existing bases, skills and instructions. Establish an absolute root,
+project path or authorized global scope, selected agent IDs, and learning on
+or off; ask only for choices not already supplied. Preflight with
+kb --root ROOT setup install --project PROJECT --agent AGENT --learning on|off --dry-run
+(replace --project PROJECT with --global only when authorized).
+Add --create only for an explicitly selected new base; --para is optional.
+Review all destinations/conflicts, then apply the same plan using --yes
+instead of --dry-run. Run kb setup check with the same scope/agents and --json.
+Verify the resolved root and actual search/read with citations in a fresh
+agent session. Distinguish configured from ready and activation pending.
+Do not bypass host trust, repair a collection or commit/push/sync knowledge.
 ```
 
 ## Command map
@@ -119,6 +152,8 @@ agent turn. Report actual checks and anything you could not verify.
 ```text
 kb
 ├── init --para                    Create a Knowledge Base and optional PARA folders
+├── setup install / check          Configure and inspect explicit agent integration (source candidate)
+├── setup resolve / uninstall      Resolve bindings or remove owned integration (source candidate)
 ├── status / validate              Inspect scope, format, and structural health
 ├── list / search                  Discover notes with filters and pagination
 ├── read / context / links         Read sources, collect excerpts, and inspect references
@@ -131,9 +166,9 @@ kb
 └── mcp / version                  Serve MCP or inspect the installed build
 ```
 
-This command map, including backup/restore, has been available since v0.4.0.
-Use `kb COMMAND --help` for installed flags. The [CLI guide](docs/cli.md)
-contains syntax, JSON requests, errors and operating limits.
+The data commands, including backup/restore, have been available since v0.4.0;
+setup is a newer source candidate. Use `kb COMMAND --help` for installed flags.
+The [CLI guide](docs/cli.md) contains syntax, JSON requests, errors and limits.
 
 ## Project status
 
@@ -142,6 +177,10 @@ and installed through macOS arm64 Homebrew.** Actual published native archives
 and archived source passed verification on Linux amd64 and macOS arm64 before
 the tap update. The Homebrew upgrade, formula test, installed CLI acceptance,
 43 documentation requests and both prior-version upgrade workflows passed.
+
+The setup lifecycle is a newer source-only increment, not part of that published
+release or its installed-consumer evidence. Merging code does not publish a new
+binary. [Setup acceptance](docs/setup-acceptance.md) tracks its separate evidence.
 
 Fresh controlled installed **CLI + knowledge-base skill** and independently
 descriptive **stdio MCP** consumers both passed, including separate learning/query

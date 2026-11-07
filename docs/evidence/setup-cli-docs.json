@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-06",
+  "candidate_commit": "5b75df2",
+  "status": "bounded_candidate_observations",
+  "final_candidate_recheck": "pending",
+  "observations": [
+    {
+      "id": "documentation-cli-55",
+      "result": "passed",
+      "command": "python3 scripts/check_docs.py --binary SELECTED_CANDIDATE --setup",
+      "existing_cli_requests": 43,
+      "setup_cli_requests": 12,
+      "fixture": "Disposable synthetic HOME/config/project/external collection; KB_ROOT and host profile overrides cleared. PATH exposes no native model harness; real Git is retained when available.",
+      "assertions": [
+        "Explicit --json for decoded setup operations",
+        "Existing root/project/agent/mode match the check response",
+        "Missing host: exit 1, kb.v1 ok true, configured true, ready false, degraded, activation_observed false, all artifacts configured and explicit unavailable-host diagnosis",
+        "Dry-run/check/resolve filesystem purity",
+        "Repeated install and uninstall are byte-stable",
+        "Existing collection file bytes preserved"
+      ],
+      "native_qualification": false
+    },
+    {
+      "id": "documentation-gate-regressions",
+      "result": "passed",
+      "command": "python3 -m unittest discover -s scripts -p test_docs.py -v",
+      "tests_passed": 6,
+      "test_file": "scripts/test_docs.py",
+      "failure_cases_rejected": [
+        "False-success or wrong inspection exit codes",
+        "Wrong root/project/agent/scope/interface",
+        "Missing/conflicting artifact inventory",
+        "False native readiness or activation",
+        "Generic or wrong-host unavailability diagnostics",
+        "Failed or malformed-success envelope fields"
+      ]
+    },
+    {
+      "id": "shared-mcp-and-moved-root",
+      "result": "passed",
+      "binary_sha256": "dfd8b0c0fe750a55221345a496562c9500a253de123e7f279a24ac2c5cd7fbeb",
+      "binary_consistency": "SHA-256 matched before and after the disposable probe",
+      "assertions": [
+        "Compatible Claude+Copilot project MCP installs share one server entry",
+        "Removing Claude preserves Copilot MCP and configured artifacts; absent host remains not ready",
+        "Final shared consumer removal restores absent native config and leaves knowledge unchanged",
+        "Integration uninstalls after collection moves without opening or changing moved knowledge"
+      ],
+      "native_qualification": false
+    }
+  ],
+  "limits": [
+    "These are real CLI operations and guard regressions, not successful model sessions. No native model harness was simulated.",
+    "The shared MCP probe verifies installer ownership/configuration retention, not native Copilot or Claude model behavior.",
+    "The moved-root probe compares collection file bytes; it is not a filesystem crash-safety or arbitrary-editor isolation claim.",
+    "No final engine coverage, full integrated gate or release qualification is inferred."
+  ]
+}

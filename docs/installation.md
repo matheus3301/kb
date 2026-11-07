@@ -5,13 +5,18 @@ proof that `main` is installed. The [compatibility policy](compatibility.md),
 [README project status](../README.md#project-status) and public
 [release records](https://github.com/matheus3301/kb/releases) centralize current
 versions, qualification outcomes and native versus cross-build-only scope.
-Binary installation, skill installation, MCP registration and workdir activation
-are separate actions.
+Binary installation never changes agent configuration. The separate explicit
+`kb setup` command can install the bundled CLI skill and activate a reviewed
+consultation policy, or register independent MCP for a supported adapter.
 
-For agent use, follow [agent setup](agent-setup.md) after installing the binary:
-it covers the separate `knowledge-base` skill installation, deliberate root
-selection, preserving existing collections, and workdir policy activation.
-Installing either component alone does not activate a consultation policy.
+**Setup is currently a source candidate, not part of published v1.0.0.** The
+first-run flow for a capable binary is `brew install matheus3301/tap/kb`, then
+`kb setup`; check `kb setup --help` first. Until a release includes it, select
+the [separate source-build workflow](agent-setup.md#install-then-set-up).
+Do not assume `brew upgrade` supplies unreleased functionality.
+Follow [agent setup](agent-setup.md) for explicit root, project/global scope,
+agent selection, learning policy, dry-run/check and safe integration uninstall.
+Installing files alone does not establish fresh-session activation.
 
 ## Source checkout
 
@@ -106,7 +111,12 @@ To remove the executable:
 brew uninstall kb
 ```
 
-Uninstalling the executable does not delete your knowledge directory.
+Uninstalling the executable does not delete your knowledge directory or clean up
+agent integrations. With a setup-capable executable, run `kb setup uninstall`
+for the intended scope and agents **before** removing the binary. Review its
+dry-run; it removes only owned integration, preserves customized/shared assets,
+and never deletes knowledge. Integration uninstall does not require an accessible
+collection. See [the lifecycle guide](agent-setup.md#uninstall-only-the-integration).
 
 ## Prebuilt binaries
 

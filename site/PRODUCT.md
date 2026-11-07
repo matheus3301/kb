@@ -16,11 +16,11 @@ Humans and AI-agent operators who want a local, readable knowledge base and an e
 
 ## Product Purpose
 
-Help visitors understand KB and install its CLI and knowledge-base skill. Markdown is the source of truth. Search, read and revision-aware changes operate on a deliberately selected base.
+Help visitors understand KB and choose an explicit agent setup workflow. Markdown is the source of truth. Search, read and revision-aware changes operate on a deliberately selected base.
 
 ## Capabilities and Constraints
 
-CLI plus skill is the primary path. Installation does not establish an agent consultation policy. Preserve existing bases and configuration. MCP remains an optional independent interface. No accounts, telemetry, external runtime assets or invented usage/performance claims.
+CLI plus bundled skill is the primary setup candidate path, with explicit root, project/global scope, agents and learning. Published v1.0.0 does not contain setup; source builds must be separately selected and run from the intended project, not the source checkout. Configured files are not native activation evidence. Preserve existing bases and configuration. MCP remains an optional independent interface. No accounts, telemetry, external runtime assets or invented usage/performance claims.
 
 ## Brand Commitments
 

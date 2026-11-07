@@ -191,7 +191,7 @@ func indexRegion(text string) (start, end int, appendSafe bool, err error) {
 		}
 		trimmed := strings.Trim(line, " \t\r\n")
 		if inlineUntil <= offset && commentUntil <= offset {
-			markerOffset := offset + len(line) - len(strings.TrimLeft(line, " \t"))
+			markerOffset := offset + len(line) - len(strings.TrimLeft(line, " \t\r\n"))
 			switch trimmed {
 			case indexStart:
 				if start >= 0 || end >= 0 {
