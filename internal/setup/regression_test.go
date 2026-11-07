@@ -3,9 +3,11 @@ package setup
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -251,5 +253,87 @@ func TestJSONCTrailingCommasRetainForeignCommentsAndStrings(t *testing.T) {
 				t.Fatal("removing entry made JSONC invalid", err)
 			}
 		})
+	}
+}
+
+func TestLargeRecoveryJournalCanFinishAndUninstall(t *testing.T) {
+	e, project, root := fixtureEngine(t)
+	path := filepath.Join(project, "settings.json")
+	original := []byte(`{"foreign":"` + strings.Repeat("x", 1_800_000) + `"}`)
+	put(t, path, original)
+	in := installation("claude", project, root, Artifact{Path: path, Kind: "json", Key: "kb", Content: []byte(`true`)})
+	p, err := e.PlanInstall(context.Background(), []Installation{in})
+	if err != nil {
+		t.Fatal("valid catalog rejected because its recovery record is larger", err)
+	}
+	e.options.Failpoint = func(boundary string) error {
+		if boundary == "committed" {
+			return errors.New("reply lost")
+		}
+		return nil
+	}
+	if _, err := e.Apply(context.Background(), p); err == nil {
+		t.Fatal("lost reply was not reported")
+	}
+	info, err := os.Stat(e.pendingPath())
+	if err != nil || info.Size() <= maxFileBytes {
+		t.Fatal("fixture must exercise a recovery record larger than native-file limit", err)
+	}
+	if _, err := e.Recover(context.Background(), true); err != nil {
+		t.Fatal("large journal could not be inspected", err)
+	}
+	if _, err := e.Recover(context.Background(), false); err != nil {
+		t.Fatal("large journal could not be completed", err)
+	}
+	e.options.Failpoint = nil
+	uninstall(t, e, project, "claude")
+	if !bytes.Equal(read(t, path), original) {
+		t.Fatal("large journal lifecycle lost original configuration")
+	}
+}
+
+func TestRecoveryCanRemoveLegacyOversizedCatalog(t *testing.T) {
+	e, project, _ := fixtureEngine(t)
+	path := filepath.Join(project, "settings.json")
+	native := Snapshot{Exists: true, Content: []byte(`{"foreign":"` + strings.Repeat("x", 3_300_000) + `"}`), Mode: 0600}
+	legacy := emptyCatalog()
+	legacy.Files[path] = fileState{Before: native, Expected: native, Pristine: true}
+	raw, err := json.Marshal(legacy)
+	if err != nil || len(raw) <= maxFileBytes {
+		t.Fatal("fixture must represent an older oversized catalog", err)
+	}
+	put(t, e.statePath(), raw)
+	j := journal{
+		Schema:  SchemaVersion,
+		Changes: []Change{{Path: e.statePath(), After: Snapshot{Exists: true, Content: raw, Mode: 0600}}},
+		Stages:  map[string]string{},
+		Applied: 1,
+	}
+	if err := e.saveJournal(j); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := e.Recover(context.Background(), false); err != nil {
+		t.Fatal("legacy catalog could not be rolled back", err)
+	}
+	for _, path := range []string{e.statePath(), e.pendingPath()} {
+		if _, err := os.Stat(path); !errors.Is(err, os.ErrNotExist) {
+			t.Fatal("legacy recovery retained unreadable state", path, err)
+		}
+	}
+}
+
+func TestRecoveryJournalSizeLimitDoesNotCreateState(t *testing.T) {
+	e, _, _ := fixtureEngine(t)
+	j := journal{
+		Schema: SchemaVersion,
+		Changes: []Change{{Path: e.statePath(), Before: Snapshot{
+			Exists: true, Content: make([]byte, maxRecoveryBytes*3/4), Mode: 0600,
+		}}},
+	}
+	if err := e.saveJournal(j); err == nil || !strings.Contains(err.Error(), "64 MiB") {
+		t.Fatal("oversized encoded journal accepted", err)
+	}
+	if _, err := os.Stat(e.options.ConfigHome); !errors.Is(err, os.ErrNotExist) {
+		t.Fatal("size rejection created setup state", err)
 	}
 }

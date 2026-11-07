@@ -6,45 +6,40 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"strconv"
 	"strings"
 	"testing"
 )
 
 func TestSetupRejectsOversizedGeneratedStateBeforeWrites(t *testing.T) {
-	for _, size := range []int{3_300_000, 1_800_000} {
-		t.Run(strconv.Itoa(size), func(t *testing.T) {
-			f := newSetupFixture(t)
-			original, err := json.Marshal(map[string]string{"foreign": strings.Repeat("x", size)})
-			if err != nil {
-				t.Fatal(err)
-			}
-			putSetup(t, filepath.Join(f.home, ".claude.json"), string(original))
-			beforeHome := treeBytes(t, f.home)
-			beforeRoot := treeBytes(t, f.root)
-			args := []string{"--root", f.root, "setup", "install", "--global", "--agent", "claude", "--mode", "mcp", "--hooks", "off", "--learning", "off", "--yes"}
-			for _, dry := range []bool{true, false} {
-				request := append([]string(nil), args...)
-				if dry {
-					request = append(request, "--dry-run")
-				}
-				code, result, _, stderr := runSetup(t, f, request, "")
-				if code != 2 || result["error"].(map[string]any)["code"] != "INVALID_INPUT" {
-					t.Fatalf("oversized generated metadata accepted (dry=%t): code=%d result=%v stderr=%s", dry, code, result, stderr)
-				}
-				if !reflect.DeepEqual(beforeHome, treeBytes(t, f.home)) || !reflect.DeepEqual(beforeRoot, treeBytes(t, f.root)) {
-					t.Fatalf("size rejection changed host or collection (dry=%t)", dry)
-				}
-			}
-			code, result, _, _ := runSetup(t, f, []string{"setup", "recover"}, "")
-			if code != 0 || result["data"].(map[string]any)["status"] != "no_pending_transaction" {
-				t.Fatal("size rejection left unrecoverable state", code, result)
-			}
-			code, result, _, _ = runSetup(t, f, f.install("codex"), "")
-			if code != 0 {
-				t.Fatal("size rejection blocked a subsequent valid installation", code, result)
-			}
-		})
+	f := newSetupFixture(t)
+	original, err := json.Marshal(map[string]string{"foreign": strings.Repeat("x", 3_300_000)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	putSetup(t, filepath.Join(f.home, ".claude.json"), string(original))
+	beforeHome := treeBytes(t, f.home)
+	beforeRoot := treeBytes(t, f.root)
+	args := []string{"--root", f.root, "setup", "install", "--global", "--agent", "claude", "--mode", "mcp", "--hooks", "off", "--learning", "off", "--yes"}
+	for _, dry := range []bool{true, false} {
+		request := append([]string(nil), args...)
+		if dry {
+			request = append(request, "--dry-run")
+		}
+		code, result, _, stderr := runSetup(t, f, request, "")
+		if code != 2 || result["error"].(map[string]any)["code"] != "INVALID_INPUT" {
+			t.Fatalf("oversized generated metadata accepted (dry=%t): code=%d result=%v stderr=%s", dry, code, result, stderr)
+		}
+		if !reflect.DeepEqual(beforeHome, treeBytes(t, f.home)) || !reflect.DeepEqual(beforeRoot, treeBytes(t, f.root)) {
+			t.Fatalf("size rejection changed host or collection (dry=%t)", dry)
+		}
+	}
+	code, result, _, _ := runSetup(t, f, []string{"setup", "recover"}, "")
+	if code != 0 || result["data"].(map[string]any)["status"] != "no_pending_transaction" {
+		t.Fatal("size rejection left unrecoverable state", code, result)
+	}
+	code, result, _, _ = runSetup(t, f, f.install("codex"), "")
+	if code != 0 {
+		t.Fatal("size rejection blocked a subsequent valid installation", code, result)
 	}
 }
 

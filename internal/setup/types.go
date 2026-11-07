@@ -18,6 +18,7 @@ import (
 
 const SchemaVersion = 1
 const maxFileBytes = 8 << 20
+const maxRecoveryBytes = 64 << 20
 
 // Artifact owns only the indicated entry or block, not its containing user file.
 type Artifact struct {
@@ -100,12 +101,15 @@ func identity(b Binding) string {
 }
 func assetKey(a Artifact) string { return a.Path + "\x00" + a.Kind + "\x00" + a.Key }
 func encode(v any) ([]byte, error) {
+	return encodeBounded(v, maxFileBytes)
+}
+func encodeBounded(v any, limit int) ([]byte, error) {
 	raw, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
 		return nil, err
 	}
-	if len(raw)+1 > maxFileBytes {
-		return nil, invalid("generated setup metadata exceeds 8 MiB; reduce the installation size")
+	if len(raw)+1 > limit {
+		return nil, invalid(fmt.Sprintf("generated setup metadata exceeds %d MiB; reduce the installation size", limit>>20))
 	}
 	return append(raw, '\n'), nil
 }
@@ -223,12 +227,12 @@ func (e *Engine) statePath() string   { return filepath.Join(e.stateDir, "manife
 func (e *Engine) pendingPath() string { return filepath.Join(e.stateDir, "pending.json") }
 
 func (e *Engine) readCatalog() (catalog, Snapshot, error) {
-	if pending, err := readSnapshot(e.pendingPath()); err != nil {
+	if pending, err := e.readSnapshot(e.pendingPath()); err != nil {
 		return catalog{}, Snapshot{}, err
 	} else if pending.Exists {
 		return catalog{}, Snapshot{}, recoveryRequired()
 	}
-	snap, err := readSnapshot(e.statePath())
+	snap, err := e.readSnapshot(e.statePath())
 	if err != nil {
 		return catalog{}, snap, err
 	}

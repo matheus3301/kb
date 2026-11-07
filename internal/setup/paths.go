@@ -106,6 +106,19 @@ func safePath(name string) error {
 }
 
 func readSnapshot(name string) (Snapshot, error) {
+	return readSnapshotBounded(name, maxFileBytes)
+}
+
+// Recovery can contain several encoded snapshots of otherwise valid native files.
+// Accept older oversized catalogs here so their journal can still be rolled back.
+func (e *Engine) readSnapshot(name string) (Snapshot, error) {
+	if name == e.pendingPath() || name == e.statePath() {
+		return readSnapshotBounded(name, maxRecoveryBytes)
+	}
+	return readSnapshot(name)
+}
+
+func readSnapshotBounded(name string, limit int) (Snapshot, error) {
 	var snap Snapshot
 	if err := safePath(name); err != nil {
 		return snap, err
@@ -125,15 +138,15 @@ func readSnapshot(name string) (Snapshot, error) {
 	if !info.Mode().IsRegular() {
 		return snap, conflict("destination is not a regular file: " + name)
 	}
-	if info.Size() > maxFileBytes {
-		return snap, invalid("setup target exceeds 8 MiB: " + name)
+	if info.Size() > int64(limit) {
+		return snap, invalid(fmt.Sprintf("setup target exceeds %d MiB: %s", limit>>20, name))
 	}
-	raw, err := io.ReadAll(io.LimitReader(f, maxFileBytes+1))
+	raw, err := io.ReadAll(io.LimitReader(f, int64(limit)+1))
 	if err != nil {
 		return snap, err
 	}
-	if len(raw) > maxFileBytes {
-		return snap, invalid("setup target exceeds 8 MiB: " + name)
+	if len(raw) > limit {
+		return snap, invalid(fmt.Sprintf("setup target exceeds %d MiB: %s", limit>>20, name))
 	}
 	return Snapshot{Exists: true, Content: raw, Mode: uint32(info.Mode().Perm())}, nil
 }

@@ -41,8 +41,8 @@ func syncDirectory(path string) error {
 }
 
 func replace(path string, s Snapshot) error {
-	if len(s.Content) > maxFileBytes {
-		return invalid("setup target exceeds 8 MiB: " + path)
+	if len(s.Content) > maxRecoveryBytes {
+		return invalid("setup recovery snapshot exceeds 64 MiB: " + path)
 	}
 	if err := safePath(path); err != nil {
 		return err
@@ -134,7 +134,7 @@ func (e *Engine) lock(ctx context.Context) (func(), error) {
 	return func() { _ = syscall.Flock(int(f.Fd()), syscall.LOCK_UN); _ = f.Close() }, nil
 }
 func (e *Engine) saveJournal(j journal) error {
-	raw, err := encode(j)
+	raw, err := encodeBounded(j, maxRecoveryBytes)
 	if err != nil {
 		return err
 	}
@@ -146,9 +146,9 @@ func (e *Engine) fail(boundary string) error {
 	}
 	return nil
 }
-func checkPreconditions(pre map[string]Snapshot) error {
+func (e *Engine) checkPreconditions(pre map[string]Snapshot) error {
 	for _, path := range sortedKeys(pre) {
-		now, err := readSnapshot(path)
+		now, err := e.readSnapshot(path)
 		if err != nil {
 			return err
 		}
@@ -187,7 +187,7 @@ func prepareJournal(changes []Change) (journal, error) {
 	}
 	sizing := j
 	sizing.Applied = len(changes)
-	if _, err := encode(sizing); err != nil {
+	if _, err := encodeBounded(sizing, maxRecoveryBytes); err != nil {
 		return journal{}, err
 	}
 	return j, nil
@@ -212,12 +212,12 @@ func (e *Engine) Apply(ctx context.Context, p *Plan) (Result, error) {
 		return Result{}, err
 	}
 	defer unlock()
-	if pending, err := readSnapshot(e.pendingPath()); err != nil {
+	if pending, err := e.readSnapshot(e.pendingPath()); err != nil {
 		return Result{}, err
 	} else if pending.Exists {
 		return Result{}, recoveryRequired()
 	}
-	if err := checkPreconditions(p.Preconditions); err != nil {
+	if err := e.checkPreconditions(p.Preconditions); err != nil {
 		return Result{}, err
 	}
 	if err := e.saveJournal(j); err != nil {
@@ -249,14 +249,14 @@ func (e *Engine) Apply(ctx context.Context, p *Plan) (Result, error) {
 			return abort(err)
 		}
 	}
-	if err := checkPreconditions(p.Preconditions); err != nil {
+	if err := e.checkPreconditions(p.Preconditions); err != nil {
 		return abort(err)
 	}
 	for i, change := range j.Changes {
 		if err := ctx.Err(); err != nil {
 			return abort(err)
 		}
-		current, err := readSnapshot(change.Path)
+		current, err := e.readSnapshot(change.Path)
 		if err != nil {
 			return abort(err)
 		}
@@ -291,7 +291,7 @@ func (e *Engine) Apply(ctx context.Context, p *Plan) (Result, error) {
 		}
 	}
 	for _, change := range j.Changes {
-		now, err := readSnapshot(change.Path)
+		now, err := e.readSnapshot(change.Path)
 		if err != nil {
 			return abort(err)
 		}
@@ -341,7 +341,7 @@ func (e *Engine) rollback(j journal) error {
 	// successful rename and the subsequent durable journal progress update.
 	for i := len(j.Changes) - 1; i >= 0; i-- {
 		change := j.Changes[i]
-		now, err := readSnapshot(change.Path)
+		now, err := e.readSnapshot(change.Path)
 		if err != nil {
 			errs = append(errs, err)
 			continue
@@ -375,7 +375,7 @@ func (e *Engine) rollback(j journal) error {
 // Recover rolls back an uncommitted journal, or verifies/finishes a committed
 // journal. It never overwrites a third-party edit with an old before-image.
 func (e *Engine) Recover(ctx context.Context, dry bool) (Result, error) {
-	snap, err := readSnapshot(e.pendingPath())
+	snap, err := e.readSnapshot(e.pendingPath())
 	if err != nil {
 		return Result{}, err
 	}
@@ -402,7 +402,7 @@ func (e *Engine) Recover(ctx context.Context, dry bool) (Result, error) {
 		return Result{}, err
 	}
 	defer unlock()
-	fresh, err := readSnapshot(e.pendingPath())
+	fresh, err := e.readSnapshot(e.pendingPath())
 	if err != nil {
 		return Result{}, err
 	}
@@ -411,7 +411,7 @@ func (e *Engine) Recover(ctx context.Context, dry bool) (Result, error) {
 	}
 	if j.Committed {
 		for _, c := range j.Changes {
-			now, err := readSnapshot(c.Path)
+			now, err := e.readSnapshot(c.Path)
 			if err != nil {
 				return Result{}, err
 			}
