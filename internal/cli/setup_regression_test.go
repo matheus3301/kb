@@ -187,7 +187,7 @@ func TestSetupPortableAndTildeCreation(t *testing.T) {
 func TestSetupHookMCPUsesNativeContextWithoutSkill(t *testing.T) {
 	f := newSetupFixture(t)
 	putSetup(t, filepath.Join(f.root, "alpha.md"), "---\ntype: Concept\n---\nAlpha is a synthetic MCP hook marker.\n")
-	code, e, _, _ := runSetup(t, f, f.install("claude", "--mode", "mcp"), "")
+	code, e, _, _ := runSetup(t, f, f.install("claude", "--mode", "mcp", "--hooks", "auto"), "")
 	if code != 0 {
 		t.Fatal(e)
 	}

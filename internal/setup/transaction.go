@@ -41,6 +41,9 @@ func syncDirectory(path string) error {
 }
 
 func replace(path string, s Snapshot) error {
+	if len(s.Content) > maxFileBytes {
+		return invalid("setup target exceeds 8 MiB: " + path)
+	}
 	if err := safePath(path); err != nil {
 		return err
 	}
@@ -156,6 +159,40 @@ func checkPreconditions(pre map[string]Snapshot) error {
 	return nil
 }
 
+// prepareJournal validates the complete recovery record before any publication.
+// Reserve the longest progress encoding so every later update remains readable.
+func prepareJournal(changes []Change) (journal, error) {
+	j := journal{Schema: SchemaVersion, Changes: changes, Stages: map[string]string{}}
+	for _, change := range changes {
+		if len(change.After.Content) > maxFileBytes {
+			return journal{}, invalid("setup target exceeds 8 MiB: " + change.Path)
+		}
+		if !change.After.Exists {
+			continue
+		}
+		for dir := filepath.Dir(change.Path); dir != filepath.Dir(dir); dir = filepath.Dir(dir) {
+			if _, err := os.Stat(dir); errors.Is(err, os.ErrNotExist) {
+				j.Directories = append(j.Directories, dir)
+			} else if err != nil {
+				return journal{}, err
+			} else {
+				break
+			}
+		}
+		var random [12]byte
+		if _, err := rand.Read(random[:]); err != nil {
+			return journal{}, err
+		}
+		j.Stages[change.Path] = filepath.Join(filepath.Dir(change.Path), ".kb-stage-"+hex.EncodeToString(random[:]))
+	}
+	sizing := j
+	sizing.Applied = len(changes)
+	if _, err := encode(sizing); err != nil {
+		return journal{}, err
+	}
+	return j, nil
+}
+
 // Apply uses one private user-wide lock and compare-before-publish checks.
 // Each rename is atomic; the collection of renames is deliberately not claimed
 // to be globally atomic. Pending state blocks resolution until explicit recovery.
@@ -165,6 +202,10 @@ func (e *Engine) Apply(ctx context.Context, p *Plan) (Result, error) {
 	}
 	if len(p.Changes) == 0 {
 		return p.Result(false), nil
+	}
+	j, err := prepareJournal(p.Changes)
+	if err != nil {
+		return Result{}, err
 	}
 	unlock, err := e.lock(ctx)
 	if err != nil {
@@ -178,26 +219,6 @@ func (e *Engine) Apply(ctx context.Context, p *Plan) (Result, error) {
 	}
 	if err := checkPreconditions(p.Preconditions); err != nil {
 		return Result{}, err
-	}
-	j := journal{Schema: SchemaVersion, Changes: p.Changes, Stages: map[string]string{}}
-	for _, change := range j.Changes {
-		if !change.After.Exists {
-			continue
-		}
-		for dir := filepath.Dir(change.Path); dir != filepath.Dir(dir); dir = filepath.Dir(dir) {
-			if _, err := os.Stat(dir); errors.Is(err, os.ErrNotExist) {
-				j.Directories = append(j.Directories, dir)
-			} else if err != nil {
-				return Result{}, err
-			} else {
-				break
-			}
-		}
-		var random [12]byte
-		if _, err := rand.Read(random[:]); err != nil {
-			return Result{}, err
-		}
-		j.Stages[change.Path] = filepath.Join(filepath.Dir(change.Path), ".kb-stage-"+hex.EncodeToString(random[:]))
 	}
 	if err := e.saveJournal(j); err != nil {
 		return Result{}, err

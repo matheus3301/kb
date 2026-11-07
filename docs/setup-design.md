@@ -131,6 +131,9 @@ and multiline values. Unsupported/ambiguous structures fail before mutation.
 Planning reads and validates every destination and records existence, bytes,
 permissions and hashes. `--dry-run` only plans: no collection initialization,
 manifest, lock, journal, credential access, or external configuration write.
+The 8 MiB file ceiling also applies to the encoded ownership state and recovery
+journal. Planning rejects an oversized record before publishing files, including
+space needed for progress updates and optional operation receipts.
 
 Apply takes one private per-user nonblocking advisory lock, checks preconditions,
 persists a journal, stages adjacent after-images, checks hashes again, and publishes

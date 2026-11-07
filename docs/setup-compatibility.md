@@ -175,6 +175,8 @@ Bounds and behavior:
   policy directs manual consultation; no stop-hook loop or permission bypass.
 - Global/project dispatchers can both fire. No exactly-once or prompt-text-based
   deduplication is claimed; bounded duplicate read-only delivery is possible.
+  An effective project binding with hooks off suppresses inherited hook retrieval;
+  Pi/OMP wrappers also omit empty session and prompt messages.
 
 For pending adapters, use the rule + CLI skill or independent MCP baseline,
 restart/reload as the host documents, and inspect its loaded instruction/server

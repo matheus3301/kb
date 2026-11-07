@@ -190,7 +190,7 @@ func (e *Engine) build(ctx context.Context, old, next catalog, stateSnapshot Sna
 	// configurations and routing. No-op plans leave its bytes and mtime unchanged.
 	stateRaw, err := encode(next)
 	if err != nil {
-		return nil, err
+		return nil, pathError(e.statePath(), err)
 	}
 	stateAfter := Snapshot{Exists: true, Content: stateRaw, Mode: 0600}
 	if len(next.Installations) == 0 && len(next.Assets) == 0 {
@@ -219,6 +219,9 @@ func (e *Engine) build(ctx context.Context, old, next catalog, stateSnapshot Sna
 		if err := preflightWritable(change); err != nil {
 			return nil, err
 		}
+	}
+	if _, err := prepareJournal(p.Changes); err != nil {
+		return nil, pathError(e.pendingPath(), err)
 	}
 	return p, nil
 }

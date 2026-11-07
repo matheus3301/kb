@@ -312,7 +312,7 @@ func TestSetupCLIWizardReviewAndHumanOutput(t *testing.T) {
 func TestSetupCLIHookNativeOutputAndReadOnlyPolicy(t *testing.T) {
 	f := newSetupFixture(t)
 	putSetup(t, filepath.Join(f.root, "alpha.md"), "---\ntype: Concept\ntitle: Alpha\n---\nAlpha is a synthetic routing marker.\n")
-	code, e, _, _ := runSetup(t, f, f.install("claude"), "")
+	code, e, _, _ := runSetup(t, f, f.install("claude", "--hooks", "auto"), "")
 	if code != 0 {
 		t.Fatal(e)
 	}

@@ -767,8 +767,10 @@ func (r *runner) setupHook(ctx context.Context, agent, event string) error {
 	if err != nil {
 		return r.hookFailure(agent, event, "Knowledge Base binding unavailable; inspect kb setup check")
 	}
-	contextText := "Knowledge Base integration disabled for this project."
-	if !resolved.Disabled {
+	contextText := ""
+	if resolved.Disabled {
+		contextText = "Knowledge Base integration disabled for this project."
+	} else if resolved.Hooks != "off" {
 		timeout, cancel := context.WithTimeout(ctx, 1500*time.Millisecond)
 		defer cancel()
 		contextText, err = agentsetup.HookContextMode(timeout, resolved.Root, event, request, resolved.Learning, resolved.Mode)

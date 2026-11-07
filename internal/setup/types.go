@@ -101,7 +101,13 @@ func identity(b Binding) string {
 func assetKey(a Artifact) string { return a.Path + "\x00" + a.Kind + "\x00" + a.Key }
 func encode(v any) ([]byte, error) {
 	raw, err := json.MarshalIndent(v, "", "  ")
-	return append(raw, '\n'), err
+	if err != nil {
+		return nil, err
+	}
+	if len(raw)+1 > maxFileBytes {
+		return nil, invalid("generated setup metadata exceeds 8 MiB; reduce the installation size")
+	}
+	return append(raw, '\n'), nil
 }
 
 // Snapshot includes existence: an absent file differs from an empty file.

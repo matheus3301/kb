@@ -62,6 +62,9 @@ func (e *Engine) Operation(p *Plan, id string, request any) (*Result, error) {
 	}
 	p.Preconditions[path] = snap
 	p.Changes = append(p.Changes, Change{Path: path, Before: snap, After: Snapshot{Exists: true, Content: raw, Mode: 0600}})
+	if _, err := prepareJournal(p.Changes); err != nil {
+		return nil, pathError(e.pendingPath(), err)
+	}
 	p.OperationID = id
 	return nil, nil
 }

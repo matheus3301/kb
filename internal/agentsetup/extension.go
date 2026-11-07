@@ -35,13 +35,14 @@ function retrieve(event, ctx, prompt = "") {
 export default function knowledgeBase(pi) {
   pi.on("session_start", async (_event, ctx) => {
     const content = await retrieve("SessionStart", ctx);
-    pi.sendMessage({ customType: "kb-session", content, display: false });
+    if (content) pi.sendMessage({ customType: "kb-session", content, display: false });
   });
   pi.on("before_agent_start", async (event, ctx) => {
     // OMP revivals and Pi custom-message turns are not submitted user prompts.
     if (event.reason === "revive" || event.messageType === "custom") return;
     if (typeof event.prompt !== "string") return;
     const content = await retrieve("UserPromptSubmit", ctx, event.prompt);
+    if (!content) return;
     return { message: { customType: "kb-context", content, display: false } };
   });
 }

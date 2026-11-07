@@ -201,7 +201,8 @@ func ProtectCollection(root string, artifacts []Artifact, included func(string) 
 			if err != nil {
 				return err
 			}
-			if snap.Exists && strings.HasPrefix(strings.TrimPrefix(string(snap.Content), "\ufeff"), "---\n") {
+			content := strings.TrimPrefix(string(snap.Content), "\ufeff")
+			if snap.Exists && (strings.HasPrefix(content, "---\n") || strings.HasPrefix(content, "---\r\n")) {
 				continue
 			}
 		}
