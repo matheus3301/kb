@@ -13,7 +13,7 @@ browser UI for a collection. These Markdown guides remain canonical.
   plan using a disposable example base.
 - [Agent installer guide](agent-install.md): self-contained instructions for an
   agent handling availability, choices, preview/apply and fresh-session checks.
-- [Agent setup](agent-setup.md): source-candidate availability, explicit root,
+- [Agent setup](agent-setup.md): version availability, explicit root,
   project/global scope, agents and learning, bundled skill or independent MCP,
   dry-run, check, fresh-session activation and safe uninstall.
 - [Setup design](setup-design.md) and [host compatibility](setup-compatibility.md):

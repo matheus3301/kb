@@ -20,7 +20,7 @@ Help visitors understand KB and choose an explicit agent setup workflow. Markdow
 
 ## Capabilities and Constraints
 
-CLI plus bundled skill is the primary setup candidate path, with explicit root, project/global scope, agents and learning. Published v1.0.0 does not contain setup; source builds must be separately selected and run from the intended project, not the source checkout. Configured files are not native activation evidence. Preserve existing bases and configuration. MCP remains an optional independent interface. No accounts, telemetry, external runtime assets or invented usage/performance claims.
+CLI plus bundled skill is the primary setup path, with explicit root, project/global scope, agents and learning. Setup requires v1.1.0 or later; check installed version/help. Source builds remain optional and must run from the intended project, not the source checkout. Configured files are not native activation evidence. Preserve existing bases and configuration. MCP remains an optional independent interface. No accounts, telemetry, external runtime assets or invented usage/performance claims.
 
 ## Brand Commitments
 

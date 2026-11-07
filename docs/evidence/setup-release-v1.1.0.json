@@ -1,0 +1,109 @@
+{
+  "schema_version": "kb.release-observation.v1",
+  "version": "v1.1.0",
+  "source_commit": "8933c0e1e68318a94f2dfdd8a6fa989781e37301",
+  "published_at": "2026-11-07T21:25:23Z",
+  "exact_main_ci": "https://github.com/matheus3301/kb/actions/runs/42414558125",
+  "release_run": "https://github.com/matheus3301/kb/actions/runs/42415103752",
+  "jobs": [
+    {
+      "name": "Verify release source",
+      "conclusion": "success",
+      "completedAt": "2026-11-07T21:24:05Z"
+    },
+    {
+      "name": "Publish GitHub release",
+      "conclusion": "success",
+      "completedAt": "2026-11-07T21:25:28Z"
+    },
+    {
+      "name": "Verify published native and source archives (ubuntu-24.04)",
+      "conclusion": "success",
+      "completedAt": "2026-11-07T21:26:08Z"
+    },
+    {
+      "name": "Verify published native and source archives (macos-15)",
+      "conclusion": "success",
+      "completedAt": "2026-11-07T21:26:12Z"
+    },
+    {
+      "name": "Update Homebrew tap",
+      "conclusion": "success",
+      "completedAt": "2026-11-07T21:26:21Z"
+    }
+  ],
+  "downloads": {
+    "ok": true,
+    "anonymous_downloads": true,
+    "archives_verified": 5,
+    "identity": {
+      "commit": "8933c0e1e68318a94f2dfdd8a6fa989781e37301",
+      "version": "v1.1.0"
+    },
+    "archive_sha256": {
+      "kb_1.1.0_darwin_amd64.tar.gz": "8cdc9d4571bb8f80d5ef7213d017104e7086b462dd87e128df5cfebc07b774f2",
+      "kb_1.1.0_darwin_arm64.tar.gz": "e368333cdf0a2eac52dd2ce8b0fb4800303e2d0305f62fbbb1db75bc19758da6",
+      "kb_1.1.0_linux_amd64.tar.gz": "9fff95bc063fb63b29ddecd7f48a238da6e5a82dd19ea8a14dabc96c8ab0bce9",
+      "kb_1.1.0_linux_arm64.tar.gz": "42f187a5a8ab79e83a7e59b6854645b5429c98f0a629ab166a14461c2b241de2",
+      "kb_1.1.0_source.tar.gz": "463758c4db4e9ff586cd95e7e01d57d6b27fca0d4571ed921142d43e931ef94c"
+    },
+    "darwin_arm64_binary_sha256": "3bd5b2c430fefc2a9ea235e0d7d7d06f6c5bbe4c46b120031ef3c2f5d4bb56dd"
+  },
+  "homebrew": {
+    "platform": "darwin/arm64",
+    "upgrade_from": "v1.0.0",
+    "formula_test": "passed",
+    "tap_commit": "984416868c0bc80dac4d0305d80be0f3fb11041d",
+    "identity": {
+      "commit": "8933c0e1e68318a94f2dfdd8a6fa989781e37301",
+      "version": "v1.1.0"
+    },
+    "binary_sha256": "8d13dd6f6f950ad1908dda8313f3744201e7d00f8ca2eecc6dbef3e80e456aee"
+  },
+  "installed_synthetic_checks": {
+    "acceptance_workflows": 14,
+    "documentation_requests": 43,
+    "setup_documentation_requests": 12,
+    "independent_cli_mcp_operational_workflows": "passed"
+  },
+  "production_setup": {
+    "agent": "codex",
+    "scope": "global",
+    "mode": "cli",
+    "consult": "always",
+    "learning": "on",
+    "hooks": "auto",
+    "configured": true,
+    "ready": true,
+    "activation_observed_by_setup_check": false,
+    "native_hook_trust": "not_modified",
+    "existing_skill": "six matching files preserved",
+    "existing_instructions": "preserved",
+    "collection_bytes": "unchanged; excludes Git and backup/restore storage"
+  },
+  "limits": [
+    "Linux arm64 and macOS amd64 are package/cross-build-only.",
+    "Setup inspection is not native trust or fresh-session activation.",
+    "Earlier v1.0.0 model/resource observations retain their original artifact identities."
+  ],
+  "native_codex_observations": {
+    "version": "0.166.0-alpha.5.1",
+    "first_attempt": {
+      "sandbox": "read-only",
+      "binding_and_skill": "loaded",
+      "retrieval": "ACCESS_DENIED"
+    },
+    "second_attempt": {
+      "sandbox": "workspace-write",
+      "explicit_external_collection_grant": true,
+      "data_commands_read_only": true,
+      "binding_and_skill": "loaded",
+      "status_search_and_source_read": "passed",
+      "current_revision_and_physical_line_citation": "observed",
+      "collection_bytes_unchanged": true,
+      "native_hook_trust": "not_modified",
+      "trust_bypass": false
+    },
+    "scope": "Two ephemeral native sessions outside the workspace; source notes and session transcripts stay private."
+  }
+}

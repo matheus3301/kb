@@ -352,11 +352,11 @@ See the [MCP guide](mcp.md).
 
 ## Use the CLI with the agent skill
 
-For a setup-capable source build, follow [the setup lifecycle](agent-setup.md):
+With v1.1.0 or later, follow [the setup lifecycle](agent-setup.md):
 select root, project/global scope, agents and learning; review dry-run, apply,
 check and observe a fresh session. Setup bundles the complete version-matched
-skill and needs no Node. **Published v1.0.0 does not include setup**; select a
-separate reviewed source build rather than assuming an upgrade supplies it.
+skill and needs no Node. **Published v1.0.0 does not include setup**; upgrade
+and check `kb version --json` and `kb setup --help` first.
 
 For the released binary's optional separate skill-install channel, run this
 from the chosen agent workdir:

@@ -194,8 +194,8 @@ globally atomic filesystem changes or universal agent adherence.
 
 See [agent setup](agent-setup.md), [setup design](setup-design.md),
 [adapter capabilities](setup-compatibility.md) and [S01–S44 acceptance](setup-acceptance.md).
-This increment is a source candidate, absent from published v1.0.0; release
-availability and native activation evidence must not be inferred from source.
+This increment requires v1.1.0 or later; v1.0.0 does not include it. Native
+activation evidence must not be inferred from installed configuration alone.
 The optional separate Node/npx skill-install channel remains available, but
 is not required for bundled setup or normal CLI/MCP operation.
 

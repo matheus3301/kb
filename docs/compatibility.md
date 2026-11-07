@@ -1,11 +1,12 @@
 # Compatibility and support
 
 Published and Homebrew-installed production is stable
-**[v1.0.0](https://github.com/matheus3301/kb/releases/tag/v1.0.0)** at
-`0a6d04d3c25840b2c71c0b98d50478dc6749879a`. Actual package, installed functional
-and both fresh controlled CLI + skill/MCP consumer checks passed. Independent
-automated postpublication review approved the bounded method, results and
-documentation, subject to normal protected integration.
+**[v1.1.0](https://github.com/matheus3301/kb/releases/tag/v1.1.0)** at
+`8933c0e1e68318a94f2dfdd8a6fa989781e37301`. Actual published native/source
+verification, macOS arm64 Homebrew upgrade/test, installed CLI documentation
+and CLI/MCP operational workflows passed. The
+[v1.1.0 release record](qa/setup-release-v1.1.0.md) separates those observations
+from earlier v1.0.0 model-consumer and resource qualification.
 Product version, wire version, knowledge format, configuration, operational
 state and backup format are separate axes. `kb.v1` is not product v1.0.
 
@@ -18,7 +19,26 @@ for shipped behavior; `main` may contain unreleased corrections. The
 
 ## Current qualification status
 
-### Published and installed release
+### Published and installed v1.1.0
+
+**v1.1.0 was published on 2026-11-07 at 21:25:23 UTC**, from
+`8933c0e1e68318a94f2dfdd8a6fa989781e37301` after exact-main
+[CI 42414558125](https://github.com/matheus3301/kb/actions/runs/42414558125).
+[Release 42415103752](https://github.com/matheus3301/kb/actions/runs/42415103752)
+completed all five jobs. Linux amd64 and macOS arm64 verified actual downloaded
+native archives and archived source before the
+[tap update](https://github.com/matheus3301/homebrew-tap/commit/984416868c0bc80dac4d0305d80be0f3fb11041d).
+
+Anonymous asset/hash/identity checks and actual macOS arm64 Homebrew upgrade
+from v1.0.0, formula test, 14 installed CLI acceptance workflows, 43 data docs
+requests, 12 setup docs requests and CLI/MCP operational consumers passed.
+The [release record](qa/setup-release-v1.1.0.md) contains exact executable hashes
+and limits. Setup is available from this version; v1.0.0 does not include it.
+Native trust, fresh-session activation and model behavior remain separate
+from `setup check` readiness. Earlier observations below retain their own
+artifact identities and were not silently reclassified as v1.1.0 measurements.
+
+### v1.0.0 publication and installation history
 
 **v1.0.0 was published on 2026-10-26 at 07:56:16 UTC.** Released source is
 `0a6d04d3c25840b2c71c0b98d50478dc6749879a`.
@@ -48,7 +68,7 @@ for shipped behavior; `main` may contain unreleased corrections. The
   source `cb66fd77a120d8c8531f9077a32d2bf51ef7921c` byte-for-byte. This binds the
   unchanged runtime source, not the differently labeled executable hashes.
 
-### Controlled installed consumers
+### v1.0.0 controlled installed consumers
 
 Two actual consumers of the Homebrew-installed v1.0.0 executable passed on fresh
 synthetic roots. Each used separate native learning and query contexts, with no
@@ -310,7 +330,7 @@ not a private base. Package upgrades remain explicit operator actions.
   receipts and protocol separation. Package installation, collection `init` and
   data operations do not configure agents. The newer explicit setup lifecycle
   may install selected skill/rule assets or independent MCP in a reviewed scope;
-  it is a source candidate, absent from published v1.0.0. See
+  it requires v1.1.0 or later. See
   [setup availability](agent-setup.md) and [host qualification](setup-compatibility.md).
   The binary does not select factual truth or authorize note instructions.
 - **CLI skill:** teach CLI operation only. Setup bundles version-matched assets;

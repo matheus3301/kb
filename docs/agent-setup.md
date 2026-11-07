@@ -6,9 +6,8 @@ integration where the adapter supports it. Choose project or user-global scope,
 an existing or deliberately new collection, and whether learning is enabled.
 No Node, account, model or network download is needed for bundled setup.
 
-**Availability:** setup is a checked-out source candidate. Published **v1.0.0**
-does not contain this command. The existing runtime release remains usable;
-installing or upgrading it does not make unreleased commands available. Check
+**Availability:** setup requires **v1.1.0 or later**. Published **v1.0.0**
+does not contain this command. Check
 `kb version --json` and `kb setup --help` before following this guide. See
 [installation](installation.md), [current release status](compatibility.md),
 [setup design](setup-design.md), and [adapter qualification](setup-compatibility.md).
@@ -25,12 +24,13 @@ brew install matheus3301/tap/kb
 kb setup
 ```
 
-The second command requires a build containing setup; it will not work with
-published v1.0.0. Until setup is released, use a reviewed source checkout
-containing the feature and the Go toolchain declared in `go.mod`. Before merge,
-default `main` may not contain setup: select the reviewed feature revision,
-not a guessed release. From your **intended agent project**, set the absolute
-path to that checkout:
+For an existing installation, run `brew update` and
+`brew upgrade matheus3301/tap/kb` first. Confirm `kb version --json` reports
+v1.1.0 or later and `kb setup --help` works.
+
+For optional source installation, use a reviewed checkout containing setup and
+the Go toolchain declared in `go.mod`. From your **intended agent project**, set
+the absolute path to that checkout:
 
 ```sh
 KB_SOURCE="/absolute/path/to/reviewed-kb"
@@ -108,7 +108,7 @@ conflicts. No collection is guessed by scanning the home directory.
 
 The following example uses an existing collection. Replace its generic root,
 project path, agent selection and learning policy with your intended values.
-Use the source executable's explicit path if setup is not yet released.
+Use the source executable's explicit path if you selected a source build.
 
 ```sh
 kb --root ./existing-knowledge setup install --project ./example-project --agent codex --agent pi --learning on --dry-run
@@ -131,6 +131,22 @@ are host-specific: `--hooks auto` permits the supported baseline/fallback,
 `--hooks off` selects rules without hooks, and `--hooks required` must reject
 unavailable capabilities before publication. Never bypass native trust or imply
 that rules technically force a model to retrieve on every turn.
+
+### Filesystem sandbox access
+
+The selected collection may live outside the agent's workspace. Setup does not
+grant sandbox access or change native permissions. The CLI also needs access
+to its advisory lock infrastructure in `.kb/state/`, even for data commands
+using `--read-only`: that flag disables Knowledge Base mutations, not lock-file
+access. A fully read-only filesystem sandbox can therefore return `ACCESS_DENIED`
+after binding resolution succeeds.
+
+For Codex CLI in `workspace-write` mode, explicitly authorize the selected
+collection directory with `--add-dir /absolute/path/to/knowledge` when launching
+the agent. Review that directory grant; do not disable the sandbox or bypass
+native trust to hide an access error. Keep `--read-only` on data commands when
+the task is consultation-only. A directory grant permits filesystem writes;
+the CLI flag and agent instructions are separate controls, not OS isolation.
 
 ## User-global integration
 
@@ -171,7 +187,7 @@ private registry. It uses an anchored relative collection binding and `kb` on
 `PATH` in generated instructions/hooks instead of a workstation-specific
 executable. Review the proposed relative root and every generated file before
 sharing. Every teammate still needs a setup-capable `kb` on the agent's `PATH`;
-published v1.0.0 does not satisfy that prerequisite.
+v1.1.0 or later satisfies that prerequisite; v1.0.0 does not.
 
 For an already initialized collection within a generic project:
 

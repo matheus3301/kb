@@ -1,7 +1,7 @@
 # Setup architecture: installation and each harness
 
-This document describes the **implemented `kb setup` source candidate** in this
-PR. Published v1.0.0 does not include it. The diagrams describe the code's
+This document describes **`kb setup`, introduced in v1.1.0**.
+Published v1.0.0 does not include it. The diagrams describe the code's
 configuration and execution paths, not a claim that every native host/version
 has been exercised. For commands, see [agent setup](agent-setup.md); for observed
 native runs, see [acceptance](setup-acceptance.md).

@@ -1,7 +1,8 @@
 # Setup acceptance
 
-This is the source-candidate acceptance contract for `kb setup`, not evidence
-that published v1.0.0 includes setup. Runtime A01–A26 remain in
+This is the acceptance contract for `kb setup`, introduced in v1.1.0. The
+source-candidate observations below retain their original identities and do not
+qualify later artifacts automatically. Runtime A01–A26 remain in
 [acceptance.json](acceptance.json). The complete S01–S44 requirements, named
 fixtures, observed scopes and evidence references are in
 [setup-acceptance.json](setup-acceptance.json).
