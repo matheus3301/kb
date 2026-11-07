@@ -12,7 +12,7 @@ not authorize setup, collection writes, global changes, merge or release.
 
 ## Start here
 
-- [Agent installer guide](https://raw.githubusercontent.com/matheus3301/kb/777bdfad4d6eb73fb3951a2c573d6fe249ce1997/docs/agent-install.md): Immutable version preflight, Homebrew installation/upgrade, scope review, setup and activation checks; the same guide linked by the site's short prompt.
+- [Agent installer guide](https://raw.githubusercontent.com/matheus3301/kb/6f77595b0667d2cea7c23f177663f60f189a5691/docs/agent-install.md): Immutable version preflight, Homebrew installation/upgrade, scope review, setup and activation checks; the same guide linked by the site's short prompt.
 - [Agent setup](https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md): Version preflight, optional source build, bundled CLI skill or independent MCP, explicit root/scope/agents/learning, dry-run/check/uninstall and activation evidence.
 - [Documentation index](https://raw.githubusercontent.com/matheus3301/kb/main/docs/README.md): Task-oriented navigation through canonical Markdown guides.
 - [README](https://raw.githubusercontent.com/matheus3301/kb/main/README.md): Product, first CLI workflow and actual project status.
