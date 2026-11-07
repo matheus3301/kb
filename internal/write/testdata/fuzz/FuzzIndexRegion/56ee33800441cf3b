@@ -1,0 +1,2 @@
+go test fuzz v1
+string("\r<!-- kb:index:start -->\n<!-- kb:index:end -->")
