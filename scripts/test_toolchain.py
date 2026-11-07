@@ -140,6 +140,8 @@ class ToolchainTests(unittest.TestCase):
             "KB_SITE_BASE=/kb/ pnpm --dir site run build",
             "pnpm --dir site exec playwright install chromium",
             "KB_SITE_BASE=/kb/ pnpm --dir site test",
+            "KB_SITE_BASE=/ pnpm --dir site run build",
+            "KB_SITE_BASE=/ pnpm --dir site test",
         )
         mutations = [("\t" + command + "\n", "") for command in commands]
         mutations += [("--frozen-lockfile", "--no-frozen-lockfile"),

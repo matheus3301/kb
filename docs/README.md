@@ -2,8 +2,9 @@
 
 KB keeps knowledge in local Markdown files. Start with the CLI; add the
 `knowledge-base` skill when you want your agent to use the same workflow.
-The static marketing site is a separate presentation of this product, not a
-browser UI for a collection. These Markdown guides remain canonical.
+The static website renders selected guides from these canonical Markdown files;
+it is documentation, not a browser UI for a collection. Start with installation
+and the quickstart, then choose CLI + skill or the independent MCP interface.
 
 ## Get started
 
