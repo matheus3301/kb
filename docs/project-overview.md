@@ -168,11 +168,11 @@ learning according to the skill; do not record queries without new information.
 If the base is unavailable, report that and continue.
 ```
 
-The explicit source-candidate `kb setup` command bundles the complete CLI skill,
+The explicit `kb setup` command, introduced in v1.1.0, bundles the complete CLI skill,
 installs only selected agent integrations in reviewed project/global scope, and
 records root/policy bindings and artifact ownership outside collection state.
-It provides dry-run, check/resolve and safe uninstall. Published v1.0.0 does not
-include setup; its separate optional Skills installation remains available.
+It provides dry-run, check/resolve and safe uninstall. The separate optional
+Skills installation remains available.
 Package installation and `init` still never configure agents implicitly.
 See [agent setup](agent-setup.md) and [the engine design](setup-design.md).
 The [controlled consumer observation](evidence/consumer/consumer-evidence.json) used

@@ -23,17 +23,17 @@ areas, resources, and archives easy to navigate.
 
 ### Set up your agents
 
-The onboarding flow for a binary containing setup is two commands:
+Install KB and connect your agents in two commands:
 
 ```sh
 brew install matheus3301/tap/kb
 kb setup
 ```
 
-**Setup is currently a source candidate; published v1.0.0 does not include it.**
-Check `kb version --json` and `kb setup --help`. Until release, choose the
-[separate source-build workflow](docs/agent-setup.md#install-then-set-up)
-rather than assuming Homebrew has acquired the feature.
+**Setup requires v1.1.0 or later.** If KB is already installed, run `brew update`
+and `brew upgrade matheus3301/tap/kb` first. Check `kb version --json` and
+`kb setup --help`; [source installation](docs/agent-setup.md#install-then-set-up)
+is also available.
 
 Setup asks where memory applies (project or user-global), which agents to
 configure, which collection to reuse or deliberately create, and whether to
@@ -96,20 +96,19 @@ with an explicitly reviewed `kb apply --repair --incremental` plan.
   recovery journal.
 - **Maintain:** inspect links, validate format/health, update managed navigation,
   export validated knowledge snapshots, and stage operational backup/restore.
-- **Work with your agent:** use the explicit setup candidate to install a bundled
-  CLI skill and consultation policy, or an independent MCP integration. Released
-  v1.0.0 still uses separate setup steps. The runtime needs no model, Node, Git or network.
+- **Work with your agent:** use explicit setup to install a bundled CLI skill
+  and consultation policy, or an independent MCP integration. The runtime
+  needs no model, Node, Git or network.
 
 ## CLI + skill
 
-`kb setup` is the default source-candidate integration workflow. It bundles the
+`kb setup` is the default integration workflow in v1.1.0 and later. It bundles the
 complete version-matched [knowledge-base skill](skills/knowledge-base/SKILL.md),
 so normal setup needs no Node or mutable network-fetched skill templates.
 Project and global scope are explicit; installing assets is not proof that a
 fresh target-agent session has activated them.
 
-For released v1.0.0, the separate optional
-[Skills installer](https://skills.sh) remains available:
+The separate optional [Skills installer](https://skills.sh) remains available:
 
 ```sh
 npx skills add matheus3301/kb --skill knowledge-base
@@ -117,7 +116,7 @@ npx skills add matheus3301/kb --skill knowledge-base
 
 That channel requires Node/npm and does not activate a consultation policy.
 Preserve existing custom skills and instructions. Follow the
-[setup lifecycle guide](docs/agent-setup.md) for candidate availability,
+[setup lifecycle guide](docs/agent-setup.md) for version availability,
 root/scope/agent/learning selection, preflight, checks and safe uninstall.
 
 ### Let your agent set it up
@@ -129,11 +128,10 @@ Set up KB through its setup lifecycle. Read
 https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md
 and https://raw.githubusercontent.com/matheus3301/kb/main/llms.txt as references.
 Inspect command -v kb, kb version --json and kb setup --help first.
-Published v1.0.0 does not include setup. If I select the source workflow,
-use a reviewed checkout containing setup, record its commit, and build
-go -C CHECKOUT build -o CHECKOUT/.build/kb ./cmd/kb with the declared Go toolchain.
-Use that absolute executable from my intended project, without replacing the
-released binary or configuring the KB source directory by accident.
+Setup requires v1.1.0 or later. If installation or upgrade is authorized,
+use brew install matheus3301/tap/kb, or brew update followed by
+brew upgrade matheus3301/tap/kb for an existing installation. Verify version/help
+again. Use the installed executable from my intended agent project.
 Preserve existing bases, skills and instructions. Establish an absolute root,
 project path or authorized global scope, selected agent IDs, and learning on
 or off; ask only for choices not already supplied. Preflight with
@@ -152,8 +150,8 @@ Do not bypass host trust, repair a collection or commit/push/sync knowledge.
 ```text
 kb
 ├── init --para                    Create a Knowledge Base and optional PARA folders
-├── setup install / check          Configure and inspect explicit agent integration (source candidate)
-├── setup resolve / uninstall      Resolve bindings or remove owned integration (source candidate)
+├── setup install / check          Configure and inspect explicit agent integration
+├── setup resolve / uninstall      Resolve bindings or remove owned integration
 ├── status / validate              Inspect scope, format, and structural health
 ├── list / search                  Discover notes with filters and pagination
 ├── read / context / links         Read sources, collect excerpts, and inspect references
@@ -167,35 +165,28 @@ kb
 ```
 
 The data commands, including backup/restore, have been available since v0.4.0;
-setup is a newer source candidate. Use `kb COMMAND --help` for installed flags.
+setup is available since v1.1.0. Use `kb COMMAND --help` for installed flags.
 The [CLI guide](docs/cli.md) contains syntax, JSON requests, errors and limits.
 
 ## Project status
 
-**Stable [v1.0.0](https://github.com/matheus3301/kb/releases/tag/v1.0.0) is published
-and installed through macOS arm64 Homebrew.** Actual published native archives
-and archived source passed verification on Linux amd64 and macOS arm64 before
-the tap update. The Homebrew upgrade, formula test, installed CLI acceptance,
-43 documentation requests and both prior-version upgrade workflows passed.
+**Stable [v1.1.0](https://github.com/matheus3301/kb/releases/tag/v1.1.0) is published
+and installed through macOS arm64 Homebrew.** It adds the explicit `kb setup`
+lifecycle with bundled CLI skills, scoped bindings, optional native hooks and
+safe integration removal.
 
-The setup lifecycle is a newer source-only increment, not part of that published
-release or its installed-consumer evidence. Merging code does not publish a new
-binary. [Setup acceptance](docs/setup-acceptance.md) tracks its separate evidence.
+Actual published native archives and archived source passed verification on
+Linux amd64 and macOS arm64 before the tap updated. A real Homebrew upgrade
+from v1.0.0, formula test, installed CLI acceptance, **43 data documentation
+requests**, **12 setup requests** and CLI/MCP operational consumers passed.
+See the [v1.1.0 release record](docs/qa/setup-release-v1.1.0.md) for exact
+identities, job outcomes and activation limits.
 
-Fresh controlled installed **CLI + knowledge-base skill** and independently
-descriptive **stdio MCP** consumers both passed, including separate learning/query
-contexts and byte-pure no-write follow-ups. MCP needed neither the skill nor CLI
-data commands. See [release/installed identities, consumer results and limits](docs/compatibility.md#current-qualification-status).
-Independent automated review approved the bounded delivery and documentation.
-The [delivery record](docs/qa/v1-delivery.md) retains evidence, earlier failed
-attempts and the normal protected-integration conditions.
-
-The unchanged runtime source has completed bounded local candidate qualification,
-including the 30-minute log-disabled/index-enabled profile and a separate shorter
-default-log companion. Those observations do not establish portable timing or
-capacity for arbitrary receipt histories. The [qualification record](docs/qa/v1-qualification.md)
-retains the prepublication evidence and failed history; the [exit checklist](docs/stability.md)
-tracks final closure separately from publication.
+[Setup acceptance](docs/setup-acceptance.md) records bounded host qualification.
+Installing files does not approve native trust or prove fresh-session activation.
+The [compatibility policy](docs/compatibility.md#current-qualification-status)
+retains the earlier v1.0.0 consumer and resource observations with their original
+identities; they are not new v1.1.0 measurements.
 
 Linux arm64 and macOS amd64 remain package/cross-build-only. No arbitrary-editor
 isolation, universal power-loss guarantee, LTS or SLA is claimed; see

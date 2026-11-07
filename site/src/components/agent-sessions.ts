@@ -94,7 +94,7 @@ export const agentSessions: Session[] = [
     title: 'Set up project memory',
     prompt: 'Use this existing base for Pi in this project. Keep learning off.',
     steps: [
-      { label: 'Plan', heading: 'Confirm the setup-capable build', command: 'kb setup --help', text: 'Source-candidate workflow; published v1.0.0 does not include setup.', duration: 3000 },
+      { label: 'Plan', heading: 'Confirm the setup-capable build', command: 'kb setup --help', text: 'Setup is available in v1.1.0 and later.', duration: 3000 },
       { label: 'Preview', heading: 'Review the selected scope and policy', command: 'kb --root ./knowledge setup install --project . --agent pi --learning off --dry-run', text: 'Existing base preserved. Project integration only; no learning.', duration: 4200 },
       { label: 'Apply', heading: 'Install the reviewed integration', command: 'kb --root ./knowledge setup install --project . --agent pi --learning off --yes', text: 'Owned rule, bundled skill and binding configured.', duration: 3200 },
       { label: 'Check', heading: 'Configuration is not native activation', command: 'kb setup check --project . --agent pi --json', text: 'Start a fresh agent session and observe an actual source read.', duration: 4000 },

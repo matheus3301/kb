@@ -61,12 +61,12 @@ installing a skill, and registering MCP; none happens implicitly.
 paths, degraded inventory, and derived-index staleness. `version` reports build
 version and commit; Go source installs can report `dev`/`unknown`.
 
-## Agent integration lifecycle (source candidate)
+## Agent integration lifecycle
 
-Published v1.0.0 does not contain `setup`. Inspect `kb setup --help` and follow
-the [explicit candidate source workflow](agent-setup.md#install-then-set-up)
-until a release includes it. Setup does not update the executable or change
-ordinary data-command root selection.
+`setup` requires v1.1.0 or later; v1.0.0 does not contain it. Inspect
+`kb version --json` and `kb setup --help`, and follow the
+[installation workflow](agent-setup.md#install-then-set-up). Setup does not
+update the executable or change ordinary data-command root selection.
 
 ```sh
 kb setup

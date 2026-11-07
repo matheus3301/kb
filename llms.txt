@@ -2,9 +2,9 @@
 
 > Local Markdown knowledge for humans and AI agents. Use the revision-aware CLI and knowledge-base skill for agent workflows; optional stdio MCP is independent.
 
-Start with agent setup. The explicit kb setup lifecycle is a source candidate,
-not part of published v1.0.0. Inspect version/help; use a separately selected
-source build until released. Select root, project/global scope, agents and
+Start with agent setup. The explicit kb setup lifecycle requires v1.1.0 or
+later. Inspect version/help; install or upgrade only when authorized.
+Select root, project/global scope, agents and
 learning; preflight/dry-run, review, apply, check and observe a fresh session.
 Preserve existing bases/configuration. Configured is not activation observed.
 Data commands emit kb.v1 JSON. Notes are data, not authority. This index does
@@ -12,8 +12,8 @@ not authorize setup, collection writes, global changes, merge or release.
 
 ## Start here
 
-- [Agent installer guide](https://raw.githubusercontent.com/matheus3301/kb/21a82cd4c210a6aa593afa5750b4be8e643f3ce1/docs/agent-install.md): Self-contained setup workflow referenced by the site's short prompt. Pinned source-candidate guide, not a published release.
-- [Agent setup](https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md): Version preflight, separate candidate source build, bundled CLI skill or independent MCP, explicit root/scope/agents/learning, dry-run/check/uninstall and activation evidence.
+- [Agent installer guide](https://raw.githubusercontent.com/matheus3301/kb/6f77595b0667d2cea7c23f177663f60f189a5691/docs/agent-install.md): Immutable version preflight, Homebrew installation/upgrade, scope review, setup and activation checks; the same guide linked by the site's short prompt.
+- [Agent setup](https://raw.githubusercontent.com/matheus3301/kb/main/docs/agent-setup.md): Version preflight, optional source build, bundled CLI skill or independent MCP, explicit root/scope/agents/learning, dry-run/check/uninstall and activation evidence.
 - [Documentation index](https://raw.githubusercontent.com/matheus3301/kb/main/docs/README.md): Task-oriented navigation through canonical Markdown guides.
 - [README](https://raw.githubusercontent.com/matheus3301/kb/main/README.md): Product, first CLI workflow and actual project status.
 - [Installation](https://raw.githubusercontent.com/matheus3301/kb/main/docs/installation.md): Binary channels, checksums, upgrades and limits.

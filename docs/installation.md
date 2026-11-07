@@ -9,11 +9,12 @@ Binary installation never changes agent configuration. The separate explicit
 `kb setup` command can install the bundled CLI skill and activate a reviewed
 consultation policy, or register independent MCP for a supported adapter.
 
-**Setup is currently a source candidate, not part of published v1.0.0.** The
-first-run flow for a capable binary is `brew install matheus3301/tap/kb`, then
-`kb setup`; check `kb setup --help` first. Until a release includes it, select
-the [separate source-build workflow](agent-setup.md#install-then-set-up).
-Do not assume `brew upgrade` supplies unreleased functionality.
+**Setup requires v1.1.0 or later; v1.0.0 does not include it.** The first-run
+flow is `brew install matheus3301/tap/kb`, then `kb setup`.
+For an existing installation, use `brew update` and
+`brew upgrade matheus3301/tap/kb`; verify `kb version --json` and
+`kb setup --help`. The [source-build workflow](agent-setup.md#install-then-set-up)
+remains an optional alternative.
 Follow [agent setup](agent-setup.md) for explicit root, project/global scope,
 agent selection, learning policy, dry-run/check and safe integration uninstall.
 Installing files alone does not establish fresh-session activation.
