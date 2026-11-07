@@ -100,6 +100,14 @@ with an explicitly reviewed `kb apply --repair --incremental` plan.
   and consultation policy, or an independent MCP integration. The runtime
   needs no model, Node, Git or network.
 
+### Reuse the format in Go
+
+The public [`github.com/matheus3301/kb/okf`](okf/README.md) package provides
+parsing, structured validation and presentation-preserving metadata/body editing
+without the KB runtime. It is **source-only pending a later release**;
+published v1.1.0 does not contain it. See its [supported OKF v0.2 contract](okf/CONFORMANCE.md)
+and compiling examples. All packages under `internal/` remain private.
+
 ## CLI + skill
 
 `kb setup` is the default integration workflow in v1.1.0 and later. It bundles the
