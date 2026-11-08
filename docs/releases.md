@@ -167,6 +167,27 @@ After each authorized publication, verify anonymous downloads and hashes,
 platforms. Snapshot validation does not replace a real installation test after
 publication. Update public installation guidance to match observed results.
 
+## Verify the published Go package
+
+The public `pkg/okf` library is introduced in v1.2.0. After pushing a new tag,
+follow the [Go publication guide](https://go.dev/doc/modules/publishing) to request
+that version through the official proxy, then exercise it from an unrelated
+module with checksum verification enabled. For example:
+
+```sh
+GOPROXY=https://proxy.golang.org go list -m github.com/matheus3301/kb@v1.2.0
+```
+
+Use the newly published tag in subsequent releases. Check version availability
+against repository tags, releases and the recorded retired-version history before
+tagging. Query the Go proxy for that version after publication: probing a version
+that does not exist yet can cache a negative result and delay normal consumers
+after the tag appears. The v1.2.0 publication record retains the observed failed
+lookup and later retry. Allow a cached response to expire and repeat the ordinary
+checksum-verified request; keep the tag immutable and authentication enabled.
+A successful GitHub release or Homebrew test alone does not qualify module-proxy
+availability or an external Go consumer.
+
 ## Finalizing stable v1
 
 Keep candidate readiness, publication and installed verification distinct. Earlier

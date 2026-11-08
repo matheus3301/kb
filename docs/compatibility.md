@@ -1,12 +1,12 @@
 # Compatibility and support
 
 Published and Homebrew-installed production is stable
-**[v1.1.0](https://github.com/matheus3301/kb/releases/tag/v1.1.0)** at
-`8933c0e1e68318a94f2dfdd8a6fa989781e37301`. Actual published native/source
-verification, macOS arm64 Homebrew upgrade/test, installed CLI documentation
-and CLI/MCP operational workflows passed. The
-[v1.1.0 release record](qa/setup-release-v1.1.0.md) separates those observations
-from earlier v1.0.0 model-consumer and resource qualification.
+**[v1.2.0](https://github.com/matheus3301/kb/releases/tag/v1.2.0)** at
+`a039eb5c070c70625942b340bbcc78679e88c244`. Actual published native/source verification,
+macOS arm64 Homebrew upgrade/test, installed CLI/MCP operational consumers and
+an external consumer of the tagged Go module passed. The
+[v1.2.0 release record](qa/library-release-v1.2.0.md) separates those observations
+from earlier model, resource and native-activation qualification.
 Product version, wire version, knowledge format, configuration, operational
 state and backup format are separate axes. `kb.v1` is not product v1.0.
 
@@ -19,7 +19,26 @@ for shipped behavior; `main` may contain unreleased corrections. The
 
 ## Current qualification status
 
-### Published and installed v1.1.0
+### Published and installed v1.2.0
+
+**v1.2.0 was published at 2026-11-08T01:20:41Z**, from
+`a039eb5c070c70625942b340bbcc78679e88c244` after exact-main
+[CI42432765160](https://github.com/matheus3301/kb/actions/runs/42432765160).
+[Release42433217642](https://github.com/matheus3301/kb/actions/runs/42433217642)
+completed all five jobs, including actual downloaded native/archive-source
+workflows on Linux amd64 and macOS arm64 before the
+[tap update](https://github.com/matheus3301/homebrew-tap/commit/5bd3e2dc926d86374ce6109797e18e0d63021204).
+
+Anonymous asset/hash/identity checks, an actual macOS arm64 Homebrew upgrade
+from v1.1.0 and formula test, installed CLI/docs/MCP workflows and a declared
+v1.1.0 compatibility run passed. An external module consumed the tagged
+`pkg/okf` library with checksum verification enabled and no local replacement.
+The initial negative-cache failure remains in the
+[release record](qa/library-release-v1.2.0.md), with the successful later retry.
+Earlier resource/model/activation observations below retain their own source
+identities and were not rerun or reclassified as v1.2.0 qualification.
+
+### v1.1.0 publication and installation history
 
 **v1.1.0 was published on 2026-11-07 at 21:25:23 UTC**, from
 `8933c0e1e68318a94f2dfdd8a6fa989781e37301` after exact-main

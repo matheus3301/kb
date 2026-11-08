@@ -178,23 +178,25 @@ The [CLI guide](docs/cli.md) contains syntax, JSON requests, errors and limits.
 
 ## Project status
 
-**Stable [v1.1.0](https://github.com/matheus3301/kb/releases/tag/v1.1.0) is published
-and installed through macOS arm64 Homebrew.** It adds the explicit `kb setup`
-lifecycle with bundled CLI skills, scoped bindings, optional native hooks and
-safe integration removal.
+**Stable [v1.2.0](https://github.com/matheus3301/kb/releases/tag/v1.2.0) is published
+and installed through macOS arm64 Homebrew.** It introduces the reusable
+[`pkg/okf` Go library](pkg/okf/README.md) and a searchable canonical documentation
+portal. CLI + skill remains the primary agent workflow; MCP is independent.
 
 Actual published native archives and archived source passed verification on
 Linux amd64 and macOS arm64 before the tap updated. A real Homebrew upgrade
-from v1.0.0, formula test, installed CLI acceptance, **43 data documentation
-requests**, **12 setup requests** and CLI/MCP operational consumers passed.
-See the [v1.1.0 release record](docs/qa/setup-release-v1.1.0.md) for exact
-identities, job outcomes and activation limits.
+from v1.1.0, formula test, 14 installed CLI acceptance workflows, **43 data
+documentation requests**, **12 setup requests** and CLI/MCP operational consumers
+passed. A separate module also consumed the tagged Go package with checksum
+verification enabled and no local replacement. See the
+[v1.2.0 release record](docs/qa/library-release-v1.2.0.md) for exact identities,
+job outcomes, the initial proxy-cache failure and verification limits.
 
 [Setup acceptance](docs/setup-acceptance.md) records bounded host qualification.
 Installing files does not approve native trust or prove fresh-session activation.
 The [compatibility policy](docs/compatibility.md#current-qualification-status)
-retains the earlier v1.0.0 consumer and resource observations with their original
-identities; they are not new v1.1.0 measurements.
+retains earlier consumer, resource and activation observations with their
+original artifact identities; they are not new v1.2.0 measurements.
 
 Linux arm64 and macOS amd64 remain package/cross-build-only. No arbitrary-editor
 isolation, universal power-loss guarantee, LTS or SLA is claimed; see
