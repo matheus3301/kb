@@ -1,4 +1,4 @@
-.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke retrieval-eval soak-smoke site-check
+.PHONY: tools check repo lint test build fuzz security acceptance release-check release-snapshot release benchmark benchmark-smoke retrieval-eval soak-smoke site-check okf-check
 
 # Match distributed CLI builds without changing the race-test environment.
 CLI_BUILD_ENV := CGO_ENABLED=0 GOWORK=off GOTOOLCHAIN=local
@@ -29,7 +29,11 @@ fuzz:
 security:
 	$(PYTHON) scripts/quality.py security
 
-acceptance:
+# Compile a consumer outside this module and enforce the public format boundary.
+okf-check:
+	$(PYTHON) scripts/check_okf.py
+
+acceptance: okf-check
 	$(CLI_BUILD_ENV) go build -trimpath -o .build/kb ./cmd/kb
 	$(PYTHON) scripts/acceptance.py --binary .build/kb --output .build/acceptance.json
 	$(PYTHON) scripts/check_docs.py --binary .build/kb --setup
@@ -62,7 +66,7 @@ site-check:
 	KB_SITE_BASE=/ pnpm --dir site run build
 	KB_SITE_BASE=/ pnpm --dir site test
 
-check: repo lint test build fuzz security acceptance benchmark-smoke retrieval-eval soak-smoke
+check: repo lint test build fuzz security okf-check acceptance benchmark-smoke retrieval-eval soak-smoke
 
 release-check:
 	$(GORELEASER) check

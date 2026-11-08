@@ -113,6 +113,18 @@ and [exit checklist](stability.md) track current release and qualification facts
 acceptance, bounded benchmark smoke, retrieval evaluation and concurrent CLI
 smoke. Product workflows use disposable synthetic roots, never an operator's
 live collection. Green CI alone is not stable readiness.
+
+`make okf-check` is also part of `make check`: it compiles and runs a consumer of
+the public [`okf` package](../pkg/okf/README.md) from an unrelated temporary
+module, then enforces its transitive `go list -deps` boundary (standard library
+and the existing YAML dependency only). External-package examples, format
+regressions and parser/editor/reserved-file fuzz targets run under the existing
+Go gates. This is supported-subset evidence, not full upstream OKF qualification
+or evidence that published v1.1.0 contains the package.
+It is an unconditional prerequisite of `make acceptance`, which the required
+Linux/macOS CI test jobs execute. A quality-tool regression verifies that a
+failed external-consumer gate stops acceptance before building the CLI.
+
 [Original validation](evidence/validation.json), dated **2026-10-24**, reports
 a successful v0.1-era run with 88.4% statement coverage, 102 top-level test
 functions, 314 named pass events including subtests and fuzz seeds, seven fuzz

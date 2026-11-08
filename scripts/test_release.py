@@ -63,6 +63,25 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 check_release.inspect_archive(path)
 
+    def test_real_archives_require_public_okf_guides(self):
+        for prefix in ("", "kb-1.2.3/"):
+            required = {prefix + "pkg/okf/README.md", prefix + "pkg/okf/CONFORMANCE.md"}
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "synthetic.tar.gz"
+                for omitted in (None, *sorted(required)):
+                    with tarfile.open(path, "w:gz") as archive:
+                        for name in sorted(required - {omitted}):
+                            member = tarfile.TarInfo(name)
+                            content = b"# Synthetic package guide\n"
+                            member.size = len(content)
+                            archive.addfile(member, io.BytesIO(content))
+                    with self.subTest(prefix=prefix, omitted=omitted):
+                        if omitted is None:
+                            self.assertEqual(required, check_release.inspect_archive(path, required))
+                        else:
+                            with self.assertRaisesRegex(ValueError, "missing required"):
+                                check_release.inspect_archive(path, required)
+
     def test_tag_validation_rejects_retired_or_injected_versions(self):
         for tag in ("v0.1.1", "v1.2.3-rc.1"):
             self.assertEqual(tag, release.release_tag(tag))

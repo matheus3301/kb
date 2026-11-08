@@ -276,6 +276,15 @@ implementation preserving untouched fields. Whole-document serialization that
 loses comments must not be the default. Duplicate YAML keys, excessive aliases,
 oversized documents, and invalid UTF-8 must produce bounded diagnostics.
 
+The shared format implementation is the public
+[`github.com/matheus3301/kb/pkg/okf`](../pkg/okf/README.md) package, introduced in
+KB v1.2.0 and not included in earlier v1.1.0. Its [pinned implementation contract](../pkg/okf/CONFORMANCE.md)
+separates upstream requirements, bounded YAML support and optional-field guidance
+from KB's blocking policies and actor/verification lifecycle.
+[Decision 0007](decisions/0007-public-okf-library.md) records the extraction;
+KB retains filesystem, Markdown graph, managed-navigation and transaction policy.
+
+
 ### Native OKF base
 
 There is no `mixed` mode or legacy-note adapter. Invalid files are integrity

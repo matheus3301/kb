@@ -17,7 +17,7 @@ import compatibility
 import release
 
 
-def inspect_archive(path):
+def inspect_archive(path, required=()):
     with tarfile.open(path) as archive:
         for member in archive.getmembers():
             relative = Path(member.name)
@@ -30,7 +30,10 @@ def inspect_archive(path):
                 data = archive.extractfile(member).read()
                 if re.search(rb"/(?:Users|home)/[\w.-]+|(?:file|vscode|codex)://", data):
                     raise ValueError("workstation path in release content")
-        return {member.name for member in archive.getmembers()}
+        members = {member.name for member in archive.getmembers()}
+        if not set(required) <= members:
+            raise ValueError("release archive is missing required source, documentation or licenses")
+        return members
 
 
 def main():
@@ -47,7 +50,7 @@ def main():
         raise ValueError("release must contain exactly four binary archives and one source archive")
     listed = {}
     public_docs = {"README.md", "llms.txt", "docs/quickstart.md", "docs/cli.md", "docs/agent-setup.md", "docs/mcp.md",
-                   "skills/knowledge-base/SKILL.md"}
+                   "skills/knowledge-base/SKILL.md", "pkg/okf/README.md", "pkg/okf/CONFORMANCE.md"}
     public_docs.update(f"skills/knowledge-base/references/{name}.md"
                        for name in ("retrieval", "writing", "maintenance", "results"))
     for line in (dist / "checksums.txt").read_text().splitlines():
@@ -60,18 +63,14 @@ def main():
     for name in expected:
         if hashlib.sha256((dist / name).read_bytes()).hexdigest() != listed[name]:
             raise ValueError("release checksum mismatch")
-        members = inspect_archive(dist / name)
         if name != source_name:
             required = public_docs | {"kb", "LICENSE", "THIRD_PARTY_NOTICES.md",
                                       "assets/logo.png", "assets/BRAND.md", "schemas/kb.v1.tools.json"}
-            if not required <= members:
-                raise ValueError("binary archive is missing public documentation or licenses")
         else:
             required = {f"kb-{version}/{entry}" for entry in public_docs | {
-                "go.mod", "cmd/kb/main.go", "LICENSE", "THIRD_PARTY_NOTICES.md",
+                "go.mod", "cmd/kb/main.go", "pkg/okf/document.go", "LICENSE", "THIRD_PARTY_NOTICES.md",
                 "assets/logo.png", "assets/BRAND.md", "schemas/kb.v1.tools.json"}}
-            if not required <= members:
-                raise ValueError("source archive is missing source, docs, or license notices")
+        inspect_archive(dist / name, required)
     expected_formula = release.formula_text("v" + version, commit, source_name, listed[source_name])
     if (root / ".build/homebrew/kb.rb").read_text() != expected_formula:
         raise ValueError("Homebrew formula does not match the checked source archive")

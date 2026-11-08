@@ -8,6 +8,8 @@ the product source; it is not the user's knowledge base.
 
 - Implement one small, reviewable increment at a time. Mark plans as plans.
 - Keep the domain independent of CLI, MCP, logging backend, and search adapter.
+- Put reusable public Go packages under `pkg/`; keep application-private packages
+  under `internal/`.
 - Use Go, explicit constructors, and standard library facilities first. Add a
   dependency only for a concrete requirement; record the decision and version.
 - No UI, embedded LLM, telemetry, automatic Git sync, legacy compatibility layer,
