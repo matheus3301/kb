@@ -1,0 +1,101 @@
+{
+  "schema_version": "kb.release-observation.v1",
+  "version": "v1.2.0",
+  "source_commit": "a039eb5c070c70625942b340bbcc78679e88c244",
+  "published_at": "2026-11-08T01:20:41Z",
+  "exact_main_ci": "https://github.com/matheus3301/kb/actions/runs/42432765160",
+  "release_run": "https://github.com/matheus3301/kb/actions/runs/42433217642",
+  "jobs": [
+    {
+      "name": "Verify release source",
+      "conclusion": "success",
+      "completedAt": "2026-11-08T01:19:04Z"
+    },
+    {
+      "name": "Publish GitHub release",
+      "conclusion": "success",
+      "completedAt": "2026-11-08T01:20:46Z"
+    },
+    {
+      "name": "Verify published native and source archives (macos-15)",
+      "conclusion": "success",
+      "completedAt": "2026-11-08T01:21:29Z"
+    },
+    {
+      "name": "Verify published native and source archives (ubuntu-24.04)",
+      "conclusion": "success",
+      "completedAt": "2026-11-08T01:21:27Z"
+    },
+    {
+      "name": "Update Homebrew tap",
+      "conclusion": "success",
+      "completedAt": "2026-11-08T01:21:38Z"
+    }
+  ],
+  "downloads": {
+    "ok": true,
+    "anonymous_downloads": true,
+    "archives_verified": 5,
+    "identity": {
+      "commit": "a039eb5c070c70625942b340bbcc78679e88c244",
+      "version": "v1.2.0"
+    },
+    "archive_sha256": {
+      "kb_1.2.0_darwin_amd64.tar.gz": "f3f21bf4ea3ba07c2f4f78fab16dc5e3f3f3a92744c7b964d09380ef561f1a04",
+      "kb_1.2.0_darwin_arm64.tar.gz": "1f0248308dc7ec4daed8fb591df9d8a05064ade7e183306d79b5fb9395026d5f",
+      "kb_1.2.0_linux_amd64.tar.gz": "fe3912468364a3fad2325316b505bf4e3e642dc87e0645b20026f53e3a223bcb",
+      "kb_1.2.0_linux_arm64.tar.gz": "f4dc331c83747c02452bbb6206e836b2059fd231967e6831ef67cd4ffd23072a",
+      "kb_1.2.0_source.tar.gz": "0b6c9f71023f8e4e8d12a0b49e3a477f13a5dd5445bfdc94723bce49cd660b69"
+    },
+    "darwin_arm64_binary_sha256": "b43c46d683188251d29984a5da99bc1bd919010bb10f05b514b73df14b5d8c84"
+  },
+  "homebrew": {
+    "platform": "darwin/arm64",
+    "upgrade_from": "v1.1.0",
+    "formula_test": "passed",
+    "tap_commit": "5bd3e2dc926d86374ce6109797e18e0d63021204",
+    "identity": {
+      "commit": "a039eb5c070c70625942b340bbcc78679e88c244",
+      "version": "v1.2.0"
+    },
+    "binary_sha256": "9e4fd87190786e78d14eb059e3880c772b19ec23c5a64aa39ebcbc8ced002e78"
+  },
+  "installed_synthetic_checks": {
+    "acceptance_workflows": 14,
+    "documentation_requests": 43,
+    "setup_documentation_requests": 12,
+    "independent_cli_mcp_operational_workflows": "passed"
+  },
+  "prior_version_upgrade": {
+    "version": "v1.1.0",
+    "source_commit": "8933c0e1e68318a94f2dfdd8a6fa989781e37301",
+    "baseline_binary_sha256": "8d13dd6f6f950ad1908dda8313f3744201e7d00f8ca2eecc6dbef3e80e456aee",
+    "compatibility_workflows": "passed",
+    "synthetic_only": true
+  },
+  "go_library": {
+    "ok": true,
+    "module": "github.com/matheus3301/kb",
+    "version": "v1.2.0",
+    "module_sum": "h1:UnkGE4o++umn/2226sKssRjNdrq9eBmlSraVTa5CVac=",
+    "origin_hash": "a039eb5c070c70625942b340bbcc78679e88c244",
+    "local_replace": false,
+    "expected_release_commit": "a039eb5c070c70625942b340bbcc78679e88c244",
+    "go_files_equal_to_release_source": 13,
+    "go_files_sha256": "3370614a9716a605d65bf66071407a1a1bf94814e4ec6d7ca82bfb9ba6cca162",
+    "runtime_dependency_boundary": "standard library + pinned YAML",
+    "consumer": "passed"
+  },
+  "initial_go_lookup": {
+    "result": "404 unknown revision from proxy and checksum database",
+    "checksum_verification_enabled": true,
+    "pre_tag_probe_saved_at": "2026-11-08T00:58:40Z",
+    "observed_proxy_negative_expiry": "2026-11-08T01:28:39Z",
+    "disposition": "Failed attempt retained; later ordinary checksum-verified consumer passed. No tag move or authentication bypass."
+  },
+  "limits": [
+    "Linux arm64 and macOS amd64 remain package/cross-build-only.",
+    "Earlier long-running resource and native model/activation observations retain their original artifact identities.",
+    "Library parsing validates a documented supported subset, not full bundle conformance or attestation authenticity."
+  ]
+}

@@ -62,6 +62,8 @@ and the quickstart, then choose CLI + skill or the independent MCP interface.
   [compatibility/support](compatibility.md): published and installed identities,
   supported version axes, upgrade paths, and qualified versus cross-build-only
   platforms.
+- [v1.2.0 release record](qa/library-release-v1.2.0.md): observed publication,
+  Homebrew and tagged Go consumer checks, with exact identities and limits.
 - [Release operations](releases.md): packaging, verification, and explicit
   publication authorization; merging code does not publish a release.
 - [Quality gates](quality.md) and [acceptance inventory](acceptance.json): enforced
