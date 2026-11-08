@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/matheus3301/kb/okf"
+	"github.com/matheus3301/kb/pkg/okf"
 )
 
 func ExampleParse() {

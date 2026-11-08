@@ -102,10 +102,10 @@ with an explicitly reviewed `kb apply --repair --incremental` plan.
 
 ### Reuse the format in Go
 
-The public [`github.com/matheus3301/kb/okf`](okf/README.md) package provides
+The public [`github.com/matheus3301/kb/pkg/okf`](pkg/okf/README.md) package provides
 parsing, structured validation and presentation-preserving metadata/body editing
 without the KB runtime. It is **source-only pending a later release**;
-published v1.1.0 does not contain it. See its [supported OKF v0.2 contract](okf/CONFORMANCE.md)
+published v1.1.0 does not contain it. See its [supported OKF v0.2 contract](pkg/okf/CONFORMANCE.md)
 and compiling examples. All packages under `internal/` remain private.
 
 ## CLI + skill

@@ -65,7 +65,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_real_archives_require_public_okf_guides(self):
         for prefix in ("", "kb-1.2.3/"):
-            required = {prefix + "okf/README.md", prefix + "okf/CONFORMANCE.md"}
+            required = {prefix + "pkg/okf/README.md", prefix + "pkg/okf/CONFORMANCE.md"}
             with tempfile.TemporaryDirectory() as directory:
                 path = Path(directory) / "synthetic.tar.gz"
                 for omitted in (None, *sorted(required)):

@@ -1,6 +1,6 @@
 # OKF for Go
 
-`github.com/matheus3301/kb/okf` is KB's shared format implementation, extracted
+`github.com/matheus3301/kb/pkg/okf` is KB's shared format implementation, extracted
 from its concept codec and metadata editor. It parses documents, exposes detached
 metadata, reports structured findings, creates documents and preserves existing
 presentation during targeted edits. It also checks supported reserved index/log
@@ -29,7 +29,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/matheus3301/kb/okf"
+    "github.com/matheus3301/kb/pkg/okf"
 )
 
 func main() {
@@ -49,8 +49,8 @@ func main() {
 }
 ```
 
-See [compiling external-package examples](https://github.com/matheus3301/kb/blob/main/okf/example_test.go),
-[behavior tests](https://github.com/matheus3301/kb/blob/main/okf/document_test.go)
+See [compiling external-package examples](https://github.com/matheus3301/kb/blob/main/pkg/okf/example_test.go),
+[behavior tests](https://github.com/matheus3301/kb/blob/main/pkg/okf/document_test.go)
 and the [implementation contract](CONFORMANCE.md). Source-code links point to the
 repository so this guide also works inside a binary archive without Go sources.
 

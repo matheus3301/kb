@@ -12,7 +12,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/matheus3301/kb/internal/api"
-	"github.com/matheus3301/kb/okf"
+	"github.com/matheus3301/kb/pkg/okf"
 )
 
 type codec struct{}

@@ -11,7 +11,7 @@ import (
 	"github.com/matheus3301/kb/internal/api"
 	"github.com/matheus3301/kb/internal/core"
 	"github.com/matheus3301/kb/internal/write"
-	"github.com/matheus3301/kb/okf"
+	"github.com/matheus3301/kb/pkg/okf"
 )
 
 func TestTransactionUsesPublicFormatWithoutLosingMetadata(t *testing.T) {

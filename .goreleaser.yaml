@@ -57,7 +57,7 @@ archives:
         info: *public_file
       - src: docs/**/*.json
         info: *public_file
-      - src: okf/*.md
+      - src: pkg/okf/*.md
         info: *public_file
       - src: schemas/*.json
         info: *public_file

@@ -7,7 +7,7 @@ import subprocess
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE = "github.com/matheus3301/kb/okf"
+PACKAGE = "github.com/matheus3301/kb/pkg/okf"
 
 
 def dependency_findings(packages):
@@ -31,7 +31,7 @@ CONSUMER = r'''package main
 import (
     "encoding/json"
     "fmt"
-    "github.com/matheus3301/kb/okf"
+    "github.com/matheus3301/kb/pkg/okf"
 )
 
 func main() {
@@ -56,7 +56,7 @@ func main() {
 def main():
     env = dict(os.environ, GOWORK="off", GOTOOLCHAIN="local")
     env.pop("KB_ROOT", None)
-    stream = subprocess.check_output(["go", "list", "-deps", "-json", "./okf"], cwd=ROOT, env=env, text=True)
+    stream = subprocess.check_output(["go", "list", "-deps", "-json", "./pkg/okf"], cwd=ROOT, env=env, text=True)
     findings = dependency_findings(decode_packages(stream))
     if findings:
         raise SystemExit("\n".join(findings))

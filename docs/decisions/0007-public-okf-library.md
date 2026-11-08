@@ -5,9 +5,13 @@ is implied. Published v1.1.0 does not contain this package.
 
 ## Decision
 
-Expose `github.com/matheus3301/kb/okf` in the existing module. Move the YAML syntax
-parser, exact metadata representation, concept checks and presentation-preserving
-header editor from `internal/core` into the public package. Core and write flows
+Expose `github.com/matheus3301/kb/pkg/okf` in the existing module. Reusable
+public Go packages live under `pkg/`; application-private packages remain under
+`internal/`. The `pkg/` directory is an organizational convention, while Go
+applies import restrictions to `internal/`.
+
+Move the YAML syntax parser, exact metadata representation, concept checks and
+presentation-preserving header editor from `internal/core` into the public package. Core and write flows
 consume that implementation through the existing internal codec contract; there
 is no parallel parser, public alias of an internal DTO or legacy implementation.
 
@@ -15,8 +19,8 @@ The public surface is `Parse`, `Marshal`, immutable `Document` accessors, explic
 `Edit`, `Validate`, structured `Error`/`Diagnostic` and format identity constants.
 Pure `ValidateReserved` accepts root-index/index/log roles and implements the
 existing supported upstream reserved-file checks. See the package
-[usage guide](../../okf/README.md) and pinned
-[implementation/conformance contract](../../okf/CONFORMANCE.md).
+[usage guide](../../pkg/okf/README.md) and pinned
+[implementation/conformance contract](../../pkg/okf/CONFORMANCE.md).
 
 The dependency direction is KB adapters → `okf` → standard library + the existing
 `go.yaml.in/yaml/v3` pin. No new runtime dependency or API lookup is needed for

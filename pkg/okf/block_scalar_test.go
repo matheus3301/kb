@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/matheus3301/kb/okf"
+	"github.com/matheus3301/kb/pkg/okf"
 )
 
 func TestEditReplacesWhitespaceBlockScalarContent(t *testing.T) {

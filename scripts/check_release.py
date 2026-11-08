@@ -50,7 +50,7 @@ def main():
         raise ValueError("release must contain exactly four binary archives and one source archive")
     listed = {}
     public_docs = {"README.md", "llms.txt", "docs/quickstart.md", "docs/cli.md", "docs/agent-setup.md", "docs/mcp.md",
-                   "skills/knowledge-base/SKILL.md", "okf/README.md", "okf/CONFORMANCE.md"}
+                   "skills/knowledge-base/SKILL.md", "pkg/okf/README.md", "pkg/okf/CONFORMANCE.md"}
     public_docs.update(f"skills/knowledge-base/references/{name}.md"
                        for name in ("retrieval", "writing", "maintenance", "results"))
     for line in (dist / "checksums.txt").read_text().splitlines():
@@ -68,7 +68,7 @@ def main():
                                       "assets/logo.png", "assets/BRAND.md", "schemas/kb.v1.tools.json"}
         else:
             required = {f"kb-{version}/{entry}" for entry in public_docs | {
-                "go.mod", "cmd/kb/main.go", "okf/document.go", "LICENSE", "THIRD_PARTY_NOTICES.md",
+                "go.mod", "cmd/kb/main.go", "pkg/okf/document.go", "LICENSE", "THIRD_PARTY_NOTICES.md",
                 "assets/logo.png", "assets/BRAND.md", "schemas/kb.v1.tools.json"}}
         inspect_archive(dist / name, required)
     expected_formula = release.formula_text("v" + version, commit, source_name, listed[source_name])

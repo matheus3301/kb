@@ -277,8 +277,8 @@ loses comments must not be the default. Duplicate YAML keys, excessive aliases,
 oversized documents, and invalid UTF-8 must produce bounded diagnostics.
 
 The shared format implementation is the source-only public
-[`github.com/matheus3301/kb/okf`](../okf/README.md) package, pending a later release
-and not included in published v1.1.0. Its [pinned implementation contract](../okf/CONFORMANCE.md)
+[`github.com/matheus3301/kb/pkg/okf`](../pkg/okf/README.md) package, pending a later release
+and not included in published v1.1.0. Its [pinned implementation contract](../pkg/okf/CONFORMANCE.md)
 separates upstream requirements, bounded YAML support and optional-field guidance
 from KB's blocking policies and actor/verification lifecycle.
 [Decision 0007](decisions/0007-public-okf-library.md) records the extraction;

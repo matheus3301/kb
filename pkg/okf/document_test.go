@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/matheus3301/kb/okf"
+	"github.com/matheus3301/kb/pkg/okf"
 )
 
 func parse(t *testing.T, raw string) *okf.Document {

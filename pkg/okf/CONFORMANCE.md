@@ -12,7 +12,7 @@ This document summarizes KB's implementation; it does not reproduce the upstream
 standard. The upstream project is attributed to its contributors and distributed
 under [Apache-2.0](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/LICENSE.md).
 The Go implementation is extracted from KB's existing code under its
-[MIT license](../LICENSE); no upstream source code or full specification is copied.
+[MIT license](../../LICENSE); no upstream source code or full specification is copied.
 
 ## Three distinct layers
 

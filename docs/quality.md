@@ -99,7 +99,7 @@ smoke. Product workflows use disposable synthetic roots, never an operator's
 live collection. Green CI alone is not stable readiness.
 
 `make okf-check` is also part of `make check`: it compiles and runs a consumer of
-the source-only public [`okf` package](../okf/README.md) from an unrelated temporary
+the source-only public [`okf` package](../pkg/okf/README.md) from an unrelated temporary
 module, then enforces its transitive `go list -deps` boundary (standard library
 and the existing YAML dependency only). External-package examples, format
 regressions and parser/editor/reserved-file fuzz targets run under the existing

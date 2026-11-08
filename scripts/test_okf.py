@@ -39,7 +39,7 @@ class OKFBoundaryTests(unittest.TestCase):
     def test_json_stream_checks_all_packages(self):
         packages = check_okf.decode_packages(
             '{"ImportPath":"bytes","Standard":true}\n'
-            '{"ImportPath":"github.com/matheus3301/kb/okf"}\n'
+            '{"ImportPath":"github.com/matheus3301/kb/pkg/okf"}\n'
             '{"ImportPath":"go.yaml.in/yaml/v3"}\n'
             '{"ImportPath":"github.com/modelcontextprotocol/go-sdk/mcp"}\n')
         findings = check_okf.dependency_findings(packages)
