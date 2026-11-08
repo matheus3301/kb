@@ -40,8 +40,42 @@ Only the Latin font subsets needed for this English page are imported. Font lice
 
 Use semantic landmarks, one h1, ordered headings, descriptive links and decorative SVGs hidden from assistive technology. Every interactive control has a visible 2px accent focus outline with 5px offset. Keep primary actions at least 48px tall and mobile copy controls at least 44px tall. Copy controls retain focus and announce results with an atomic polite live region.
 
-Smooth anchor scrolling is the only page motion. Reduced-motion preference disables it and transitions. No entrance animations, typewriter effects or fake live-terminal playback. Selection and scrollbars use the same palette. Assets are bundled locally; no analytics, external fonts or runtime fetches.
+Reduced-motion preference disables smooth scrolling and transitions. Selection
+and scrollbars use the same palette. Assets are bundled locally; there are no
+analytics, external fonts or remote runtime resource requests. Documentation
+search fetches only its generated same-origin JSON index.
 
 ## Content rules
 
-Documentation is canonical in the existing repository Markdown. V0 links from `#docs`; it does not duplicate a renderer. Illustrative source/terminal content must be labeled and must not imply captured output, usage statistics, performance guarantees or generated answers. Skill installation, root selection and workdir activation remain distinct actions.
+Documentation is canonical in root `docs/`. `/docs/` renders an explicit
+selection at build time rather than maintaining a second Markdown tree.
+Historical QA/evidence links stay on GitHub and are labeled as historical.
+Illustrative landing source/terminal content must not imply captured output,
+usage statistics, performance guarantees or generated answers. Skill
+installation, root selection and workdir activation remain distinct actions.
+
+## Documentation reading surface
+
+Use the same six color tokens and local fonts, not another marketing hero.
+The desktop grid is a 240px grouped navigation rail, a bounded article column,
+and a narrow on-page outline. At intermediate widths the outline yields to
+reading space; on mobile a native disclosure menu preserves no-JavaScript
+navigation. Sticky navigation stays out of the heading scroll target.
+
+Instrument Sans carries 16px prose with 1.85 line height, 29–40px page titles,
+26px section headings and 20px subsections. IBM Plex Mono carries code, source
+paths and keyboard hints. Long commands and reference tables scroll within
+focusable regions rather than expanding the page. Syntax colors derive from
+the same palette, including readable comments.
+
+The source strip makes the canonical file visible alongside Markdown copy
+and GitHub editing. Heading permalinks become visible on hover/focus and remain
+visible on touch layouts. Code copy actions appear only when JavaScript is
+available; selectable examples, heading links and source editing do not depend
+on it. Mermaid remains explicitly labeled source text.
+
+Search is a native modal dialog with local title/body matching and excerpts.
+Cmd/Ctrl+K opens it; arrows, Home/End and Enter navigate results; Escape and
+the visible close action restore focus. Empty queries, no matches and local
+index failures have explicit feedback. No decorative or backend-dependent
+controls belong in this surface.

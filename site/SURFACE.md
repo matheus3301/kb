@@ -25,3 +25,13 @@ against computed line height, reject clipping, cap card height and verify the
 actual clipboard.
 
 Seed: none (user-pinned direction). The page remains code-led; the shared blue-bird identity was generated under human authorization. No paid page rendering.
+
+## Documentation surface
+
+Mode: Read and navigate. Preserve the landing's palette, mascot and typography,
+but not its hero scale. The docs use a 240px grouped left rail, bounded central
+article and narrow right outline. The source-file strip is the signature:
+canonical Markdown, copying and editing are directly connected to the article.
+Mobile uses a native menu disclosure rather than a JavaScript-only drawer.
+No-JavaScript reading remains a first-class path. Search is local text matching
+over the explicit published selection; no AI/account/rating affordances.

@@ -1,0 +1,73 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import logo from '../../../../assets/logo.png';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '../../styles/global.css';
+import '../../styles/docs.css';
+import { documents, docsPath, repository } from '../../docs/catalog.mjs';
+export async function getStaticPaths() {
+  const entries = await getCollection('docs');
+  const missing = documents.filter(doc => !entries.some(entry => entry.id === doc.id));
+  if (missing.length) throw new Error(`Missing canonical documentation: ${missing.map(doc => doc.id).join(', ')}`);
+  return entries.map(entry => ({ params: { slug: entry.id === 'README' ? undefined : entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const current = documents.find(doc => doc.id === entry.id)!;
+const groups = [...new Set(documents.map(doc => doc.group))];
+const base = import.meta.env.BASE_URL;
+const toc = headings.filter(heading => heading.depth > 1 && heading.depth < 4);
+const source = `docs/${entry.id}.md`;
+const favicon = await getImage({ src: logo, width: 32, height: 32, format: 'png' });
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={`${current.title} — KB documentation. Local Markdown knowledge, CLI workflows and the knowledge-base skill.`} />
+    <meta name="theme-color" content="#071724" />
+    <link rel="icon" href={favicon.src} type="image/png" />
+    <title>{current.title} — KB docs</title>
+  </head>
+  <body class="docs-body">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="docs-header">
+      <a class="brand" href={base} aria-label="KB — Knowledge Base home"><Image src={logo} alt="" width={36} height={36} format="webp" loading="eager" /><span>Knowledge Base</span></a>
+      <nav aria-label="Main navigation"><a href={base}>Home</a><a href={docsPath('README', base)} aria-current="page">Docs</a></nav>
+      <button class="docs-search-trigger" data-search-open hidden>Search docs <kbd>⌘ K / Ctrl K</kbd></button>
+      <a class="docs-github" href={repository}>GitHub ↗</a>
+    </header>
+    <div class="docs-layout">
+      <aside class="docs-sidebar">
+        <details class="docs-menu" open>
+          <summary>Documentation menu</summary>
+          <nav aria-label="Documentation">
+            {groups.map(group => <section><h2>{group}</h2><ul>{documents.filter(doc => doc.group === group).map(doc => <li><a href={docsPath(doc.id, base)} aria-current={doc.id === entry.id ? 'page' : undefined}>{doc.title}</a></li>)}</ul></section>)}
+            <div class="sidebar-note">Reading the checked-out source.<br />For your binary, use tagged docs and <code>kb help</code>.</div>
+            <a class="history-link" href={`${repository}/tree/main/docs/qa`}>Historical QA & evidence ↗</a>
+          </nav>
+        </details>
+      </aside>
+      <main id="main" class="docs-main" tabindex="-1">
+        <div class="docs-breadcrumb">Documentation <span>/</span> {current.group}</div>
+        <div class="source-strip"><span>{source}</span><div><button data-copy-markdown hidden>Copy as Markdown</button><a href={`${repository}/edit/main/${source}`}>Edit on GitHub ↗</a></div></div>
+        <p class="docs-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+        <article class="docs-prose"><Content /></article>
+        <footer class="docs-article-footer"><a href={`${repository}/blob/main/${source}`}>View canonical source ↗</a></footer>
+      </main>
+      <aside class="docs-toc"><nav aria-label="On this page"><h2>On this page</h2><ul>{toc.map(heading => <li class:list={{ nested: heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul></nav></aside>
+    </div>
+    <dialog class="docs-search" aria-labelledby="search-title" data-index={`${base}docs/search.json`}>
+      <div class="search-heading"><h2 id="search-title">Search documentation</h2><button data-search-close>Close search <kbd>Esc</kbd></button></div>
+      <label for="docs-query">Search published guides and references</label>
+      <input id="docs-query" type="search" placeholder="Try revision, backup, or setup…" autocomplete="off" aria-controls="search-results" />
+      <p class="search-status" role="status" aria-live="polite">Type to search. All terms must match.</p>
+      <ul id="search-results" aria-label="Search results"></ul>
+      <p class="search-help">↑ ↓ to move · Enter to open · Esc to close</p>
+    </dialog>
+    <script type="application/json" id="page-markdown" set:html={JSON.stringify(entry.body ?? '').replaceAll('<', '\\u003c')} />
+    <script>import '../../docs/client';</script>
+  </body>
+</html>

@@ -93,6 +93,8 @@ def website_workflow_findings(text):
         "website must install Chromium and its system dependencies": "      - run: pnpm exec playwright install --with-deps chromium\n",
         "website must exercise the production preview": "      - run: pnpm test\n",
         "website must test the deployed subpath": "      KB_SITE_BASE: /kb/\n",
+        "website must build production root output": "      - run: KB_SITE_BASE=/ pnpm run build\n",
+        "website must exercise the production root preview": "      - run: KB_SITE_BASE=/ pnpm test\n",
         "website must use its package directory": "        working-directory: site\n",
         "website must read its Node pin from mise": "          node-version: ${{ steps.toolchain.outputs.node }}\n",
         "website must read its pnpm pin from mise": "          version: ${{ steps.toolchain.outputs.pnpm }}\n",

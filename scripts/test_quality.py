@@ -153,6 +153,14 @@ jobs:
         self.assertIn("website must bootstrap pinned Node without cache before pnpm",
                       quality.workflow_findings(workflow.replace(bootstrap, ""), "ci.yml"))
 
+    def test_root_website_build_and_browser_checks_cannot_be_removed_or_skipped(self):
+        workflow = (quality.ROOT / ".github/workflows/ci.yml").read_text()
+        for command in ("KB_SITE_BASE=/ pnpm run build", "KB_SITE_BASE=/ pnpm test"):
+            step = f"      - run: {command}\n"
+            for replacement in ("", step + "        if: false\n"):
+                with self.subTest(command=command, replacement=replacement):
+                    self.assertTrue(quality.website_workflow_findings(workflow.replace(step, replacement)))
+
     def test_site_sources_stay_checked_but_generated_dependencies_do_not(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

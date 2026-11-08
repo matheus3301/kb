@@ -71,19 +71,35 @@ for installing or running the KB executable.
 `mise exec -- make check` retains the Go/runtime gates; the separately required
 website job must also pass before integration.
 
-Playwright starts the **built static preview** at `http://127.0.0.1:4321/kb/`,
-never the development server or an existing listener. Desktop (1440 × 1000) and
-mobile (390 × 844) projects exercise audience tabs, Arrow/Home/End keyboard
-navigation, visible keyboard focus, actual clipboard commands and setup prompt,
-and denied-clipboard manual-copy feedback. Both setup views are checked for
-horizontal page overflow and serious/critical axe findings. Browser exceptions,
-console errors, HTTP errors, and external runtime resource requests fail tests.
-These checks do not establish complete accessibility or universal browser support.
-Only local page fragments are checked; canonical GitHub documentation links are
-not fetched as an external-availability gate.
+Playwright starts the **built static preview**, never a development server or
+existing listener. Website CI and `make site-check` explicitly build and test
+both `/kb/` and `/`, preserving the original subpath commands. Policy mutation
+tests reject removing or conditionally skipping root verification. Desktop
+(1440 × 1000) and mobile (390 × 844) retain
+the landing tests and exercise every selected documentation route. Checks cover
+local links and all heading fragments, Unicode/duplicate heading identity,
+frontmatter boundaries, inert HTML/unsafe links, table containment, page
+overflow and serious/critical axe findings. Native mobile menus and article
+links also work with JavaScript disabled.
 
-Full-page human and agent setup screenshots, failure traces, and the HTML report
-are generated under `.build/site/`, outside public source. CI uploads that folder
+Documentation search checks title/body matching, empty results, Arrow/Home/End,
+Escape, focus restoration and close/reopen during a deliberately delayed local
+index request. Clipboard checks exercise real code/Markdown copies, literal
+angle brackets and denied-access manual feedback. Browser exceptions, console
+errors, failed requests, HTTP errors and external runtime resources fail docs
+tests. These are bounded Chromium checks, not complete accessibility or
+universal browser support. External GitHub fallback availability is not fetched.
+
+The content catalog is an explicit publication allowlist; historical QA/evidence
+remains an external, labeled source link rather than a second normative section.
+Docker copies that same selected canonical input set from repository-root
+context and asserts generated docs HTML/search JSON. Missing selected documents
+fail static generation; do not broaden the context to publish evidence trees.
+
+Landing and documentation desktop/mobile screenshots, no-JavaScript/search
+views, failure traces and HTML reports are generated separately under
+`.build/site/kb/` and `.build/site/root/`, outside public source. Neither base's
+run overwrites the other. CI uploads the enclosing `.build/site/` folder
 as **website-evidence** for seven days, even after a browser failure; missing
 evidence fails upload. Screenshots contain the public site only. Artifact upload
 does not attach images inline to a PR and requires no comment or write token.
