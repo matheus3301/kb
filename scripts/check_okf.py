@@ -1,4 +1,4 @@
-"""Exercise the source-only OKF library from an unrelated Go module."""
+"""Exercise the public OKF library from an unrelated Go module."""
 
 import json
 import os

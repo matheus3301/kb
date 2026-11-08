@@ -49,6 +49,13 @@ and the quickstart, then choose CLI + skill or the independent MCP interface.
 - [Interface contract](interfaces.md) and [tool catalog](../schemas/kb.v1.tools.json):
   wire-level behavior for integration authors.
 
+## Reuse OKF in Go
+
+- [OKF package](../pkg/okf/README.md): parsing, validation and presentation-preserving
+  editing in `github.com/matheus3301/kb/pkg/okf`, introduced in v1.2.0.
+- [Supported format contract](../pkg/okf/CONFORMANCE.md): pinned OKF version,
+  implementation limits, diagnostics and fidelity guarantees.
+
 ## Versions, evidence, and limits
 
 - [Project status](../README.md#project-status) and

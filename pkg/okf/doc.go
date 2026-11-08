@@ -20,7 +20,7 @@
 // consumer decides whether optional Guidance findings block its operations.
 // Package errors and diagnostics have no dependency on internal KB DTOs.
 //
-// This package is source-only pending a later release; published KB v1.1.0
-// does not contain it. See the package README and CONFORMANCE.md for availability,
+// This package is introduced in KB v1.2.0; earlier KB v1.1.0 does not contain it.
+// See the package README and CONFORMANCE.md for availability,
 // supported syntax, diagnostic codes and upstream attribution.
 package okf

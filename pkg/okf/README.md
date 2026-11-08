@@ -6,8 +6,14 @@ metadata, reports structured findings, creates documents and preserves existing
 presentation during targeted edits. It also checks supported reserved index/log
 syntax. It does not import KB internals or start any runtime services.
 
-**Source-only until a later release. Published KB v1.1.0 does not contain this
-package.** To evaluate checked-out source from another Go module, use a local
+**Introduced in KB v1.2.0.** Earlier v1.1.0 does not contain this package.
+Install the versioned package with:
+
+```sh
+go get github.com/matheus3301/kb/pkg/okf@v1.2.0
+```
+
+To evaluate an untagged source checkout from another Go module, use a local
 replacement (substitute your checkout path):
 
 ```sh
@@ -78,4 +84,4 @@ those operations and decides whether optional guidance is blocking.
 `go list -deps` against the format dependency boundary. `make check` includes this
 gate, external examples, parser/editor fuzz smoke, existing KB fidelity tests and
 CLI/MCP acceptance. These checks support the documented subset, not universal OKF
-conformance or a released-library compatibility commitment.
+conformance or attestation authenticity.

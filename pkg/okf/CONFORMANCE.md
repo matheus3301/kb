@@ -168,5 +168,6 @@ old scalar content, including nested final-child and final-entry cases. The
 focused regression and minimized synthetic fuzz seed are retained; published
 v1.1.0 does not contain this correction.
 
-This package is source-only pending a later release. Published v1.1.0 is unchanged;
-no historical qualification evidence or approval is reclassified as library proof.
+The public package and the block-scalar correction are introduced in KB v1.2.0.
+Earlier v1.1.0 remains unchanged. Library, CLI/MCP and installation evidence have
+separate scopes; historical qualification is not reclassified as library proof.

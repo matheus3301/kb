@@ -1,7 +1,8 @@
 # 0007 — Share the OKF format implementation as a public Go package
 
-Status: implemented in source; unreleased. No publication or independent approval
-is implied. Published v1.1.0 does not contain this package.
+Status: implemented. The package is introduced in KB v1.2.0; earlier v1.1.0
+does not contain it. Actual publication and installation evidence are tracked
+separately in the [compatibility policy](../compatibility.md).
 
 ## Decision
 
@@ -46,9 +47,9 @@ transactions, PARA and managed-index markers remain outside the package.
   core adapts early structural-limit errors to its legacy validation envelope.
 - Existing CLI/MCP DTOs, codes, messages and optional-field blocking policy remain
   application contracts. Public diagnostics do not import `internal/api`.
-- The package is source-only until a later release. Internal Go packages remain
-  private; stable binary/wire commitments do not falsely establish released
-  library availability or full upstream conformance.
+- The package is introduced in v1.2.0. Internal Go packages remain private;
+  binary/wire qualification does not establish library conformance, and the
+  supported format subset is documented independently.
 
 ## Consequences and checks
 
