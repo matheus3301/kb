@@ -59,6 +59,8 @@ site-check:
 	KB_SITE_BASE=/kb/ pnpm --dir site run build
 	pnpm --dir site exec playwright install chromium
 	KB_SITE_BASE=/kb/ pnpm --dir site test
+	KB_SITE_BASE=/ pnpm --dir site run build
+	KB_SITE_BASE=/ pnpm --dir site test
 
 check: repo lint test build fuzz security acceptance benchmark-smoke retrieval-eval soak-smoke
 

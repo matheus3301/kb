@@ -199,12 +199,13 @@ test('denied clipboard access provides live manual-copy feedback without false s
   }
 });
 
-test('header navigation and same-document anchors resolve at the deployed subpath', async ({ page }) => {
+test('header navigation reaches docs and same-document anchors resolve', async ({ page }) => {
   await openLanding(page);
   const navigation = page.getByRole('navigation').first();
   await navigation.getByRole('link', { name: 'Docs', exact: true }).click();
-  await expect(page).toHaveURL('http://127.0.0.1:4321/kb/#docs');
-  await expect(page.locator('#docs')).toBeInViewport();
+  await expect(page.locator('article h1')).toHaveText('Documentation');
+  await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Home', exact: true }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Your Knowledge Base.');
   await expect(navigation.getByRole('link', { name: 'GitHub', exact: true }))
     .toHaveAttribute('href', 'https://github.com/matheus3301/kb');
   const broken = await page.locator('a[href^="#"]').evaluateAll(links => links.flatMap(link => {

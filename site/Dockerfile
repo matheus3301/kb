@@ -13,8 +13,10 @@ RUN node --input-type=module -e 'import { readFileSync } from "node:fs"; import 
 COPY site/astro.config.mjs site/tsconfig.json ./
 COPY site/src/ ./src/
 COPY site/public/ ./public/
+COPY docs/README.md docs/installation.md docs/quickstart.md docs/agent-setup.md docs/cli.md docs/backups.md docs/setup.md docs/mcp.md docs/interfaces.md docs/spec.md docs/project-overview.md docs/compatibility.md docs/quality.md /app/docs/
 COPY assets/logo.png /app/assets/logo.png
-RUN pnpm run check && pnpm run build
+RUN pnpm run check && pnpm run build \
+    && test -s dist/docs/index.html && test -s dist/docs/search.json
 
 FROM nginx:stable-alpine-slim@sha256:dede8895648b461178c3bc604f7eed4423efe5220b2c4d839f5eb3d34ac3f8f7 AS runtime
 
