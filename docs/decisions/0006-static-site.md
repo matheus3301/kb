@@ -72,16 +72,20 @@ package integrity verification. A fresh resolution under pnpm's default release-
 exception, audit exclusion, or direct dependency was added to force the result.
 The resolver also omits an unused optional Vite peer and its platform packages.
 
-- Astro 7.4.1: static HTML generation, asset processing and component authoring. Its Node `>=22.22.0` engine requirement constrains toolchain updates; Astro 7.4.2 requires a newer Node patch. The initial 6.4.8 selection was rejected after `npm audit` reported critical/high advisories; no audit suppression was added.
+- Astro generates static HTML and processes assets. The original release used
+  Astro 7.4.1. The security update selects Astro 7.4.13 for
+  [GHSA-mh32-jxcr-mh9f](https://github.com/withastro/astro/security/advisories/GHSA-mh32-jxcr-mh9f) and
+  [GHSA-r3h5-4585-7x3w](https://github.com/withastro/astro/security/advisories/GHSA-r3h5-4585-7x3w).
+  Astro requires Node `>=22.23.4`; the development, CI, and container builds
+  use Node 22.23.5. The production site serves pre-rendered files without the
+  on-demand Node adapter.
 - `@astrojs/check` 0.9.12 and TypeScript 5.9.3: Astro and browser-script type checking.
 - `@types/node` 22.x: types for the Node-based browser-test configuration; the exact patch is locked.
 - `@playwright/test` 1.64.1 and `@axe-core/playwright` 4.14.0: real browser behavior, responsive layout and accessibility checks. They are development-only dependencies.
 - `@fontsource-variable/instrument-sans` 5.3.0 and `@fontsource/ibm-plex-mono` 5.3.0: self-hosted fonts, licensed under OFL-1.1. The static output includes their license notices.
-- `@astrojs/markdown-satteri` 0.4.4: explicit customization of Astro 7.4.1's
-  already-selected native Markdown processor. No framework or Astro upgrade;
-  this promotes the existing transitive version rather than adding a parallel
-  parser. Current official documentation was checked through Context7 and the
-  Astro/Sätteri references; pinned declarations govern API differences.
+- `@astrojs/markdown-satteri` customizes the native Markdown processor. The
+  original integration used 0.4.4 with Astro 7.4.1. The security update pins
+  0.4.10 to match the processor selected by Astro 7.4.13.
 
 Official Astro configuration, imports and client-script documentation were consulted for the original decision, including Context7 resolution and documentation retrieval. Astro does not type-check during `build`; `pnpm --dir site run check` remains separate.
 

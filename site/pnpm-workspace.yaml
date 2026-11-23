@@ -1,0 +1,3 @@
+overrides:
+  # Match the stable emnapi pair used by astro2tsx. Rolldown's WASI builds use a newer pair.
+  "@napi-rs/wasm-runtime@1.2.4>@emnapi/runtime": "1.11.3"
