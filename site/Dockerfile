@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1
-FROM node:22.22.3-alpine@sha256:e58326d0d441090181ac150dc2078d3e2cf6a0d42e809aebba3ef5880935ffdd AS build
+FROM node:22.23.5-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa534549940b8d73bde88481a AS build
 
 WORKDIR /app
 COPY mise.toml ./
 WORKDIR /app/site
-COPY site/package.json site/pnpm-lock.yaml ./
+COPY site/package.json site/pnpm-lock.yaml site/pnpm-workspace.yaml ./
 ENV ASTRO_TELEMETRY_DISABLED=1 KB_SITE_BASE=/
 RUN node --input-type=module -e 'import { readFileSync } from "node:fs"; import assert from "node:assert/strict"; assert.equal(process.versions.node, readFileSync("../mise.toml", "utf8").match(/^node = "([^"]+)"/m)[1]);' \
     && corepack enable \

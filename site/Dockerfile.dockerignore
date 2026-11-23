@@ -19,6 +19,7 @@
 !site/
 !site/package.json
 !site/pnpm-lock.yaml
+!site/pnpm-workspace.yaml
 !site/astro.config.mjs
 !site/tsconfig.json
 !site/src/

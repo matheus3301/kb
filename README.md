@@ -178,12 +178,12 @@ The [CLI guide](docs/cli.md) contains syntax, JSON requests, errors and limits.
 
 ## Project status
 
-**Stable [v1.2.0](https://github.com/matheus3301/kb/releases/tag/v1.2.0) is published
-and installed through macOS arm64 Homebrew.** It introduces the reusable
+Install the [latest stable release](https://github.com/matheus3301/kb/releases/latest)
+through Homebrew. [v1.2.0](https://github.com/matheus3301/kb/releases/tag/v1.2.0) introduced the reusable
 [`pkg/okf` Go library](pkg/okf/README.md) and a searchable canonical documentation
 portal. CLI + skill remains the primary agent workflow; MCP is independent.
 
-Actual published native archives and archived source passed verification on
+The v1.2.0 native archives and archived source passed verification on
 Linux amd64 and macOS arm64 before the tap updated. A real Homebrew upgrade
 from v1.1.0, formula test, 14 installed CLI acceptance workflows, **43 data
 documentation requests**, **12 setup requests** and CLI/MCP operational consumers

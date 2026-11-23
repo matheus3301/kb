@@ -1,12 +1,9 @@
 # Compatibility and support
 
-Published and Homebrew-installed production is stable
-**[v1.2.0](https://github.com/matheus3301/kb/releases/tag/v1.2.0)** at
-`a039eb5c070c70625942b340bbcc78679e88c244`. Actual published native/source verification,
-macOS arm64 Homebrew upgrade/test, installed CLI/MCP operational consumers and
-an external consumer of the tagged Go module passed. The
-[v1.2.0 release record](qa/library-release-v1.2.0.md) separates those observations
-from earlier model, resource and native-activation qualification.
+Use the [latest stable release](https://github.com/matheus3301/kb/releases/latest)
+for the current patch version and its release notes. The
+[v1.2.0 release record](qa/library-release-v1.2.0.md) documents the introduction
+of the public Go package and its release, installed CLI/MCP, and module checks.
 Product version, wire version, knowledge format, configuration, operational
 state and backup format are separate axes. `kb.v1` is not product v1.0.
 
@@ -19,7 +16,7 @@ for shipped behavior; `main` may contain unreleased corrections. The
 
 ## Current qualification status
 
-### Published and installed v1.2.0
+### v1.2.0 publication and installation history
 
 **v1.2.0 was published at 2026-11-08T01:20:41Z**, from
 `a039eb5c070c70625942b340bbcc78679e88c244` after exact-main
