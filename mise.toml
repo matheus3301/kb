@@ -1,7 +1,7 @@
 # Authoritative development tool pins and Python minor selector; make repo checks duplicates.
 [tools]
 python = "3.12"
-go = "1.27.3"
+go = "1.27.4"
 node = "22.22.3"
 "npm:pnpm" = "11.25.0"
 goreleaser = "2.19.0"
