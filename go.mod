@@ -1,12 +1,12 @@
 module github.com/matheus3301/kb
 
-go 1.27.3
+go 1.27.4
 
 require (
 	github.com/BurntSushi/toml v1.6.0
 	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/spf13/cobra v1.10.2
-	go.yaml.in/yaml/v3 v3.0.5
+	go.yaml.in/yaml/v3 v3.0.6
 	golang.org/x/text v0.43.0
 )
 
