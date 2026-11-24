@@ -2,6 +2,7 @@
 
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -120,11 +121,16 @@ class ToolchainTests(unittest.TestCase):
 
     def test_native_extension_test_runtime_cannot_be_missing_late_or_conditional(self):
         workflow = (self.root / ".github/workflows/ci.yml").read_text()
-        setup = ("      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6\n"
-                 "        with:\n"
-                 "          node-version: ${{ steps.toolchain.outputs.node }}\n")
         command = "      - run: make test fuzz acceptance\n"
-        self.assertIn(setup + command, workflow)
+        match = re.search(
+            r"      - uses: actions/setup-node@[0-9a-f]{40}[^\n]*\n"
+            r"        with:\n"
+            r"          node-version: \$\{\{ steps\.toolchain\.outputs\.node \}\}\n"
+            + re.escape(command),
+            workflow,
+        )
+        self.assertIsNotNone(match)
+        setup = match.group().removesuffix(command)
         for replacement in (command, command + setup,
                             setup.replace("        with:\n", "        if: false\n        with:\n") + command):
             with self.subTest(replacement=replacement):
