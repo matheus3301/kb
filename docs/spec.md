@@ -756,7 +756,7 @@ alternative, but the implementation uses Go. The experiments did not compare cus
 Go implementations and do not prove either superior.
 
 The runtime uses Cobra 1.10.2, the official MCP Go SDK 1.8.0,
-BurntSushi/toml 1.6.0, go.yaml.in/yaml/v3 3.0.5, and x/text 0.43.0. Versions
+BurntSushi/toml 1.6.0, go.yaml.in/yaml/v3 3.0.6, and x/text 0.44.0. Versions
 are pinned in [go.mod](https://github.com/matheus3301/kb/blob/main/go.mod).
 Composition uses explicit constructors and standard library diagnostics; Fx is not a dependency. Search is implemented in
 the core without SQLite, CGO, embeddings, or a model runtime. The
