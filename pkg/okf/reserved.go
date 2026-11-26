@@ -4,6 +4,8 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
+
+	"go.yaml.in/yaml/v3"
 )
 
 // ReservedRole identifies the logical role of a reserved Markdown file, without
@@ -11,7 +13,7 @@ import (
 type ReservedRole string
 
 const (
-	// RootIndex is the bundle-root index.md, permitting okf_version metadata.
+	// RootIndex is the bundle-root index.md, permitting bundle metadata.
 	RootIndex ReservedRole = "root-index"
 	// Index is any non-root index.md, which must not have frontmatter.
 	Index ReservedRole = "index"
@@ -19,12 +21,15 @@ const (
 	Log ReservedRole = "log"
 )
 
-// ValidateReserved checks the implemented subset of upstream sections 8 and 9:
-// UTF-8/size bounds, frontmatter placement, root-index metadata restricted to a
-// nonempty string okf_version when present, and YYYY-MM-DD log headings ordered
-// newest first. It does not require headings/entries, validate index listings or
-// links, walk a bundle, interpret versions, or recognize KB managed markers.
-// Findings describe required reserved structure, not optional-field guidance.
+// ValidateReserved checks the supported reserved-file structure: UTF-8/size
+// bounds, frontmatter placement, root-index metadata and newest-first YYYY-MM-DD
+// log headings. Exactly okf_version "0.3" permits optional string title,
+// description and license plus opaque extension keys. Null and empty lists for
+// those optional fields mean absent. Other/absent versions retain the v0.2
+// okf_version-only contract; unknown nonempty version strings remain accepted.
+// It does not certify versions, validate listings/links/license expressions,
+// walk a bundle or recognize KB managed markers. Findings describe structure,
+// not optional concept guidance.
 // Size/encoding failures use the same bounded implementation limits as Parse.
 func ValidateReserved(role ReservedRole, raw []byte) []Diagnostic {
 	var ds []Diagnostic
@@ -48,14 +53,32 @@ func ValidateReserved(role ReservedRole, raw []byte) []Diagnostic {
 		if role != RootIndex {
 			add("only the root index permits frontmatter")
 		} else {
+			// Inspect only known values; do not expand/copy opaque extension trees.
+			var version string
+			for i := 0; i < len(d.front.node.Content); i += 2 {
+				if d.front.node.Content[i].Value == "okf_version" {
+					version, _ = reservedScalar(d.front.node.Content[i+1]).(string)
+				}
+			}
 			// Walk syntax order, not map iteration, for deterministic findings.
-			m := d.Metadata()
 			for i := 0; i < len(d.front.node.Content); i += 2 {
 				key := d.front.node.Content[i].Value
-				if key != "okf_version" {
+				if key == "okf_version" {
+					if version == "" {
+						add("okf_version must be a string")
+					}
+				} else if version != "0.3" {
 					add("root index metadata permits only okf_version")
-				} else if value, ok := m[key].(string); !ok || value == "" {
-					add("okf_version must be a string")
+				} else if key == "title" || key == "description" || key == "license" {
+					value := d.front.node.Content[i+1]
+					for value.Alias != nil {
+						value = value.Alias
+					}
+					_, isString := reservedScalar(value).(string)
+					emptyList := value.Kind == yaml.SequenceNode && len(value.Content) == 0
+					if !isString && value.Tag != "!!null" && !emptyList {
+						add(key + " must be a string when present")
+					}
 				}
 			}
 		}
@@ -76,4 +99,16 @@ func ValidateReserved(role ReservedRole, raw []byte) []Diagnostic {
 		}
 	}
 	return ds
+}
+
+// Parse has already bounded aliases and rejected cycles. Containers are not
+// decoded: an invalid known field must not allocate an expanded metadata tree.
+func reservedScalar(value *yaml.Node) any {
+	for value.Alias != nil {
+		value = value.Alias
+	}
+	if value.Kind != yaml.ScalarNode {
+		return nil
+	}
+	return nodeValue(value)
 }

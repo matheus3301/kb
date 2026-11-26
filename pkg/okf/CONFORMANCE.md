@@ -8,6 +8,13 @@ commit **`ad30107c31c06aec8a7d5636e0d1058118604e6f`**:
 `okf.Version` and `okf.Specification` expose that identity. They do not claim
 complete implementation or verify a bundle's declared version.
 
+The checked-out candidate additionally supports the **root-index metadata
+slice** of OKF v0.3 §8.1, pinned at
+[`527e81aff55992be21507e97004286789126f88c`](https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md).
+This does not change the v0.2 identity constants, concept validation, paths or
+verification semantics, and is not full v0.3 support. See the
+[draft compatibility matrix](../../docs/proposals/okf-v0.3-compatibility.md).
+
 This document summarizes KB's implementation; it does not reproduce the upstream
 standard. The upstream project is attributed to its contributors and distributed
 under [Apache-2.0](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/LICENSE.md).
@@ -97,8 +104,23 @@ capped at 64 concept findings; nested locations identify the top-level field.
 
 `ValidateReserved(role, raw)` takes a logical role, not a filesystem path:
 
-- `RootIndex`: optional frontmatter may contain only a nonempty string
-  `okf_version`. Unknown version strings are tolerated, not certified.
+- `RootIndex`: optional frontmatter with absent/other `okf_version` retains the
+  v0.2 contract: only a nonempty string `okf_version` is permitted. Unknown
+  nonempty version strings alone remain accepted, not certified; no numeric
+  coercion, semantic version ordering or future-version fallback is implied.
+- Exactly `okf_version: "0.3"` additionally permits `title`, `description` and
+  `license` strings. For these optional fields, null, empty strings and empty
+  lists mean absent (§11.2). Other shapes produce deterministic
+  `INVALID_RESERVED` requirement findings in syntax order. All other keys are
+  opaque bundle metadata, including unprefixed extension keys; they do not
+  become concept metadata. Existing syntax/complexity restrictions still apply
+  recursively. License expressions/paths are not validated, resolved or opened.
+- KB managed-index regeneration preserves the existing root frontmatter bytes.
+  Export copies accepted scoped Markdown verbatim, including the root index.
+  Export does not include non-Markdown assets; a license path may therefore
+  reference an excluded file. Its manifest reports exclusions and KB's scoped
+  validation, not complete v0.3 conformance. Maintain/export are CLI-only;
+  validation and ordinary writes use the same validator through CLI and MCP.
 - `Index`: no frontmatter; `Log`: no frontmatter and each line beginning `## `
   must carry a valid `YYYY-MM-DD` date in newest-first order. Equal dates remain
   accepted, matching the existing implementation. Other lines are opaque.

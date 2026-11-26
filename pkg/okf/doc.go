@@ -1,6 +1,7 @@
 // Package okf parses, inspects, validates and edits the supported subset of
 // Open Knowledge Format v0.2 concept documents and validates reserved index/log
-// structure. Specification pins the upstream source. Parsing is not proof of
+// structure, with additive declared-v0.3 root-index metadata support.
+// Specification pins the v0.2 source. Parsing is not proof of
 // full OKF conformance: call Document.Validate for concept requirements and
 // optional-field guidance, and ValidateReserved for supported reserved checks.
 // There is no bundle walker, Markdown renderer/link resolver or attestation

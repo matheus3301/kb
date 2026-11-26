@@ -264,8 +264,16 @@ Unknown types and keys are valid. `title`, `description`, `sources`, `generated`
 `verified`, `status`, and `tags` are optional for OKF conformance.
 
 `index.md` and `log.md` are reserved. Indexes do not receive concept frontmatter;
-only the root index may declare `okf_version`. Validate the specific index and
-log structures without requiring `type`. Log dates use `YYYY-MM-DD`.
+only the root index may declare `okf_version`. Exactly `"0.3"` additionally
+permits optional bundle `title`, `description`, `license` and opaque extension
+metadata, preserved during managed regeneration and export. Other/absent versions
+retain the v0.2 `okf_version`-only root metadata contract; unknown nonempty version
+strings alone remain accepted, not certified. This additive slice does not change
+concept, path or trust semantics or claim full v0.3 compatibility; see the
+[draft matrix](proposals/okf-v0.3-compatibility.md) and
+[bounded reserved contract](../pkg/okf/CONFORMANCE.md).
+Validate the specific index and log structures without requiring `type`.
+Log dates use `YYYY-MM-DD`.
 
 Preserve the bytes of unchanged notes. Targeted body edits must leave
 untouched frontmatter spans, comments, field ordering, and line-ending style
