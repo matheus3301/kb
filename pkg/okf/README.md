@@ -71,6 +71,9 @@ repository so this guide also works inside a binary archive without Go sources.
 - `Marshal`: create deterministic frontmatter with LF delimiters. Pass exact
   numeric values as `encoding/json.Number`, not binary floating-point numbers.
 - `ValidateReserved`: pure validation for `RootIndex`, `Index` or `Log` roles.
+  The checked-out candidate also accepts declared v0.3 root-index bundle metadata;
+  see [the bounded contract](CONFORMANCE.md). This is not
+  a change to the v0.2 format identity or full v0.3 support.
 - `Error`: inspect `Code` with `errors.As`; error prose is explanatory.
 - `Diagnostic`: branch on `Code`/`Kind`, with `Field` and physical `Line` when known.
 

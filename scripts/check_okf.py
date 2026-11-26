@@ -48,6 +48,12 @@ func main() {
     if value, exists := fresh.Metadata()["new"]; !exists || value != nil { panic("missing null") }
     if fresh.Body() != body || fresh.Metadata()["generated"] != nil { panic("unexpected policy") }
     if len(okf.ValidateReserved(okf.Log, []byte("## 2026-01-02\n## 2026-01-01\n"))) != 0 { panic("invalid log") }
+    root := []byte("---\nokf_version: '0.3'\ntitle: Synthetic bundle\nlicense: CC-BY-4.0\nx-owner: {custom: [one, two]}\n---\n# Topics\n")
+    if len(okf.ValidateReserved(okf.RootIndex, root)) != 0 { panic("v0.3 root metadata rejected") }
+    index, err := okf.Parse(root)
+    if err != nil { panic(err) }
+    unchanged, err := index.Edit(okf.Edit{})
+    if err != nil || string(unchanged) != string(root) { panic("root metadata fidelity") }
     fmt.Println("external OKF consumer passed")
 }
 '''
